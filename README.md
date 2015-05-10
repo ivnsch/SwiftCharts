@@ -17,6 +17,25 @@ Current features:
 
 [Examples video](https://www.youtube.com/watch?v=cyAlKil3Pyk)
 
+###### Installation
+
+Add to your podfile:
+```
+use_frameworks!
+pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
+```
+and then:
+```
+pod install
+```
+
+###### To run examples:
+
+In /Examples:
+```
+pod install
+```
+
 Concept:
 
 - Layer architecture, which makes it extremely easy to customize charts, create new types, re-combine existing ones and add interactive elements.
@@ -125,3 +144,5 @@ Ivan Schütz
 ###### License
 
 SwiftCharts is Copyright (c) 2015 Ivan Schütz and released as open source under the attached [Apache 2.0 license](LICENSE).
+
+This is a port to Swift and (massively improved) continuation of an obj-c project which I did while working at eGym GmbH https://github.com/egymgmbh/ios-charts
