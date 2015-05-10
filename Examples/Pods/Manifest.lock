@@ -1,0 +1,14 @@
+PODS:
+  - SwiftCharts (0.0.1)
+
+DEPENDENCIES:
+  - SwiftCharts (from `/Users/ivanschuetzD/proj/pods/SwiftCharts`)
+
+EXTERNAL SOURCES:
+  SwiftCharts:
+    :path: /Users/ivanschuetzD/proj/pods/SwiftCharts
+
+SPEC CHECKSUMS:
+  SwiftCharts: 87e7d6478dc6e2f48b5d876a0a70743cc80f9809
+
+COCOAPODS: 0.37.1

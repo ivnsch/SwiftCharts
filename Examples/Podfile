@@ -1,0 +1,2 @@
+use_frameworks!
+pod "SwiftCharts", :path => '/Users/ivanschuetzD/proj/pods/SwiftCharts'
