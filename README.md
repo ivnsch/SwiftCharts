@@ -36,13 +36,13 @@ In /Examples, run:
 pod install
 ```
 
-Concept:
+##### Concept:
 
 - Layer architecture, which makes it extremely easy to customize charts, create new types, combine existing ones and add interactive elements.
 
 - Creation of views via a generator function, which makes it easy to use custom views in any layer.
 
-Main Components:
+##### Main Components:
 
 ##### 1. Layers:
 
