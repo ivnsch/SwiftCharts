@@ -1,10 +1,37 @@
 # SwiftCharts
 Layer based charts library for iOS
 
+Current features:
+- Bars chart (horizontal / vertical)
+- Scatter
+- Line / Multiple lines
+- Areas
+- Multiple axis
+- Custom units
+- Custom views
+- Multiple labels (x axis)
+- Candlestick
+- Cubic line
+- Complex interactivity support
+- Everything is easily combinable, interchangeable and customizable
 
+[Examples video](https://www.youtube.com/watch?v=cyAlKil3Pyk)
 
-###### Example:
+Concept:
 
+- Layer architecture, which makes it extremely easy to customize charts, create new types, re-combine existing ones and add interactive elements.
+
+- Creation of views via a generator function, which makes it easy to use custom views in any layer.
+
+Main Components:
+
+###### 1. Layers:
+
+A chart is the result of composing layers together. Everything is a layer - axis, guidelines, dividers, line, circles, etc. The idea is to have losely coupled components that can be easily changed and combined in arbitrary ways. This is for example the structure of a basic chart, wich shows a line with circles:
+
+![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/layers.png)
+
+This is the corresponding code:
 
 ```
 let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
@@ -37,7 +64,6 @@ let chartPointsCircleLayer = ChartPointsViewsLayer(axisX: xAxis, axisY: yAxis, i
 var settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth, axis: .XAndY)
 let guidelinesLayer = ChartGuideLinesDottedLayer(axisX: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
 
-
 let chart = Chart(
     frame: chartFrame,
     layers: [
@@ -53,13 +79,15 @@ self.view.addSubview(chart.view)
 self.chart = chart
 ```
 
-This code leads to the following structure:
+Layers are semantic units that can add views to the chart, or can simply draw in the chart's context for a better performance. Which makes more sense depends on the requirements.
 
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/layers.png)
+###### 2. View generators:
 
+View based layers will use a generator function to generate chart point views. This function received the complete state of each chartpoint (model data, screen location) and produces an UIView, allowing any type of customization.
 
-See the hello world example for an introduction.
+###### Hello world:
 
+There's a [hello world](Examples/Examples/Examples/HelloWorld.swift) included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the [custom units example](Examples/Examples/Examples/CustomUnitsExample.swift), and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!
 
 ###### Screenshots:
 
@@ -81,7 +109,6 @@ See the hello world example for an introduction.
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0039.jpeg)
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0040.jpeg)
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0041.jpeg)
-[Video](https://www.youtube.com/watch?v=cyAlKil3Pyk)
 
 ###### Version:
 
