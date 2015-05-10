@@ -1,2 +1,2 @@
 use_frameworks!
-pod "SwiftCharts", :path => '/Users/ivanschuetzD/proj/pods/SwiftCharts'
+pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'

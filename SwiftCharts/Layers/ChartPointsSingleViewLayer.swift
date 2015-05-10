@@ -9,7 +9,6 @@
 import UIKit
 
 // Layer that shows only one view at a time
-// TODO remember to use "public" everywhere, this is probably necessary for pod
 public class ChartPointsSingleViewLayer<T: ChartPoint, U: UIView>: ChartPointsViewsLayer<T, U> {
     
     private var addedViews: [UIView] = []
