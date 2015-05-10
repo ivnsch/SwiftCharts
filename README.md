@@ -17,7 +17,7 @@ Current features:
 
 [Examples video](https://www.youtube.com/watch?v=cyAlKil3Pyk)
 
-###### Installation
+##### Installation
 
 Add to your podfile:
 ```
@@ -29,26 +29,27 @@ and then:
 pod install
 ```
 
-###### To run examples:
+##### To run examples:
 
-In /Examples:
+In /Examples, run:
 ```
 pod install
 ```
 
 Concept:
 
-- Layer architecture, which makes it extremely easy to customize charts, create new types, re-combine existing ones and add interactive elements.
+- Layer architecture, which makes it extremely easy to customize charts, create new types, combine existing ones and add interactive elements.
 
 - Creation of views via a generator function, which makes it easy to use custom views in any layer.
 
 Main Components:
 
-###### 1. Layers:
+##### 1. Layers:
 
 A chart is the result of composing layers together. Everything is a layer - axis, guidelines, dividers, line, circles, etc. The idea is to have losely coupled components that can be easily changed and combined in arbitrary ways. This is for example the structure of a basic chart, wich shows a line with circles:
 
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/layers.png)
+
 
 Code:
 
@@ -100,19 +101,19 @@ self.chart = chart
 
 Layers are semantic units that can add views to the chart, or can simply draw in the chart's context for a better performance. Which makes more sense depends on the requirements.
 
-###### 2. View generators:
+##### 2. View generators:
 
 View based layers will use a generator function to generate chart point views. This function received the complete state of each chartpoint (model data, screen location) and produces an UIView, allowing any type of customization.
 
-###### Hello world:
+##### Hello world:
 
 There's a [hello world](Examples/Examples/Examples/HelloWorld.swift) included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the snippet above, and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!
 
-###### Functional concepts:
+##### Functional concepts:
 
 This library is rather object oriented, but it makes extensive use of functional concepts like high order functions and (preference for) immutability leading to safer code and better maintainability.
 
-###### Screenshots:
+##### Screenshots:
 
 
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0022.jpeg)
@@ -133,15 +134,15 @@ This library is rather object oriented, but it makes extensive use of functional
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0040.jpeg)
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0041.jpeg)
 
-###### Version:
+##### Version:
 
 1.0
 
-###### Created By:
+##### Created By:
 
 Ivan Schütz
 
-###### License
+##### License
 
 SwiftCharts is Copyright (c) 2015 Ivan Schütz and released as open source under the attached [Apache 2.0 license](LICENSE).
 
