@@ -13,7 +13,7 @@ Current features:
 - Candlestick
 - Cubic line
 - Complex interactivity support
-- Everything is easily combinable, interchangeable and customizable
+- Easy customization and extensibility
 
 [Examples video](https://www.youtube.com/watch?v=cyAlKil3Pyk)
 
@@ -31,7 +31,7 @@ A chart is the result of composing layers together. Everything is a layer - axis
 
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/layers.png)
 
-This is the corresponding code:
+Code:
 
 ```
 let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
@@ -87,7 +87,11 @@ View based layers will use a generator function to generate chart point views. T
 
 ###### Hello world:
 
-There's a [hello world](Examples/Examples/Examples/HelloWorld.swift) included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the [custom units example](Examples/Examples/Examples/CustomUnitsExample.swift), and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!
+There's a [hello world](Examples/Examples/Examples/HelloWorld.swift) included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the snippet above, and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!
+
+###### Functional concepts:
+
+This library is rather object oriented, but it makes extensive use of functional concepts like high order functions and (preference for) immutability leading to safer code and better maintainability.
 
 ###### Screenshots:
 
@@ -120,4 +124,4 @@ Ivan Schütz
 
 ###### License
 
-SwiftCharts is Copyright (c) 2015 Ivan Schütz and released open source under the attached [Apache 2.0 license](LICENSE).
+SwiftCharts is Copyright (c) 2015 Ivan Schütz and released as open source under the attached [Apache 2.0 license](LICENSE).
