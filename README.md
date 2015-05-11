@@ -20,19 +20,19 @@ Current features:
 ##### Installation
 
 Add to your podfile:
-```
+```ruby
 use_frameworks!
 pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
 ```
 and then:
-```
+```ruby
 pod install
 ```
 
 ##### To run examples:
 
 In /Examples, run:
-```
+```ruby
 pod install
 ```
 
@@ -53,7 +53,7 @@ A chart is the result of composing layers together. Everything is a layer - axis
 
 Code:
 
-```
+```swift
 let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
 
 let chartPoints = [(2, 2), (3, 1), (5, 9), (6, 7), (8, 10), (9, 9), (10, 15), (13, 8), (15, 20), (16, 17)].map{ChartPoint(x: ChartAxisValueInt($0.0), y: ChartAxisValueInt($0.1))}
