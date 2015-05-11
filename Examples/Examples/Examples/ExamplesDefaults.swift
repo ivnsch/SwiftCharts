@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftCharts
 
 struct ExamplesDefaults {
     

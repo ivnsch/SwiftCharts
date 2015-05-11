@@ -24,16 +24,15 @@ Add to your podfile:
 use_frameworks!
 pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
 ```
-and then:
+
+And then:
 ```ruby
 pod install
 ```
 
-##### To run examples:
-
-In /Examples, run:
-```ruby
-pod install
+Import the framework in your code:
+```swift
+import SwiftCharts
 ```
 
 ##### Concept:
@@ -75,7 +74,7 @@ let chartPointsLineLayer = ChartPointsLineLayer(axisX: xAxis, axisY: yAxis, inne
 
 // view generator - creates circle view for each chartpoint
 let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
-return ChartPointCircleView(center: chartPointModel.screenLoc, size: CGSizeMake(20, 20), settings: ChartPointCircleViewSettings(animDuration: 0.5))
+    return ChartPointCircleView(center: chartPointModel.screenLoc, size: CGSizeMake(20, 20), settings: ChartPointCircleViewSettings(animDuration: 0.5))
 }
 // create layer that uses the view generator
 let chartPointsCircleLayer = ChartPointsViewsLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: circleViewGenerator, displayDelay: 0, delayBetweenItems: 0.05)

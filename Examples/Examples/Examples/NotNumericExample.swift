@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftCharts
 
 class NotNumericExample: UIViewController {
 
