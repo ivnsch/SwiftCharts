@@ -19,6 +19,8 @@ Current features:
 - Complex interactivity support
 - Easy customization and extensibility
 
+Swift 1.2
+
 [Examples video](https://www.youtube.com/watch?v=cyAlKil3Pyk)
 
 ##### Installation
@@ -26,7 +28,7 @@ Current features:
 Add to your podfile:
 ```ruby
 use_frameworks!
-pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
+pod 'SwiftCharts', '~> 0.1'
 ```
 
 And then:
