@@ -1,4 +1,8 @@
 # SwiftCharts
+
+[![Version](https://img.shields.io/cocoapods/v/SwiftCharts.svg?style=flat)](http://cocoadocs.org/docsets/Charts)
+[![License](https://img.shields.io/cocoapods/l/SwiftCharts.svg?style=flat)](http://cocoadocs.org/docsets/Charts)
+
 Layer based charts library for iOS
 
 Current features:
