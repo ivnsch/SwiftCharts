@@ -135,7 +135,7 @@ This library is rather object oriented, but it makes extensive use of functional
 
 ##### Version:
 
-1.0
+0.1
 
 ##### Created By:
 
