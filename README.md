@@ -112,6 +112,8 @@ There's a [hello world](Examples/Examples/Examples/HelloWorld.swift) included in
 
 This library is rather object oriented, but it makes extensive use of functional concepts like high order functions and (preference for) immutability leading to safer code and better maintainability.
 
+###### More documentation coming soon!
+
 ##### Screenshots:
 
 
