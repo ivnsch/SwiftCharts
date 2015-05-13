@@ -15,12 +15,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
-        let splitViewController = self.window!.rootViewController as! UISplitViewController
-        let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
-        navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-        splitViewController.delegate = self
+
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            
+            let splitViewController = self.window!.rootViewController as! UISplitViewController
+            let navigationController = splitViewController.viewControllers.last as! UINavigationController
+            splitViewController.delegate = self
+            
+            if  splitViewController.respondsToSelector(Selector("displayModeButtonItem")) {
+                navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
+            }
+        }
+        
         return true
+
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -58,14 +66,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         }
         return false
     }
-
+    
+    private func setSplitSwipeEnabled(enabled: Bool) {
+        if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
+            let splitViewController = UIApplication.sharedApplication().delegate?.window!!.rootViewController as! UISplitViewController
+            splitViewController.presentsWithGesture = enabled
+        }
+    }
+    
+    func splitViewController(svc: UISplitViewController, willHideViewController aViewController: UIViewController, withBarButtonItem barButtonItem: UIBarButtonItem, forPopoverController pc: UIPopoverController) {
+        
+        let navigationController = svc.viewControllers[svc.viewControllers.count-1] as! UINavigationController
+        if let topAsDetailController = navigationController.topViewController as? DetailViewController {
+                barButtonItem.title = "Examples"
+                topAsDetailController.navigationItem.setLeftBarButtonItem(barButtonItem, animated: true)
+        }
+    }
 }
 
 
 // src: http://stackoverflow.com/a/27399688/930450
 extension UISplitViewController {
     func toggleMasterView() {
-        let barButtonItem = self.displayModeButtonItem()
-        UIApplication.sharedApplication().sendAction(barButtonItem.action, to: barButtonItem.target, from: nil, forEvent: nil)
+        let splitViewController = UIApplication.sharedApplication().delegate?.window!!.rootViewController as! UISplitViewController
+        if  splitViewController.respondsToSelector(Selector("displayModeButtonItem")) {
+            let barButtonItem = self.displayModeButtonItem()
+            UIApplication.sharedApplication().sendAction(barButtonItem.action, to: barButtonItem.target, from: nil, forEvent: nil)
+        }
     }
 }

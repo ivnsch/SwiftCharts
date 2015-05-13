@@ -48,30 +48,32 @@ class MasterViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if Env.iPad {
-            self.splitViewController?.toggleMasterView()
-            self.performSegueWithIdentifier("showDetail", sender: self)
-        }
 
         self.navigationController?.navigationBar.titleTextAttributes = ["NSFontAttributeName" : ExamplesDefaults.fontWithSize(22)]
         UIBarButtonItem.appearance().setTitleTextAttributes(["NSFontAttributeName" : ExamplesDefaults.fontWithSize(22)], forState: UIControlState.Normal)
+        
+        if let split = self.splitViewController {
+            
+            let controllers = split.viewControllers
+            self.detailViewController = controllers[controllers.count-1].topViewController as? DetailViewController
+            
+            let example = self.examples[1]
+            self.detailViewController?.detailItem = example.0
+            self.detailViewController?.title = example.1
+        }
     }
     
     // MARK: - Segues
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
-            self.splitViewController?.toggleMasterView()
             
             func showExample(index: Int) {
                 let example = self.examples[index]
-                let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
+                let controller = segue.destinationViewController as! DetailViewController
                 controller.detailItem = example.0
                 controller.title = example.1
-                
-                controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-                controller.navigationItem.leftItemsSupplementBackButton = true
+
             }
             
             if let indexPath = self.tableView.indexPathForSelectedRow() {
@@ -79,6 +81,16 @@ class MasterViewController: UITableViewController {
             } else {
                 showExample(0)
             }
+        }
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
+            let example = self.examples[indexPath.row]
+            self.detailViewController?.detailItem = example.0
+            self.detailViewController?.title = example.1
+
+            self.splitViewController?.toggleMasterView()
         }
     }
     

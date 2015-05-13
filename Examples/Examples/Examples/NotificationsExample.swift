@@ -49,11 +49,25 @@ class NotificationsExample: UIViewController {
                 
                 var currentAlert: UIAlertController? = nil
                 chartPointView.touchHandler = {
-                    let alert = UIAlertController(title: "Lorem", message: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-                    self!.presentViewController(alert, animated: true, completion: nil)
-                    currentAlert?.removeFromParentViewController()
-                    currentAlert = alert
+                    
+                    let title = "Lorem"
+                    let message = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+                    let ok = "Ok"
+                    
+                    if objc_getClass("UIAlertController") != nil {
+                        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: ok, style: UIAlertActionStyle.Default, handler: nil))
+                        self!.presentViewController(alert, animated: true, completion: nil)
+                        currentAlert?.removeFromParentViewController()
+                        currentAlert = alert
+                        
+                    } else {
+                        let alert = UIAlertView()
+                        alert.title = title
+                        alert.message = message
+                        alert.addButtonWithTitle(ok)
+                        alert.show()
+                    }
                 }
                 
                 return chartPointView

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		EB37D6AF1AFD1A670079438D /* ExamplesDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB37D6AE1AFD1A670079438D /* ExamplesDefaults.swift */; };
 		EB37D6B11AFD1AA10079438D /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB37D6B01AFD1AA10079438D /* Env.swift */; };
+		EB51EB181B02919B0083E052 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB51EB171B02919B0083E052 /* Main_iPhone.storyboard */; };
+		EB51EB1A1B02949C0083E052 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB51EB191B02949C0083E052 /* Default-568h@2x.png */; };
 		EB5DB6581AFD084A00569E59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB6571AFD084A00569E59 /* AppDelegate.swift */; };
 		EB5DB65A1AFD084A00569E59 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB6591AFD084A00569E59 /* MasterViewController.swift */; };
 		EB5DB65C1AFD084A00569E59 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB65B1AFD084A00569E59 /* DetailViewController.swift */; };
@@ -102,7 +104,10 @@
 /* Begin PBXFileReference section */
 		EB37D6AE1AFD1A670079438D /* ExamplesDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamplesDefaults.swift; sourceTree = "<group>"; };
 		EB37D6B01AFD1AA10079438D /* Env.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
-		EB5DB6521AFD084A00569E59 /* Examples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Examples.app; path = "/Users/ivanschuetzD/Documents/github/SwiftCharts/Examples/build/Debug-iphoneos/Examples.app"; sourceTree = "<absolute>"; };
+		EB51EB151B028FBA0083E052 /* Examples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Examples.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB51EB161B028FBA0083E052 /* ExamplesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExamplesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB51EB171B02919B0083E052 /* Main_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_iPhone.storyboard; sourceTree = "<group>"; };
+		EB51EB191B02949C0083E052 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		EB5DB6561AFD084A00569E59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB5DB6571AFD084A00569E59 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB5DB6591AFD084A00569E59 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -110,7 +115,6 @@
 		EB5DB65E1AFD084A00569E59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EB5DB6601AFD084A00569E59 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EB5DB6631AFD084A00569E59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		EB5DB6691AFD084A00569E59 /* ExamplesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = ExamplesTests.xctest; path = "/Users/ivanschuetzD/Documents/github/SwiftCharts/Examples/build/Debug-iphoneos/ExamplesTests.xctest"; sourceTree = "<absolute>"; };
 		EB5DB66E1AFD084A00569E59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB5DB66F1AFD084A00569E59 /* ExamplesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamplesTests.swift; sourceTree = "<group>"; };
 		EB5DB67A1AFD08AD00569E59 /* AreasExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AreasExample.swift; sourceTree = "<group>"; };
@@ -209,6 +213,8 @@
 			children = (
 				EB5DB6541AFD084A00569E59 /* Examples */,
 				EB5DB66C1AFD084A00569E59 /* ExamplesTests */,
+				EB51EB151B028FBA0083E052 /* Examples.app */,
+				EB51EB161B028FBA0083E052 /* ExamplesTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -221,6 +227,7 @@
 				EB5DB6591AFD084A00569E59 /* MasterViewController.swift */,
 				EB5DB65B1AFD084A00569E59 /* DetailViewController.swift */,
 				EB5DB65D1AFD084A00569E59 /* Main.storyboard */,
+				EB51EB171B02919B0083E052 /* Main_iPhone.storyboard */,
 				EB5DB6601AFD084A00569E59 /* Images.xcassets */,
 				EB5DB6621AFD084A00569E59 /* LaunchScreen.xib */,
 				EB5DB6551AFD084A00569E59 /* Supporting Files */,
@@ -231,6 +238,7 @@
 		EB5DB6551AFD084A00569E59 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EB51EB191B02949C0083E052 /* Default-568h@2x.png */,
 				EB5DB6561AFD084A00569E59 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -406,7 +414,7 @@
 			);
 			name = Examples;
 			productName = Examples;
-			productReference = EB5DB6521AFD084A00569E59 /* Examples.app */;
+			productReference = EB51EB151B028FBA0083E052 /* Examples.app */;
 			productType = "com.apple.product-type.application";
 		};
 		EB5DB6681AFD084A00569E59 /* ExamplesTests */ = {
@@ -424,7 +432,7 @@
 			);
 			name = ExamplesTests;
 			productName = ExamplesTests;
-			productReference = EB5DB6691AFD084A00569E59 /* ExamplesTests.xctest */;
+			productReference = EB51EB161B028FBA0083E052 /* ExamplesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -470,7 +478,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB5DB65F1AFD084A00569E59 /* Main.storyboard in Resources */,
+				EB51EB181B02919B0083E052 /* Main_iPhone.storyboard in Resources */,
 				EB5DB6641AFD084A00569E59 /* LaunchScreen.xib in Resources */,
+				EB51EB1A1B02949C0083E052 /* Default-568h@2x.png in Resources */,
 				EB5DB6611AFD084A00569E59 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -642,7 +652,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -681,7 +691,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

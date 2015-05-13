@@ -224,8 +224,6 @@ private class InfoView: UIView {
     private override func didMoveToSuperview() {
         
         let views = [self.statusView, self.dateLabel, self.highTextLabel, self.highLabel, self.lowTextLabel, self.lowLabel, self.openTextLabel, self.openLabel, self.closeTextLabel, self.closeLabel]
-        
-        self.setTranslatesAutoresizingMaskIntoConstraints(false)
         for v in views {
             v.setTranslatesAutoresizingMaskIntoConstraints(false)
         }
@@ -242,11 +240,11 @@ private class InfoView: UIView {
         let circleDiameter: CGFloat = Env.iPad ? 26 : 15
         let labelsSpace: CGFloat = Env.iPad ? 10 : 5
         
-        let hConstraintStr = namedViews[1..<namedViews.count].reduce("H:|-(10)-[v0(\(circleDiameter))]") {str, tuple in
+        let hConstraintStr = namedViews[1..<namedViews.count].reduce("H:|[v0(\(circleDiameter))]") {str, tuple in
             "\(str)-(\(labelsSpace))-[\(tuple.0)]"
         }
         
-        let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|-(88)-[\($0.0)(\(circleDiameter))]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)}
+        let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|-(18)-[\($0.0)(\(circleDiameter))]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)}
         
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
             + vConstraits)

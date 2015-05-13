@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, UISplitViewControllerDelegate {
     
     @IBOutlet weak var detailDescriptionLabel: UILabel!
     
@@ -16,12 +16,12 @@ class DetailViewController: UIViewController {
         CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height - 80)
         }()
     
-    var detailItem: Example?
-    var currentExampleController: UIViewController?
-    
-    override func viewDidLoad() {
-        self.configureView()
+    var detailItem: Example? {
+        didSet {
+            self.configureView()
+        }
     }
+    var currentExampleController: UIViewController?
     
     func configureView() {
         
@@ -100,8 +100,10 @@ class DetailViewController: UIViewController {
     }
     
     private func setSplitSwipeEnabled(enabled: Bool) {
-        let splitViewController = UIApplication.sharedApplication().keyWindow!.rootViewController as! UISplitViewController
-        splitViewController.presentsWithGesture = enabled
+        if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
+            let splitViewController = UIApplication.sharedApplication().delegate?.window!!.rootViewController as! UISplitViewController
+            splitViewController.presentsWithGesture = enabled
+        }
     }
 }
 

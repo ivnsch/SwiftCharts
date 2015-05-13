@@ -19,7 +19,7 @@ Current features:
 - Complex interactivity support
 - Easy customization and extensibility
 
-Swift 1.2
+Swift 1.2, iOS 7/8
 
 [Examples video](https://www.youtube.com/watch?v=cyAlKil3Pyk)
 
