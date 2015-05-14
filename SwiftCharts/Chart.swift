@@ -56,6 +56,10 @@ public class Chart {
         self.view.addSubview(view)
     }
     
+    public var frame: CGRect {
+        return self.view.frame
+    }
+    
     public var bounds: CGRect {
         return self.view.bounds
     }
