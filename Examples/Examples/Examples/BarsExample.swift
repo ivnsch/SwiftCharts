@@ -9,19 +9,8 @@
 import UIKit
 
 class BarsExample: UIViewController {
-   
-    let horizontalBars: Bool
     
     private var chart: Chart? // arc
-    
-    init(horizontalBars: Bool = false) {
-        self.horizontalBars = horizontalBars
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         
@@ -39,16 +28,9 @@ class BarsExample: UIViewController {
             let randomColor: UIColor = UIColor(red: r(), green: r(), blue: r(), alpha: 0.7)
             let bottomLeft = CGPointMake(layer.innerFrame.origin.x, layer.innerFrame.origin.y + layer.innerFrame.height)
             
-            let minSpace = self!.horizontalBars ? layer.minYScreenSpace : layer.minXScreenSpace
-            let barWidth = minSpace - minBarSpacing
+            let barWidth = layer.minXScreenSpace - minBarSpacing
             
-            let (p1: CGPoint, p2: CGPoint) = {
-                if self!.horizontalBars {
-                    return (CGPointMake(bottomLeft.x, chartPointModel.screenLoc.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
-                } else {
-                    return (CGPointMake(chartPointModel.screenLoc.x, bottomLeft.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
-                }
-            }()
+            let (p1: CGPoint, p2: CGPoint) = (CGPointMake(chartPointModel.screenLoc.x, bottomLeft.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
             return ChartPointViewBar(chartPoint: chartPointModel.chartPoint, p1: p1, p2: p2, width: barWidth, color: randomColor)
         }
         

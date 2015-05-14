@@ -32,10 +32,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
                 self.showExampleController(HelloWorld())
             case .BarsV:
                 self.setSplitSwipeEnabled(true)
-                self.showExampleController(BarsExample(horizontalBars: false))
-            case .BarsH:
-                self.setSplitSwipeEnabled(true)
-                self.showExampleController(BarsExample(horizontalBars: true))
+                self.showExampleController(BarsExample())
             case .BarsSelectAxis:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(BarsSelectAxisExample())
