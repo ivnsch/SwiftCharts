@@ -42,7 +42,14 @@ class BarsExample: UIViewController {
             let minSpace = self!.horizontalBars ? layer.minYScreenSpace : layer.minXScreenSpace
             let barWidth = minSpace - minBarSpacing
             
-            return ChartPointViewBar(chartPoint: chartPointModel.chartPoint, screenLoc: chartPointModel.screenLoc, barWidth: barWidth, bottomLeft: bottomLeft, color: randomColor, horizontal: self!.horizontalBars)
+            let (p1: CGPoint, p2: CGPoint) = {
+                if self!.horizontalBars {
+                    return (CGPointMake(bottomLeft.x, chartPointModel.screenLoc.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
+                } else {
+                    return (CGPointMake(chartPointModel.screenLoc.x, bottomLeft.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
+                }
+            }()
+            return ChartPointViewBar(chartPoint: chartPointModel.chartPoint, p1: p1, p2: p2, width: barWidth, color: randomColor)
         }
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))

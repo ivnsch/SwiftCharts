@@ -33,7 +33,9 @@ class BarsAndLinesExample: UIViewController {
         let barViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             let bottomLeft = CGPointMake(layer.innerFrame.origin.x, layer.innerFrame.origin.y + layer.innerFrame.height)
             let barWidth = layer.minXScreenSpace - minBarSpacing
-            return ChartPointViewBar(chartPoint: chartPointModel.chartPoint, screenLoc: chartPointModel.screenLoc, barWidth: barWidth, bottomLeft: bottomLeft, color: UIColor.redColor(), greyOut: true)
+            
+            let (p1: CGPoint, p2: CGPoint) = (CGPointMake(chartPointModel.screenLoc.x, bottomLeft.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
+            return ChartPointViewBar(chartPoint: chartPointModel.chartPoint, p1: p1, p2: p2, width: barWidth, color: UIColor.redColor(), greyOut: true)
         }
         
         let chartPointsLayer = ChartPointsViewsLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: barViewGenerator)
