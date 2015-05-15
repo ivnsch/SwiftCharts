@@ -90,6 +90,7 @@
 		EBC5337B1B00F02600D10448 /* StraigthLinePathGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC533461B00F02600D10448 /* StraigthLinePathGenerator.swift */; };
 		EBFA8BE21B052E02008A7C36 /* ChartPointViewBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFA8BE11B052E02008A7C36 /* ChartPointViewBar.swift */; };
 		EBFA8BE41B054425008A7C36 /* BarsSelectAxisExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFA8BE31B054425008A7C36 /* BarsSelectAxisExample.swift */; };
+		EBFA8BEA1B065927008A7C36 /* ChartPointViewBarGreyOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFA8BE91B065927008A7C36 /* ChartPointViewBarGreyOut.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +191,7 @@
 		EBC533461B00F02600D10448 /* StraigthLinePathGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StraigthLinePathGenerator.swift; sourceTree = "<group>"; };
 		EBFA8BE11B052E02008A7C36 /* ChartPointViewBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointViewBar.swift; sourceTree = "<group>"; };
 		EBFA8BE31B054425008A7C36 /* BarsSelectAxisExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarsSelectAxisExample.swift; sourceTree = "<group>"; };
+		EBFA8BE91B065927008A7C36 /* ChartPointViewBarGreyOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointViewBarGreyOut.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -393,6 +395,7 @@
 				EBC533411B00F02600D10448 /* ChartPointTargetingView.swift */,
 				EBC533421B00F02600D10448 /* ChartPointTextCircleView.swift */,
 				EBFA8BE11B052E02008A7C36 /* ChartPointViewBar.swift */,
+				EBFA8BE91B065927008A7C36 /* ChartPointViewBarGreyOut.swift */,
 				EBC533441B00F02600D10448 /* CubicLinePathGenerator.swift */,
 				EBC533451B00F02600D10448 /* HandlingView.swift */,
 				EBC533461B00F02600D10448 /* StraigthLinePathGenerator.swift */,
@@ -572,6 +575,7 @@
 				EBC533581B00F02600D10448 /* Chart.swift in Sources */,
 				EB5DB6581AFD084A00569E59 /* AppDelegate.swift in Sources */,
 				EBC533471B00F02600D10448 /* ChartAxisLabel.swift in Sources */,
+				EBFA8BEA1B065927008A7C36 /* ChartPointViewBarGreyOut.swift in Sources */,
 				EBC5335B1B00F02600D10448 /* ChartPoint.swift in Sources */,
 				EB37D6B11AFD1AA10079438D /* Env.swift in Sources */,
 				EBC5336E1B00F02600D10448 /* ChartPointsTrackerLayer.swift in Sources */,
