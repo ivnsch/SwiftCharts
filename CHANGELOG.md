@@ -4,8 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 ### Added
-- Bars example with variable axes
 - iOS7 support
+- Bars example with variable axes
+- Stacked bars layer and example
 
 ### Removed
 - Bars example with horizontal axis - now included in variable axes example

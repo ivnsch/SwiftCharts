@@ -36,6 +36,8 @@
 		EB5DB69B1AFD08AD00569E59 /* ScrollExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB6891AFD08AD00569E59 /* ScrollExample.swift */; };
 		EB5DB69C1AFD08AD00569E59 /* TargetExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB68A1AFD08AD00569E59 /* TargetExample.swift */; };
 		EB5DB69D1AFD08AD00569E59 /* TrackerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB68B1AFD08AD00569E59 /* TrackerExample.swift */; };
+		EB5DC0D41B06792F001FD5A8 /* ChartStackedBarsLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC0D31B06792F001FD5A8 /* ChartStackedBarsLayer.swift */; };
+		EB5DC0D61B06995A001FD5A8 /* StackedBarsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC0D51B06995A001FD5A8 /* StackedBarsExample.swift */; };
 		EBC533471B00F02600D10448 /* ChartAxisLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330D1B00F02600D10448 /* ChartAxisLabel.swift */; };
 		EBC533481B00F02600D10448 /* ChartAxisLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330E1B00F02600D10448 /* ChartAxisLayer.swift */; };
 		EBC533491B00F02600D10448 /* ChartAxisLayerDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330F1B00F02600D10448 /* ChartAxisLayerDefault.swift */; };
@@ -91,6 +93,7 @@
 		EBFA8BE21B052E02008A7C36 /* ChartPointViewBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFA8BE11B052E02008A7C36 /* ChartPointViewBar.swift */; };
 		EBFA8BE41B054425008A7C36 /* BarsSelectAxisExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFA8BE31B054425008A7C36 /* BarsSelectAxisExample.swift */; };
 		EBFA8BEA1B065927008A7C36 /* ChartPointViewBarGreyOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFA8BE91B065927008A7C36 /* ChartPointViewBarGreyOut.swift */; };
+		EBFA8BEC1B065D08008A7C36 /* ChartPointViewBarStacked.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFA8BEB1B065D08008A7C36 /* ChartPointViewBarStacked.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,6 +140,8 @@
 		EB5DB6891AFD08AD00569E59 /* ScrollExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollExample.swift; sourceTree = "<group>"; };
 		EB5DB68A1AFD08AD00569E59 /* TargetExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetExample.swift; sourceTree = "<group>"; };
 		EB5DB68B1AFD08AD00569E59 /* TrackerExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackerExample.swift; sourceTree = "<group>"; };
+		EB5DC0D31B06792F001FD5A8 /* ChartStackedBarsLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartStackedBarsLayer.swift; sourceTree = "<group>"; };
+		EB5DC0D51B06995A001FD5A8 /* StackedBarsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackedBarsExample.swift; sourceTree = "<group>"; };
 		EBC5330D1B00F02600D10448 /* ChartAxisLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLabel.swift; sourceTree = "<group>"; };
 		EBC5330E1B00F02600D10448 /* ChartAxisLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLayer.swift; sourceTree = "<group>"; };
 		EBC5330F1B00F02600D10448 /* ChartAxisLayerDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLayerDefault.swift; sourceTree = "<group>"; };
@@ -192,6 +197,7 @@
 		EBFA8BE11B052E02008A7C36 /* ChartPointViewBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointViewBar.swift; sourceTree = "<group>"; };
 		EBFA8BE31B054425008A7C36 /* BarsSelectAxisExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarsSelectAxisExample.swift; sourceTree = "<group>"; };
 		EBFA8BE91B065927008A7C36 /* ChartPointViewBarGreyOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointViewBarGreyOut.swift; sourceTree = "<group>"; };
+		EBFA8BEB1B065D08008A7C36 /* ChartPointViewBarStacked.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointViewBarStacked.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,6 +295,7 @@
 				EB5DB6891AFD08AD00569E59 /* ScrollExample.swift */,
 				EB5DB68A1AFD08AD00569E59 /* TargetExample.swift */,
 				EB5DB68B1AFD08AD00569E59 /* TrackerExample.swift */,
+				EB5DC0D51B06995A001FD5A8 /* StackedBarsExample.swift */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -380,6 +387,7 @@
 				EBC533381B00F02600D10448 /* ChartPointsTrackerLayer.swift */,
 				EBC533391B00F02600D10448 /* ChartPointsViewsLayer.swift */,
 				EBC5333A1B00F02600D10448 /* ChartShowCoordsLinesLayer.swift */,
+				EB5DC0D31B06792F001FD5A8 /* ChartStackedBarsLayer.swift */,
 			);
 			path = Layers;
 			sourceTree = "<group>";
@@ -395,6 +403,7 @@
 				EBC533411B00F02600D10448 /* ChartPointTargetingView.swift */,
 				EBC533421B00F02600D10448 /* ChartPointTextCircleView.swift */,
 				EBFA8BE11B052E02008A7C36 /* ChartPointViewBar.swift */,
+				EBFA8BEB1B065D08008A7C36 /* ChartPointViewBarStacked.swift */,
 				EBFA8BE91B065927008A7C36 /* ChartPointViewBarGreyOut.swift */,
 				EBC533441B00F02600D10448 /* CubicLinePathGenerator.swift */,
 				EBC533451B00F02600D10448 /* HandlingView.swift */,
@@ -513,6 +522,7 @@
 				EB5DB68E1AFD08AD00569E59 /* BarsExample.swift in Sources */,
 				EBC5335C1B00F02600D10448 /* ChartPointCandleStick.swift in Sources */,
 				EBC533721B00F02600D10448 /* ChartAreasView.swift in Sources */,
+				EB5DC0D41B06792F001FD5A8 /* ChartStackedBarsLayer.swift in Sources */,
 				EB5DB6941AFD08AD00569E59 /* EqualSpacingExample.swift in Sources */,
 				EB5DB69D1AFD08AD00569E59 /* TrackerExample.swift in Sources */,
 				EB5DB65C1AFD084A00569E59 /* DetailViewController.swift in Sources */,
@@ -541,6 +551,7 @@
 				EBC533751B00F02600D10448 /* ChartPointCircleView.swift in Sources */,
 				EBC533771B00F02600D10448 /* ChartPointTextCircleView.swift in Sources */,
 				EBC533701B00F02600D10448 /* ChartShowCoordsLinesLayer.swift in Sources */,
+				EB5DC0D61B06995A001FD5A8 /* StackedBarsExample.swift in Sources */,
 				EBC5336D1B00F02600D10448 /* ChartPointsSingleViewLayer.swift in Sources */,
 				EBC533711B00F02600D10448 /* BubbleView.swift in Sources */,
 				EBC533611B00F02600D10448 /* ChartLineDrawer.swift in Sources */,
@@ -553,6 +564,7 @@
 				EBC5335E1B00F02600D10448 /* ChartViewsConflictSolver.swift in Sources */,
 				EBC533741B00F02600D10448 /* ChartLinesView.swift in Sources */,
 				EBC533761B00F02600D10448 /* ChartPointTargetingView.swift in Sources */,
+				EBFA8BEC1B065D08008A7C36 /* ChartPointViewBarStacked.swift in Sources */,
 				EBC533641B00F02600D10448 /* ChartDividersLayer.swift in Sources */,
 				EBC533491B00F02600D10448 /* ChartAxisLayerDefault.swift in Sources */,
 				EB5DB65A1AFD084A00569E59 /* MasterViewController.swift in Sources */,

@@ -36,6 +36,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
             case .BarsSelectAxis:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(BarsSelectAxisExample())
+            case .StackedBars:
+                self.setSplitSwipeEnabled(true)
+                self.showExampleController(StackedBarsExample())
             case .Notifications:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(NotificationsExample())
