@@ -49,7 +49,7 @@ class BarsSelectAxisExample: UIViewController {
                         return (CGPointMake(chartPointModel.screenLoc.x, bottomLeft.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
                 }
             }()
-            return ChartPointViewBar(chartPoint: chartPointModel.chartPoint, p1: p1, p2: p2, width: barWidth, bgColor: randomColor)
+            return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: randomColor)
         }
 
         let frame = ExamplesDefaults.chartFrame(self.view.bounds)

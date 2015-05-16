@@ -20,7 +20,7 @@ public class ChartPointViewBarGreyOut: ChartPointViewBar {
         self.greyOutDelay = greyOutDelay
         self.greyOutAnimDuration = greyOutAnimDuration
         
-        super.init(chartPoint: chartPoint, p1: p1, p2: p2, width: width, bgColor: color, animDuration: animDuration)
+        super.init(p1: p1, p2: p2, width: width, bgColor: color, animDuration: animDuration)
     }
 
     required public init(coder aDecoder: NSCoder) {

@@ -31,7 +31,7 @@ class BarsExample: UIViewController {
             let barWidth = layer.minXScreenSpace - minBarSpacing
             
             let (p1: CGPoint, p2: CGPoint) = (CGPointMake(chartPointModel.screenLoc.x, bottomLeft.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
-            return ChartPointViewBar(chartPoint: chartPointModel.chartPoint, p1: p1, p2: p2, width: barWidth, bgColor: randomColor)
+            return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: randomColor)
         }
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
