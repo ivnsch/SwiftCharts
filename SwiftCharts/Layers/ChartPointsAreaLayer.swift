@@ -10,13 +10,13 @@ import UIKit
 
 public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
-    private let lineColor: UIColor
+    private let areaColor: UIColor
     private let animDuration: Float
     private let animDelay: Float
     private let addContainerPoints: Bool
     
-    public init(axisX: ChartAxisLayer, axisY: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], lineColor: UIColor, animDuration: Float, animDelay: Float, addContainerPoints: Bool) {
-        self.lineColor = lineColor
+    public init(axisX: ChartAxisLayer, axisY: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], areaColor: UIColor, animDuration: Float, animDelay: Float, addContainerPoints: Bool) {
+        self.areaColor = areaColor
         self.animDuration = animDuration
         self.animDelay = animDelay
         self.addContainerPoints = addContainerPoints
@@ -37,7 +37,7 @@ public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
             points.append(CGPointMake(origin.x, bottomY))
         }
         
-        let areaView = ChartAreasView(points: points, frame: chart.bounds, color: self.lineColor, animDuration: self.animDuration, animDelay: self.animDelay)
+        let areaView = ChartAreasView(points: points, frame: chart.bounds, color: self.areaColor, animDuration: self.animDuration, animDelay: self.animDelay)
         chart.addSubview(areaView)
     }
 }
