@@ -10,7 +10,7 @@ import UIKit
 
 
 enum Example {
-    case HelloWorld, BarsV, BarsSelectAxis, StackedBars, Areas, Coords, Target, Multival, Notifications, Combination, Scroll, EqualSpacing, Tracker, MultiAxis, MultiAxisInteractive, CandleStick, Cubiclines, NotNumeric, CandleStickInteractive, CustomUnits
+    case HelloWorld, Bars, StackedBars, Areas, Coords, Target, Multival, Notifications, Combination, Scroll, EqualSpacing, Tracker, MultiAxis, MultiAxisInteractive, CandleStick, Cubiclines, NotNumeric, CandleStickInteractive, CustomUnits
 }
 
 class MasterViewController: UITableViewController {
@@ -18,8 +18,7 @@ class MasterViewController: UITableViewController {
     var detailViewController: DetailViewController? = nil
     var examples: [(Example, String)] = [
         (.HelloWorld, "Hello World"),
-        (.BarsV, "Veritical bars"),
-        (.BarsSelectAxis, "Bars (select side)"),
+        (.Bars, "Bars"),
         (.StackedBars, "Stacked bars"),
         (.Notifications, "Notifications (interactive)"),
         (.Target, "Target point animation"),
