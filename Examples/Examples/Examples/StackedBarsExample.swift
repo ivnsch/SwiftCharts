@@ -103,8 +103,8 @@ class StackedBarsExample: UIViewController {
     
     class DirSelector: UIView {
         
-        let left: UIButton
-        let right: UIButton
+        let horizontal: UIButton
+        let vertical: UIButton
         
         weak var controller: StackedBarsExample?
         
@@ -114,19 +114,19 @@ class StackedBarsExample: UIViewController {
             
             self.controller = controller
             
-            self.left = UIButton()
-            self.left.setTitle("Horizontal", forState: .Normal)
-            self.right = UIButton()
-            self.right.setTitle("Vertical", forState: .Normal)
+            self.horizontal = UIButton()
+            self.horizontal.setTitle("Horizontal", forState: .Normal)
+            self.vertical = UIButton()
+            self.vertical.setTitle("Vertical", forState: .Normal)
             
-            self.buttonDirs = [self.left : true, self.right : false]
+            self.buttonDirs = [self.horizontal : true, self.vertical : false]
             
             super.init(frame: frame)
             
-            self.addSubview(self.left)
-            self.addSubview(self.right)
+            self.addSubview(self.horizontal)
+            self.addSubview(self.vertical)
             
-            for button in [self.left, self.right] {
+            for button in [self.horizontal, self.vertical] {
                 button.titleLabel?.font = ExamplesDefaults.fontWithSize(14)
                 button.setTitleColor(UIColor.blueColor(), forState: .Normal)
                 button.addTarget(self, action: "buttonTapped:", forControlEvents: .TouchUpInside)
@@ -134,12 +134,12 @@ class StackedBarsExample: UIViewController {
         }
         
         func buttonTapped(sender: UIButton) {
-            let horizontal = sender == self.left ? true : false
+            let horizontal = sender == self.horizontal ? true : false
             controller?.showChart(horizontal: horizontal)
         }
         
         override func didMoveToSuperview() {
-            let views = [self.left, self.right]
+            let views = [self.horizontal, self.vertical]
             for v in views {
                 v.setTranslatesAutoresizingMaskIntoConstraints(false)
             }
