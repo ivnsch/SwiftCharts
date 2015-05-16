@@ -52,7 +52,7 @@ import SwiftCharts
 
 ##### 1. Layers:
 
-A chart is the result of composing layers together. Everything is a layer - axis, guidelines, dividers, line, circles, etc. The idea is to have losely coupled components that can be easily changed and combined in arbitrary ways. This is for example the structure of a basic chart, wich shows a line with circles:
+A chart is the result of composing layers together. Everything is a layer - axis, guidelines, dividers, line, circles, etc. The idea is to have losely coupled components that can be easily changed and combined. This is for example the structure of a basic chart, which shows a line with circles:
 
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/layers.png)
 
@@ -109,7 +109,7 @@ Layers are semantic units that can add views to the chart, or can simply draw in
 
 ##### 2. View generators:
 
-View based layers will use a generator function to generate chart point views. This function received the complete state of each chartpoint (model data, screen location) and produces an UIView, allowing any type of customization.
+View based layers will use a generator function to generate chart point views. This function receives the complete state of each chartpoint (model data, screen location) and produces an UIView, allowing any type of customization.
 
 ##### Hello world:
 
