@@ -28,6 +28,8 @@ class CoordsExample: UIViewController {
         
         let chartSettings = ExamplesDefaults.chartSettings
         chartSettings.trailing = 20
+        chartSettings.labelsToAxisSpacingX = 15
+        chartSettings.labelsToAxisSpacingY = 15
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
         
