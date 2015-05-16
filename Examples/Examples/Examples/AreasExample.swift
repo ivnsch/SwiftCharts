@@ -31,6 +31,8 @@ class AreasExample: UIViewController {
         let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
         let chartSettings = ExamplesDefaults.chartSettings
         chartSettings.trailing = 20
+        chartSettings.labelsToAxisSpacingX = 20
+        chartSettings.labelsToAxisSpacingY = 20
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
         
