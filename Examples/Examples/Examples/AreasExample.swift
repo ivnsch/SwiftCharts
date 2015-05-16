@@ -49,10 +49,7 @@ class AreasExample: UIViewController {
         let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: UIColor.blackColor(), animDuration: 1, animDelay: 0)
         let lineModel3 = ChartLineModel(chartPoints: chartPoints3, lineColor: UIColor.blackColor(), animDuration: 1, animDelay: 0)
         
-        let chartPointsLineLayer1 = ChartPointsLineLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, lineModels: [lineModel1])
-        let chartPointsLineLayer2 = ChartPointsLineLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, lineModels: [lineModel2])
-        let chartPointsLineLayer3 = ChartPointsLineLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, lineModels: [lineModel3])
-        
+        let chartPointsLineLayer = ChartPointsLineLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, lineModels: [lineModel1, lineModel2, lineModel3])
         
         var popups: [UIView] = []
         var selectedView: ChartPointTextCircleView?
@@ -127,9 +124,7 @@ class AreasExample: UIViewController {
                 chartPointsLayer1,
                 chartPointsLayer2,
                 chartPointsLayer3,
-                chartPointsLineLayer1,
-                chartPointsLineLayer2,
-                chartPointsLineLayer3,
+                chartPointsLineLayer,
                 chartPointsCircleLayer1,
                 chartPointsCircleLayer2,
                 chartPointsCircleLayer3
