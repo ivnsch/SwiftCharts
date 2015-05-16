@@ -11,6 +11,7 @@ Current features:
 - Scatter
 - Line / Multiple lines
 - Areas
+- Bubble
 - Multiple axis
 - Custom units
 - Custom views
@@ -129,6 +130,7 @@ This library is rather object oriented, but it makes extensive use of functional
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0024.jpeg)
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0025.jpeg)
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0026.jpeg)
+![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0101.jpeg)
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0027.jpeg)
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0028.jpeg)
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0029.jpeg)

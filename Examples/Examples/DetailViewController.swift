@@ -45,6 +45,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
             case .Areas:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(AreasExample())
+            case .Bubble:
+                self.setSplitSwipeEnabled(true)
+                self.showExampleController(BubbleExample())
             case .Combination:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(BarsAndLinesExample())
