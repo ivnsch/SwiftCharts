@@ -26,11 +26,6 @@ class BubbleExample: UIViewController {
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        func randomColor() -> UIColor {
-            let r = {CGFloat(Float(arc4random()) / Float(UINT32_MAX))}
-            return UIColor(red: r(), green: r(), blue: r(), alpha: 0.7)
-        }
-        
         func toColor(percentage: CGFloat) -> UIColor {
             return colorBar.colorForPercentage(percentage).colorWithAlphaComponent(0.7)
         }
@@ -118,18 +113,18 @@ class BubbleExample: UIViewController {
             gradient.endPoint = CGPointMake(1.0, 0.5)
 
 
-            let pixelsHigh = 1
-            let pixelsWide = Int(gradient.bounds.size.width)
+            let imgHeight = 1
+            let imgWidth = Int(gradient.bounds.size.width)
             
-            let bitmapBytesPerRow = pixelsWide * 4
-            let bitmapByteCount = bitmapBytesPerRow * pixelsHigh
+            let bitmapBytesPerRow = imgWidth * 4
+            let bitmapByteCount = bitmapBytesPerRow * imgHeight
             
             let colorSpace:CGColorSpace = CGColorSpaceCreateDeviceRGB()
             let bitmapInfo = CGBitmapInfo(CGImageAlphaInfo.PremultipliedLast.rawValue)
 
             let context = CGBitmapContextCreate (nil,
-                pixelsWide,
-                pixelsHigh,
+                imgWidth,
+                imgHeight,
                 8,
                 bitmapBytesPerRow,
                 colorSpace,
@@ -172,11 +167,8 @@ class BubbleExample: UIViewController {
         }
         
         func colorForPercentage(percentage: CGFloat) -> UIColor {
-            
-            let provider = CGImageGetDataProvider(self.gradientImg.CGImage)
-            let pixelData = CGDataProviderCopyData(provider)
 
-            let data = CFDataGetBytePtr(pixelData)
+            let data = self.imgData
             
             let xNotRounded = self.gradientImg.size.width * percentage
             let x = 4 * (floor(abs(xNotRounded / 4)))
