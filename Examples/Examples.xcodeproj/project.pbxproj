@@ -42,6 +42,8 @@
 		EB5DC0DC1B086DE1001FD5A8 /* ChartPointBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC0DB1B086DE1001FD5A8 /* ChartPointBubble.swift */; };
 		EB5DC0DE1B086F93001FD5A8 /* ChartPointsScatterLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC0DD1B086F93001FD5A8 /* ChartPointsScatterLayer.swift */; };
 		EB5DC0E01B08739C001FD5A8 /* ScatterExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC0DF1B08739C001FD5A8 /* ScatterExample.swift */; };
+		EB5DC10F1B091FCC001FD5A8 /* ChartBarsLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC10E1B091FCC001FD5A8 /* ChartBarsLayer.swift */; };
+		EB5DC1111B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC1101B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift */; };
 		EBC533471B00F02600D10448 /* ChartAxisLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330D1B00F02600D10448 /* ChartAxisLabel.swift */; };
 		EBC533481B00F02600D10448 /* ChartAxisLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330E1B00F02600D10448 /* ChartAxisLayer.swift */; };
 		EBC533491B00F02600D10448 /* ChartAxisLayerDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330F1B00F02600D10448 /* ChartAxisLayerDefault.swift */; };
@@ -150,6 +152,8 @@
 		EB5DC0DB1B086DE1001FD5A8 /* ChartPointBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointBubble.swift; sourceTree = "<group>"; };
 		EB5DC0DD1B086F93001FD5A8 /* ChartPointsScatterLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointsScatterLayer.swift; sourceTree = "<group>"; };
 		EB5DC0DF1B08739C001FD5A8 /* ScatterExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScatterExample.swift; sourceTree = "<group>"; };
+		EB5DC10E1B091FCC001FD5A8 /* ChartBarsLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartBarsLayer.swift; sourceTree = "<group>"; };
+		EB5DC1101B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarsPlusMinusWithGradientExample.swift; sourceTree = "<group>"; };
 		EBC5330D1B00F02600D10448 /* ChartAxisLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLabel.swift; sourceTree = "<group>"; };
 		EBC5330E1B00F02600D10448 /* ChartAxisLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLayer.swift; sourceTree = "<group>"; };
 		EBC5330F1B00F02600D10448 /* ChartAxisLayerDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLayerDefault.swift; sourceTree = "<group>"; };
@@ -286,6 +290,7 @@
 				EB37D6AE1AFD1A670079438D /* ExamplesDefaults.swift */,
 				EB5DB67A1AFD08AD00569E59 /* AreasExample.swift */,
 				EB5DB67B1AFD08AD00569E59 /* BarsAndLinesExample.swift */,
+				EB5DC1101B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift */,
 				EBFA8BE31B054425008A7C36 /* BarsExample.swift */,
 				EB5DB67D1AFD08AD00569E59 /* CandleStickExample.swift */,
 				EB5DB67E1AFD08AD00569E59 /* CandleStickInteractiveExample.swift */,
@@ -398,6 +403,7 @@
 				EBC533391B00F02600D10448 /* ChartPointsViewsLayer.swift */,
 				EBC5333A1B00F02600D10448 /* ChartShowCoordsLinesLayer.swift */,
 				EB5DC0D31B06792F001FD5A8 /* ChartStackedBarsLayer.swift */,
+				EB5DC10E1B091FCC001FD5A8 /* ChartBarsLayer.swift */,
 				EB5DC0D71B0789CD001FD5A8 /* ChartPointsBubbleLayer.swift */,
 				EB5DC0DD1B086F93001FD5A8 /* ChartPointsScatterLayer.swift */,
 			);
@@ -547,6 +553,7 @@
 				EBC533731B00F02600D10448 /* ChartCandleStickView.swift in Sources */,
 				EB5DC0D81B0789CD001FD5A8 /* ChartPointsBubbleLayer.swift in Sources */,
 				EBC5334B1B00F02600D10448 /* ChartAxisValuesGenerator.swift in Sources */,
+				EB5DC10F1B091FCC001FD5A8 /* ChartBarsLayer.swift in Sources */,
 				EBC533631B00F02600D10448 /* ChartCoordsSpaceLayer.swift in Sources */,
 				EBC5335D1B00F02600D10448 /* ChartUtils.swift in Sources */,
 				EBC5334D1B00F02600D10448 /* ChartAxisXLayerDefault.swift in Sources */,
@@ -556,6 +563,7 @@
 				EB5DB68C1AFD08AD00569E59 /* AreasExample.swift in Sources */,
 				EB5DB6951AFD08AD00569E59 /* HelloWorld.swift in Sources */,
 				EB5DC0E01B08739C001FD5A8 /* ScatterExample.swift in Sources */,
+				EB5DC1111B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift in Sources */,
 				EB5DB68D1AFD08AD00569E59 /* BarsAndLinesExample.swift in Sources */,
 				EB5DB69C1AFD08AD00569E59 /* TargetExample.swift in Sources */,
 				EBC533671B00F02600D10448 /* ChartLayerBase.swift in Sources */,

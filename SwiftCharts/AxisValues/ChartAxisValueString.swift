@@ -13,7 +13,7 @@ public class ChartAxisValueString: ChartAxisValue {
     let string: String
     private let labelSettings: ChartLabelSettings
     
-    public init(_ string: String, order: Int, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
+    public init(_ string: String = "", order: Int, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.string = string
         self.labelSettings = labelSettings
         super.init(scalar: CGFloat(order))

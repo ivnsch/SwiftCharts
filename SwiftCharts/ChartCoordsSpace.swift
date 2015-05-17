@@ -179,6 +179,21 @@ public class ChartCoordsSpaceLeftBottomSingleAxis {
     }
 }
 
+public class ChartCoordsSpaceLeftTopSingleAxis {
+    
+    public let yAxis: ChartAxisLayer
+    public let xAxis: ChartAxisLayer
+    public let chartInnerFrame: CGRect
+    
+    public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
+        let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yLowModels: [yModel], xHighModels: [xModel])
+        self.chartInnerFrame = coordsSpaceInitializer.calculateChartInnerFrame()
+        
+        self.yAxis = coordsSpaceInitializer.generateYLowAxes()[0]
+        self.xAxis = coordsSpaceInitializer.generateXHighAxes()[0]
+    }
+}
+
 public class ChartCoordsSpaceRightBottomSingleAxis {
     
     public let yAxis: ChartAxisLayer
