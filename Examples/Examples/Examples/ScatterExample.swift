@@ -51,9 +51,6 @@ class ScatterExample: UIViewController {
         let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth, axis: .XAndY)
         let guidelinesLayer = ChartGuideLinesDottedLayer(axisX: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesLayerSettings)
         
-        let guidelinesHighlightLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.redColor(), linesWidth: 1, axis: .XAndY, dotWidth: 4, dotSpacing: 4)
-        let guidelinesHighlightLayer = ChartGuideLinesFilteredLayer(axisX: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesHighlightLayerSettings, axisValuesX: [ChartAxisValueFloat(0)], axisValuesY: [ChartAxisValueFloat(0)])
-        
         let chart = Chart(
             frame: chartFrame,
             layers: [
