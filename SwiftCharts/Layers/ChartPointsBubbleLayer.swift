@@ -8,21 +8,6 @@
 
 import UIKit
 
-
-public class ChartPointBubble: ChartPoint {
-    let diameterScalar: CGFloat
-    let bgColor: UIColor
-    let borderColor: UIColor
-    
-    public init(x: ChartAxisValue, y: ChartAxisValue, diameterScalar: CGFloat, bgColor: UIColor, borderColor: UIColor = UIColor.blackColor()) {
-        self.diameterScalar = diameterScalar
-        self.bgColor = bgColor
-        self.borderColor = borderColor
-        super.init(x: x, y: y)
-    }
-}
-
-
 public class ChartPointsBubbleLayer<T: ChartPointBubble>: ChartPointsLayer<T> {
     
     private let diameterFactor: CGFloat
