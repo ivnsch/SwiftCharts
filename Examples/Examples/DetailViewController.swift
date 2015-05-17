@@ -14,7 +14,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
     
     lazy var chartFrame: CGRect! = {
         CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height - 80)
-        }()
+    }()
     
     var detailItem: Example? {
         didSet {
@@ -36,6 +36,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
             case .StackedBars:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(StackedBarsExample())
+            case .Scatter:
+                self.setSplitSwipeEnabled(true)
+                self.showExampleController(ScatterExample())
             case .Notifications:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(NotificationsExample())

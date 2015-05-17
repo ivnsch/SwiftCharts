@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Bars example with variable axes
 - Stacked bars layer and example
 - Bubble chart layer and example, example includes functionality to map model values to colors from gradient bar
+- Scatter chart layer and example
 
 ### Removed
 - Bars example with horizontal axis - now included in variable axes example
