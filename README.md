@@ -23,7 +23,7 @@ Current features:
 
 Swift 1.2, iOS 7/8
 
-[Examples video](https://www.youtube.com/watch?v=cyAlKil3Pyk) this (and screenshots) will be updated only on new tags - check the [changelog](CHANGELOG.md) (or just run the project) for possible new examples in master.
+[Examples video](https://www.youtube.com/watch?v=cyAlKil3Pyk) (this will be updated only on new tags - check the [changelog](CHANGELOG.md) for possible new examples in master)
 
 ##### Installation
 
