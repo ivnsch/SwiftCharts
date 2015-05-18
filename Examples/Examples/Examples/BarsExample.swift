@@ -42,7 +42,7 @@ class BarsExample: UIViewController {
             let randomColor: UIColor = UIColor(red: r(), green: r(), blue: r(), alpha: 0.7)
             let bottomLeft = CGPointMake(layer.innerFrame.origin.x, layer.innerFrame.origin.y + layer.innerFrame.height)
             
-            let barWidth: CGFloat = Env.iPad ? 60 : 40
+            let barWidth: CGFloat = Env.iPad ? 60 : 35
             
             let (p1: CGPoint, p2: CGPoint) = {
                 if horizontal {
