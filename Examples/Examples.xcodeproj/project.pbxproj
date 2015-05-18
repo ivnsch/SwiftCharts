@@ -19,7 +19,7 @@
 		EB5DB6641AFD084A00569E59 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB5DB6621AFD084A00569E59 /* LaunchScreen.xib */; };
 		EB5DB6701AFD084A00569E59 /* ExamplesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB66F1AFD084A00569E59 /* ExamplesTests.swift */; };
 		EB5DB68C1AFD08AD00569E59 /* AreasExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB67A1AFD08AD00569E59 /* AreasExample.swift */; };
-		EB5DB68D1AFD08AD00569E59 /* BarsAndLinesExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB67B1AFD08AD00569E59 /* BarsAndLinesExample.swift */; };
+		EB5DB68D1AFD08AD00569E59 /* BarsPlusMinusAndLinesExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB67B1AFD08AD00569E59 /* BarsPlusMinusAndLinesExample.swift */; };
 		EB5DB68F1AFD08AD00569E59 /* CandleStickExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB67D1AFD08AD00569E59 /* CandleStickExample.swift */; };
 		EB5DB6901AFD08AD00569E59 /* CandleStickInteractiveExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB67E1AFD08AD00569E59 /* CandleStickInteractiveExample.swift */; };
 		EB5DB6911AFD08AD00569E59 /* CoordsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB67F1AFD08AD00569E59 /* CoordsExample.swift */; };
@@ -44,6 +44,7 @@
 		EB5DC0E01B08739C001FD5A8 /* ScatterExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC0DF1B08739C001FD5A8 /* ScatterExample.swift */; };
 		EB5DC10F1B091FCC001FD5A8 /* ChartBarsLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC10E1B091FCC001FD5A8 /* ChartBarsLayer.swift */; };
 		EB5DC1111B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC1101B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift */; };
+		EB5DC1131B0A7681001FD5A8 /* HandlingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC1121B0A7681001FD5A8 /* HandlingLabel.swift */; };
 		EBC533471B00F02600D10448 /* ChartAxisLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330D1B00F02600D10448 /* ChartAxisLabel.swift */; };
 		EBC533481B00F02600D10448 /* ChartAxisLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330E1B00F02600D10448 /* ChartAxisLayer.swift */; };
 		EBC533491B00F02600D10448 /* ChartAxisLayerDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330F1B00F02600D10448 /* ChartAxisLayerDefault.swift */; };
@@ -129,7 +130,7 @@
 		EB5DB66E1AFD084A00569E59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB5DB66F1AFD084A00569E59 /* ExamplesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamplesTests.swift; sourceTree = "<group>"; };
 		EB5DB67A1AFD08AD00569E59 /* AreasExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AreasExample.swift; sourceTree = "<group>"; };
-		EB5DB67B1AFD08AD00569E59 /* BarsAndLinesExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarsAndLinesExample.swift; sourceTree = "<group>"; };
+		EB5DB67B1AFD08AD00569E59 /* BarsPlusMinusAndLinesExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarsPlusMinusAndLinesExample.swift; sourceTree = "<group>"; };
 		EB5DB67D1AFD08AD00569E59 /* CandleStickExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandleStickExample.swift; sourceTree = "<group>"; };
 		EB5DB67E1AFD08AD00569E59 /* CandleStickInteractiveExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandleStickInteractiveExample.swift; sourceTree = "<group>"; };
 		EB5DB67F1AFD08AD00569E59 /* CoordsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordsExample.swift; sourceTree = "<group>"; };
@@ -154,6 +155,7 @@
 		EB5DC0DF1B08739C001FD5A8 /* ScatterExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScatterExample.swift; sourceTree = "<group>"; };
 		EB5DC10E1B091FCC001FD5A8 /* ChartBarsLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartBarsLayer.swift; sourceTree = "<group>"; };
 		EB5DC1101B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarsPlusMinusWithGradientExample.swift; sourceTree = "<group>"; };
+		EB5DC1121B0A7681001FD5A8 /* HandlingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlingLabel.swift; sourceTree = "<group>"; };
 		EBC5330D1B00F02600D10448 /* ChartAxisLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLabel.swift; sourceTree = "<group>"; };
 		EBC5330E1B00F02600D10448 /* ChartAxisLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLayer.swift; sourceTree = "<group>"; };
 		EBC5330F1B00F02600D10448 /* ChartAxisLayerDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLayerDefault.swift; sourceTree = "<group>"; };
@@ -289,7 +291,7 @@
 				EB37D6B01AFD1AA10079438D /* Env.swift */,
 				EB37D6AE1AFD1A670079438D /* ExamplesDefaults.swift */,
 				EB5DB67A1AFD08AD00569E59 /* AreasExample.swift */,
-				EB5DB67B1AFD08AD00569E59 /* BarsAndLinesExample.swift */,
+				EB5DB67B1AFD08AD00569E59 /* BarsPlusMinusAndLinesExample.swift */,
 				EB5DC1101B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift */,
 				EBFA8BE31B054425008A7C36 /* BarsExample.swift */,
 				EB5DB67D1AFD08AD00569E59 /* CandleStickExample.swift */,
@@ -425,6 +427,7 @@
 				EBFA8BE91B065927008A7C36 /* ChartPointViewBarGreyOut.swift */,
 				EBC533441B00F02600D10448 /* CubicLinePathGenerator.swift */,
 				EBC533451B00F02600D10448 /* HandlingView.swift */,
+				EB5DC1121B0A7681001FD5A8 /* HandlingLabel.swift */,
 				EBC533461B00F02600D10448 /* StraigthLinePathGenerator.swift */,
 			);
 			path = Views;
@@ -559,12 +562,13 @@
 				EBC5334D1B00F02600D10448 /* ChartAxisXLayerDefault.swift in Sources */,
 				EBC533531B00F02600D10448 /* ChartAxisValueDate.swift in Sources */,
 				EB5DB6931AFD08AD00569E59 /* CustomUnitsExample.swift in Sources */,
+				EB5DC1131B0A7681001FD5A8 /* HandlingLabel.swift in Sources */,
 				EB5DB68F1AFD08AD00569E59 /* CandleStickExample.swift in Sources */,
 				EB5DB68C1AFD08AD00569E59 /* AreasExample.swift in Sources */,
 				EB5DB6951AFD08AD00569E59 /* HelloWorld.swift in Sources */,
 				EB5DC0E01B08739C001FD5A8 /* ScatterExample.swift in Sources */,
 				EB5DC1111B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift in Sources */,
-				EB5DB68D1AFD08AD00569E59 /* BarsAndLinesExample.swift in Sources */,
+				EB5DB68D1AFD08AD00569E59 /* BarsPlusMinusAndLinesExample.swift in Sources */,
 				EB5DB69C1AFD08AD00569E59 /* TargetExample.swift in Sources */,
 				EBC533671B00F02600D10448 /* ChartLayerBase.swift in Sources */,
 				EB5DB6901AFD08AD00569E59 /* CandleStickInteractiveExample.swift in Sources */,

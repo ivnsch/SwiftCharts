@@ -56,7 +56,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
                 self.showExampleController(BubbleExample())
             case .Combination:
                 self.setSplitSwipeEnabled(true)
-                self.showExampleController(BarsAndLinesExample())
+                self.showExampleController(BarsPlusMinusAndLinesExample())
             case .Scroll:
                 self.setSplitSwipeEnabled(false)
                 self.automaticallyAdjustsScrollViewInsets = false
