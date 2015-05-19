@@ -6,8 +6,7 @@
 Layer based charts library for iOS
 
 Current features:
-- Bars (horizontal / vertical)
-- Stacked bars (horizontal / vertical)
+- Bars - plain, stacked, grouped, horizontal, vertical
 - Scatter
 - Line / Multiple lines
 - Areas

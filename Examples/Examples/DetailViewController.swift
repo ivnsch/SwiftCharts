@@ -39,6 +39,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
             case .BarsPlusMinus:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(BarsPlusMinusWithGradientExample())
+            case .GroupedBars:
+                self.setSplitSwipeEnabled(true)
+                self.showExampleController(GroupedBarsExample())
             case .Scatter:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(ScatterExample())

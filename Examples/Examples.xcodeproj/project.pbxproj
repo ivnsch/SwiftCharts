@@ -11,6 +11,8 @@
 		EB37D6B11AFD1AA10079438D /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB37D6B01AFD1AA10079438D /* Env.swift */; };
 		EB51EB181B02919B0083E052 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB51EB171B02919B0083E052 /* Main_iPhone.storyboard */; };
 		EB51EB1A1B02949C0083E052 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB51EB191B02949C0083E052 /* Default-568h@2x.png */; };
+		EB5515A01B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB55159F1B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift */; };
+		EB5515A21B0B9D61003AD19C /* GroupedBarsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5515A11B0B9D61003AD19C /* GroupedBarsExample.swift */; };
 		EB5DB6581AFD084A00569E59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB6571AFD084A00569E59 /* AppDelegate.swift */; };
 		EB5DB65A1AFD084A00569E59 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB6591AFD084A00569E59 /* MasterViewController.swift */; };
 		EB5DB65C1AFD084A00569E59 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB65B1AFD084A00569E59 /* DetailViewController.swift */; };
@@ -120,6 +122,8 @@
 		EB51EB161B028FBA0083E052 /* ExamplesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExamplesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB51EB171B02919B0083E052 /* Main_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_iPhone.storyboard; sourceTree = "<group>"; };
 		EB51EB191B02949C0083E052 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		EB55159F1B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartGroupedBarsLayer.swift; sourceTree = "<group>"; };
+		EB5515A11B0B9D61003AD19C /* GroupedBarsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedBarsExample.swift; sourceTree = "<group>"; };
 		EB5DB6561AFD084A00569E59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB5DB6571AFD084A00569E59 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB5DB6591AFD084A00569E59 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -294,6 +298,7 @@
 				EB5DB67B1AFD08AD00569E59 /* BarsPlusMinusAndLinesExample.swift */,
 				EB5DC1101B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift */,
 				EBFA8BE31B054425008A7C36 /* BarsExample.swift */,
+				EB5515A11B0B9D61003AD19C /* GroupedBarsExample.swift */,
 				EB5DB67D1AFD08AD00569E59 /* CandleStickExample.swift */,
 				EB5DB67E1AFD08AD00569E59 /* CandleStickInteractiveExample.swift */,
 				EB5DB67F1AFD08AD00569E59 /* CoordsExample.swift */,
@@ -405,6 +410,7 @@
 				EBC533391B00F02600D10448 /* ChartPointsViewsLayer.swift */,
 				EBC5333A1B00F02600D10448 /* ChartShowCoordsLinesLayer.swift */,
 				EB5DC0D31B06792F001FD5A8 /* ChartStackedBarsLayer.swift */,
+				EB55159F1B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift */,
 				EB5DC10E1B091FCC001FD5A8 /* ChartBarsLayer.swift */,
 				EB5DC0D71B0789CD001FD5A8 /* ChartPointsBubbleLayer.swift */,
 				EB5DC0DD1B086F93001FD5A8 /* ChartPointsScatterLayer.swift */,
@@ -577,6 +583,7 @@
 				EBC533751B00F02600D10448 /* ChartPointCircleView.swift in Sources */,
 				EBC533771B00F02600D10448 /* ChartPointTextCircleView.swift in Sources */,
 				EBC533701B00F02600D10448 /* ChartShowCoordsLinesLayer.swift in Sources */,
+				EB5515A01B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift in Sources */,
 				EB5DC0D61B06995A001FD5A8 /* StackedBarsExample.swift in Sources */,
 				EBC5336D1B00F02600D10448 /* ChartPointsSingleViewLayer.swift in Sources */,
 				EBC533711B00F02600D10448 /* BubbleView.swift in Sources */,
@@ -607,6 +614,7 @@
 				EBC533691B00F02600D10448 /* ChartPointsCandleStickViewsLayer.swift in Sources */,
 				EBC5334C1B00F02600D10448 /* ChartAxisXHighLayerDefault.swift in Sources */,
 				EBC5336F1B00F02600D10448 /* ChartPointsViewsLayer.swift in Sources */,
+				EB5515A21B0B9D61003AD19C /* GroupedBarsExample.swift in Sources */,
 				EBC533521B00F02600D10448 /* ChartAxisValue.swift in Sources */,
 				EBC5335A1B00F02600D10448 /* ChartLineModel.swift in Sources */,
 				EBC5336C1B00F02600D10448 /* ChartPointsLineTrackerLayer.swift in Sources */,
