@@ -52,17 +52,15 @@ class NotNumericExample: UIViewController {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
         
-        let minBarSpacing: CGFloat = ExamplesDefaults.minBarSpacing
+        let minBarSpacing: CGFloat = ExamplesDefaults.minBarSpacing + 16
 
         let generator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
-            let r = {CGFloat(Float(arc4random()) / Float(UINT32_MAX))}
-            let randomColor: UIColor = UIColor(red: r(), green: r(), blue: r(), alpha: 0.8)
             let bottomLeft = CGPointMake(layer.innerFrame.origin.x, layer.innerFrame.origin.y + layer.innerFrame.height)
             
             let barWidth = layer.minXScreenSpace - minBarSpacing
             
             let (p1: CGPoint, p2: CGPoint) = (CGPointMake(chartPointModel.screenLoc.x, bottomLeft.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
-            return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: randomColor)
+            return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: UIColor.blueColor())
         }
         
         let chartPointsLayer = ChartPointsViewsLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: generator)
