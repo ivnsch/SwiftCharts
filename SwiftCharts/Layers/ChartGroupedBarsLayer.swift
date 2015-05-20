@@ -47,7 +47,7 @@ public class ChartGroupedBarsLayer: ChartCoordsSpaceLayer {
             switch (horizontal: self.horizontal, yLow: self.yAxis.low, xLow: self.xAxis.low) {
             case (horizontal: true, yLow: true, _): return .LeftToRight
             case (horizontal: false, _, xLow: true): return .BottomToTop
-            default: fatalError("Direction not supported - stacked bars must be from left to right or bottom to top")
+            default: fatalError("Direction not supported - bars must be from left to right or bottom to top")
             }
         }()
         
