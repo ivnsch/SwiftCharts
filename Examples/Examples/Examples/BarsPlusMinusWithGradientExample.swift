@@ -55,10 +55,10 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         let length: CGFloat = maxVal - minVal
         
         let zero = ChartAxisValueFloat(0)
-        let bars: [ChartPointsBar] = Array(enumerate(vals)).map {index, tuple in
+        let bars: [ChartBarModel] = Array(enumerate(vals)).map {index, tuple in
             let percentage = (tuple.val - minVal - 0.01) / length // FIXME without -0.01 bar with 1 (100 perc) is black
             let color = self.gradientPicker.colorForPercentage(percentage).colorWithAlphaComponent(1)
-            return ChartPointsBar(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.val), bgColor: color)
+            return ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.val), bgColor: color)
         }
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)

@@ -8,13 +8,13 @@
 
 import UIKit
 
-public final class ChartPointsBar {
+public class ChartBarModel {
     let constant: ChartAxisValue
     let axisValue1: ChartAxisValue
     let axisValue2: ChartAxisValue
-    let bgColor: UIColor
+    let bgColor: UIColor?
     
-    public init(constant: ChartAxisValue, axisValue1: ChartAxisValue, axisValue2: ChartAxisValue, bgColor: UIColor) {
+    public init(constant: ChartAxisValue, axisValue1: ChartAxisValue, axisValue2: ChartAxisValue, bgColor: UIColor? = nil) {
         self.constant = constant
         self.axisValue1 = axisValue1
         self.axisValue2 = axisValue2
@@ -22,25 +22,92 @@ public final class ChartPointsBar {
     }
 }
 
-// TODO refactor with ChartStackedBarsLayer
+enum ChartBarDirection {
+    case LeftToRight, BottomToTop
+}
+
+class ChartBarsViewGenerator<T: ChartBarModel> {
+    let xAxis: ChartAxisLayer
+    let yAxis: ChartAxisLayer
+    let chartInnerFrame: CGRect
+    let direction: ChartBarDirection
+    let barWidth: CGFloat
+    
+    init(horizontal: Bool, xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, barWidth barWidthMaybe: CGFloat?, barSpacing barSpacingMaybe: CGFloat?) {
+        
+        let direction: ChartBarDirection = {
+            switch (horizontal: horizontal, yLow: yAxis.low, xLow: xAxis.low) {
+            case (horizontal: true, yLow: true, _): return .LeftToRight
+            case (horizontal: false, _, xLow: true): return .BottomToTop
+            default: fatalError("Direction not supported - stacked bars must be from left to right or bottom to top")
+            }
+        }()
+        
+        let barWidth = barWidthMaybe ?? {
+            let axis: ChartAxisLayer = {
+                switch direction {
+                case .LeftToRight: return yAxis
+                case .BottomToTop: return xAxis
+                }
+                }()
+            let spacing: CGFloat = barSpacingMaybe ?? 0
+            return axis.minAxisScreenSpace - spacing
+        }()
+        
+        self.xAxis = xAxis
+        self.yAxis = yAxis
+        self.chartInnerFrame = chartInnerFrame
+        self.direction = direction
+        self.barWidth = barWidth
+    }
+    
+    func viewPoints(barModel: T, constantScreenLoc: CGFloat) -> (p1: CGPoint, p2: CGPoint) {
+        switch self.direction {
+        case .LeftToRight:
+            return (
+                CGPointMake(self.xAxis.screenLocForScalar(barModel.axisValue1.scalar), constantScreenLoc),
+                CGPointMake(self.xAxis.screenLocForScalar(barModel.axisValue2.scalar), constantScreenLoc))
+        case .BottomToTop:
+            return (
+                CGPointMake(constantScreenLoc, self.yAxis.screenLocForScalar(barModel.axisValue1.scalar)),
+                CGPointMake(constantScreenLoc, self.yAxis.screenLocForScalar(barModel.axisValue2.scalar)))
+        }
+    }
+    
+    func constantScreenLoc(barModel: T) -> CGFloat {
+        return (self.direction == .LeftToRight ? self.yAxis : self.xAxis).screenLocForScalar(barModel.constant.scalar)
+    }
+    
+    // constantScreenLoc: (screen) coordinate that is equal in p1 and p2 - for vertical bar this is the x coordinate, for horizontal bar this is the y coordinate
+    func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor?, animDuration: Float) -> ChartPointViewBar {
+        
+        let constantScreenLoc = constantScreenLocMaybe ?? self.constantScreenLoc(barModel)
+        
+        let viewPoints = self.viewPoints(barModel, constantScreenLoc: constantScreenLoc)
+        return ChartPointViewBar(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: bgColor, animDuration: animDuration)
+    }
+}
+
+
+
 public class ChartBarsLayer: ChartCoordsSpaceLayer {
     
-    private let bars: [ChartPointsBar]
+    private let bars: [ChartBarModel]
     
     private let barWidth: CGFloat?
     private let barSpacing: CGFloat?
     
     private let horizontal: Bool
     
-    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartPointsBar], horizontal: Bool = false, barWidth: CGFloat) {
+    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat) {
         self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, bars: bars, horizontal: horizontal, barWidth: barWidth, barSpacing: nil)
     }
     
-    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartPointsBar], horizontal: Bool = false, barSpacing: CGFloat) {
+    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartBarModel], horizontal: Bool = false, barSpacing: CGFloat) {
         self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, bars: bars, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing)
     }
     
-    private init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartPointsBar], horizontal: Bool = false, barWidth: CGFloat? = nil, barSpacing: CGFloat?) {
+    private init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat? = nil, barSpacing: CGFloat?) {
         self.bars = bars
         self.horizontal = horizontal
         self.barWidth = barWidth
@@ -51,48 +118,11 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
     
     public override func chartInitialized(#chart: Chart) {
         
-        enum Direction {
-            case LeftToRight, BottomToTop
-        }
         
-        let direction: Direction = {
-            switch (horizontal: self.horizontal, yLow: self.yAxis.low, xLow: self.xAxis.low) {
-            case (horizontal: true, yLow: true, _): return .LeftToRight
-            case (horizontal: false, _, xLow: true): return .BottomToTop
-            default: fatalError("Direction not supported - stacked bars must be from left to right or bottom to top")
-            }
-        }()
+        let barsGenerator = ChartBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: self.barWidth, barSpacing: self.barSpacing)
         
-        let barWidth = self.barWidth ?? {
-            let axis: ChartAxisLayer = {
-                switch direction {
-                case .LeftToRight: return self.yAxis
-                case .BottomToTop: return self.xAxis
-                }
-                }()
-            let spacing: CGFloat = self.barSpacing! // if barWidth is not set, barSpacing is set - initializers ensure this
-            return axis.minAxisScreenSpace - spacing
-        }()
-        
-        for bar in self.bars {
-            let (p1: CGPoint, p2: CGPoint) = {
-                if self.horizontal {
-                    let constant = self.yAxis.screenLocForScalar(bar.constant.scalar)
-                    return (
-                        CGPointMake(self.xAxis.screenLocForScalar(bar.axisValue1.scalar), constant),
-                        CGPointMake(self.xAxis.screenLocForScalar(bar.axisValue2.scalar), constant)
-                    )
-                    
-                } else {
-                    let constant = self.xAxis.screenLocForScalar(bar.constant.scalar)
-                    return (
-                        CGPointMake(constant, self.yAxis.screenLocForScalar(bar.axisValue1.scalar)),
-                        CGPointMake(constant, self.yAxis.screenLocForScalar(bar.axisValue2.scalar))
-                    )
-                }
-            }()
-            
-            chart.addSubview(ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: bar.bgColor, animDuration: 0.5))
+        for barModel in self.bars {
+            chart.addSubview(barsGenerator.generateView(barModel, bgColor: barModel.bgColor, animDuration: 0.5))
         }
     }
 }

@@ -22,36 +22,37 @@ class StackedBarsExample: UIViewController {
         let color2 = UIColor.redColor()
         let color3 = UIColor.greenColor()
         
+        let zero = ChartAxisValueFloat(0)
         let barModels = [
-            ChartStackedBarModel(constantAxisValue: ChartAxisValueString("A", order: 1, labelSettings: labelSettings), items: [
-                ChartStackedBarItemModel(title: "Pears", quantity: 20, bgColor: color0),
-                ChartStackedBarItemModel(title: "Apples", quantity: 60, bgColor: color1),
-                ChartStackedBarItemModel(title: "Bananas", quantity: 30, bgColor: color2),
-                ChartStackedBarItemModel(title: "Blueberries", quantity: 20, bgColor: color3)
+            ChartStackedBarModel(constant: ChartAxisValueString("A", order: 1, labelSettings: labelSettings), start: zero, items: [
+                ChartStackedBarItemModel(quantity: 20, bgColor: color0),
+                ChartStackedBarItemModel(quantity: 60, bgColor: color1),
+                ChartStackedBarItemModel(quantity: 30, bgColor: color2),
+                ChartStackedBarItemModel(quantity: 20, bgColor: color3)
                 ]),
-            ChartStackedBarModel(constantAxisValue: ChartAxisValueString("B", order: 2, labelSettings: labelSettings), items: [
-                ChartStackedBarItemModel(title: "Pears", quantity: 40, bgColor: color0),
-                ChartStackedBarItemModel(title: "Apples", quantity: 30, bgColor: color1),
-                ChartStackedBarItemModel(title: "Bananas", quantity: 10, bgColor: color2),
-                ChartStackedBarItemModel(title: "Blueberries", quantity: 30, bgColor: color3)
+            ChartStackedBarModel(constant: ChartAxisValueString("B", order: 2, labelSettings: labelSettings), start: zero, items: [
+                ChartStackedBarItemModel(quantity: 40, bgColor: color0),
+                ChartStackedBarItemModel(quantity: 30, bgColor: color1),
+                ChartStackedBarItemModel(quantity: 10, bgColor: color2),
+                ChartStackedBarItemModel(quantity: 30, bgColor: color3)
                 ]),
-            ChartStackedBarModel(constantAxisValue: ChartAxisValueString("C", order: 3, labelSettings: labelSettings), items: [
-                ChartStackedBarItemModel(title: "Pears", quantity: 30, bgColor: color0),
-                ChartStackedBarItemModel(title: "Apples", quantity: 50, bgColor: color1),
-                ChartStackedBarItemModel(title: "Bananas", quantity: 20, bgColor: color2),
-                ChartStackedBarItemModel(title: "Blueberries", quantity: 10, bgColor: color3)
+            ChartStackedBarModel(constant: ChartAxisValueString("C", order: 3, labelSettings: labelSettings), start: zero, items: [
+                ChartStackedBarItemModel(quantity: 30, bgColor: color0),
+                ChartStackedBarItemModel(quantity: 50, bgColor: color1),
+                ChartStackedBarItemModel(quantity: 20, bgColor: color2),
+                ChartStackedBarItemModel(quantity: 10, bgColor: color3)
                 ]),
-            ChartStackedBarModel(constantAxisValue: ChartAxisValueString("D", order: 4, labelSettings: labelSettings), items: [
-                ChartStackedBarItemModel(title: "Pears", quantity: 10, bgColor: color0),
-                ChartStackedBarItemModel(title: "Apples", quantity: 30, bgColor: color1),
-                ChartStackedBarItemModel(title: "Bananas", quantity: 50, bgColor: color2),
-                ChartStackedBarItemModel(title: "Blueberries", quantity: 5, bgColor: color3)
+            ChartStackedBarModel(constant: ChartAxisValueString("D", order: 4, labelSettings: labelSettings), start: zero, items: [
+                ChartStackedBarItemModel(quantity: 10, bgColor: color0),
+                ChartStackedBarItemModel(quantity: 30, bgColor: color1),
+                ChartStackedBarItemModel(quantity: 50, bgColor: color2),
+                ChartStackedBarItemModel(quantity: 5, bgColor: color3)
                 ])
         ]
         
         let (axisValues1, axisValues2) = (
             Array(stride(from: 0, through: 150, by: 20)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
-            [ChartAxisValueString("", order: 0, labelSettings: labelSettings)] + barModels.map{$0.constantAxisValue} + [ChartAxisValueString("", order: 5, labelSettings: labelSettings)]
+            [ChartAxisValueString("", order: 0, labelSettings: labelSettings)] + barModels.map{$0.constant} + [ChartAxisValueString("", order: 5, labelSettings: labelSettings)]
         )
         let (xValues, yValues) = horizontal ? (axisValues1, axisValues2) : (axisValues2, axisValues1)
         

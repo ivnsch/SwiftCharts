@@ -42,10 +42,10 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         let posColor = UIColor.greenColor().colorWithAlphaComponent(alpha)
         let negColor = UIColor.redColor().colorWithAlphaComponent(alpha)
         let zero = ChartAxisValueFloat(0)
-        let bars: [ChartPointsBar] = Array(enumerate(barsData)).flatMap {index, tuple in
+        let bars: [ChartBarModel] = Array(enumerate(barsData)).flatMap {index, tuple in
             [
-                ChartPointsBar(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.min), bgColor: negColor),
-                ChartPointsBar(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.max), bgColor: posColor)
+                ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.min), bgColor: negColor),
+                ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.max), bgColor: posColor)
             ]
         }
         

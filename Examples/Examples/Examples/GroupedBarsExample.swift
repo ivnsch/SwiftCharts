@@ -46,7 +46,7 @@ class GroupedBarsExample: UIViewController {
         let groups: [ChartPointsBarGroup] = Array(enumerate(groupsData)).map {index, entry in
             let constant = ChartAxisValueFloat(CGFloat(index))
             let bars = Array(enumerate(entry.1)).map {index, tuple in
-                ChartPointsBar(constant: constant, axisValue1: ChartAxisValueFloat(tuple.min), axisValue2: ChartAxisValueFloat(tuple.max), bgColor: groupColors[index])
+                ChartBarModel(constant: constant, axisValue1: ChartAxisValueFloat(tuple.min), axisValue2: ChartAxisValueFloat(tuple.max), bgColor: groupColors[index])
             }
             return ChartPointsBarGroup(constant: constant, bars: bars)
         }
