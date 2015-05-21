@@ -27,6 +27,7 @@ class MasterViewController: UITableViewController {
         (.Scatter, "Scatter"),
         (.Notifications, "Notifications (interactive)"),
         (.Target, "Target point animation"),
+        (.Areas, "Areas, lines, circles (interactive)"),
         (.Bubble, "Bubble, gradient bar mapping"),
         (.NotNumeric, "Not numeric values"),
         (.Scroll, "Multiline, Scroll"),
