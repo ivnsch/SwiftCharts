@@ -41,11 +41,12 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
         {barModel, item, currentTotalQuantity in
             let p0 = self.xAxis.screenLocForScalar(currentTotalQuantity)
             let p1 = self.xAxis.screenLocForScalar(currentTotalQuantity + item.quantity)
-            let length = abs(p1 - p0)
+            let length = p1 - p0
+            let barLeftScreenLoc = self.xAxis.screenLocForScalar(length > 0 ? barModel.axisValue1.scalar : barModel.axisValue2.scalar)
             
             return (frame: ChartPointViewBarStackedFrame(rect:
                 CGRectMake(
-                    p0 - self.chartInnerFrame.origin.x,
+                    p0 - barLeftScreenLoc,
                     0,
                     length,
                     self.barWidth), color: item.bgColor), length: length)
@@ -56,13 +57,13 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
         {barModel, item, currentTotalQuantity in
             let p0 = self.yAxis.screenLocForScalar(currentTotalQuantity)
             let p1 = self.yAxis.screenLocForScalar(currentTotalQuantity + item.quantity)
-            let length = abs(p1 - p0)
+            let length = p1 - p0
+            let barTopScreenLoc = self.yAxis.screenLocForScalar(length > 0 ? barModel.axisValue1.scalar : barModel.axisValue2.scalar)
             
-            let totalLength = self.yAxis.screenLocForScalar(barModel.totalQuantity)
             return (frame: ChartPointViewBarStackedFrame(rect:
                 CGRectMake(
                     0,
-                    p1 - totalLength,
+                    p0 - barTopScreenLoc,
                     self.barWidth,
                     length), color: item.bgColor), length: length)
         }
