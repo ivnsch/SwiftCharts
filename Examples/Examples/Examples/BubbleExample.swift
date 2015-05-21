@@ -15,6 +15,8 @@ class BubbleExample: UIViewController {
     
     private let colorBarHeight: CGFloat = 50
 
+    private let useViewsLayer = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,7 +71,7 @@ class BubbleExample: UIViewController {
         
         let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.redColor(), animDuration: 0.5, animDelay: 0)
         
-        let bubbleLayer = ChartPointsBubbleLayer(axisX: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
+        let bubbleLayer = self.bubblesLayer(xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, chartPoints: chartPoints)
         
         let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth, axis: .XAndY)
         let guidelinesLayer = ChartGuideLinesDottedLayer(axisX: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesLayerSettings)
@@ -90,6 +92,48 @@ class BubbleExample: UIViewController {
         
         self.view.addSubview(chart.view)
         self.chart = chart
+    }
+    
+    // We can use a view based layer for easy animation (or interactivity), in which case we use the default chart points layer with a generator to create bubble views.
+    // On the other side, if we don't need animation or want a better performance, we use ChartPointsBubbleLayer, which instead of creating views, renders directly to the chart's context.
+    private func bubblesLayer(#xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, chartPoints: [ChartPointBubble]) -> ChartLayer {
+        
+        let maxBubbleDiameter: CGFloat = 30, minBubbleDiameter: CGFloat = 2
+        
+        if self.useViewsLayer == true {
+            return ChartPointsViewsLayer(axisX: xAxis, axisY: yAxis, innerFrame: chartInnerFrame, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
+                
+                let (minDiameterScalar: CGFloat, maxDiameterScalar: CGFloat) = chartPoints.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, chartPoint in
+                    (min: min(tuple.min, chartPoint.diameterScalar), max: max(tuple.max, chartPoint.diameterScalar))
+                }
+                
+                let diameterFactor = (maxBubbleDiameter - minBubbleDiameter) / (maxDiameterScalar - minDiameterScalar)
+                let diameter = chartPointModel.chartPoint.diameterScalar * diameterFactor
+
+                let bubbleView = HandlingView(frame: CGRectMake(chartPointModel.screenLoc.x - diameter / 2, chartPointModel.screenLoc.y - diameter / 2, diameter, diameter))
+                
+                bubbleView.layer.cornerRadius = diameter / 2.0
+                bubbleView.backgroundColor = chartPointModel.chartPoint.bgColor
+                bubbleView.layer.borderWidth = 1
+                bubbleView.layer.borderColor = UIColor.blackColor().CGColor
+                
+                bubbleView.transform = CGAffineTransformMakeScale(0.1, 0.1)
+                bubbleView.alpha = 0
+                
+                bubbleView.movedToSuperViewHandler = {
+                    UIView.animateWithDuration(1.2, delay: NSTimeInterval(Float(chartPointModel.index) * 0.2), usingSpringWithDamping: 0.4, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.allZeros, animations: { () -> Void in
+                        bubbleView.transform = CGAffineTransformMakeScale(1, 1)
+                        bubbleView.alpha = 1
+                    }, completion: nil)
+                }
+                
+                return bubbleView
+                
+            })
+            
+        } else {
+            return ChartPointsBubbleLayer(axisX: xAxis, yAxis: yAxis, innerFrame: chartInnerFrame, chartPoints: chartPoints)
+        }
     }
 
     class ColorBar: UIView {
