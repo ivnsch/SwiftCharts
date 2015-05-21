@@ -19,9 +19,11 @@ public final class ChartPointsBarGroup<T: ChartBarModel> {
 }
 
 
-public class ChartGroupedBarsLayer: ChartCoordsSpaceLayer {
-    
-    private let groups: [ChartPointsBarGroup<ChartBarModel>]
+public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
+
+    typealias ChartBarGeneratorGenerator = (xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<T>], horizontal: Bool, barWidth: CGFloat, barSpacing: CGFloat?, groupSpacing: CGFloat?) -> ChartBarsViewGenerator<T>
+
+    private let groups: [ChartPointsBarGroup<T>]
     
     private let barSpacing: CGFloat?
     private let groupSpacing: CGFloat?
@@ -29,19 +31,22 @@ public class ChartGroupedBarsLayer: ChartCoordsSpaceLayer {
     private let horizontal: Bool
     
     private let animDuration: Float
+    
+    private let barsGeneratorGenerator: ChartBarGeneratorGenerator
 
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
+    init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<T>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float, barsGeneratorGenerator: ChartBarGeneratorGenerator) {
         self.groups = groups
         self.horizontal = horizontal
         self.barSpacing = barSpacing
         self.groupSpacing = groupSpacing
         self.animDuration = animDuration
+        self.barsGeneratorGenerator = barsGeneratorGenerator
         
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
     }
     
-    public override func chartInitialized(#chart: Chart) {
-        
+    override public func chartInitialized(#chart: Chart) {
+
         let axis = self.horizontal ? self.yAxis : self.xAxis
         let groupAvailableLength = (axis.length  - (self.groupSpacing ?? 0) * CGFloat(self.groups.count)) / CGFloat(groups.count + 1)
         let maxBarCountInGroup = self.groups.reduce(CGFloat(0)) {maxCount, group in
@@ -49,10 +54,10 @@ public class ChartGroupedBarsLayer: ChartCoordsSpaceLayer {
         }
         
         let barWidth = ((groupAvailableLength - ((self.barSpacing ?? 0) * (maxBarCountInGroup - 1))) / CGFloat(maxBarCountInGroup))
+
+        let barsGenerator = self.barsGeneratorGenerator(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barWidth: barWidth, barSpacing: barSpacing, groupSpacing: groupSpacing)
         
-        let barsGenerator = ChartBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: barWidth, barSpacing: self.barSpacing)
-        
-        let calculateConstantScreenLoc: (axis: ChartAxisLayer, index: Int, group: ChartPointsBarGroup) -> CGFloat = {axis, index, group in
+        let calculateConstantScreenLoc: (axis: ChartAxisLayer, index: Int, group: ChartPointsBarGroup<T>) -> CGFloat = {axis, index, group in
             let totalWidth = CGFloat(group.bars.count) * barWidth + ((self.barSpacing ?? 0) * (maxBarCountInGroup - 1))
             let groupCenter = axis.screenLocForScalar(group.constant.scalar)
             let origin = groupCenter - totalWidth / 2
@@ -73,5 +78,33 @@ public class ChartGroupedBarsLayer: ChartCoordsSpaceLayer {
                 chart.addSubview(barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, animDuration: self.animDuration))
             }
         }
+    }
+}
+
+
+
+public typealias ChartGroupedPlainBarsLayer = ChartGroupedPlainBarsLayer_<Any>
+public class ChartGroupedPlainBarsLayer_<N>: ChartGroupedBarsLayer<ChartBarModel> {
+
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
+        
+        let barsGeneratorGenerator = {(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool, barWidth: CGFloat, barSpacing: CGFloat?, groupSpacing: CGFloat?) -> ChartBarsViewGenerator<ChartBarModel> in
+            return ChartBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, barWidth: barWidth, barSpacing: barSpacing)
+        }
+     
+        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barSpacing: barSpacing, groupSpacing: groupSpacing, animDuration: animDuration, barsGeneratorGenerator: barsGeneratorGenerator)
+    }
+}
+
+public typealias ChartGroupedStackedBarsLayer = ChartGroupedStackedBarsLayer_<Any>
+public class ChartGroupedStackedBarsLayer_<N>: ChartGroupedBarsLayer<ChartStackedBarModel> {
+    
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
+        
+        let barsGeneratorGenerator = {(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool, barWidth: CGFloat, barSpacing: CGFloat?, groupSpacing: CGFloat?) -> ChartStackedBarsViewGenerator<ChartStackedBarModel> in
+            return ChartStackedBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, barWidth: barWidth, barSpacing: barSpacing)
+        }
+        
+        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barSpacing: barSpacing, groupSpacing: groupSpacing, animDuration: animDuration, barsGeneratorGenerator: barsGeneratorGenerator)
     }
 }

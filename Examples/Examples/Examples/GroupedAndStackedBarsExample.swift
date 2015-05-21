@@ -1,61 +1,87 @@
 //
-//  GroupedBarsExample.swift
+//  GroupedAndStackedBarsExample.swift
 //  Examples
 //
-//  Created by ischuetz on 19/05/15.
+//  Created by ischuetz on 20/05/15.
 //  Copyright (c) 2015 ivanschuetz. All rights reserved.
 //
 
 import UIKit
 
-
-class GroupedBarsExample: UIViewController {
+class GroupedAndStackedBarsExample: UIViewController {
 
     private var chart: Chart?
-
+    
     private let dirSelectorHeight: CGFloat = 50
-
+    
     private func barsChart(#horizontal: Bool) -> Chart {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let groupsData: [(title: String, [(min: CGFloat, max: CGFloat)])] = [
+        let groupsData: [(title: String, bars: [(start: CGFloat, quantities: [CGFloat])])] = [
             ("A", [
-                (0, 40),
-                (0, 50),
-                (0, 35)
-                ]),
+                (0,
+                    [-20, -5, -10]
+                ),
+                (0,
+                    [10, 20, 30]
+                ),
+                (0,
+                    [30, 14, 5]
+                )
+            ]),
             ("B", [
-                (0, 20),
-                (0, 30),
-                (0, 25)
-                ]),
+                (0,
+                    [-10, -15, -5]
+                ),
+                (0,
+                    [30, 25, 40]
+                ),
+                (0,
+                    [25, 40, 10]
+                )
+            ]),
             ("C", [
-                (0, 30),
-                (0, 50),
-                (0, 5)
-                ]),
+                (0,
+                    [-15, -30, -10]
+                ),
+                (0,
+                    [-10, -10, -5]
+                ),
+                (0,
+                    [15, 30, 10]
+                )
+            ]),
             ("D", [
-                (0, 50),
-                (0, 30),
-                (0, 25)
-                ])
+                (0,
+                    [-20, -10, -10]
+                ),
+                (0,
+                    [30, 15, 27]
+                ),
+                (0,
+                    [8, 10, 25]
+                )
+            ])
         ]
         
-        let groupColors = [UIColor.redColor(), UIColor.blueColor(), UIColor.greenColor()]
+        let frameColors = [UIColor.redColor(), UIColor.blueColor(), UIColor.greenColor()]
         
-        let groups: [ChartPointsBarGroup] = Array(enumerate(groupsData)).map {index, entry in
+        let groups: [ChartPointsBarGroup<ChartStackedBarModel>] = Array(enumerate(groupsData)).map {index, entry in
             let constant = ChartAxisValueFloat(CGFloat(index))
-            let bars = Array(enumerate(entry.1)).map {index, tuple in
-                ChartBarModel(constant: constant, axisValue1: ChartAxisValueFloat(tuple.min), axisValue2: ChartAxisValueFloat(tuple.max), bgColor: groupColors[index])
+            let bars: [ChartStackedBarModel] = Array(enumerate(entry.bars)).map {index, bars in
+                let items = Array(enumerate(bars.quantities)).map {index, quantity in
+                    ChartStackedBarItemModel(quantity, frameColors[index])
+                }
+                return ChartStackedBarModel(constant: constant, start: ChartAxisValueFloat(bars.start), items: items)
             }
             return ChartPointsBarGroup(constant: constant, bars: bars)
         }
         
         let (axisValues1: [ChartAxisValue], axisValues2: [ChartAxisValue]) = (
-            Array(stride(from: 0, through: 60, by: 5)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
+            Array(stride(from: -60, through: 100, by: 20)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
             [ChartAxisValueString(order: -1)] +
-            Array(enumerate(groupsData)).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
-            [ChartAxisValueString(order: groupsData.count)]
+                Array(enumerate(groupsData)).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+                [ChartAxisValueString(order: groupsData.count)]
         )
         let (xValues, yValues) = horizontal ? (axisValues1, axisValues2) : (axisValues2, axisValues1)
         
@@ -66,10 +92,27 @@ class GroupedBarsExample: UIViewController {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
         
-        let groupsLayer = ChartGroupedPlainBarsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barSpacing: 2, groupSpacing: 25, animDuration: 0.5)
+        let groupsLayer = ChartGroupedStackedBarsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barSpacing: 2, groupSpacing: 30, animDuration: 0.5)
         
         var settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth, axis: horizontal ? .X : .Y)
         let guidelinesLayer = ChartGuideLinesLayer(axisX: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
+        
+        let dummyZeroChartPoint = ChartPoint(x: ChartAxisValueFloat(0), y: ChartAxisValueFloat(0))
+        let zeroGuidelineLayer = ChartPointsViewsLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, chartPoints: [dummyZeroChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
+            let width: CGFloat = 2
+            
+            let viewFrame: CGRect = {
+                if horizontal {
+                    return CGRectMake(chartPointModel.screenLoc.x - width / 2, innerFrame.origin.y, width, innerFrame.size.height)
+                } else {
+                    return CGRectMake(innerFrame.origin.x, chartPointModel.screenLoc.y - width / 2, innerFrame.size.width, width)
+                }
+            }()
+            
+            let v = UIView(frame: viewFrame)
+            v.backgroundColor = UIColor.blackColor()
+            return v
+        })
         
         return Chart(
             frame: chartFrame,
@@ -77,7 +120,8 @@ class GroupedBarsExample: UIViewController {
                 xAxis,
                 yAxis,
                 guidelinesLayer,
-                groupsLayer
+                groupsLayer,
+                zeroGuidelineLayer
             ]
         )
     }
@@ -104,11 +148,11 @@ class GroupedBarsExample: UIViewController {
         let horizontal: UIButton
         let vertical: UIButton
         
-        weak var controller: GroupedBarsExample?
+        weak var controller: GroupedAndStackedBarsExample?
         
         private let buttonDirs: [UIButton : Bool]
         
-        init(frame: CGRect, controller: GroupedBarsExample) {
+        init(frame: CGRect, controller: GroupedAndStackedBarsExample) {
             
             self.controller = controller
             

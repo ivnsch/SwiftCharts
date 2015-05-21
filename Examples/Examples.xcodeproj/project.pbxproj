@@ -13,6 +13,7 @@
 		EB51EB1A1B02949C0083E052 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB51EB191B02949C0083E052 /* Default-568h@2x.png */; };
 		EB5515A01B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB55159F1B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift */; };
 		EB5515A21B0B9D61003AD19C /* GroupedBarsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5515A11B0B9D61003AD19C /* GroupedBarsExample.swift */; };
+		EB5515A81B0E23BE003AD19C /* GroupedAndStackedBarsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5515A71B0E23BE003AD19C /* GroupedAndStackedBarsExample.swift */; };
 		EB5DB6581AFD084A00569E59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB6571AFD084A00569E59 /* AppDelegate.swift */; };
 		EB5DB65A1AFD084A00569E59 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB6591AFD084A00569E59 /* MasterViewController.swift */; };
 		EB5DB65C1AFD084A00569E59 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB65B1AFD084A00569E59 /* DetailViewController.swift */; };
@@ -124,6 +125,7 @@
 		EB51EB191B02949C0083E052 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		EB55159F1B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartGroupedBarsLayer.swift; sourceTree = "<group>"; };
 		EB5515A11B0B9D61003AD19C /* GroupedBarsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedBarsExample.swift; sourceTree = "<group>"; };
+		EB5515A71B0E23BE003AD19C /* GroupedAndStackedBarsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedAndStackedBarsExample.swift; sourceTree = "<group>"; };
 		EB5DB6561AFD084A00569E59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB5DB6571AFD084A00569E59 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB5DB6591AFD084A00569E59 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -317,6 +319,7 @@
 				EB5DC0D91B078EE3001FD5A8 /* BubbleExample.swift */,
 				EB5DC0DF1B08739C001FD5A8 /* ScatterExample.swift */,
 				EB5DC0D51B06995A001FD5A8 /* StackedBarsExample.swift */,
+				EB5515A71B0E23BE003AD19C /* GroupedAndStackedBarsExample.swift */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -585,6 +588,7 @@
 				EBC533701B00F02600D10448 /* ChartShowCoordsLinesLayer.swift in Sources */,
 				EB5515A01B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift in Sources */,
 				EB5DC0D61B06995A001FD5A8 /* StackedBarsExample.swift in Sources */,
+				EB5515A81B0E23BE003AD19C /* GroupedAndStackedBarsExample.swift in Sources */,
 				EBC5336D1B00F02600D10448 /* ChartPointsSingleViewLayer.swift in Sources */,
 				EBC533711B00F02600D10448 /* BubbleView.swift in Sources */,
 				EBC533611B00F02600D10448 /* ChartLineDrawer.swift in Sources */,

@@ -42,6 +42,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
             case .GroupedBars:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(GroupedBarsExample())
+            case .BarsStackedGrouped:
+                self.setSplitSwipeEnabled(true)
+                self.showExampleController(GroupedAndStackedBarsExample())
             case .Scatter:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(ScatterExample())
