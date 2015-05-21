@@ -156,13 +156,13 @@ class MultipleAxesInteractiveExample: UIViewController {
         self.xHighAxes = coordsSpace.generateXHighAxes()
         
         // create layers with references to axes
-        var guideLinesLayer0Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[0], linesWidth: ExamplesDefaults.guidelinesWidth, axis: .XAndY)
+        var guideLinesLayer0Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[0], linesWidth: ExamplesDefaults.guidelinesWidth)
         self.guideLinesLayer0 = ChartGuideLinesDottedLayer(axisX: xLowAxes[0], yAxis: yLowAxes[1], innerFrame: chartInnerFrame, settings: guideLinesLayer0Settings)
-        var guideLinesLayer1Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[1], linesWidth: ExamplesDefaults.guidelinesWidth, axis: .XAndY)
+        var guideLinesLayer1Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[1], linesWidth: ExamplesDefaults.guidelinesWidth)
         self.guideLinesLayer1 = ChartGuideLinesDottedLayer(axisX: xLowAxes[1], yAxis: yLowAxes[0], innerFrame: chartInnerFrame, settings: guideLinesLayer1Settings)
-        var guideLinesLayer3Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[2], linesWidth: ExamplesDefaults.guidelinesWidth, axis: .XAndY)
+        var guideLinesLayer3Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[2], linesWidth: ExamplesDefaults.guidelinesWidth)
         self.guideLinesLayer2 = ChartGuideLinesDottedLayer(axisX: xHighAxes[1], yAxis: yHighAxes[0], innerFrame: chartInnerFrame, settings: guideLinesLayer3Settings)
-        var guideLinesLayer4Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[3], linesWidth: ExamplesDefaults.guidelinesWidth, axis: .XAndY)
+        var guideLinesLayer4Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[3], linesWidth: ExamplesDefaults.guidelinesWidth)
         self.guideLinesLayer3 = ChartGuideLinesDottedLayer(axisX: xHighAxes[0], yAxis: yHighAxes[1], innerFrame: chartInnerFrame, settings: guideLinesLayer4Settings)
         
         self.view.addSubview(self.createSelectionView())

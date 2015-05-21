@@ -14,6 +14,7 @@
 		EB5515A01B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB55159F1B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift */; };
 		EB5515A21B0B9D61003AD19C /* GroupedBarsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5515A11B0B9D61003AD19C /* GroupedBarsExample.swift */; };
 		EB5515A81B0E23BE003AD19C /* GroupedAndStackedBarsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5515A71B0E23BE003AD19C /* GroupedAndStackedBarsExample.swift */; };
+		EB5515AC1B0E7C5E003AD19C /* ChartDrawerFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5515AB1B0E7C5E003AD19C /* ChartDrawerFunctions.swift */; };
 		EB5DB6581AFD084A00569E59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB6571AFD084A00569E59 /* AppDelegate.swift */; };
 		EB5DB65A1AFD084A00569E59 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB6591AFD084A00569E59 /* MasterViewController.swift */; };
 		EB5DB65C1AFD084A00569E59 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DB65B1AFD084A00569E59 /* DetailViewController.swift */; };
@@ -126,6 +127,7 @@
 		EB55159F1B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartGroupedBarsLayer.swift; sourceTree = "<group>"; };
 		EB5515A11B0B9D61003AD19C /* GroupedBarsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedBarsExample.swift; sourceTree = "<group>"; };
 		EB5515A71B0E23BE003AD19C /* GroupedAndStackedBarsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedAndStackedBarsExample.swift; sourceTree = "<group>"; };
+		EB5515AB1B0E7C5E003AD19C /* ChartDrawerFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartDrawerFunctions.swift; sourceTree = "<group>"; };
 		EB5DB6561AFD084A00569E59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB5DB6571AFD084A00569E59 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB5DB6591AFD084A00569E59 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -390,6 +392,7 @@
 				EBC533281B00F02600D10448 /* ChartContextDrawer.swift */,
 				EBC533291B00F02600D10448 /* ChartLabelDrawer.swift */,
 				EBC5332A1B00F02600D10448 /* ChartLineDrawer.swift */,
+				EB5515AB1B0E7C5E003AD19C /* ChartDrawerFunctions.swift */,
 			);
 			path = Drawers;
 			sourceTree = "<group>";
@@ -629,6 +632,7 @@
 				EBC533471B00F02600D10448 /* ChartAxisLabel.swift in Sources */,
 				EBFA8BEA1B065927008A7C36 /* ChartPointViewBarGreyOut.swift in Sources */,
 				EBC5335B1B00F02600D10448 /* ChartPoint.swift in Sources */,
+				EB5515AC1B0E7C5E003AD19C /* ChartDrawerFunctions.swift in Sources */,
 				EB37D6B11AFD1AA10079438D /* Env.swift in Sources */,
 				EBC5336E1B00F02600D10448 /* ChartPointsTrackerLayer.swift in Sources */,
 				EBC533501B00F02600D10448 /* ChartAxisYLayerDefault.swift in Sources */,

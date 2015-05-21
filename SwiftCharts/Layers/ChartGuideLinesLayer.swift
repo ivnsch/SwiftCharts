@@ -8,82 +8,24 @@
 
 import UIKit
 
-// TODO refactor this file
-
-public class ChartGuideLinesIterator {
-    
-    public typealias LineDrawer = (p1: CGPoint, p2: CGPoint) -> ()
-
-    func iterateLines(layer: ChartCoordsSpaceLayer, axis: ChartGuideLinesLayerAxis, onlyVisibleX: Bool, onlyVisibleY: Bool, lineDrawer: LineDrawer) {
-        let originScreenLoc = layer.innerFrame.origin
-        let xScreenLocs = onlyVisibleX ? layer.xAxis.visibleAxisValuesScreenLocs : layer.xAxis.axisValuesScreenLocs
-        let yScreenLocs = onlyVisibleY ? layer.yAxis.visibleAxisValuesScreenLocs : layer.yAxis.axisValuesScreenLocs
-        
-        if axis == .X || axis == .XAndY {
-            for xScreenLoc in xScreenLocs {
-                let x1 = xScreenLoc
-                let y1 = originScreenLoc.y
-                let x2 = x1
-                let y2 = originScreenLoc.y + layer.innerFrame.height
-                lineDrawer(p1: CGPointMake(x1, y1), p2: CGPointMake(x2, y2))
-            }
-        }
-        
-        if axis == .Y || axis == .XAndY {
-            for yScreenLoc in yScreenLocs {
-                let x1 = originScreenLoc.x
-                let y1 = yScreenLoc
-                let x2 = originScreenLoc.x + layer.innerFrame.width
-                let y2 = y1
-                lineDrawer(p1: CGPointMake(x1, y1), p2: CGPointMake(x2, y2))
-            }
-        }
-    }
-}
-
-
-public class ChartGuideLinesIterator2 {
-    
-    public typealias LineDrawer = (p1: CGPoint, p2: CGPoint) -> ()
-    
-    func iterateLines(layer: ChartCoordsSpaceLayer, axis: ChartGuideLinesLayerAxis, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue], lineDrawer: LineDrawer) {
-        let originScreenLoc = layer.innerFrame.origin
-        let xScreenLocs = axisValuesX.map({layer.xAxis.screenLocForScalar($0.scalar)})
-        let yScreenLocs = axisValuesY.map({layer.yAxis.screenLocForScalar($0.scalar)})
-        
-        if axis == .X || axis == .XAndY {
-            for xScreenLoc in xScreenLocs {
-                let x1 = xScreenLoc
-                let y1 = originScreenLoc.y
-                let x2 = x1
-                let y2 = originScreenLoc.y + layer.innerFrame.height
-                lineDrawer(p1: CGPointMake(x1, y1), p2: CGPointMake(x2, y2))
-            }
-        }
-        
-        if axis == .Y || axis == .XAndY {
-            for yScreenLoc in yScreenLocs {
-                let x1 = originScreenLoc.x
-                let y1 = yScreenLoc
-                let x2 = originScreenLoc.x + layer.innerFrame.width
-                let y2 = y1
-                lineDrawer(p1: CGPointMake(x1, y1), p2: CGPointMake(x2, y2))
-            }
-        }
-    }
-}
-
-
-
-public struct ChartGuideLinesLayerSettings {
+public class ChartGuideLinesLayerSettings {
     let linesColor: UIColor
     let linesWidth: CGFloat
-    let axis: ChartGuideLinesLayerAxis
     
-    public init(linesColor: UIColor = UIColor.grayColor(), linesWidth: CGFloat = 0.3, axis: ChartGuideLinesLayerAxis = .XAndY) {
+    public init(linesColor: UIColor = UIColor.grayColor(), linesWidth: CGFloat = 0.3) {
         self.linesColor = linesColor
         self.linesWidth = linesWidth
-        self.axis = axis
+    }
+}
+
+public class ChartGuideLinesDottedLayerSettings: ChartGuideLinesLayerSettings {
+    let dotWidth: CGFloat
+    let dotSpacing: CGFloat
+    
+    init(linesColor: UIColor, linesWidth: CGFloat, dotWidth: CGFloat = 2, dotSpacing: CGFloat = 2) {
+        self.dotWidth = dotWidth
+        self.dotSpacing = dotSpacing
+        super.init(linesColor: linesColor, linesWidth: linesWidth)
     }
 }
 
@@ -91,41 +33,84 @@ public enum ChartGuideLinesLayerAxis {
     case X, Y, XAndY
 }
 
-public class ChartGuideLinesLayer: ChartCoordsSpaceLayer {
+public class ChartGuideLinesLayerAbstract<T: ChartGuideLinesLayerSettings>: ChartCoordsSpaceLayer {
     
-    private let settings: ChartGuideLinesLayerSettings
+    private let settings: T
     private let onlyVisibleX: Bool
     private let onlyVisibleY: Bool
+    private let axis: ChartGuideLinesLayerAxis
     
-    public init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: ChartGuideLinesLayerSettings, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
+    public init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, axis: ChartGuideLinesLayerAxis = .XAndY, settings: T, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
         self.settings = settings
         self.onlyVisibleX = onlyVisibleX
         self.onlyVisibleY = onlyVisibleY
+        self.axis = axis
         super.init(xAxis: axisX, yAxis: yAxis, innerFrame: innerFrame)
     }
     
-    private func drawGuideline(context: CGContextRef, color: UIColor, width: CGFloat, p1: CGPoint, p2: CGPoint, dotWidth: CGFloat, dotSpacing: CGFloat) {
-        CGContextSetStrokeColorWithColor(context, color.CGColor)
-        CGContextSetLineWidth(context, width)
-        CGContextMoveToPoint(context, p1.x, p1.y)
-        CGContextAddLineToPoint(context, p2.x, p2.y)
-        CGContextStrokePath(context)
+    private func drawGuideline(context: CGContextRef, p1: CGPoint, p2: CGPoint) {
+        fatalError("override")
     }
     
     override public func chartViewDrawing(#context: CGContextRef, chart: Chart) {
-        ChartGuideLinesIterator().iterateLines(self, axis: self.settings.axis, onlyVisibleX: self.onlyVisibleX, onlyVisibleY: self.onlyVisibleY) {(p1, p2) -> () in
-            self.drawGuideline(context, color: self.settings.linesColor, width: self.settings.linesWidth, p1: p1, p2: p2, dotWidth: 2, dotSpacing: 2)
+        let originScreenLoc = self.innerFrame.origin
+        let xScreenLocs = onlyVisibleX ? self.xAxis.visibleAxisValuesScreenLocs : self.xAxis.axisValuesScreenLocs
+        let yScreenLocs = onlyVisibleY ? self.yAxis.visibleAxisValuesScreenLocs : self.yAxis.axisValuesScreenLocs
+        
+        if self.axis == .X || self.axis == .XAndY {
+            for xScreenLoc in xScreenLocs {
+                let x1 = xScreenLoc
+                let y1 = originScreenLoc.y
+                let x2 = x1
+                let y2 = originScreenLoc.y + self.innerFrame.height
+                self.drawGuideline(context, p1: CGPointMake(x1, y1), p2: CGPointMake(x2, y2))
+            }
+        }
+        
+        if self.axis == .Y || self.axis == .XAndY {
+            for yScreenLoc in yScreenLocs {
+                let x1 = originScreenLoc.x
+                let y1 = yScreenLoc
+                let x2 = originScreenLoc.x + self.innerFrame.width
+                let y2 = y1
+                self.drawGuideline(context, p1: CGPointMake(x1, y1), p2: CGPointMake(x2, y2))
+            }
         }
     }
 }
 
-public class ChartGuideLinesFilteredLayer: ChartCoordsSpaceLayer {
+typealias ChartGuideLinesLayer = ChartGuideLinesLayer_<Any>
+public class ChartGuideLinesLayer_<N>: ChartGuideLinesLayerAbstract<ChartGuideLinesLayerSettings> {
     
-    private let settings: ChartGuideLinesDottedLayerSettings
+    override public init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, axis: ChartGuideLinesLayerAxis = .XAndY, settings: ChartGuideLinesLayerSettings, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
+        super.init(axisX: axisX, yAxis: yAxis, innerFrame: innerFrame, axis: axis, settings: settings, onlyVisibleX: onlyVisibleX, onlyVisibleY: onlyVisibleY)
+    }
+    
+    override private func drawGuideline(context: CGContextRef, p1: CGPoint, p2: CGPoint) {
+        ChartDrawLine(context: context, p1: p1, p2: p2, width: self.settings.linesWidth, color: self.settings.linesColor)
+    }
+}
+
+typealias ChartGuideLinesDottedLayer = ChartGuideLinesDottedLayer_<Any>
+public class ChartGuideLinesDottedLayer_<N>: ChartGuideLinesLayerAbstract<ChartGuideLinesDottedLayerSettings> {
+    
+    override public init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, axis: ChartGuideLinesLayerAxis = .XAndY, settings: ChartGuideLinesDottedLayerSettings, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
+        super.init(axisX: axisX, yAxis: yAxis, innerFrame: innerFrame, axis: axis, settings: settings, onlyVisibleX: onlyVisibleX, onlyVisibleY: onlyVisibleY)
+    }
+    
+    override private func drawGuideline(context: CGContextRef, p1: CGPoint, p2: CGPoint) {
+        ChartDrawDottedLine(context: context, p1: p1, p2: p2, width: self.settings.linesWidth, color: self.settings.linesColor, dotWidth: self.settings.dotWidth, dotSpacing: self.settings.dotSpacing)
+    }
+}
+
+
+public class ChartGuideLinesForValuesLayerAbstract<T: ChartGuideLinesLayerSettings>: ChartCoordsSpaceLayer {
+    
+    private let settings: T
     private let axisValuesX: [ChartAxisValue]
     private let axisValuesY: [ChartAxisValue]
-    
-    public init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: ChartGuideLinesDottedLayerSettings, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {
+
+    public init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: T, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {
         self.settings = settings
         self.axisValuesX = axisValuesX
         self.axisValuesY = axisValuesY
@@ -133,142 +118,60 @@ public class ChartGuideLinesFilteredLayer: ChartCoordsSpaceLayer {
     }
     
     private func drawGuideline(context: CGContextRef, color: UIColor, width: CGFloat, p1: CGPoint, p2: CGPoint, dotWidth: CGFloat, dotSpacing: CGFloat) {
-        
-        CGContextSetStrokeColorWithColor(context, color.CGColor)
-        CGContextSetLineWidth(context, width)
-        
-        let offset = dotWidth + dotSpacing
-        
-        let offsetY = (p2.y - p1.y)
-        let yConstant = offsetY == 0
-        var limit: CGFloat
-        var start: CGFloat
-        
-        if yConstant { //horizontal line
-            limit = p2.x - p1.x
-            start = p1.x
-            
-        } else { //vertical line
-            limit = p2.y - p1.y
-            start = p1.y
-        }
-        
-        limit += start
-        
-        for tmp in stride(from: start, to: limit, by: offset) {
-            
-            var x1: CGFloat
-            var y1: CGFloat
-            var x2: CGFloat
-            var y2: CGFloat
-            
-            if yConstant { //horizontal line
-                x1 = tmp
-                y1 = p1.y
-                x2 = x1 + dotWidth
-                y2 = y1
-                
-            } else { //vertical line
-                x1 = p1.x
-                y1 = tmp
-                x2 = x1
-                y2 = y1 + dotWidth
-            }
-            
-            CGContextMoveToPoint(context, x1, y1)
-            CGContextAddLineToPoint(context, x2, y2)
-            CGContextStrokePath(context)
-        }
+        ChartDrawDottedLine(context: context, p1: p1, p2: p2, width: width, color: color, dotWidth: dotWidth, dotSpacing: dotSpacing)
+    }
+    
+    private func drawGuideline(context: CGContextRef, p1: CGPoint, p2: CGPoint) {
+        fatalError("override")
     }
     
     override public func chartViewDrawing(#context: CGContextRef, chart: Chart) {
-        ChartGuideLinesIterator2().iterateLines(self, axis: self.settings.axis, axisValuesX: self.axisValuesX, axisValuesY: self.axisValuesY) {(p1, p2) -> () in
-            self.drawGuideline(context, color: self.settings.linesColor, width: self.settings.linesWidth, p1: p1, p2: p2, dotWidth: self.settings.dotWidth, dotSpacing: self.settings.dotSpacing)
+        let originScreenLoc = self.innerFrame.origin
+        
+        for axisValue in self.axisValuesX {
+            let screenLoc = self.xAxis.screenLocForScalar(axisValue.scalar)
+            let x1 = screenLoc
+            let y1 = originScreenLoc.y
+            let x2 = x1
+            let y2 = originScreenLoc.y + self.innerFrame.height
+            self.drawGuideline(context, p1: CGPointMake(x1, y1), p2: CGPointMake(x2, y2))
+
+        }
+        
+        for axisValue in self.axisValuesY {
+            let screenLoc = self.yAxis.screenLocForScalar(axisValue.scalar)
+            let x1 = originScreenLoc.x
+            let y1 = screenLoc
+            let x2 = originScreenLoc.x + self.innerFrame.width
+            let y2 = y1
+            self.drawGuideline(context, p1: CGPointMake(x1, y1), p2: CGPointMake(x2, y2))
+
         }
     }
 }
 
-public struct ChartGuideLinesDottedLayerSettings {
-    let linesColor: UIColor
-    let linesWidth: CGFloat
-    let axis: ChartGuideLinesLayerAxis
-    let dotWidth: CGFloat
-    let dotSpacing: CGFloat
+
+typealias ChartGuideLinesForValuesLayer = ChartGuideLinesForValuesLayer_<Any>
+public class ChartGuideLinesForValuesLayer_<N>: ChartGuideLinesForValuesLayerAbstract<ChartGuideLinesLayerSettings> {
     
-    public init(linesColor: UIColor = UIColor.grayColor(), linesWidth: CGFloat = 0.3, axis: ChartGuideLinesLayerAxis = .XAndY, dotWidth: CGFloat = 2, dotSpacing: CGFloat = 2) {
-        self.linesColor = linesColor
-        self.linesWidth = linesWidth
-        self.axis = axis
-        self.dotWidth = dotWidth
-        self.dotSpacing = dotSpacing
+    public override init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: ChartGuideLinesLayerSettings, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {
+        super.init(axisX: axisX, yAxis: yAxis, innerFrame: innerFrame, settings: settings, axisValuesX: axisValuesX, axisValuesY: axisValuesY)
+    }
+    
+    override private func drawGuideline(context: CGContextRef, p1: CGPoint, p2: CGPoint) {
+        ChartDrawLine(context: context, p1: p1, p2: p2, width: self.settings.linesWidth, color: self.settings.linesColor)
     }
 }
 
-public class ChartGuideLinesDottedLayer: ChartCoordsSpaceLayer {
+typealias ChartGuideLinesForValuesDottedLayer = ChartGuideLinesForValuesDottedLayer_<Any>
+public class ChartGuideLinesForValuesDottedLayer_<N>: ChartGuideLinesForValuesLayerAbstract<ChartGuideLinesDottedLayerSettings> {
     
-    private let settings: ChartGuideLinesDottedLayerSettings
-    private let onlyVisibleX: Bool
-    private let onlyVisibleY: Bool
-    
-    public init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: ChartGuideLinesDottedLayerSettings, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
-        self.settings = settings
-        self.onlyVisibleX = onlyVisibleX
-        self.onlyVisibleY = onlyVisibleY
-        super.init(xAxis: axisX, yAxis: yAxis, innerFrame: innerFrame)
+    public override init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: ChartGuideLinesDottedLayerSettings, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {
+        super.init(axisX: axisX, yAxis: yAxis, innerFrame: innerFrame, settings: settings, axisValuesX: axisValuesX, axisValuesY: axisValuesY)
     }
     
-    private func drawGuideline(context: CGContextRef, color: UIColor, width: CGFloat, p1: CGPoint, p2: CGPoint, dotWidth: CGFloat, dotSpacing: CGFloat) {
-        
-        CGContextSetStrokeColorWithColor(context, color.CGColor)
-        CGContextSetLineWidth(context, width)
-        
-        let offset = dotWidth + dotSpacing
-        
-        let offsetY = (p2.y - p1.y)
-        let yConstant = offsetY == 0
-        var limit: CGFloat
-        var start: CGFloat
-        
-        if yConstant { //horizontal line
-            limit = p2.x - p1.x
-            start = p1.x
-            
-        } else { //vertical line
-            limit = p2.y - p1.y
-            start = p1.y
-        }
-        
-        limit += start
-        
-        for tmp in stride(from: start, to: limit, by: offset) {
-            
-            var x1: CGFloat
-            var y1: CGFloat
-            var x2: CGFloat
-            var y2: CGFloat
-            
-            if yConstant { //horizontal line
-                x1 = tmp
-                y1 = p1.y
-                x2 = x1 + dotWidth
-                y2 = y1
-                
-            } else { //vertical line
-                x1 = p1.x
-                y1 = tmp
-                x2 = x1
-                y2 = y1 + dotWidth
-            }
-            
-            CGContextMoveToPoint(context, x1, y1)
-            CGContextAddLineToPoint(context, x2, y2)
-            CGContextStrokePath(context)
-        }
-    }
-    
-    override public func chartViewDrawing(#context: CGContextRef, chart: Chart) {
-        ChartGuideLinesIterator().iterateLines(self, axis: self.settings.axis, onlyVisibleX: self.onlyVisibleX, onlyVisibleY: self.onlyVisibleY) {(p1, p2) -> () in
-            self.drawGuideline(context, color: self.settings.linesColor, width: self.settings.linesWidth, p1: p1, p2: p2, dotWidth: self.settings.dotWidth, dotSpacing: self.settings.dotSpacing)
-        }
+    override private func drawGuideline(context: CGContextRef, p1: CGPoint, p2: CGPoint) {
+        ChartDrawDottedLine(context: context, p1: p1, p2: p2, width: self.settings.linesWidth, color: self.settings.linesColor, dotWidth: self.settings.dotWidth, dotSpacing: self.settings.dotSpacing)
     }
 }
+

@@ -20,9 +20,6 @@ class ChartLineDrawer: ChartContextDrawer {
     }
     
     override func draw(#context: CGContextRef, chart: Chart) {
-        CGContextSetStrokeColorWithColor(context, self.color.CGColor)
-        CGContextMoveToPoint(context, self.p1.x, self.p1.y)
-        CGContextAddLineToPoint(context, self.p2.x, self.p2.y)
-        CGContextStrokePath(context)
+        ChartDrawLine(context: context, p1: self.p1, p2: self.p2, width: 0.2, color: self.color)
     }
 }
