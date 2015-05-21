@@ -28,11 +28,14 @@ public class ChartGroupedBarsLayer: ChartCoordsSpaceLayer {
     
     private let horizontal: Bool
     
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?) {
+    private let animDuration: Float
+
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
         self.groups = groups
         self.horizontal = horizontal
         self.barSpacing = barSpacing
         self.groupSpacing = groupSpacing
+        self.animDuration = animDuration
         
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
     }
@@ -67,7 +70,7 @@ public class ChartGroupedBarsLayer: ChartCoordsSpaceLayer {
                         return calculateConstantScreenLoc(axis: self.xAxis, index: index, group: group)
                     }
                 }()
-                chart.addSubview(barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, animDuration: 0.5))
+                chart.addSubview(barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, animDuration: self.animDuration))
             }
         }
     }

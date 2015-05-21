@@ -99,19 +99,22 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
     
     private let horizontal: Bool
     
-    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat) {
-        self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, bars: bars, horizontal: horizontal, barWidth: barWidth, barSpacing: nil)
+    private let animDuration: Float
+    
+    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float) {
+        self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, bars: bars, horizontal: horizontal, barWidth: barWidth, barSpacing: nil, animDuration: animDuration)
     }
     
-    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartBarModel], horizontal: Bool = false, barSpacing: CGFloat) {
-        self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, bars: bars, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing)
+    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartBarModel], horizontal: Bool = false, barSpacing: CGFloat, animDuration: Float) {
+        self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, bars: bars, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, animDuration: animDuration)
     }
     
-    private init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat? = nil, barSpacing: CGFloat?) {
+    private init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat? = nil, barSpacing: CGFloat?, animDuration: Float) {
         self.bars = bars
         self.horizontal = horizontal
         self.barWidth = barWidth
         self.barSpacing = barSpacing
+        self.animDuration = animDuration
 
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
     }
@@ -122,7 +125,7 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
         let barsGenerator = ChartBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: self.barWidth, barSpacing: self.barSpacing)
         
         for barModel in self.bars {
-            chart.addSubview(barsGenerator.generateView(barModel, bgColor: barModel.bgColor, animDuration: 0.5))
+            chart.addSubview(barsGenerator.generateView(barModel, bgColor: barModel.bgColor, animDuration: self.animDuration))
         }
     }
 }
