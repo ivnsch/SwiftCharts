@@ -22,10 +22,10 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
     
     private var conflictSolver: ChartViewsConflictSolver<T, U>?
     
-    public init(axisX: ChartAxisLayer, axisY: ChartAxisLayer, innerFrame: CGRect, chartPoints:[T], viewGenerator: ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0) {
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints:[T], viewGenerator: ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0) {
         self.viewGenerator = viewGenerator
         self.conflictSolver = conflictSolver
-        super.init(axisX: axisX, yAxis: axisY, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay)
+        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
     override func display(#chart: Chart) {

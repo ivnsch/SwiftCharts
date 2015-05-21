@@ -15,13 +15,13 @@ public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
     private let animDelay: Float
     private let addContainerPoints: Bool
     
-    public init(axisX: ChartAxisLayer, axisY: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], areaColor: UIColor, animDuration: Float, animDelay: Float, addContainerPoints: Bool) {
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], areaColor: UIColor, animDuration: Float, animDelay: Float, addContainerPoints: Bool) {
         self.areaColor = areaColor
         self.animDuration = animDuration
         self.animDelay = animDelay
         self.addContainerPoints = addContainerPoints
         
-        super.init(axisX: axisX, yAxis: axisY, innerFrame: innerFrame, chartPoints: chartPoints)
+        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
     }
     
     override func display(#chart: Chart) {

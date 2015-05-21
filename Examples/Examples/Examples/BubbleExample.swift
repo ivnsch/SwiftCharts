@@ -74,10 +74,10 @@ class BubbleExample: UIViewController {
         let bubbleLayer = self.bubblesLayer(xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, chartPoints: chartPoints)
         
         let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesDottedLayer(axisX: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesLayerSettings)
+        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesLayerSettings)
 
         let guidelinesHighlightLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.redColor(), linesWidth: 1, dotWidth: 4, dotSpacing: 4)
-        let guidelinesHighlightLayer = ChartGuideLinesForValuesDottedLayer(axisX: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesHighlightLayerSettings, axisValuesX: [ChartAxisValueFloat(0)], axisValuesY: [ChartAxisValueFloat(0)])
+        let guidelinesHighlightLayer = ChartGuideLinesForValuesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesHighlightLayerSettings, axisValuesX: [ChartAxisValueFloat(0)], axisValuesY: [ChartAxisValueFloat(0)])
         
         let chart = Chart(
             frame: chartFrame,
@@ -101,7 +101,7 @@ class BubbleExample: UIViewController {
         let maxBubbleDiameter: CGFloat = 30, minBubbleDiameter: CGFloat = 2
         
         if self.useViewsLayer == true {
-            return ChartPointsViewsLayer(axisX: xAxis, axisY: yAxis, innerFrame: chartInnerFrame, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
+            return ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: chartInnerFrame, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
                 
                 let (minDiameterScalar: CGFloat, maxDiameterScalar: CGFloat) = chartPoints.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, chartPoint in
                     (min: min(tuple.min, chartPoint.diameterScalar), max: max(tuple.max, chartPoint.diameterScalar))
@@ -132,7 +132,7 @@ class BubbleExample: UIViewController {
             })
             
         } else {
-            return ChartPointsBubbleLayer(axisX: xAxis, yAxis: yAxis, innerFrame: chartInnerFrame, chartPoints: chartPoints)
+            return ChartPointsBubbleLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: chartInnerFrame, chartPoints: chartPoints)
         }
     }
 

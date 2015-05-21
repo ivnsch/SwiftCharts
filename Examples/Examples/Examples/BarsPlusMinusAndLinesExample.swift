@@ -71,7 +71,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         }
         let formatter = NSNumberFormatter()
         formatter.maximumFractionDigits = 2
-        let labelsLayer = ChartPointsViewsLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, chartPoints: labelChartPoints, viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
+        let labelsLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: labelChartPoints, viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
             let label = HandlingLabel()
             let posOffset: CGFloat = 10
             
@@ -97,18 +97,18 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         // line layer
         let lineChartPoints = Array(enumerate(lineData)).map {index, tuple in ChartPoint(x: ChartAxisValueFloat(CGFloat(index)), y: ChartAxisValueFloat(tuple.val))}
         let lineModel = ChartLineModel(chartPoints: lineChartPoints, lineColor: UIColor.blackColor(), lineWidth: 2, animDuration: 0.5, animDelay: 1)
-        let lineLayer = ChartPointsLineLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
+        let lineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
         
         let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             let color = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1)
             return ChartPointCircleView(center: chartPointModel.screenLoc, size: CGSizeMake(7, 7), settings: ChartPointCircleViewSettings(animDuration: 0.3, cornerRadius: 3, borderColor: color, fillColor: color))
         }
-        let lineCirclesLayer = ChartPointsViewsLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, chartPoints: lineChartPoints, viewGenerator: circleViewGenerator, displayDelay: 1.5, delayBetweenItems: 0.05)
+        let lineCirclesLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: lineChartPoints, viewGenerator: circleViewGenerator, displayDelay: 1.5, delayBetweenItems: 0.05)
         
         
         // show a gap between positive and negative bar
         let dummyZeroYChartPoint = ChartPoint(x: ChartAxisValueFloat(0), y: ChartAxisValueFloat(0))
-        let yZeroGapLayer = ChartPointsViewsLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, chartPoints: [dummyZeroYChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
+        let yZeroGapLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: [dummyZeroYChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
             let height: CGFloat = 2
             let v = UIView(frame: CGRectMake(innerFrame.origin.x + 2, chartPointModel.screenLoc.y - height / 2, innerFrame.origin.x + innerFrame.size.height, height))
             v.backgroundColor = UIColor.whiteColor()

@@ -40,12 +40,12 @@ public class ChartGuideLinesLayerAbstract<T: ChartGuideLinesLayerSettings>: Char
     private let onlyVisibleY: Bool
     private let axis: ChartGuideLinesLayerAxis
     
-    public init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, axis: ChartGuideLinesLayerAxis = .XAndY, settings: T, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, axis: ChartGuideLinesLayerAxis = .XAndY, settings: T, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
         self.settings = settings
         self.onlyVisibleX = onlyVisibleX
         self.onlyVisibleY = onlyVisibleY
         self.axis = axis
-        super.init(xAxis: axisX, yAxis: yAxis, innerFrame: innerFrame)
+        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
     }
     
     private func drawGuideline(context: CGContextRef, p1: CGPoint, p2: CGPoint) {
@@ -82,8 +82,8 @@ public class ChartGuideLinesLayerAbstract<T: ChartGuideLinesLayerSettings>: Char
 typealias ChartGuideLinesLayer = ChartGuideLinesLayer_<Any>
 public class ChartGuideLinesLayer_<N>: ChartGuideLinesLayerAbstract<ChartGuideLinesLayerSettings> {
     
-    override public init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, axis: ChartGuideLinesLayerAxis = .XAndY, settings: ChartGuideLinesLayerSettings, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
-        super.init(axisX: axisX, yAxis: yAxis, innerFrame: innerFrame, axis: axis, settings: settings, onlyVisibleX: onlyVisibleX, onlyVisibleY: onlyVisibleY)
+    override public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, axis: ChartGuideLinesLayerAxis = .XAndY, settings: ChartGuideLinesLayerSettings, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
+        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, axis: axis, settings: settings, onlyVisibleX: onlyVisibleX, onlyVisibleY: onlyVisibleY)
     }
     
     override private func drawGuideline(context: CGContextRef, p1: CGPoint, p2: CGPoint) {
@@ -94,8 +94,8 @@ public class ChartGuideLinesLayer_<N>: ChartGuideLinesLayerAbstract<ChartGuideLi
 typealias ChartGuideLinesDottedLayer = ChartGuideLinesDottedLayer_<Any>
 public class ChartGuideLinesDottedLayer_<N>: ChartGuideLinesLayerAbstract<ChartGuideLinesDottedLayerSettings> {
     
-    override public init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, axis: ChartGuideLinesLayerAxis = .XAndY, settings: ChartGuideLinesDottedLayerSettings, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
-        super.init(axisX: axisX, yAxis: yAxis, innerFrame: innerFrame, axis: axis, settings: settings, onlyVisibleX: onlyVisibleX, onlyVisibleY: onlyVisibleY)
+    override public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, axis: ChartGuideLinesLayerAxis = .XAndY, settings: ChartGuideLinesDottedLayerSettings, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
+        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, axis: axis, settings: settings, onlyVisibleX: onlyVisibleX, onlyVisibleY: onlyVisibleY)
     }
     
     override private func drawGuideline(context: CGContextRef, p1: CGPoint, p2: CGPoint) {
@@ -110,11 +110,11 @@ public class ChartGuideLinesForValuesLayerAbstract<T: ChartGuideLinesLayerSettin
     private let axisValuesX: [ChartAxisValue]
     private let axisValuesY: [ChartAxisValue]
 
-    public init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: T, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: T, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {
         self.settings = settings
         self.axisValuesX = axisValuesX
         self.axisValuesY = axisValuesY
-        super.init(xAxis: axisX, yAxis: yAxis, innerFrame: innerFrame)
+        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
     }
     
     private func drawGuideline(context: CGContextRef, color: UIColor, width: CGFloat, p1: CGPoint, p2: CGPoint, dotWidth: CGFloat, dotSpacing: CGFloat) {
@@ -154,8 +154,8 @@ public class ChartGuideLinesForValuesLayerAbstract<T: ChartGuideLinesLayerSettin
 typealias ChartGuideLinesForValuesLayer = ChartGuideLinesForValuesLayer_<Any>
 public class ChartGuideLinesForValuesLayer_<N>: ChartGuideLinesForValuesLayerAbstract<ChartGuideLinesLayerSettings> {
     
-    public override init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: ChartGuideLinesLayerSettings, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {
-        super.init(axisX: axisX, yAxis: yAxis, innerFrame: innerFrame, settings: settings, axisValuesX: axisValuesX, axisValuesY: axisValuesY)
+    public override init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: ChartGuideLinesLayerSettings, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {
+        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings, axisValuesX: axisValuesX, axisValuesY: axisValuesY)
     }
     
     override private func drawGuideline(context: CGContextRef, p1: CGPoint, p2: CGPoint) {
@@ -166,8 +166,8 @@ public class ChartGuideLinesForValuesLayer_<N>: ChartGuideLinesForValuesLayerAbs
 typealias ChartGuideLinesForValuesDottedLayer = ChartGuideLinesForValuesDottedLayer_<Any>
 public class ChartGuideLinesForValuesDottedLayer_<N>: ChartGuideLinesForValuesLayerAbstract<ChartGuideLinesDottedLayerSettings> {
     
-    public override init(axisX: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: ChartGuideLinesDottedLayerSettings, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {
-        super.init(axisX: axisX, yAxis: yAxis, innerFrame: innerFrame, settings: settings, axisValuesX: axisValuesX, axisValuesY: axisValuesY)
+    public override init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: ChartGuideLinesDottedLayerSettings, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {
+        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings, axisValuesX: axisValuesX, axisValuesY: axisValuesY)
     }
     
     override private func drawGuideline(context: CGContextRef, p1: CGPoint, p2: CGPoint) {
