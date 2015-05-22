@@ -50,7 +50,7 @@ class ScrollExample: UIViewController {
             self.createChartPoint(30, 10, labelSettings)
         ]
         
-        let xValues = Array(stride(from: 2, through: 30, by: 1)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
+        let xValues = Array(stride(from: 2, through: 30, by: 2)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
         let yValues = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueFloat($0, labelSettings: labelSettings)}, addPaddingSegmentIfEdge: false)
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
