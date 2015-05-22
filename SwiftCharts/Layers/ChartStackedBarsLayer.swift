@@ -37,45 +37,6 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
     
     private typealias FrameBuilder = (barModel: ChartStackedBarModel, item: ChartStackedBarItemModel, currentTotalQuantity: CGFloat) -> (frame: ChartPointViewBarStackedFrame, length: CGFloat)
     
-    private lazy var leftToRightFrameBuilder: FrameBuilder = {
-        {barModel, item, currentTotalQuantity in
-            let p0 = self.xAxis.screenLocForScalar(currentTotalQuantity)
-            let p1 = self.xAxis.screenLocForScalar(currentTotalQuantity + item.quantity)
-            let length = p1 - p0
-            let barLeftScreenLoc = self.xAxis.screenLocForScalar(length > 0 ? barModel.axisValue1.scalar : barModel.axisValue2.scalar)
-            
-            return (frame: ChartPointViewBarStackedFrame(rect:
-                CGRectMake(
-                    p0 - barLeftScreenLoc,
-                    0,
-                    length,
-                    self.barWidth), color: item.bgColor), length: length)
-        }
-    }()
-    
-    private lazy var bottomToTopFrameBuilder: FrameBuilder = {
-        {barModel, item, currentTotalQuantity in
-            let p0 = self.yAxis.screenLocForScalar(currentTotalQuantity)
-            let p1 = self.yAxis.screenLocForScalar(currentTotalQuantity + item.quantity)
-            let length = p1 - p0
-            let barTopScreenLoc = self.yAxis.screenLocForScalar(length > 0 ? barModel.axisValue1.scalar : barModel.axisValue2.scalar)
-            
-            return (frame: ChartPointViewBarStackedFrame(rect:
-                CGRectMake(
-                    0,
-                    p0 - barTopScreenLoc,
-                    self.barWidth,
-                    length), color: item.bgColor), length: length)
-        }
-    }()
-    
-    private lazy var frameBuilder: FrameBuilder = {
-        switch self.direction {
-        case .LeftToRight: return self.leftToRightFrameBuilder
-        case .BottomToTop: return self.bottomToTopFrameBuilder
-        }
-    }()
-    
     override init(horizontal: Bool, xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, barWidth barWidthMaybe: CGFloat?, barSpacing barSpacingMaybe: CGFloat?) {
         super.init(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: chartInnerFrame, barWidth: barWidthMaybe, barSpacing: barSpacingMaybe)
     }
@@ -84,8 +45,41 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
         
         let constantScreenLoc = constantScreenLocMaybe ?? self.constantScreenLoc(barModel)
         
+        let frameBuilder: FrameBuilder = {
+            switch self.direction {
+                case .LeftToRight:
+                    return {barModel, item, currentTotalQuantity in
+                        let p0 = self.xAxis.screenLocForScalar(currentTotalQuantity)
+                        let p1 = self.xAxis.screenLocForScalar(currentTotalQuantity + item.quantity)
+                        let length = p1 - p0
+                        let barLeftScreenLoc = self.xAxis.screenLocForScalar(length > 0 ? barModel.axisValue1.scalar : barModel.axisValue2.scalar)
+                        
+                        return (frame: ChartPointViewBarStackedFrame(rect:
+                            CGRectMake(
+                                p0 - barLeftScreenLoc,
+                                0,
+                                length,
+                                self.barWidth), color: item.bgColor), length: length)
+                }
+                case .BottomToTop:
+                    return {barModel, item, currentTotalQuantity in
+                        let p0 = self.yAxis.screenLocForScalar(currentTotalQuantity)
+                        let p1 = self.yAxis.screenLocForScalar(currentTotalQuantity + item.quantity)
+                        let length = p1 - p0
+                        let barTopScreenLoc = self.yAxis.screenLocForScalar(length > 0 ? barModel.axisValue1.scalar : barModel.axisValue2.scalar)
+                        
+                        return (frame: ChartPointViewBarStackedFrame(rect:
+                            CGRectMake(
+                                0,
+                                p0 - barTopScreenLoc,
+                                self.barWidth,
+                                length), color: item.bgColor), length: length)
+                }
+            }
+        }()
+        
         let stackFrames = barModel.items.reduce((currentTotalQuantity: CGFloat(0), currentTotalLength: CGFloat(0), frames: Array<ChartPointViewBarStackedFrame>())) {tuple, item in
-            let frameWithLength = self.frameBuilder(barModel: barModel, item: item, currentTotalQuantity: tuple.currentTotalQuantity)
+            let frameWithLength = frameBuilder(barModel: barModel, item: item, currentTotalQuantity: tuple.currentTotalQuantity)
             return (currentTotalQuantity: tuple.currentTotalQuantity + item.quantity, currentTotalLength: tuple.currentTotalLength + frameWithLength.length, frames: tuple.frames + [frameWithLength.frame])
         }
         

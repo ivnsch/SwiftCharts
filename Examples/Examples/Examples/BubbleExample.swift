@@ -120,10 +120,10 @@ class BubbleExample: UIViewController {
                 bubbleView.transform = CGAffineTransformMakeScale(0.1, 0.1)
                 bubbleView.alpha = 0
                 
-                bubbleView.movedToSuperViewHandler = {
+                bubbleView.movedToSuperViewHandler = {[weak bubbleView] in
                     UIView.animateWithDuration(1.2, delay: NSTimeInterval(Float(chartPointModel.index) * 0.2), usingSpringWithDamping: 0.4, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.allZeros, animations: { () -> Void in
-                        bubbleView.transform = CGAffineTransformMakeScale(1, 1)
-                        bubbleView.alpha = 1
+                        bubbleView?.transform = CGAffineTransformMakeScale(1, 1)
+                        bubbleView?.alpha = 1
                     }, completion: nil)
                 }
                 

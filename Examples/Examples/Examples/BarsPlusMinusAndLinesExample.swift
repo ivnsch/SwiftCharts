@@ -84,10 +84,10 @@ class BarsPlusMinusAndLinesExample: UIViewController {
             label.center = CGPointMake(chartPointModel.screenLoc.x, pos ? innerFrame.origin.y : innerFrame.origin.y + innerFrame.size.height)
             label.alpha = 0
 
-            label.movedToSuperViewHandler = {
+            label.movedToSuperViewHandler = {[weak label] in
                 UIView.animateWithDuration(0.3, animations: {
-                    label.alpha = 1
-                    label.center.y = chartPointModel.screenLoc.y + yOffset
+                    label?.alpha = 1
+                    label?.center.y = chartPointModel.screenLoc.y + yOffset
                 })
             }
             return label
