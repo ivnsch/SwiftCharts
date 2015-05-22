@@ -40,8 +40,7 @@ class MasterViewController: UITableViewController {
         (.MultiAxisInteractive, "Multiple axes (interactive)"),
         (.CandleStick, "Candlestick"),
         (.CandleStickInteractive, "Candlestick (interactive)"),
-        (.Cubiclines, "Cubic lines"),
-        (.NotNumeric, "Not numeric values"),
+        (.Cubiclines, "Cubic lines")
     ]
     
     override func awakeFromNib() {
