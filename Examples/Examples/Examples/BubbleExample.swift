@@ -29,7 +29,7 @@ class BubbleExample: UIViewController {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
         func toColor(percentage: CGFloat) -> UIColor {
-            return colorBar.colorForPercentage(percentage).colorWithAlphaComponent(0.7)
+            return colorBar.colorForPercentage(percentage).colorWithAlphaComponent(0.6)
         }
         
         let chartPoints: [ChartPointBubble] = [
@@ -111,7 +111,7 @@ class BubbleExample: UIViewController {
                 let diameter = chartPointModel.chartPoint.diameterScalar * diameterFactor
                 
                 let rect = CGRectMake(chartPointModel.screenLoc.x - diameter / 2, chartPointModel.screenLoc.y - diameter / 2, diameter, diameter)
-                return BubbleView(frame: rect, fillColor: chartPointModel.chartPoint.bgColor, borderColor: UIColor.blackColor(), animDelay: Float(chartPointModel.index) * 0.2, animDuration: 1.2)
+                return BubbleView(frame: rect, fillColor: chartPointModel.chartPoint.bgColor, borderColor: UIColor.blackColor().colorWithAlphaComponent(0.6), animDelay: Float(chartPointModel.index) * 0.2, animDuration: 1.2)
                 
             })
             

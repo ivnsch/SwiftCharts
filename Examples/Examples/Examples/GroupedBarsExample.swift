@@ -41,7 +41,7 @@ class GroupedBarsExample: UIViewController {
                 ])
         ]
         
-        let groupColors = [UIColor.redColor(), UIColor.blueColor(), UIColor.greenColor()]
+        let groupColors = [UIColor.redColor().colorWithAlphaComponent(0.6), UIColor.blueColor().colorWithAlphaComponent(0.6), UIColor.greenColor().colorWithAlphaComponent(0.6)]
         
         let groups: [ChartPointsBarGroup] = Array(enumerate(groupsData)).map {index, entry in
             let constant = ChartAxisValueFloat(CGFloat(index))

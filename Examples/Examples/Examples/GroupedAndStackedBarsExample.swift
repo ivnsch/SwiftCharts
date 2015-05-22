@@ -64,7 +64,7 @@ class GroupedAndStackedBarsExample: UIViewController {
             ])
         ]
         
-        let frameColors = [UIColor.redColor(), UIColor.blueColor(), UIColor.greenColor()]
+        let frameColors = [UIColor.redColor().colorWithAlphaComponent(0.6), UIColor.blueColor().colorWithAlphaComponent(0.6), UIColor.greenColor().colorWithAlphaComponent(0.6)]
         
         let groups: [ChartPointsBarGroup<ChartStackedBarModel>] = Array(enumerate(groupsData)).map {index, entry in
             let constant = ChartAxisValueFloat(CGFloat(index))

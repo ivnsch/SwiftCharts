@@ -38,11 +38,9 @@ class BarsExample: UIViewController {
         let minBarSpacing: CGFloat = ExamplesDefaults.minBarSpacing
         
         let barViewGenerator = {[weak self] (chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart) -> UIView? in
-            let r = {CGFloat(Float(arc4random()) / Float(UINT32_MAX))}
-            let randomColor: UIColor = UIColor(red: r(), green: r(), blue: r(), alpha: 0.7)
             let bottomLeft = CGPointMake(layer.innerFrame.origin.x, layer.innerFrame.origin.y + layer.innerFrame.height)
             
-            let barWidth: CGFloat = Env.iPad ? 60 : 35
+            let barWidth: CGFloat = Env.iPad ? 60 : 30
             
             let (p1: CGPoint, p2: CGPoint) = {
                 if horizontal {
@@ -51,7 +49,7 @@ class BarsExample: UIViewController {
                     return (CGPointMake(chartPointModel.screenLoc.x, bottomLeft.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
                 }
             }()
-            return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: randomColor)
+            return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: UIColor.blueColor().colorWithAlphaComponent(0.6))
         }
         
         let frame = ExamplesDefaults.chartFrame(self.view.bounds)

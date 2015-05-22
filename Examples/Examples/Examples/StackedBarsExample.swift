@@ -17,10 +17,10 @@ class StackedBarsExample: UIViewController {
     private func chart(#horizontal: Bool) -> Chart {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let color0 = UIColor.grayColor()
-        let color1 = UIColor.blueColor()
-        let color2 = UIColor.redColor()
-        let color3 = UIColor.greenColor()
+        let color0 = UIColor.grayColor().colorWithAlphaComponent(0.6)
+        let color1 = UIColor.blueColor().colorWithAlphaComponent(0.6)
+        let color2 = UIColor.redColor().colorWithAlphaComponent(0.6)
+        let color3 = UIColor.greenColor().colorWithAlphaComponent(0.6)
         
         let zero = ChartAxisValueFloat(0)
         let barModels = [
