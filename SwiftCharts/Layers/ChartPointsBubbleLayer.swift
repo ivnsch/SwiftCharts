@@ -12,7 +12,7 @@ public class ChartPointsBubbleLayer<T: ChartPointBubble>: ChartPointsLayer<T> {
     
     private let diameterFactor: CGFloat
     
-    init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], displayDelay: Float = 0, maxBubbleDiameter: CGFloat = 30, minBubbleDiameter: CGFloat = 2) {
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], displayDelay: Float = 0, maxBubbleDiameter: CGFloat = 30, minBubbleDiameter: CGFloat = 2) {
         
         let (minDiameterScalar: CGFloat, maxDiameterScalar: CGFloat) = chartPoints.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, chartPoint in
             (min: min(tuple.min, chartPoint.diameterScalar), max: max(tuple.max, chartPoint.diameterScalar))

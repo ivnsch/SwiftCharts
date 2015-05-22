@@ -13,7 +13,7 @@ public class ChartPointViewBar: UIView {
     private let targetFrame: CGRect
     private let animDuration: Float
     
-    init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor? = nil, animDuration: Float = 0.5) {
+    public init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor? = nil, animDuration: Float = 0.5) {
         
         let (targetFrame: CGRect, firstFrame: CGRect) = {
             if p1.y - p2.y == 0 { // horizontal

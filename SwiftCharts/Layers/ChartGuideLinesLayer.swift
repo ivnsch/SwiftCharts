@@ -22,7 +22,7 @@ public class ChartGuideLinesDottedLayerSettings: ChartGuideLinesLayerSettings {
     let dotWidth: CGFloat
     let dotSpacing: CGFloat
     
-    init(linesColor: UIColor, linesWidth: CGFloat, dotWidth: CGFloat = 2, dotSpacing: CGFloat = 2) {
+    public init(linesColor: UIColor, linesWidth: CGFloat, dotWidth: CGFloat = 2, dotSpacing: CGFloat = 2) {
         self.dotWidth = dotWidth
         self.dotSpacing = dotSpacing
         super.init(linesColor: linesColor, linesWidth: linesWidth)
@@ -79,7 +79,7 @@ public class ChartGuideLinesLayerAbstract<T: ChartGuideLinesLayerSettings>: Char
     }
 }
 
-typealias ChartGuideLinesLayer = ChartGuideLinesLayer_<Any>
+public typealias ChartGuideLinesLayer = ChartGuideLinesLayer_<Any>
 public class ChartGuideLinesLayer_<N>: ChartGuideLinesLayerAbstract<ChartGuideLinesLayerSettings> {
     
     override public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, axis: ChartGuideLinesLayerAxis = .XAndY, settings: ChartGuideLinesLayerSettings, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
@@ -91,7 +91,7 @@ public class ChartGuideLinesLayer_<N>: ChartGuideLinesLayerAbstract<ChartGuideLi
     }
 }
 
-typealias ChartGuideLinesDottedLayer = ChartGuideLinesDottedLayer_<Any>
+public typealias ChartGuideLinesDottedLayer = ChartGuideLinesDottedLayer_<Any>
 public class ChartGuideLinesDottedLayer_<N>: ChartGuideLinesLayerAbstract<ChartGuideLinesDottedLayerSettings> {
     
     override public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, axis: ChartGuideLinesLayerAxis = .XAndY, settings: ChartGuideLinesDottedLayerSettings, onlyVisibleX: Bool = false, onlyVisibleY: Bool = false) {
@@ -151,7 +151,7 @@ public class ChartGuideLinesForValuesLayerAbstract<T: ChartGuideLinesLayerSettin
 }
 
 
-typealias ChartGuideLinesForValuesLayer = ChartGuideLinesForValuesLayer_<Any>
+public typealias ChartGuideLinesForValuesLayer = ChartGuideLinesForValuesLayer_<Any>
 public class ChartGuideLinesForValuesLayer_<N>: ChartGuideLinesForValuesLayerAbstract<ChartGuideLinesLayerSettings> {
     
     public override init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: ChartGuideLinesLayerSettings, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {
@@ -163,7 +163,7 @@ public class ChartGuideLinesForValuesLayer_<N>: ChartGuideLinesForValuesLayerAbs
     }
 }
 
-typealias ChartGuideLinesForValuesDottedLayer = ChartGuideLinesForValuesDottedLayer_<Any>
+public typealias ChartGuideLinesForValuesDottedLayer = ChartGuideLinesForValuesDottedLayer_<Any>
 public class ChartGuideLinesForValuesDottedLayer_<N>: ChartGuideLinesForValuesLayerAbstract<ChartGuideLinesDottedLayerSettings> {
     
     public override init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, settings: ChartGuideLinesDottedLayerSettings, axisValuesX: [ChartAxisValue], axisValuesY: [ChartAxisValue]) {

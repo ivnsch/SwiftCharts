@@ -9,9 +9,9 @@
 import UIKit
 
 public class ChartPointBubble: ChartPoint {
-    let diameterScalar: CGFloat
-    let bgColor: UIColor
-    let borderColor: UIColor
+    public let diameterScalar: CGFloat
+    public let bgColor: UIColor
+    public let borderColor: UIColor
     
     public init(x: ChartAxisValue, y: ChartAxisValue, diameterScalar: CGFloat, bgColor: UIColor, borderColor: UIColor = UIColor.blackColor()) {
         self.diameterScalar = diameterScalar

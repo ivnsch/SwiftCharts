@@ -9,10 +9,10 @@
 import UIKit
 
 public class ChartBarModel {
-    let constant: ChartAxisValue
-    let axisValue1: ChartAxisValue
-    let axisValue2: ChartAxisValue
-    let bgColor: UIColor?
+    public let constant: ChartAxisValue
+    public let axisValue1: ChartAxisValue
+    public let axisValue2: ChartAxisValue
+    public let bgColor: UIColor?
     
     public init(constant: ChartAxisValue, axisValue1: ChartAxisValue, axisValue2: ChartAxisValue, bgColor: UIColor? = nil) {
         self.constant = constant
