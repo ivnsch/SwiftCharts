@@ -22,14 +22,14 @@ Current features:
 
 Swift 1.2, iOS 7/8
 
-[Examples video](https://www.youtube.com/watch?v=cyAlKil3Pyk) (this will be updated only on new tags - check the [changelog](CHANGELOG.md) for possible new examples in master)
+[Examples video](https://www.youtube.com/watch?v=bD6uDF-KckM) (this will be updated only on new tags - check the [changelog](CHANGELOG.md) for possible new examples in master)
 
 ##### Installation
 
 Add to your podfile:
 ```ruby
 use_frameworks!
-pod 'SwiftCharts', '~> 0.1'
+pod 'SwiftCharts', '~> 0.2'
 ```
 
 And then:
@@ -42,7 +42,7 @@ Import the framework in your code:
 import SwiftCharts
 ```
 
-##### Concept:
+####Concept:
 
 - Layer architecture, which makes it extremely easy to customize charts, create new types, combine existing ones and add interactive elements.
 
@@ -77,18 +77,18 @@ let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSp
 
 // create layer with line
 let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor(red: 0.4, green: 0.4, blue: 1, alpha: 0.2), lineWidth: 3, animDuration: 0.7, animDelay: 0)
-let chartPointsLineLayer = ChartPointsLineLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
+let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
 
 // view generator - creates circle view for each chartpoint
 let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
     return ChartPointCircleView(center: chartPointModel.screenLoc, size: CGSizeMake(20, 20), settings: ChartPointCircleViewSettings(animDuration: 0.5))
 }
 // create layer that uses the view generator
-let chartPointsCircleLayer = ChartPointsViewsLayer(axisX: xAxis, axisY: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: circleViewGenerator, displayDelay: 0, delayBetweenItems: 0.05)
+let chartPointsCircleLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: circleViewGenerator, displayDelay: 0, delayBetweenItems: 0.05)
 
 // create layer with guidelines
 var settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth, axis: .XAndY)
-let guidelinesLayer = ChartGuideLinesDottedLayer(axisX: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
+let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
 
 let chart = Chart(
     frame: chartFrame,
@@ -119,10 +119,16 @@ There's a [hello world](Examples/Examples/Examples/HelloWorld.swift) included in
 
 This library is rather object oriented, but it makes extensive use of functional concepts like high order functions and (preference for) immutability leading to safer code and better maintainability.
 
-###### More documentation coming soon!
+
+####Coming in the next releases:
+
+0.3 Performance improvements
+
+0.4 Create well known chart types with little code
+
+###### More documentation also coming soon!
 
 ##### Screenshots:
-
 
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0102.jpeg)
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0022.jpeg)
@@ -145,7 +151,7 @@ This library is rather object oriented, but it makes extensive use of functional
 
 ##### Version:
 
-0.1
+0.2
 
 ##### Created By:
 
