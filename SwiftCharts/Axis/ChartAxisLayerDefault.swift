@@ -159,20 +159,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     }
 
     func labelMaybeSize(labelMaybe: ChartAxisLabel?) -> CGSize {
-        return {
-            if let label = labelMaybe {
-                let textSize = ChartUtils.textSize(label.text, font: label.settings.font)
-
-                if label.settings.rotation == 0 {
-                    return textSize
-                } else {
-                    return ChartUtils.boundingRectAfterRotatingRect(CGRectMake(0, 0, textSize.width, textSize.height), radians: label.settings.rotation).size
-                }
-
-            } else {
-                return CGSizeMake(0, 0)
-            }
-        }()
+        return labelMaybe?.textSize ?? CGSizeZero
     }
     
     final func screenLocForScalar(scalar: CGFloat) -> CGFloat {

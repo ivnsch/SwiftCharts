@@ -15,9 +15,13 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     }
     
     lazy var labelsTotalHeight: CGFloat = {
-        return self.calculateRowHeights().reduce(0) {sum, height in
+        return self.rowHeights.reduce(0) {sum, height in
             sum + height + self.settings.labelsSpacing
         }
+    }()
+    
+    lazy var rowHeights: [CGFloat] = {
+        return self.calculateRowHeights()
     }()
     
     override var height: CGFloat {
@@ -67,7 +71,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     }
     
     // calculate row heights (max text height) for each row
-    func calculateRowHeights() -> [CGFloat] {
+    private func calculateRowHeights() -> [CGFloat] {
         
         // organize labels in rows
         let maxRowCount = self.axisValues.reduce(-1) {maxCount, axisValue in
@@ -88,7 +92,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         let modelLength = self.modelLength
         let spacingLabelBetweenAxis = self.settings.labelsSpacing
         
-        let rowHeights = self.calculateRowHeights()
+        let rowHeights = self.rowHeights
         
         // generate all the label drawers, in a flat list
         return self.axisValues.flatMap {axisValue in

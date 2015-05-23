@@ -15,9 +15,14 @@ public class ChartAxisLabel {
 
     var hidden: Bool = false
    
-    var textSize: CGSize {
-        return ChartUtils.textSize(self.text, font: self.settings.font)
-    }
+    lazy var textSize: CGSize = {
+        let size = ChartUtils.textSize(self.text, font: self.settings.font)
+        if self.settings.rotation == 0 {
+            return size
+        } else {
+            return ChartUtils.boundingRectAfterRotatingRect(CGRectMake(0, 0, size.width, size.height), radians: self.settings.rotation).size
+        }
+    }()
     
     public init(text: String, settings: ChartLabelSettings) {
         self.text = text
