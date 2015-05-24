@@ -119,11 +119,11 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         }
         self.axisTitleLabels = axisTitleLabels
         self.settings = settings
-        
-        self.initDrawers()
     }
     
-    func chartInitialized(#chart: Chart) {}
+    func chartInitialized(#chart: Chart) {
+        self.initDrawers()
+    }
 
     func chartViewDrawing(#context: CGContextRef, chart: Chart) {
         if self.settings.isAxisLineVisible {
