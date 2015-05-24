@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.1] - 2015-05-24
+- Improve performance drawing guidelines
+- Generate calculation intensive coordinates spaces in the background (examples)
+- Performance improvements calculating axis labels size
+
 ## [0.2] - 2015-05-22
 
 ### Added
