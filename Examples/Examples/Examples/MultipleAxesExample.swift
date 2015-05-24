@@ -108,13 +108,13 @@ class MultipleAxesExample: UIViewController {
         ]
         
         let coordsSpace = ChartCoordsSpace(chartSettings: chartSettings, chartSize: viewFrame.size, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels)
-        let chartInnerFrame = coordsSpace.calculateChartInnerFrame()
+        let chartInnerFrame = coordsSpace.chartInnerFrame
         
         // create axes
-        let yLowAxes = coordsSpace.generateYLowAxes()
-        let yHighAxes = coordsSpace.generateYHighAxes()
-        let xLowAxes = coordsSpace.generateXLowAxes()
-        let xHighAxes = coordsSpace.generateXHighAxes()
+        let yLowAxes = coordsSpace.yLowAxes
+        let yHighAxes = coordsSpace.yHighAxes
+        let xLowAxes = coordsSpace.xLowAxes
+        let xHighAxes = coordsSpace.xHighAxes
         
         // create layers with references to axes
         let lineModel0 = ChartLineModel(chartPoints: chartPoints0, lineColor: bgColors[0], animDuration: 1, animDelay: 0)

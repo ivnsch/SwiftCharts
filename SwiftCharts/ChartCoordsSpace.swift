@@ -16,7 +16,7 @@ public class ChartCoordsSpace {
     private let chartSettings: ChartSettings
     private let chartSize: CGSize
     
-    private(set) var chartInnerFrame: CGRect = CGRectZero
+    public private(set) var chartInnerFrame: CGRect = CGRectZero
     
     private let yLowModels: [ChartAxisModel]
     private let yHighModels: [ChartAxisModel]
@@ -27,7 +27,12 @@ public class ChartCoordsSpace {
     private let yHighGenerator: ChartAxisLayerGenerator
     private let xLowGenerator: ChartAxisLayerGenerator
     private let xHighGenerator: ChartAxisLayerGenerator
-    
+
+    public private(set) var yLowAxes: [ChartAxisLayer] = []
+    public private(set) var yHighAxes: [ChartAxisLayer] = []
+    public private(set) var xLowAxes: [ChartAxisLayer] = []
+    public private(set) var xHighAxes: [ChartAxisLayer] = []
+
     public convenience init(chartSettings: ChartSettings, chartSize: CGSize, yLowModels: [ChartAxisModel] = [], yHighModels: [ChartAxisModel] = [], xLowModels: [ChartAxisModel] = [], xHighModels: [ChartAxisModel] = []) {
         
         let yLowGenerator: ChartAxisLayerGenerator = {model in
@@ -61,24 +66,29 @@ public class ChartCoordsSpace {
         self.xHighGenerator = xHighGenerator
         
         self.chartInnerFrame = self.calculateChartInnerFrame()
+        
+        self.yLowAxes = self.generateYLowAxes()
+        self.yHighAxes = self.generateYHighAxes()
+        self.xLowAxes = self.generateXLowAxes()
+        self.xHighAxes = self.generateXHighAxes()
     }
     
-    public func generateYLowAxes() -> [ChartAxisLayer] {
+    private func generateYLowAxes() -> [ChartAxisLayer] {
         return generateYAxisShared(axisModels: self.yLowModels, offset: chartSettings.leading, generator: self.yLowGenerator)
     }
     
-    public func generateYHighAxes() -> [ChartAxisLayer] {
+    private func generateYHighAxes() -> [ChartAxisLayer] {
         let chartFrame = self.chartInnerFrame
         return generateYAxisShared(axisModels: self.yHighModels, offset: chartFrame.origin.x + chartFrame.width, generator: self.yHighGenerator)
     }
     
-    public func generateXLowAxes() -> [ChartAxisLayer] {
+    private func generateXLowAxes() -> [ChartAxisLayer] {
         let chartFrame = self.chartInnerFrame
         let y = chartFrame.origin.y + chartFrame.height
         return self.generateXAxesShared(axisModels: self.xLowModels, offset: y, generator: self.xLowGenerator)
     }
     
-    public func generateXHighAxes() -> [ChartAxisLayer] {
+    private func generateXHighAxes() -> [ChartAxisLayer] {
         return self.generateXAxesShared(axisModels: self.xHighModels, offset: chartSettings.top, generator: self.xHighGenerator)
     }
     
@@ -128,7 +138,7 @@ public class ChartCoordsSpace {
         }.0
     }
     
-    public func calculateChartInnerFrame() -> CGRect {
+    private func calculateChartInnerFrame() -> CGRect {
         
         let totalDim = {(axisLayers: [ChartAxisLayer], dimPicker: (ChartAxisLayer) -> CGFloat, spacingBetweenAxes: CGFloat) -> CGFloat in
             return axisLayers.reduce((CGFloat(0), CGFloat(0))) {tuple, chartAxisLayer in
@@ -172,10 +182,10 @@ public class ChartCoordsSpaceLeftBottomSingleAxis {
     
     public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
         let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yLowModels: [yModel], xLowModels: [xModel])
-        self.chartInnerFrame = coordsSpaceInitializer.calculateChartInnerFrame()
+        self.chartInnerFrame = coordsSpaceInitializer.chartInnerFrame
         
-        self.yAxis = coordsSpaceInitializer.generateYLowAxes()[0]
-        self.xAxis = coordsSpaceInitializer.generateXLowAxes()[0]
+        self.yAxis = coordsSpaceInitializer.yLowAxes[0]
+        self.xAxis = coordsSpaceInitializer.xLowAxes[0]
     }
 }
 
@@ -187,10 +197,10 @@ public class ChartCoordsSpaceLeftTopSingleAxis {
     
     public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
         let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yLowModels: [yModel], xHighModels: [xModel])
-        self.chartInnerFrame = coordsSpaceInitializer.calculateChartInnerFrame()
+        self.chartInnerFrame = coordsSpaceInitializer.chartInnerFrame
         
-        self.yAxis = coordsSpaceInitializer.generateYLowAxes()[0]
-        self.xAxis = coordsSpaceInitializer.generateXHighAxes()[0]
+        self.yAxis = coordsSpaceInitializer.yLowAxes[0]
+        self.xAxis = coordsSpaceInitializer.xHighAxes[0]
     }
 }
 
@@ -202,9 +212,9 @@ public class ChartCoordsSpaceRightBottomSingleAxis {
     
     public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
         let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yHighModels: [yModel], xLowModels: [xModel])
-        self.chartInnerFrame = coordsSpaceInitializer.calculateChartInnerFrame()
+        self.chartInnerFrame = coordsSpaceInitializer.chartInnerFrame
         
-        self.yAxis = coordsSpaceInitializer.generateYHighAxes()[0]
-        self.xAxis = coordsSpaceInitializer.generateXLowAxes()[0]
+        self.yAxis = coordsSpaceInitializer.yHighAxes[0]
+        self.xAxis = coordsSpaceInitializer.xLowAxes[0]
     }
 }
