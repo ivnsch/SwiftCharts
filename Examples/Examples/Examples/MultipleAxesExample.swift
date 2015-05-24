@@ -107,42 +107,54 @@ class MultipleAxesExample: UIViewController {
             ChartAxisModel(axisValues: xValues2, lineColor: bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[2], font: axisTitleFont))])
         ]
         
-        let coordsSpace = ChartCoordsSpace(chartSettings: chartSettings, chartSize: viewFrame.size, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels)
-        let chartInnerFrame = coordsSpace.chartInnerFrame
-        
-        // create axes
-        let yLowAxes = coordsSpace.yLowAxes
-        let yHighAxes = coordsSpace.yHighAxes
-        let xLowAxes = coordsSpace.xLowAxes
-        let xHighAxes = coordsSpace.xHighAxes
-        
-        // create layers with references to axes
-        let lineModel0 = ChartLineModel(chartPoints: chartPoints0, lineColor: bgColors[0], animDuration: 1, animDelay: 0)
-        let lineModel1 = ChartLineModel(chartPoints: chartPoints1, lineColor: bgColors[1], animDuration: 1, animDelay: 0)
-        let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: bgColors[2], animDuration: 1, animDelay: 0)
-        let lineModel3 = ChartLineModel(chartPoints: chartPoints3, lineColor: bgColors[3], animDuration: 1, animDelay: 0)
-        
-        let chartPointsLineLayer0 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[0], yAxis: yLowAxes[1], innerFrame: chartInnerFrame, lineModels: [lineModel0])
-        let chartPointsLineLayer1 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[1], yAxis: yLowAxes[0], innerFrame: chartInnerFrame, lineModels: [lineModel1])
-        let chartPointsLineLayer3 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[1], yAxis: yHighAxes[0], innerFrame: chartInnerFrame, lineModels: [lineModel2])
-        let chartPointsLineLayer4 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[0], yAxis: yHighAxes[1], innerFrame: chartInnerFrame, lineModels: [lineModel3])
-        
-        let lineLayers = [chartPointsLineLayer0, chartPointsLineLayer1, chartPointsLineLayer3, chartPointsLineLayer4]
+        // calculate coords space in the background to keep UI smooth
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            
+            let coordsSpace = ChartCoordsSpace(chartSettings: chartSettings, chartSize: viewFrame.size, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels)
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                
+                
+                let coordsSpace = ChartCoordsSpace(chartSettings: chartSettings, chartSize: viewFrame.size, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels)
+                let chartInnerFrame = coordsSpace.chartInnerFrame
+                
+                // create axes
+                let yLowAxes = coordsSpace.yLowAxes
+                let yHighAxes = coordsSpace.yHighAxes
+                let xLowAxes = coordsSpace.xLowAxes
+                let xHighAxes = coordsSpace.xHighAxes
+                
+                // create layers with references to axes
+                let lineModel0 = ChartLineModel(chartPoints: chartPoints0, lineColor: bgColors[0], animDuration: 1, animDelay: 0)
+                let lineModel1 = ChartLineModel(chartPoints: chartPoints1, lineColor: bgColors[1], animDuration: 1, animDelay: 0)
+                let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: bgColors[2], animDuration: 1, animDelay: 0)
+                let lineModel3 = ChartLineModel(chartPoints: chartPoints3, lineColor: bgColors[3], animDuration: 1, animDelay: 0)
+                
+                let chartPointsLineLayer0 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[0], yAxis: yLowAxes[1], innerFrame: chartInnerFrame, lineModels: [lineModel0])
+                let chartPointsLineLayer1 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[1], yAxis: yLowAxes[0], innerFrame: chartInnerFrame, lineModels: [lineModel1])
+                let chartPointsLineLayer3 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[1], yAxis: yHighAxes[0], innerFrame: chartInnerFrame, lineModels: [lineModel2])
+                let chartPointsLineLayer4 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[0], yAxis: yHighAxes[1], innerFrame: chartInnerFrame, lineModels: [lineModel3])
+                
+                let lineLayers = [chartPointsLineLayer0, chartPointsLineLayer1, chartPointsLineLayer3, chartPointsLineLayer4]
+                
+                let layers: [ChartLayer] = [
+                    yLowAxes[1], xLowAxes[0], lineLayers[0],
+                    yLowAxes[0], xLowAxes[1], lineLayers[1],
+                    yHighAxes[0], xHighAxes[1], lineLayers[2],
+                    yHighAxes[1], xHighAxes[0], lineLayers[3],
+                ]
+                
+                let chart = Chart(
+                    frame: viewFrame,
+                    layers: layers
+                )
+                
+                self.view.addSubview(chart.view)
+                self.chart = chart
+                
+            }
+        }
 
-        let layers: [ChartLayer] = [
-            yLowAxes[1], xLowAxes[0], lineLayers[0],
-            yLowAxes[0], xLowAxes[1], lineLayers[1],
-            yHighAxes[0], xHighAxes[1], lineLayers[2],
-            yHighAxes[1], xHighAxes[0], lineLayers[3],
-        ]
-        
-        let chart = Chart(
-            frame: viewFrame,
-            layers: layers
-        )
-        
-        self.view.addSubview(chart.view)
-        self.chart = chart
     }
     
     private func createChartPoint(x: CGFloat, _ y: CGFloat, _ labelColor: UIColor) -> ChartPoint {

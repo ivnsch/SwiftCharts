@@ -146,29 +146,38 @@ class MultipleAxesInteractiveExample: UIViewController {
             ChartAxisModel(axisValues: xValues2, lineColor: self.bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: self.bgColors[2], font: axisTitleFont))])
         ]
         
-        let coordsSpace = ChartCoordsSpace(chartSettings: chartSettings, chartSize: viewFrame.size, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels)
-        self.chartInnerFrame = coordsSpace.chartInnerFrame
+        // calculate coords space in the background to keep UI smooth
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            
+            let coordsSpace = ChartCoordsSpace(chartSettings: chartSettings, chartSize: self.viewFrame.size, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels)
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                
+                self.chartInnerFrame = coordsSpace.chartInnerFrame
+                
+                // create axes
+                self.yLowAxes = coordsSpace.yLowAxes
+                self.yHighAxes = coordsSpace.yHighAxes
+                self.xLowAxes = coordsSpace.xLowAxes
+                self.xHighAxes = coordsSpace.xHighAxes
+                
+                // create layers with references to axes
+                var guideLinesLayer0Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[0], linesWidth: ExamplesDefaults.guidelinesWidth)
+                self.guideLinesLayer0 = ChartGuideLinesDottedLayer(xAxis: self.xLowAxes[0], yAxis: self.yLowAxes[1], innerFrame: self.chartInnerFrame, settings: guideLinesLayer0Settings)
+                var guideLinesLayer1Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[1], linesWidth: ExamplesDefaults.guidelinesWidth)
+                self.guideLinesLayer1 = ChartGuideLinesDottedLayer(xAxis: self.xLowAxes[1], yAxis: self.yLowAxes[0], innerFrame: self.chartInnerFrame, settings: guideLinesLayer1Settings)
+                var guideLinesLayer3Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[2], linesWidth: ExamplesDefaults.guidelinesWidth)
+                self.guideLinesLayer2 = ChartGuideLinesDottedLayer(xAxis: self.xHighAxes[1], yAxis: self.yHighAxes[0], innerFrame: self.chartInnerFrame, settings: guideLinesLayer3Settings)
+                var guideLinesLayer4Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[3], linesWidth: ExamplesDefaults.guidelinesWidth)
+                self.guideLinesLayer3 = ChartGuideLinesDottedLayer(xAxis: self.xHighAxes[0], yAxis: self.yHighAxes[1], innerFrame: self.chartInnerFrame, settings: guideLinesLayer4Settings)
+                
+                self.showChart(lineAnimDuration: 1)
+            }
+        }
         
-        // create axes
-        self.yLowAxes = coordsSpace.yLowAxes
-        self.yHighAxes = coordsSpace.yHighAxes
-        self.xLowAxes = coordsSpace.xLowAxes
-        self.xHighAxes = coordsSpace.xHighAxes
-        
-        // create layers with references to axes
-        var guideLinesLayer0Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[0], linesWidth: ExamplesDefaults.guidelinesWidth)
-        self.guideLinesLayer0 = ChartGuideLinesDottedLayer(xAxis: xLowAxes[0], yAxis: yLowAxes[1], innerFrame: chartInnerFrame, settings: guideLinesLayer0Settings)
-        var guideLinesLayer1Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[1], linesWidth: ExamplesDefaults.guidelinesWidth)
-        self.guideLinesLayer1 = ChartGuideLinesDottedLayer(xAxis: xLowAxes[1], yAxis: yLowAxes[0], innerFrame: chartInnerFrame, settings: guideLinesLayer1Settings)
-        var guideLinesLayer3Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[2], linesWidth: ExamplesDefaults.guidelinesWidth)
-        self.guideLinesLayer2 = ChartGuideLinesDottedLayer(xAxis: xHighAxes[1], yAxis: yHighAxes[0], innerFrame: chartInnerFrame, settings: guideLinesLayer3Settings)
-        var guideLinesLayer4Settings = ChartGuideLinesDottedLayerSettings(linesColor: bgColors[3], linesWidth: ExamplesDefaults.guidelinesWidth)
-        self.guideLinesLayer3 = ChartGuideLinesDottedLayer(xAxis: xHighAxes[0], yAxis: yHighAxes[1], innerFrame: chartInnerFrame, settings: guideLinesLayer4Settings)
         
         self.view.addSubview(self.createSelectionView())
         self.view.addSubview(self.createShowGuidesView())
-        
-        self.showChart(lineAnimDuration: 1)
     }
     
     private func createLineLayers(#animDuration: Float) -> [ChartPointsLineLayer<ChartPoint>] {
