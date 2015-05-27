@@ -42,6 +42,7 @@ Layer based charts library for iOS
 - Cubic line
 - Complex interactivity support
 - Easy extensibility
+- **Easy to use**: no learning curve, no complicated settings, no mess with delegates - just assemble chart using well defined components.
 
 Swift 1.2, iOS 7/8
 
