@@ -74,7 +74,12 @@ class CoordsExample: UIViewController {
         let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
         
         let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
-            return ChartPointCircleView(center: chartPointModel.screenLoc, size: CGSizeMake(20, 20), settings: ChartPointCircleViewSettings(animDuration: 0.5))
+            let circleView = ChartPointEllipseView(center: chartPointModel.screenLoc, diameter: 24)
+            circleView.animDuration = 1.5
+            circleView.fillColor = UIColor.whiteColor()
+            circleView.borderWidth = 5
+            circleView.borderColor = UIColor.blueColor()
+            return circleView
         }
         let chartPointsCircleLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: circleViewGenerator, displayDelay: 0, delayBetweenItems: 0.05)
         

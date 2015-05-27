@@ -113,58 +113,19 @@ class BubbleExample: UIViewController {
                 let diameter = chartPointModel.chartPoint.diameterScalar * diameterFactor
                 
                 let rect = CGRectMake(chartPointModel.screenLoc.x - diameter / 2, chartPointModel.screenLoc.y - diameter / 2, diameter, diameter)
-                return BubbleView(frame: rect, fillColor: chartPointModel.chartPoint.bgColor, borderColor: UIColor.blackColor().colorWithAlphaComponent(0.6), animDelay: Float(chartPointModel.index) * 0.2, animDuration: 1.2)
-                
+                let circleView = ChartPointEllipseView(center: chartPointModel.screenLoc, diameter: diameter)
+                circleView.fillColor = chartPointModel.chartPoint.bgColor
+                circleView.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
+                circleView.borderWidth = 1
+                circleView.animDelay = Float(chartPointModel.index) * 0.2
+                circleView.animDuration = 1.2
+                circleView.animDamping = 0.4
+                circleView.animInitSpringVelocity = 0.5
+                return circleView
             })
             
         } else {
             return ChartPointsBubbleLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: chartInnerFrame, chartPoints: chartPoints)
-        }
-    }
-    
-    class BubbleView: UIView {
-     
-        let fillColor: UIColor
-        let borderColor: UIColor
-        let borderWidth: CGFloat
-        let animDelay: Float
-        let animDuration: Float
-        
-        init(frame: CGRect, fillColor: UIColor, borderColor: UIColor, borderWidth: CGFloat = 1, animDelay: Float, animDuration: Float) {
-            self.fillColor = fillColor
-            self.borderColor = borderColor
-            self.borderWidth = borderWidth
-            self.animDelay = animDelay
-            self.animDuration = animDuration
-            
-            super.init(frame: CGRectInset(frame, -borderWidth, -borderWidth))
-            
-            self.backgroundColor = UIColor.clearColor()
-        }
-
-        required init(coder aDecoder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        override func drawRect(rect: CGRect) {
-            let context = UIGraphicsGetCurrentContext()
-
-            CGContextSetLineWidth(context, self.borderWidth)
-            CGContextSetStrokeColorWithColor(context, self.borderColor.CGColor)
-            CGContextSetFillColorWithColor(context, self.fillColor.CGColor)
-            let circleRect = (CGRectMake(self.borderWidth, self.borderWidth, self.frame.size.width - (self.borderWidth * 2), self.frame.size.height - (self.borderWidth * 2)))
-            CGContextFillEllipseInRect(context, circleRect)
-            CGContextStrokeEllipseInRect(context, circleRect)
-        }
-        
-        override func didMoveToSuperview() {
-            self.transform = CGAffineTransformMakeScale(0.1, 0.1)
-            self.alpha = 0
-            
-            UIView.animateWithDuration(NSTimeInterval(self.animDuration), delay: NSTimeInterval(self.animDelay), usingSpringWithDamping: 0.4, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.allZeros, animations: { () -> Void in
-                self.transform = CGAffineTransformMakeScale(1, 1)
-                self.alpha = 1
-            }, completion: nil)
         }
     }
 

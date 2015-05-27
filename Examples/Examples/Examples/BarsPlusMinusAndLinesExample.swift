@@ -101,7 +101,10 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         
         let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             let color = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1)
-            return ChartPointCircleView(center: chartPointModel.screenLoc, size: CGSizeMake(7, 7), settings: ChartPointCircleViewSettings(animDuration: 0.3, cornerRadius: 3, borderColor: color, fillColor: color))
+            let circleView = ChartPointEllipseView(center: chartPointModel.screenLoc, diameter: 6)
+            circleView.animDuration = 0.5
+            circleView.fillColor = color
+            return circleView
         }
         let lineCirclesLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: lineChartPoints, viewGenerator: circleViewGenerator, displayDelay: 1.5, delayBetweenItems: 0.05)
         

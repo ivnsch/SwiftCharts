@@ -95,7 +95,7 @@
 		EBC533721B00F02600D10448 /* ChartAreasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5333D1B00F02600D10448 /* ChartAreasView.swift */; };
 		EBC533731B00F02600D10448 /* ChartCandleStickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5333E1B00F02600D10448 /* ChartCandleStickView.swift */; };
 		EBC533741B00F02600D10448 /* ChartLinesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5333F1B00F02600D10448 /* ChartLinesView.swift */; };
-		EBC533751B00F02600D10448 /* ChartPointCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC533401B00F02600D10448 /* ChartPointCircleView.swift */; };
+		EBC533751B00F02600D10448 /* ChartPointEllipseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC533401B00F02600D10448 /* ChartPointEllipseView.swift */; };
 		EBC533761B00F02600D10448 /* ChartPointTargetingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC533411B00F02600D10448 /* ChartPointTargetingView.swift */; };
 		EBC533771B00F02600D10448 /* ChartPointTextCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC533421B00F02600D10448 /* ChartPointTextCircleView.swift */; };
 		EBC533791B00F02600D10448 /* CubicLinePathGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC533441B00F02600D10448 /* CubicLinePathGenerator.swift */; };
@@ -210,7 +210,7 @@
 		EBC5333D1B00F02600D10448 /* ChartAreasView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAreasView.swift; sourceTree = "<group>"; };
 		EBC5333E1B00F02600D10448 /* ChartCandleStickView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartCandleStickView.swift; sourceTree = "<group>"; };
 		EBC5333F1B00F02600D10448 /* ChartLinesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartLinesView.swift; sourceTree = "<group>"; };
-		EBC533401B00F02600D10448 /* ChartPointCircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointCircleView.swift; sourceTree = "<group>"; };
+		EBC533401B00F02600D10448 /* ChartPointEllipseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointEllipseView.swift; sourceTree = "<group>"; };
 		EBC533411B00F02600D10448 /* ChartPointTargetingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointTargetingView.swift; sourceTree = "<group>"; };
 		EBC533421B00F02600D10448 /* ChartPointTextCircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointTextCircleView.swift; sourceTree = "<group>"; };
 		EBC533441B00F02600D10448 /* CubicLinePathGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubicLinePathGenerator.swift; sourceTree = "<group>"; };
@@ -431,7 +431,7 @@
 				EBC5333D1B00F02600D10448 /* ChartAreasView.swift */,
 				EBC5333E1B00F02600D10448 /* ChartCandleStickView.swift */,
 				EBC5333F1B00F02600D10448 /* ChartLinesView.swift */,
-				EBC533401B00F02600D10448 /* ChartPointCircleView.swift */,
+				EBC533401B00F02600D10448 /* ChartPointEllipseView.swift */,
 				EBC533411B00F02600D10448 /* ChartPointTargetingView.swift */,
 				EBC533421B00F02600D10448 /* ChartPointTextCircleView.swift */,
 				EBFA8BE11B052E02008A7C36 /* ChartPointViewBar.swift */,
@@ -586,7 +586,7 @@
 				EB5DB6901AFD08AD00569E59 /* CandleStickInteractiveExample.swift in Sources */,
 				EB5DB6921AFD08AD00569E59 /* CubicLinesExample.swift in Sources */,
 				EB5DC0DE1B086F93001FD5A8 /* ChartPointsScatterLayer.swift in Sources */,
-				EBC533751B00F02600D10448 /* ChartPointCircleView.swift in Sources */,
+				EBC533751B00F02600D10448 /* ChartPointEllipseView.swift in Sources */,
 				EBC533771B00F02600D10448 /* ChartPointTextCircleView.swift in Sources */,
 				EBC533701B00F02600D10448 /* ChartShowCoordsLinesLayer.swift in Sources */,
 				EB5515A01B0B9B7B003AD19C /* ChartGroupedBarsLayer.swift in Sources */,
