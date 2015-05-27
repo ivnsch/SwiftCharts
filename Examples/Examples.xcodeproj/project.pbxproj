@@ -91,7 +91,7 @@
 		EBC5336E1B00F02600D10448 /* ChartPointsTrackerLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC533381B00F02600D10448 /* ChartPointsTrackerLayer.swift */; };
 		EBC5336F1B00F02600D10448 /* ChartPointsViewsLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC533391B00F02600D10448 /* ChartPointsViewsLayer.swift */; };
 		EBC533701B00F02600D10448 /* ChartShowCoordsLinesLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5333A1B00F02600D10448 /* ChartShowCoordsLinesLayer.swift */; };
-		EBC533711B00F02600D10448 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5333C1B00F02600D10448 /* BubbleView.swift */; };
+		EBC533711B00F02600D10448 /* InfoBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5333C1B00F02600D10448 /* InfoBubble.swift */; };
 		EBC533721B00F02600D10448 /* ChartAreasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5333D1B00F02600D10448 /* ChartAreasView.swift */; };
 		EBC533731B00F02600D10448 /* ChartCandleStickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5333E1B00F02600D10448 /* ChartCandleStickView.swift */; };
 		EBC533741B00F02600D10448 /* ChartLinesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5333F1B00F02600D10448 /* ChartLinesView.swift */; };
@@ -206,7 +206,7 @@
 		EBC533381B00F02600D10448 /* ChartPointsTrackerLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointsTrackerLayer.swift; sourceTree = "<group>"; };
 		EBC533391B00F02600D10448 /* ChartPointsViewsLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointsViewsLayer.swift; sourceTree = "<group>"; };
 		EBC5333A1B00F02600D10448 /* ChartShowCoordsLinesLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartShowCoordsLinesLayer.swift; sourceTree = "<group>"; };
-		EBC5333C1B00F02600D10448 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		EBC5333C1B00F02600D10448 /* InfoBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InfoBubble.swift; path = ../../../SwiftCharts/Views/InfoBubble.swift; sourceTree = "<group>"; };
 		EBC5333D1B00F02600D10448 /* ChartAreasView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAreasView.swift; sourceTree = "<group>"; };
 		EBC5333E1B00F02600D10448 /* ChartCandleStickView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartCandleStickView.swift; sourceTree = "<group>"; };
 		EBC5333F1B00F02600D10448 /* ChartLinesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartLinesView.swift; sourceTree = "<group>"; };
@@ -322,6 +322,7 @@
 				EB5DC0DF1B08739C001FD5A8 /* ScatterExample.swift */,
 				EB5DC0D51B06995A001FD5A8 /* StackedBarsExample.swift */,
 				EB5515A71B0E23BE003AD19C /* GroupedAndStackedBarsExample.swift */,
+				EBC5333C1B00F02600D10448 /* InfoBubble.swift */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -427,7 +428,6 @@
 		EBC5333B1B00F02600D10448 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EBC5333C1B00F02600D10448 /* BubbleView.swift */,
 				EBC5333D1B00F02600D10448 /* ChartAreasView.swift */,
 				EBC5333E1B00F02600D10448 /* ChartCandleStickView.swift */,
 				EBC5333F1B00F02600D10448 /* ChartLinesView.swift */,
@@ -593,7 +593,7 @@
 				EB5DC0D61B06995A001FD5A8 /* StackedBarsExample.swift in Sources */,
 				EB5515A81B0E23BE003AD19C /* GroupedAndStackedBarsExample.swift in Sources */,
 				EBC5336D1B00F02600D10448 /* ChartPointsSingleViewLayer.swift in Sources */,
-				EBC533711B00F02600D10448 /* BubbleView.swift in Sources */,
+				EBC533711B00F02600D10448 /* InfoBubble.swift in Sources */,
 				EBC533611B00F02600D10448 /* ChartLineDrawer.swift in Sources */,
 				EBFA8BE41B054425008A7C36 /* BarsExample.swift in Sources */,
 				EBC533681B00F02600D10448 /* ChartPointsAreaLayer.swift in Sources */,

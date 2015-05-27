@@ -80,7 +80,7 @@ class AreasExample: UIViewController {
                 
                 let frame = CGRectMake(x, screenLoc.y - (h + (Env.iPad ? 30 : 12)), w, h)
                 
-                let bubbleView = BubbleView(frame: frame, arrowWidth: Env.iPad ? 40 : 28, arrowHeight: Env.iPad ? 20 : 14, bgColor: UIColor.blackColor(), arrowX: screenLoc.x - x)
+                let bubbleView = InfoBubble(frame: frame, arrowWidth: Env.iPad ? 40 : 28, arrowHeight: Env.iPad ? 20 : 14, bgColor: UIColor.blackColor(), arrowX: screenLoc.x - x)
                 chart.addSubview(bubbleView)
                 
                 bubbleView.transform = CGAffineTransformConcat(CGAffineTransformMakeScale(0, 0), CGAffineTransformMakeTranslation(0, 100))
