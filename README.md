@@ -3,7 +3,7 @@
 [![Version](https://img.shields.io/cocoapods/v/SwiftCharts.svg?style=flat)](http://cocoadocs.org/docsets/Charts)
 [![License](https://img.shields.io/cocoapods/l/SwiftCharts.svg?style=flat)](http://cocoadocs.org/docsets/Charts)
 
-Layer based charts library for iOS
+Easy to use and highly customizable charts library for iOS
 
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM) (this will be updated only on new tags - check the [changelog](CHANGELOG.md) for possible new examples in master)
 
