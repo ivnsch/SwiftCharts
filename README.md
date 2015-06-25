@@ -5,6 +5,24 @@
 
 Easy to use and highly customizable charts library for iOS
 
+##### Features:
+- Bars - plain, stacked, grouped, horizontal, vertical
+- Scatter
+- Line / Multiple lines
+- Areas
+- Bubble
+- Multiple axis
+- Custom units
+- Custom views
+- Multiple labels (x axis)
+- Candlestick
+- Cubic line
+- Complex interactivity support
+- Easy extensibility
+- **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
+
+Swift 1.2, iOS 7/8
+
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM) (this will be updated only on new tags - check the [changelog](CHANGELOG.md) for possible new examples in master)
 
 ##### Screenshots:
@@ -28,23 +46,6 @@ Easy to use and highly customizable charts library for iOS
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0040.jpeg)
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0041.jpeg)
 
-##### Feature list:
-- Bars - plain, stacked, grouped, horizontal, vertical
-- Scatter
-- Line / Multiple lines
-- Areas
-- Bubble
-- Multiple axis
-- Custom units
-- Custom views
-- Multiple labels (x axis)
-- Candlestick
-- Cubic line
-- Complex interactivity support
-- Easy extensibility
-- **Easy to use**: no learning curve, no complicated settings, no mess with delegates - just assemble chart using well defined components.
-
-Swift 1.2, iOS 7/8
 
 ##### Installation
 
@@ -154,6 +155,12 @@ This library is rather object oriented, but it makes extensive use of functional
 ##### Version:
 
 0.2.1
+
+##### Contributing
+
+1. Fork
+2. Commit changes to a branch in your fork
+3. Push your code and make a pull request
 
 ##### Created By:
 
