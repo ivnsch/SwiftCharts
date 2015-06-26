@@ -21,7 +21,7 @@ Easy to use and highly customizable charts library for iOS
 - Easy extensibility
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
-Swift 1.2, iOS 7/8
+Swift 1.2, iOS 7/8. Swift 2.0 branch. So far everything seems to be working in iOS9 (beta 2), except stacked bars. Fix coming soon.
 
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM) (this will be updated only on new tags - check the [changelog](CHANGELOG.md) for possible new examples in master)
 
@@ -53,6 +53,11 @@ Add to your podfile:
 ```ruby
 use_frameworks!
 pod 'SwiftCharts', '~> 0.2'
+```
+Or to use the Swift 2.0 branch:
+```ruby
+use_frameworks!
+pod 'AFNetworking', :git => 'https://github.com/i-schuetz/SwiftCharts.git', :branch => 'swift2.0'
 ```
 
 And then:
@@ -142,6 +147,10 @@ There's a [hello world](Examples/Examples/Examples/HelloWorld.swift) included in
 
 This library is rather object oriented, but it makes extensive use of functional concepts like high order functions and (preference for) immutability leading to safer code and better maintainability.
 
+
+####Note on performance:
+
+If you have a lot of axis labels in your chart it may be necessary to do the calculation of the coordinate space in the background. There can be a small delay which is noticeable during transitions or scrolling. See ScrollExample or MultipleAxesExample example for this.
 
 ####Coming in the next releases:
 
