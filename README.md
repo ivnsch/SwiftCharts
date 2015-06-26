@@ -163,7 +163,7 @@ If you have a lot of axis labels in your chart it may be necessary to do the cal
 
 ##### Version:
 
-0.2.1
+0.2.2
 
 ##### Contributing
 
