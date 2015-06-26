@@ -13,7 +13,7 @@ public class ChartPoint: Equatable {
     public let x: ChartAxisValue
     public let y: ChartAxisValue
     
-    public init(x: ChartAxisValue, y: ChartAxisValue) {
+    required public init(x: ChartAxisValue, y: ChartAxisValue) {
         self.x = x
         self.y = y
     }

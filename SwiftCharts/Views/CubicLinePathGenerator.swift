@@ -13,7 +13,7 @@ public class CubicLinePathGenerator: ChartLinesViewPathGenerator {
     public init() {}
     
     // src: http://stackoverflow.com/a/29876400/930450
-    public func generatePath(#points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
+    public func generatePath(points points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
         var cp1: CGPoint
         var cp2: CGPoint
         
@@ -26,7 +26,7 @@ public class CubicLinePathGenerator: ChartLinesViewPathGenerator {
         var tensionBezier2: CGFloat = 0.3
         
         var previousPoint1: CGPoint = CGPointZero
-        var previousPoint2: CGPoint
+//        var previousPoint2: CGPoint
         
         path.moveToPoint(points.first!)
         
@@ -80,7 +80,7 @@ public class CubicLinePathGenerator: ChartLinesViewPathGenerator {
             path.addCurveToPoint(p2, controlPoint1: cp1, controlPoint2: cp2)
             
             previousPoint1 = p1;
-            previousPoint2 = p2;
+//            previousPoint2 = p2;
         }
         
         return path

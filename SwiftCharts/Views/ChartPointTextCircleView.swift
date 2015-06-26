@@ -52,7 +52,7 @@ public class ChartPointTextCircleView: UILabel {
         
         super.didMoveToSuperview()
         
-        UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions.allZeros, animations: {
+        UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
             let w: CGFloat = self.frame.size.width
             let h: CGFloat = self.frame.size.height
             let frame = CGRectMake(self.targetCenter.x - (w/2), self.targetCenter.y - (h/2), w, h)
@@ -65,7 +65,7 @@ public class ChartPointTextCircleView: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override public func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         viewTapped?(self)
     }
 }

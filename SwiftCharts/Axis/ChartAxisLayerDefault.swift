@@ -120,18 +120,18 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     required init(p1: CGPoint, p2: CGPoint, axisValues: [ChartAxisValue], axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)  {
         self.p1 = p1
         self.p2 = p2
-        self.axisValues = axisValues.sorted {(ca1, ca2) -> Bool in // ensure sorted
+        self.axisValues = axisValues.sort {(ca1, ca2) -> Bool in // ensure sorted
             ca1.scalar < ca2.scalar
         }
         self.axisTitleLabels = axisTitleLabels
         self.settings = settings
     }
     
-    func chartInitialized(#chart: Chart) {
+    func chartInitialized(chart chart: Chart) {
         self.initDrawers()
     }
 
-    func chartViewDrawing(#context: CGContextRef, chart: Chart) {
+    func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         if self.settings.isAxisLineVisible {
             if let lineDrawer = self.lineDrawer {
                 CGContextSetLineWidth(context, CGFloat(self.settings.axisStrokeWidth))
@@ -152,15 +152,15 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
     
-    func generateLineDrawer(#offset: CGFloat) -> ChartLineDrawer {
+    func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {
         fatalError("override")
     }
     
-    func generateAxisTitleLabelsDrawers(#offset: CGFloat) -> [ChartLabelDrawer] {
+    func generateAxisTitleLabelsDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
         fatalError("override")
     }
     
-    func generateLabelDrawers(#offset: CGFloat) -> [ChartLabelDrawer] {
+    func generateLabelDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
         fatalError("override")
     }
 
@@ -172,7 +172,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         if let firstScalar = self.axisValues.first?.scalar {
             return self.screenLocForScalar(scalar, firstAxisScalar: firstScalar)
         } else {
-            println("Warning: requesting empty axis for screen location")
+            print("Warning: requesting empty axis for screen location")
             return 0
         }
     }

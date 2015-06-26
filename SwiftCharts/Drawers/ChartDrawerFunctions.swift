@@ -8,7 +8,7 @@
 
 import UIKit
 
-func ChartDrawLine(#context: CGContextRef, #p1: CGPoint, #p2: CGPoint, #width: CGFloat, #color: UIColor) {
+func ChartDrawLine(context context: CGContextRef, p1: CGPoint, p2: CGPoint, width: CGFloat, color: UIColor) {
     CGContextSetStrokeColorWithColor(context, color.CGColor)
     CGContextSetLineWidth(context, width)
     CGContextMoveToPoint(context, p1.x, p1.y)
@@ -16,7 +16,7 @@ func ChartDrawLine(#context: CGContextRef, #p1: CGPoint, #p2: CGPoint, #width: C
     CGContextStrokePath(context)
 }
 
-func ChartDrawDottedLine(#context: CGContextRef, #p1: CGPoint, #p2: CGPoint, #width: CGFloat, #color: UIColor, #dotWidth: CGFloat, #dotSpacing: CGFloat) {
+func ChartDrawDottedLine(context context: CGContextRef, p1: CGPoint, p2: CGPoint, width: CGFloat, color: UIColor, dotWidth: CGFloat, dotSpacing: CGFloat) {
     CGContextSetStrokeColorWithColor(context, color.CGColor)
     CGContextSetLineWidth(context, width)
     CGContextSetLineDash(context, 0, [dotWidth, dotSpacing], 2)

@@ -24,7 +24,7 @@ public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
     }
     
-    override func display(#chart: Chart) {
+    override func display(chart chart: Chart) {
         var points = self.chartPointScreenLocs
         
         let origin = self.innerFrame.origin

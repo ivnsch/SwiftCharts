@@ -14,7 +14,7 @@ class StackedBarsExample: UIViewController {
     
     let sideSelectorHeight: CGFloat = 50
 
-    private func chart(#horizontal: Bool) -> Chart {
+    private func chart(horizontal horizontal: Bool) -> Chart {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
         let color0 = UIColor.grayColor().colorWithAlphaComponent(0.6)
@@ -80,7 +80,7 @@ class StackedBarsExample: UIViewController {
         )
     }
     
-    private func showChart(#horizontal: Bool) {
+    private func showChart(horizontal horizontal: Bool) {
         self.chart?.clearView()
         
         let chart = self.chart(horizontal: horizontal)
@@ -137,10 +137,10 @@ class StackedBarsExample: UIViewController {
         override func didMoveToSuperview() {
             let views = [self.horizontal, self.vertical]
             for v in views {
-                v.setTranslatesAutoresizingMaskIntoConstraints(false)
+                v.translatesAutoresizingMaskIntoConstraints = false
             }
             
-            let namedViews = Array(enumerate(views)).map{index, view in
+            let namedViews = Array(views.enumerate()).map{index, view in
                 ("v\(index)", view)
             }
             
@@ -155,9 +155,9 @@ class StackedBarsExample: UIViewController {
                 "\(str)-(\(buttonsSpace))-[\(tuple.0)]"
             }
             
-            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|[\($0.0)]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)}
+            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|[\($0.0)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
             
-            self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
+            self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
                 + vConstraits)
         }
         

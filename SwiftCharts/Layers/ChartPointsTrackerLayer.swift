@@ -30,7 +30,7 @@ public class ChartPointsTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
     }
     
-    override func display(#chart: Chart) {
+    override func display(chart chart: Chart) {
         let view = TrackerView(frame: chart.bounds, updateFunc: {[weak self] location in
             self?.locChangedFunc(location)
             self?.currentPositionLineOverlay.center.x = location.x
@@ -59,15 +59,15 @@ private class TrackerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        let touch = event.allTouches()?.first! as! UITouch
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch = touches.first!
         let location = touch.locationInView(self)
         
         self.updateFunc?(location)
     }
     
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
-        let touch = event.allTouches()?.first! as! UITouch
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch = touches.first!
         let location = touch.locationInView(self)
         
         self.updateFunc?(location)

@@ -29,12 +29,12 @@ public class ChartAreasView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func generateAreaPath(#points: [CGPoint]) -> UIBezierPath {
+    private func generateAreaPath(points points: [CGPoint]) -> UIBezierPath {
         
         let progressline = UIBezierPath()
         progressline.lineWidth = 1.0
-        progressline.lineCapStyle = kCGLineCapRound
-        progressline.lineJoinStyle = kCGLineJoinRound
+        progressline.lineCapStyle = .Round
+        progressline.lineJoinStyle = .Round
         
         if let p = points.first {
             progressline.moveToPoint(p)
@@ -50,7 +50,7 @@ public class ChartAreasView: UIView {
         return progressline
     }
     
-    private func show(#path: UIBezierPath) {
+    private func show(path path: UIBezierPath) {
         let areaLayer = CAShapeLayer()
         areaLayer.lineJoin = kCALineJoinBevel
         areaLayer.fillColor   = self.color.CGColor
@@ -86,7 +86,7 @@ public class ChartAreasView: UIView {
             revealAnimation.fillMode = kCAFillModeForwards
             
             revealAnimation.beginTime = CACurrentMediaTime() + CFTimeInterval(self.animDelay)
-            self.layer.mask.addAnimation(revealAnimation, forKey: "revealAnimation")
+            self.layer.mask?.addAnimation(revealAnimation, forKey: "revealAnimation")
         }
     }
 }

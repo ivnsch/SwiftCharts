@@ -17,18 +17,18 @@ public class ChartPointsSingleViewLayer<T: ChartPoint, U: UIView>: ChartPointsVi
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
 
-    override func display(#chart: Chart) {
+    override func display(chart chart: Chart) {
         // skip adding views - this layer manages its own list
     }
     
-    public func showView(#chartPoint: T, chart: Chart) {
+    public func showView(chartPoint chartPoint: T, chart: Chart) {
         
         for view in self.addedViews {
             view.removeFromSuperview()
         }
         
         let screenLoc = self.chartPointScreenLoc(chartPoint)
-        let index = find(self.chartPointsModels.map{$0.chartPoint}, chartPoint)!
+        let index = self.chartPointsModels.map{$0.chartPoint}.indexOf(chartPoint)!
         let model: ChartPointLayerModel = ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: screenLoc)
         if let view = self.viewGenerator(chartPointModel: model, layer: self, chart: chart) {
             self.addedViews.append(view)

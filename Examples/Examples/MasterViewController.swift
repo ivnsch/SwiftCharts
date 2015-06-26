@@ -60,7 +60,8 @@ class MasterViewController: UITableViewController {
         if let split = self.splitViewController {
             
             let controllers = split.viewControllers
-            self.detailViewController = controllers[controllers.count-1].topViewController as? DetailViewController
+            
+            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
             
             let example = self.examples[1]
             self.detailViewController?.detailItem = example.0
@@ -81,7 +82,7 @@ class MasterViewController: UITableViewController {
 
             }
             
-            if let indexPath = self.tableView.indexPathForSelectedRow() {
+            if let indexPath = self.tableView.indexPathForSelectedRow {
                 showExample(indexPath.row)
             } else {
                 showExample(0)
@@ -110,7 +111,7 @@ class MasterViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         cell.textLabel!.text = examples[indexPath.row].1
         cell.textLabel!.font = ExamplesDefaults.fontWithSize(Env.iPad ? 22 : 16)
         return cell

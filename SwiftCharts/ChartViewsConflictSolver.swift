@@ -12,5 +12,5 @@ import UIKit
 public class ChartViewsConflictSolver<T: ChartPoint, U: UIView> {
     
     // Reposition views in case of overlapping
-    func solveConflicts(#views: [ChartPointsViewsLayer<T, U>.ViewWithChartPoint]) {}
+    func solveConflicts(views views: [ChartPointsViewsLayer<T, U>.ViewWithChartPoint]) {}
 }
