@@ -37,7 +37,7 @@ public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T
         }
     }
 
-    override public func chartViewDrawing(#context: CGContextRef, chart: Chart) {
+    override public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         
         for screenItem in self.screenItems {
             

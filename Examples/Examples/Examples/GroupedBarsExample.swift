@@ -15,7 +15,7 @@ class GroupedBarsExample: UIViewController {
 
     private let dirSelectorHeight: CGFloat = 50
 
-    private func barsChart(#horizontal: Bool) -> Chart {
+    private func barsChart(horizontal horizontal: Bool) -> Chart {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
         let groupsData: [(title: String, [(min: CGFloat, max: CGFloat)])] = [
@@ -43,18 +43,18 @@ class GroupedBarsExample: UIViewController {
         
         let groupColors = [UIColor.redColor().colorWithAlphaComponent(0.6), UIColor.blueColor().colorWithAlphaComponent(0.6), UIColor.greenColor().colorWithAlphaComponent(0.6)]
         
-        let groups: [ChartPointsBarGroup] = Array(enumerate(groupsData)).map {index, entry in
+        let groups: [ChartPointsBarGroup] = Array(groupsData.enumerate()).map {index, entry in
             let constant = ChartAxisValueFloat(CGFloat(index))
-            let bars = Array(enumerate(entry.1)).map {index, tuple in
+            let bars = Array(entry.1.enumerate()).map {index, tuple in
                 ChartBarModel(constant: constant, axisValue1: ChartAxisValueFloat(tuple.min), axisValue2: ChartAxisValueFloat(tuple.max), bgColor: groupColors[index])
             }
             return ChartPointsBarGroup(constant: constant, bars: bars)
         }
         
-        let (axisValues1: [ChartAxisValue], axisValues2: [ChartAxisValue]) = (
+        let (axisValues1, axisValues2): ([ChartAxisValue], [ChartAxisValue]) = (
             Array(stride(from: 0, through: 60, by: 5)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
             [ChartAxisValueString(order: -1)] +
-            Array(enumerate(groupsData)).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+            Array(groupsData.enumerate()).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
             [ChartAxisValueString(order: groupsData.count)]
         )
         let (xValues, yValues) = horizontal ? (axisValues1, axisValues2) : (axisValues2, axisValues1)
@@ -68,7 +68,7 @@ class GroupedBarsExample: UIViewController {
         
         let groupsLayer = ChartGroupedPlainBarsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barSpacing: 2, groupSpacing: 25, animDuration: 0.5)
         
-        var settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, axis: horizontal ? .X : .Y, settings: settings)
         
         return Chart(
@@ -83,7 +83,7 @@ class GroupedBarsExample: UIViewController {
     }
     
     
-    private func showChart(#horizontal: Bool) {
+    private func showChart(horizontal horizontal: Bool) {
         self.chart?.clearView()
         
         let chart = self.barsChart(horizontal: horizontal)
@@ -139,10 +139,10 @@ class GroupedBarsExample: UIViewController {
         override func didMoveToSuperview() {
             let views = [self.horizontal, self.vertical]
             for v in views {
-                v.setTranslatesAutoresizingMaskIntoConstraints(false)
+                v.translatesAutoresizingMaskIntoConstraints = false
             }
             
-            let namedViews = Array(enumerate(views)).map{index, view in
+            let namedViews = Array(views.enumerate()).map{index, view in
                 ("v\(index)", view)
             }
             
@@ -157,9 +157,9 @@ class GroupedBarsExample: UIViewController {
                 "\(str)-(\(buttonsSpace))-[\(tuple.0)]"
             }
             
-            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|[\($0.0)]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)}
+            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|[\($0.0)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
             
-            self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
+            self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
                 + vConstraits)
         }
         

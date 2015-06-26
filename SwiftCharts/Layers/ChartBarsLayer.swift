@@ -119,7 +119,7 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
     }
     
-    public override func chartInitialized(#chart: Chart) {
+    public override func chartInitialized(chart chart: Chart) {
         
         
         let barsGenerator = ChartBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: self.barWidth, barSpacing: self.barSpacing)

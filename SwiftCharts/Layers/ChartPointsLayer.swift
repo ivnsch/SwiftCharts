@@ -31,7 +31,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }
     
     public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], displayDelay: Float = 0) {
-        self.chartPointsModels = Array(enumerate(chartPoints)).map {index, chartPoint in
+        self.chartPointsModels = Array(chartPoints.enumerate()).map {index, chartPoint in
             let screenLoc = CGPointMake(xAxis.screenLocForScalar(chartPoint.x.scalar), yAxis.screenLocForScalar(chartPoint.y.scalar))
             return ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: screenLoc)
         }
@@ -42,7 +42,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }
 
 
-    override public func chartInitialized(#chart: Chart) {
+    override public func chartInitialized(chart chart: Chart) {
         if self.displayDelay == 0 {
             self.display(chart: chart)
         } else {
@@ -52,13 +52,13 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         }
     }
     
-    func display(#chart: Chart) {}
+    func display(chart chart: Chart) {}
     
     public func chartPointScreenLoc(chartPoint: ChartPoint) -> CGPoint {
         return self.modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
     }
     
-    public func modelLocToScreenLoc(#x: CGFloat, y: CGFloat) -> CGPoint {
+    public func modelLocToScreenLoc(x x: CGFloat, y: CGFloat) -> CGPoint {
         return CGPointMake(
             self.xAxis.screenLocForScalar(x),
             self.yAxis.screenLocForScalar(y))
@@ -87,7 +87,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         return self.minAxisScreenSpace{$0.y}
     }()
     
-    private func minAxisScreenSpace(#dimPicker: (CGPoint) -> CGFloat) -> CGFloat {
+    private func minAxisScreenSpace(dimPicker dimPicker: (CGPoint) -> CGFloat) -> CGFloat {
         return self.chartPointsModels.reduce((CGFloat.max, -CGFloat.max)) {tuple, viewWithChartPoint in
             let minSpace = tuple.0
             let previousScreenLoc = tuple.1
@@ -95,7 +95,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         }.0
     }
     
-    private func chartPointsWith(#filter: (CGPoint) -> Bool) -> [T] {
+    private func chartPointsWith(filter filter: (CGPoint) -> Bool) -> [T] {
         return self.chartPointsModels.reduce(Array<T>()) {u, chartPointModel in
             let chartPoint = chartPointModel.chartPoint
             if filter(self.chartPointScreenLoc(chartPoint)) {

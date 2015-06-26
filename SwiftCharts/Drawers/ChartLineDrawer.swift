@@ -19,7 +19,7 @@ class ChartLineDrawer: ChartContextDrawer {
         self.color = color
     }
     
-    override func draw(#context: CGContextRef, chart: Chart) {
+    override func draw(context context: CGContextRef, chart: Chart) {
         ChartDrawLine(context: context, p1: self.p1, p2: self.p2, width: 0.2, color: self.color)
     }
 }

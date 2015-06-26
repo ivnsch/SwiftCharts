@@ -72,8 +72,6 @@ class MultipleAxesExample: UIViewController {
         let xValues2 = chartPoints2.map{$0.x}
         let xValues3 = chartPoints3.map{$0.x}
         
-        let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
-        let chartBounds = CGRectMake(0, 0, chartFrame.width, chartFrame.height)
         let chartSettings = ExamplesDefaults.chartSettings
         
         
@@ -114,8 +112,6 @@ class MultipleAxesExample: UIViewController {
             
             dispatch_async(dispatch_get_main_queue()) {
                 
-                
-                let coordsSpace = ChartCoordsSpace(chartSettings: chartSettings, chartSize: viewFrame.size, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels)
                 let chartInnerFrame = coordsSpace.chartInnerFrame
                 
                 // create axes

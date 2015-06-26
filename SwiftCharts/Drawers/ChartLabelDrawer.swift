@@ -52,7 +52,7 @@ public class ChartLabelDrawer: ChartContextDrawer {
         self.transform = self.transform(screenLoc, settings: settings)
     }
 
-    override func draw(#context: CGContextRef, chart: Chart) {
+    override func draw(context context: CGContextRef, chart: Chart) {
         let labelSize = self.size
         
         let labelX = self.screenLoc.x
@@ -119,7 +119,6 @@ public class ChartLabelDrawer: ChartContextDrawer {
                 // when the labels are diagonal we have to shift a little so they look aligned with axis value. We align origin of new rect with the axis value
                 if settings.shiftXOnRotation {
                     let xOffset: CGFloat = abs(settings.rotation) == 90 ? 0 : centerX - newRect.origin.x
-                    let newLabelX = labelX - xOffset
                     transform = CGAffineTransformTranslate(transform, xOffset, offsetTop)
                 }
             }
@@ -135,7 +134,7 @@ public class ChartLabelDrawer: ChartContextDrawer {
     }
 
     
-    private func drawLabel(#x: CGFloat, y: CGFloat, text: String) {
+    private func drawLabel(x x: CGFloat, y: CGFloat, text: String) {
         let attributes = [NSFontAttributeName: self.settings.font, NSForegroundColorAttributeName: self.settings.fontColor]
         let attrStr = NSAttributedString(string: text, attributes: attributes)
         attrStr.drawAtPoint(CGPointMake(x, y))

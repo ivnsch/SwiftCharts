@@ -32,12 +32,12 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         return p1.y - p2.y
     }
 
-    override func generateAxisTitleLabelsDrawers(#offset: CGFloat) -> [ChartLabelDrawer] {
+    override func generateAxisTitleLabelsDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
         
         if let firstTitleLabel = self.axisTitleLabels.first {
             
             if self.axisTitleLabels.count > 1 {
-                println("WARNING: No support for multiple definition labels on vertical axis. Using only first one.")
+                print("WARNING: No support for multiple definition labels on vertical axis. Using only first one.")
             }
             let axisLabel = firstTitleLabel
             let labelSize = ChartUtils.textSize(axisLabel.text, font: axisLabel.settings.font)
@@ -60,10 +60,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     }
     
     
-    override func generateLabelDrawers(#offset: CGFloat) -> [ChartLabelDrawer] {
-        
-        let modelLength = self.modelLength
-        let spacingLabelAxisY = self.settings.labelsToAxisSpacingY
+    override func generateLabelDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
         
         return self.axisValues.reduce([]) {arr, axisValue in
             let scalar = axisValue.scalar
@@ -83,7 +80,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         }
     }
     
-    func labelsX(#offset: CGFloat, labelWidth: CGFloat) -> CGFloat {
+    func labelsX(offset offset: CGFloat, labelWidth: CGFloat) -> CGFloat {
         fatalError("override")
     }
     

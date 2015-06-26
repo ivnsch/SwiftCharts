@@ -15,7 +15,7 @@ class BarsExample: UIViewController {
     
     let sideSelectorHeight: CGFloat = 50
     
-    private func barsChart(#horizontal: Bool) -> Chart {
+    private func barsChart(horizontal horizontal: Bool) -> Chart {
         let tuplesXY = [(2, 8), (4, 9), (6, 10), (8, 12), (12, 17)]
 
         func reverseTuples(tuples: [(Int, Int)]) -> [(Int, Int)] {
@@ -35,14 +35,12 @@ class BarsExample: UIViewController {
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         
-        let minBarSpacing: CGFloat = ExamplesDefaults.minBarSpacing
-        
-        let barViewGenerator = {[weak self] (chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart) -> UIView? in
+        let barViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart) -> UIView? in
             let bottomLeft = CGPointMake(layer.innerFrame.origin.x, layer.innerFrame.origin.y + layer.innerFrame.height)
             
             let barWidth: CGFloat = Env.iPad ? 60 : 30
             
-            let (p1: CGPoint, p2: CGPoint) = {
+            let (p1, p2): (CGPoint, CGPoint) = {
                 if horizontal {
                     return (CGPointMake(bottomLeft.x, chartPointModel.screenLoc.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
                 } else {
@@ -59,7 +57,7 @@ class BarsExample: UIViewController {
         
         let chartPointsLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: barViewGenerator)
         
-        var settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
         
         return Chart(
@@ -72,7 +70,7 @@ class BarsExample: UIViewController {
         )
     }
     
-    private func showChart(#horizontal: Bool) {
+    private func showChart(horizontal horizontal: Bool) {
         self.chart?.clearView()
         
         let chart = self.barsChart(horizontal: horizontal)
@@ -129,10 +127,10 @@ class BarsExample: UIViewController {
         override func didMoveToSuperview() {
             let views = [self.horizontal, self.vertical]
             for v in views {
-                v.setTranslatesAutoresizingMaskIntoConstraints(false)
+                v.translatesAutoresizingMaskIntoConstraints = false
             }
             
-            let namedViews = Array(enumerate(views)).map{index, view in
+            let namedViews = Array(views.enumerate()).map{index, view in
                 ("v\(index)", view)
             }
             
@@ -147,9 +145,9 @@ class BarsExample: UIViewController {
                 "\(str)-(\(buttonsSpace))-[\(tuple.0)]"
             }
             
-            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|[\($0.0)]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)}
+            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|[\($0.0)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
             
-            self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
+            self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
                 + vConstraits)
         }
         

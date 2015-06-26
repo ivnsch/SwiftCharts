@@ -31,7 +31,7 @@ class NotNumericExample: UIViewController {
         let item4 = MyItem(name: "Cereals", quantity: quantityLow)
         
         
-        let chartPoints: [ChartPoint] = Array(enumerate([item0, item1, item2, item3, item4])).map {index, item in
+        let chartPoints: [ChartPoint] = Array([item0, item1, item2, item3, item4].enumerate()).map {index, item in
             let xLabelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont, rotation: 45, rotationKeep: .Top)
             let x = ChartAxisValueString(item.name, order: index, labelSettings: xLabelSettings)
             let y = ChartAxisValueString(item.quantity.text, order: item.quantity.number, labelSettings: labelSettings)
@@ -59,7 +59,7 @@ class NotNumericExample: UIViewController {
             
             let barWidth = layer.minXScreenSpace - minBarSpacing
             
-            let (p1: CGPoint, p2: CGPoint) = (CGPointMake(chartPointModel.screenLoc.x, bottomLeft.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
+            let (p1, p2): (CGPoint, CGPoint) = (CGPointMake(chartPointModel.screenLoc.x, bottomLeft.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
             return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: UIColor.blueColor().colorWithAlphaComponent(0.6))
         }
         

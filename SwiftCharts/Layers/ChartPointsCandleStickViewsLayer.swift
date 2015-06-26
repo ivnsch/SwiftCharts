@@ -14,7 +14,7 @@ public class ChartPointsCandleStickViewsLayer<T: ChartPointCandleStick, U: Chart
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
     
-    public func highlightChartpointView(#screenLoc: CGPoint) {
+    public func highlightChartpointView(screenLoc screenLoc: CGPoint) {
         let  x = screenLoc.x
         for viewWithChartPoint in self.viewsWithChartPoints {
             let view = viewWithChartPoint.view

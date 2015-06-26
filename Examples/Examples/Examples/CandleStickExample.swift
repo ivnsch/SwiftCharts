@@ -77,7 +77,7 @@ class CandleStickExample: UIViewController {
         func generateDateAxisValues(month: Int, year: Int) -> [ChartAxisValueDate] {
             let date = dateWithComponents(1, month, year)
             let calendar = NSCalendar.currentCalendar()
-            let monthDays = calendar.rangeOfUnit(.CalendarUnitDay, inUnit: .CalendarUnitMonth, forDate: date)
+            let monthDays = calendar.rangeOfUnit(.Day, inUnit: .Month, forDate: date)
             return Array(monthDays.toRange()!).map {day in
                 let date = dateWithComponents(day, month, year)
                 let axisValue = ChartAxisValueDate(date: date, formatter: displayFormatter, labelSettings: labelSettings)
@@ -85,7 +85,7 @@ class CandleStickExample: UIViewController {
                 return axisValue
             }
         }
-        let xValues = generateDateAxisValues(10, 2015)
+        let xValues = generateDateAxisValues(10, year: 2015)
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))

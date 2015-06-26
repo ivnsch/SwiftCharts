@@ -69,14 +69,12 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
     }
 
-    private func linesIntersection(#line1P1: CGPoint, line1P2: CGPoint, line2P1: CGPoint, line2P2: CGPoint) -> CGPoint? {
-        var resX: CGFloat = CGFloat(FLT_MIN)
-        var resY: CGFloat = CGFloat(FLT_MIN)
+    private func linesIntersection(line1P1 line1P1: CGPoint, line1P2: CGPoint, line2P1: CGPoint, line2P2: CGPoint) -> CGPoint? {
         return self.findLineIntersection(p0X: line1P1.x, p0y: line1P1.y, p1x: line1P2.x, p1y: line1P2.y, p2x: line2P1.x, p2y: line2P1.y, p3x: line2P2.x, p3y: line2P2.y)
     }
     
     // src: http://stackoverflow.com/a/14795484/930450 (modified)
-    private func findLineIntersection(#p0X: CGFloat , p0y: CGFloat, p1x: CGFloat, p1y: CGFloat, p2x: CGFloat, p2y: CGFloat, p3x: CGFloat, p3y: CGFloat) -> CGPoint? {
+    private func findLineIntersection(p0X p0X: CGFloat , p0y: CGFloat, p1x: CGFloat, p1y: CGFloat, p2x: CGFloat, p2y: CGFloat, p3x: CGFloat, p3y: CGFloat) -> CGPoint? {
         
         var s02x: CGFloat, s02y: CGFloat, s10x: CGFloat, s10y: CGFloat, s32x: CGFloat, s32y: CGFloat, sNumer: CGFloat, tNumer: CGFloat, denom: CGFloat, t: CGFloat;
         
@@ -89,7 +87,7 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         if denom == 0 {
             return nil // Collinear
         }
-        var denomPositive: Bool = denom > 0
+        let denomPositive: Bool = denom > 0
         
         s02x = p0X - p2x
         s02y = p0y - p2y
@@ -113,11 +111,11 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         return CGPoint(x: i_x, y: i_y)
     }
   
-    private func createCurrentPositionInfoOverlay(#view: UIView) -> UILabel {
-        var currentPosW: CGFloat = self.settings.infoViewSize.width
-        var currentPosH: CGFloat = self.settings.infoViewSize.height
-        var currentPosX: CGFloat = (view.frame.size.width - currentPosW) / CGFloat(2)
-        var currentPosY: CGFloat = 100
+    private func createCurrentPositionInfoOverlay(view view: UIView) -> UILabel {
+        let currentPosW: CGFloat = self.settings.infoViewSize.width
+        let currentPosH: CGFloat = self.settings.infoViewSize.height
+        let currentPosX: CGFloat = (view.frame.size.width - currentPosW) / CGFloat(2)
+        let currentPosY: CGFloat = 100
         let currentPositionInfoOverlay = UILabel(frame: CGRectMake(currentPosX, currentPosY, currentPosW, currentPosH))
         currentPositionInfoOverlay.textColor = self.settings.infoViewFontColor
         currentPositionInfoOverlay.font = self.settings.infoViewFont
@@ -131,7 +129,7 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }
     
     
-    private func currentPositionInfoOverlay(#view: UIView) -> UILabel {
+    private func currentPositionInfoOverlay(view view: UIView) -> UILabel {
         return self.currentPositionInfoOverlay ?? {
             let currentPositionInfoOverlay = self.createCurrentPositionInfoOverlay(view: view)
             self.currentPositionInfoOverlay = currentPositionInfoOverlay
@@ -139,7 +137,7 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         }()
     }
    
-    private func updateTrackerLineOnValidState(#updateFunc: (view: UIView) -> ()) {
+    private func updateTrackerLineOnValidState(updateFunc updateFunc: (view: UIView) -> ()) {
         if !self.chartPointsModels.isEmpty {
             if let view = self.view {
                 updateFunc(view: view)
@@ -147,7 +145,7 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         }
     }
     
-    private func updateTrackerLine(#touchPoint: CGPoint) {
+    private func updateTrackerLine(touchPoint touchPoint: CGPoint) {
         
         self.updateTrackerLineOnValidState{(view) in
             
@@ -212,13 +210,13 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 if self.chartPointsModels.count > 1 {
                     let first = self.chartPointsModels[0]
                     let second = self.chartPointsModels[1]
-                    self.currentPositionInfoOverlay(view: view).text = "Pos: \(createTmpChartPoint(first, second).text)"
+                    self.currentPositionInfoOverlay(view: view).text = "Pos: \(createTmpChartPoint(first, secondModel: second).text)"
                 }
             }
         }
     }
     
-    override func display(#chart: Chart) {
+    override func display(chart chart: Chart) {
         let view = TrackerView(frame: chart.bounds, updateFunc: {[weak self] location in
             self?.updateTrackerLine(touchPoint: location)
         })
@@ -242,15 +240,15 @@ private class TrackerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        let touch = event.allTouches()?.first! as! UITouch
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch = touches.first!
         let location = touch.locationInView(self)
         
         self.updateFunc?(location)
     }
     
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
-        let touch = event.allTouches()?.first! as! UITouch
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch = touches.first!
         let location = touch.locationInView(self)
         
         self.updateFunc?(location)

@@ -52,7 +52,7 @@ public class ChartGuideLinesLayerAbstract<T: ChartGuideLinesLayerSettings>: Char
         fatalError("override")
     }
     
-    override public func chartViewDrawing(#context: CGContextRef, chart: Chart) {
+    override public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         let originScreenLoc = self.innerFrame.origin
         let xScreenLocs = onlyVisibleX ? self.xAxis.visibleAxisValuesScreenLocs : self.xAxis.axisValuesScreenLocs
         let yScreenLocs = onlyVisibleY ? self.yAxis.visibleAxisValuesScreenLocs : self.yAxis.axisValuesScreenLocs
@@ -125,7 +125,7 @@ public class ChartGuideLinesForValuesLayerAbstract<T: ChartGuideLinesLayerSettin
         fatalError("override")
     }
     
-    override public func chartViewDrawing(#context: CGContextRef, chart: Chart) {
+    override public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         let originScreenLoc = self.innerFrame.origin
         
         for axisValue in self.axisValuesX {

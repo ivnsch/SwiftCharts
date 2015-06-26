@@ -42,32 +42,29 @@ class NotificationsExample: UIViewController {
                 label.transform = CGAffineTransformMakeScale(0, 0)
                 
                 chartPointView.movedToSuperViewHandler = {
-                    UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions.allZeros, animations: {() -> Void in
+                    UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {() -> Void in
                         label.transform = CGAffineTransformMakeScale(1, 1)
                         }, completion: {(Bool) -> Void in})
                 }
                 
-                var currentAlert: UIAlertController? = nil
                 chartPointView.touchHandler = {
                     
                     let title = "Lorem"
                     let message = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
                     let ok = "Ok"
                     
-                    if objc_getClass("UIAlertController") != nil {
-                        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: ok, style: UIAlertActionStyle.Default, handler: nil))
-                        self!.presentViewController(alert, animated: true, completion: nil)
-                        currentAlert?.removeFromParentViewController()
-                        currentAlert = alert
-                        
-                    } else {
-                        let alert = UIAlertView()
-                        alert.title = title
-                        alert.message = message
-                        alert.addButtonWithTitle(ok)
-                        alert.show()
-                    }
+                        if #available(iOS 8.0, *) {
+                            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+                            alert.addAction(UIAlertAction(title: ok, style: UIAlertActionStyle.Default, handler: nil))
+                            self!.presentViewController(alert, animated: true, completion: nil)
+
+                        } else {
+                            let alert = UIAlertView()
+                            alert.title = title
+                            alert.message = message
+                            alert.addButtonWithTitle(ok)
+                            alert.show()
+                        }
                 }
                 
                 return chartPointView
@@ -85,7 +82,7 @@ class NotificationsExample: UIViewController {
         
         let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
         
-        var settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
         
         let chart = Chart(

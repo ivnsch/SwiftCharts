@@ -21,7 +21,7 @@ class AreasExample: UIViewController {
         let chartPoints2 = [(0, 150), (2, 100), (4, 200), (6, 60)].map{ChartPoint(x: ChartAxisValueInt($0.0, labelSettings: labelSettings), y: ChartAxisValueInt($0.1))}
         let chartPoints3 = [(0, 200), (2, 210), (4, 260), (6, 290)].map{ChartPoint(x: ChartAxisValueInt($0.0, labelSettings: labelSettings), y: ChartAxisValueInt($0.1))}
         
-        let allChartPoints = sorted(chartPoints1 + chartPoints2 + chartPoints3) {(obj1, obj2) in return obj1.x.scalar < obj2.x.scalar}
+        let allChartPoints = (chartPoints1 + chartPoints2 + chartPoints3).sort {(obj1, obj2) in return obj1.x.scalar < obj2.x.scalar}
         
         let xValues: [ChartAxisValue] = (NSOrderedSet(array: allChartPoints).array as! [ChartPoint]).map{$0.x}
         let yValues = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(allChartPoints, minSegmentCount: 5, maxSegmentCount: 20, multiple: 50, axisValueGenerator: {ChartAxisValueFloat($0, labelSettings: labelSettings)}, addPaddingSegmentIfEdge: false)
@@ -94,7 +94,7 @@ class AreasExample: UIViewController {
                 bubbleView.addSubview(infoView)
                 popups.append(bubbleView)
                 
-                UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.allZeros, animations: {
+                UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions(), animations: {
                     view.selected = true
                     selectedView = view
                     
@@ -112,7 +112,7 @@ class AreasExample: UIViewController {
         
         let chartPointsCircleLayer3 = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints3, viewGenerator: circleViewGenerator, displayDelay: 2.7, delayBetweenItems: itemsDelay)
         
-        var settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
         
         let chart = Chart(

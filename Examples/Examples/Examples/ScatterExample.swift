@@ -81,7 +81,7 @@ class ScatterExample: UIViewController {
         // create layer for each group
         let dim: CGFloat = Env.iPad ? 14 : 7
         let size = CGSizeMake(dim, dim)
-        let layers: [ChartLayer] = map(groupedChartPoints) {(type, chartPoints) in
+        let layers: [ChartLayer] = groupedChartPoints.map {(type, chartPoints) in
             let layerSpecification = layerSpecifications[type]!
             switch layerSpecification.shape {
                 case .Triangle:
