@@ -52,16 +52,13 @@ public class ChartDividersLayer: ChartCoordsSpaceLayer {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
     }
     
-    private func drawLine(#context: CGContextRef, color: UIColor, width: CGFloat, p1: CGPoint, p2: CGPoint) {
+    private func drawLine(context context: CGContextRef, color: UIColor, width: CGFloat, p1: CGPoint, p2: CGPoint) {
         ChartDrawLine(context: context, p1: p1, p2: p2, width: width, color: color)
     }
     
-    override public func chartViewDrawing(#context: CGContextRef, chart: Chart) {
-        let originScreenLoc = self.innerFrame.origin
+    override public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         let xScreenLocs = self.xScreenLocs
         let yScreenLocs = self.yScreenLocs
-        let xAxisScreenLength = self.xAxis.length
-        let yAxisScreenLength = self.yAxis.length
         
         if self.axis == .X || self.axis == .XAndY {
             for xScreenLoc in xScreenLocs {

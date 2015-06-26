@@ -30,7 +30,7 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         self.axisTitleLabelDrawers = self.generateAxisTitleLabelsDrawers(offset: axisTitleLabelsOffset)
     }
     
-    override func generateLineDrawer(#offset: CGFloat) -> ChartLineDrawer {
+    override func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {
         let halfStrokeWidth = self.settings.axisStrokeWidth / 2 // we want that the stroke begins at the beginning of the frame, not in the middle of it
         let x = self.p1.x + offset + halfStrokeWidth
         let p1 = CGPointMake(x, self.p1.y)
@@ -38,7 +38,7 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor)
     }
     
-    override func labelsX(#offset: CGFloat, labelWidth: CGFloat) -> CGFloat {
+    override func labelsX(offset offset: CGFloat, labelWidth: CGFloat) -> CGFloat {
         return self.p1.x + offset
     }
 }

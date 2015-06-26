@@ -32,17 +32,17 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         return p2.x - p1.x
     }
     
-    override func chartViewDrawing(#context: CGContextRef, chart: Chart) {
+    override func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         super.chartViewDrawing(context: context, chart: chart)
     }
     
-    override func generateLineDrawer(#offset: CGFloat) -> ChartLineDrawer {
+    override func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {
         let p1 = CGPointMake(self.p1.x, self.p1.y + offset)
         let p2 = CGPointMake(self.p2.x, self.p2.y + offset)
         return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor)
     }
     
-    override func generateAxisTitleLabelsDrawers(#offset: CGFloat) -> [ChartLabelDrawer] {
+    override func generateAxisTitleLabelsDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
         return self.generateAxisTitleLabelsDrawers(self.axisTitleLabels, spacingLabelAxisX: self.settings.labelsToAxisSpacingX, spacingLabelBetweenAxis: self.settings.labelsSpacing, offset: offset)
     }
     
@@ -51,7 +51,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         
         let rowHeights = self.rowHeightsForRows(rows: labels.map{[$0]})
         
-        return Array(enumerate(labels)).map{(index, label) in
+        return Array(labels.enumerate()).map{(index, label) in
             
             let rowY = self.calculateRowY(rowHeights: rowHeights, rowIndex: index, spacing: spacingLabelBetweenAxis)
             
@@ -87,16 +87,15 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         return self.rowHeightsForRows(rows: rows)
     }
     
-    override func generateLabelDrawers(#offset: CGFloat) -> [ChartLabelDrawer] {
+    override func generateLabelDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
         
-        let modelLength = self.modelLength
         let spacingLabelBetweenAxis = self.settings.labelsSpacing
         
         let rowHeights = self.rowHeights
         
         // generate all the label drawers, in a flat list
         return self.axisValues.flatMap {axisValue in
-            return Array(enumerate(axisValue.labels)).map {index, label in
+            return Array(axisValue.labels.enumerate()).map {index, label in
                 let rowY = self.calculateRowY(rowHeights: rowHeights, rowIndex: index, spacing: spacingLabelBetweenAxis)
                 
                 let x = self.screenLocForScalar(axisValue.scalar)
@@ -113,7 +112,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     }
     
     // Get the y offset of row relative to the y position of the first row
-    private func calculateRowY(#rowHeights: [CGFloat], rowIndex: Int, spacing: CGFloat) -> CGFloat {
+    private func calculateRowY(rowHeights rowHeights: [CGFloat], rowIndex: Int, spacing: CGFloat) -> CGFloat {
         return Array(0..<rowIndex).reduce(0) {y, index in
             y + rowHeights[index] + spacing
         }
@@ -121,7 +120,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     
     
     // Get max text height for each row of axis values
-    private func rowHeightsForRows(#rows: [[ChartAxisLabel?]]) -> [CGFloat] {
+    private func rowHeightsForRows(rows rows: [[ChartAxisLabel?]]) -> [CGFloat] {
         return rows.map {row in
             row.reduce(-1) {maxHeight, labelMaybe in
                 return max(maxHeight, self.labelMaybeSize(labelMaybe).height)

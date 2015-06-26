@@ -39,7 +39,7 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
-    private func toScreenLine(#lineModel: ChartLineModel<T>, chart: Chart) -> ScreenLine {
+    private func toScreenLine(lineModel lineModel: ChartLineModel<T>, chart: Chart) -> ScreenLine {
         return ScreenLine(
             points: lineModel.chartPoints.map{self.chartPointScreenLoc($0)},
             color: lineModel.lineColor,
@@ -49,7 +49,7 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
         )
     }
     
-    override func display(#chart: Chart) {
+    override func display(chart chart: Chart) {
         let screenLines = self.lineModels.map{self.toScreenLine(lineModel: $0, chart: chart)}
         
         for screenLine in screenLines {

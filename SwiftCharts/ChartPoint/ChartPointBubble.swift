@@ -19,4 +19,8 @@ public class ChartPointBubble: ChartPoint {
         self.borderColor = borderColor
         super.init(x: x, y: y)
     }
+
+    required public init(x: ChartAxisValue, y: ChartAxisValue) {
+        fatalError("init(x:y:) has not been implemented")
+    }
 }

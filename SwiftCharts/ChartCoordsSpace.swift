@@ -92,7 +92,7 @@ public class ChartCoordsSpace {
         return self.generateXAxesShared(axisModels: self.xHighModels, offset: chartSettings.top, generator: self.xHighGenerator)
     }
     
-    private func generateXAxesShared(#axisModels: [ChartAxisModel], offset: CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
+    private func generateXAxesShared(axisModels axisModels: [ChartAxisModel], offset: CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
         let chartFrame = self.chartInnerFrame
         let chartSettings = self.chartSettings
         let x = chartFrame.origin.x
@@ -106,7 +106,7 @@ public class ChartCoordsSpace {
     }
     
     
-    private func generateYAxisShared(#axisModels: [ChartAxisModel], offset: CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
+    private func generateYAxisShared(axisModels axisModels: [ChartAxisModel], offset: CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
         let chartFrame = self.chartInnerFrame
         let chartSettings = self.chartSettings
         let y = chartFrame.origin.y
@@ -119,9 +119,8 @@ public class ChartCoordsSpace {
             }, generator: generator)
     }
     
-    private func generateAxisShared(#axisModels: [ChartAxisModel], offset: CGFloat, pointsCreator: (varDim: CGFloat) -> (p1: CGPoint, p2: CGPoint), dimIncr: (ChartAxisLayer) -> CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
+    private func generateAxisShared(axisModels axisModels: [ChartAxisModel], offset: CGFloat, pointsCreator: (varDim: CGFloat) -> (p1: CGPoint, p2: CGPoint), dimIncr: (ChartAxisLayer) -> CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
         
-        let chartFrame = self.chartInnerFrame
         let chartSettings = self.chartSettings
         
         return axisModels.reduce((axes: Array<ChartAxisLayer>(), x: offset)) {tuple, chartAxisModel in

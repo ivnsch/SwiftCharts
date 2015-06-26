@@ -44,7 +44,7 @@ public class ChartPointEllipseView: UIView {
                 self.alpha = 0
             }
             
-            UIView.animateWithDuration(NSTimeInterval(self.animDuration), delay: NSTimeInterval(self.animDelay), usingSpringWithDamping: self.animDamping, initialSpringVelocity: self.animInitSpringVelocity, options: UIViewAnimationOptions.allZeros, animations: { () -> Void in
+            UIView.animateWithDuration(NSTimeInterval(self.animDuration), delay: NSTimeInterval(self.animDelay), usingSpringWithDamping: self.animDamping, initialSpringVelocity: self.animInitSpringVelocity, options: UIViewAnimationOptions(), animations: { () -> Void in
                 if self.animateSize {
                     self.transform = CGAffineTransformMakeScale(1, 1)
                 }
@@ -70,7 +70,7 @@ public class ChartPointEllipseView: UIView {
         CGContextFillEllipseInRect(context, circleRect)
     }
     
-    override public func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.touchHandler?()
     }
 }

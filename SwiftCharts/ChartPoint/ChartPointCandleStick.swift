@@ -30,4 +30,8 @@ public class ChartPointCandleStick: ChartPoint {
 
         super.init(x: x, y: highY)
     }
+
+    required public init(x: ChartAxisValue, y: ChartAxisValue) {
+        fatalError("init(x:y:) has not been implemented")
+    }
 }

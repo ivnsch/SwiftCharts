@@ -19,13 +19,13 @@ class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
-    override func chartViewDrawing(#context: CGContextRef, chart: Chart) {
+    override func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         for chartPointModel in self.chartPointsModels {
             self.drawChartPointModel(context: context, chartPointModel: chartPointModel)
         }
     }
     
-    func drawChartPointModel(#context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
+    func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
         fatalError("override")
     }
 }
@@ -36,7 +36,7 @@ public class ChartPointsScatterTrianglesLayer<T: ChartPoint>: ChartPointsScatter
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor)
     }
     
-    override func drawChartPointModel(#context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
+    override func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
         let w = self.itemSize.width
         let h = self.itemSize.height
         
@@ -58,7 +58,7 @@ public class ChartPointsScatterSquaresLayer<T: ChartPoint>: ChartPointsScatterLa
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor)
     }
     
-    override func drawChartPointModel(#context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
+    override func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
         let w = self.itemSize.width
         let h = self.itemSize.height
         
@@ -73,7 +73,7 @@ public class ChartPointsScatterCirclesLayer<T: ChartPoint>: ChartPointsScatterLa
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor)
     }
     
-    override func drawChartPointModel(#context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
+    override func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
         let w = self.itemSize.width
         let h = self.itemSize.height
         
@@ -91,7 +91,7 @@ public class ChartPointsScatterCrossesLayer<T: ChartPoint>: ChartPointsScatterLa
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor)
     }
     
-    override func drawChartPointModel(#context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
+    override func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
         let w = self.itemSize.width
         let h = self.itemSize.height
         
@@ -103,7 +103,7 @@ public class ChartPointsScatterCrossesLayer<T: ChartPoint>: ChartPointsScatterLa
             CGContextStrokePath(context)
         }
 
-        drawLine(chartPointModel.screenLoc.x - w / 2, chartPointModel.screenLoc.y - h / 2, chartPointModel.screenLoc.x + w / 2, chartPointModel.screenLoc.y + h / 2)
-        drawLine(chartPointModel.screenLoc.x + w / 2, chartPointModel.screenLoc.y - h / 2, chartPointModel.screenLoc.x - w / 2, chartPointModel.screenLoc.y + h / 2)
+        drawLine(chartPointModel.screenLoc.x - w / 2, p1Y: chartPointModel.screenLoc.y - h / 2, p2X: chartPointModel.screenLoc.x + w / 2, p2Y: chartPointModel.screenLoc.y + h / 2)
+        drawLine(chartPointModel.screenLoc.x + w / 2, p1Y: chartPointModel.screenLoc.y - h / 2, p2X: chartPointModel.screenLoc.x - w / 2, p2Y: chartPointModel.screenLoc.y + h / 2)
     }
 }

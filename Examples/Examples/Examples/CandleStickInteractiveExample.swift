@@ -75,7 +75,7 @@ class CandleStickInteractiveExample: UIViewController {
         func generateDateAxisValues(month: Int, year: Int) -> [ChartAxisValueDate] {
             let date = dateWithComponents(1, month, year)
             let calendar = NSCalendar.currentCalendar()
-            let monthDays = calendar.rangeOfUnit(.CalendarUnitDay, inUnit: .CalendarUnitMonth, forDate: date)
+            let monthDays = calendar.rangeOfUnit(.Day, inUnit: .Month, forDate: date)
             return Array(monthDays.toRange()!).map {day in
                 let date = dateWithComponents(day, month, year)
                 let axisValue = ChartAxisValueDate(date: date, formatter: displayFormatter, labelSettings: labelSettings)
@@ -84,7 +84,7 @@ class CandleStickInteractiveExample: UIViewController {
             }
         }
         
-        let xValues = generateDateAxisValues(10, 2015)
+        let xValues = generateDateAxisValues(10, year: 2015)
         let yValues = Array(stride(from: 20, through: 55, by: 5)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
@@ -100,7 +100,6 @@ class CandleStickInteractiveExample: UIViewController {
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
             
             let x = screenLoc.x
-            let width = 10
             
             let highScreenY = screenLoc.y
             let lowScreenY = layer.modelLocToScreenLoc(x: x, y: chartPoint.low).y
@@ -225,10 +224,10 @@ private class InfoView: UIView {
         
         let views = [self.statusView, self.dateLabel, self.highTextLabel, self.highLabel, self.lowTextLabel, self.lowLabel, self.openTextLabel, self.openLabel, self.closeTextLabel, self.closeLabel]
         for v in views {
-            v.setTranslatesAutoresizingMaskIntoConstraints(false)
+            v.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        let namedViews = Array(enumerate(views)).map{index, view in
+        let namedViews = Array(views.enumerate()).map{index, view in
             ("v\(index)", view)
         }
         
@@ -244,9 +243,9 @@ private class InfoView: UIView {
             "\(str)-(\(labelsSpace))-[\(tuple.0)]"
         }
         
-        let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|-(18)-[\($0.0)(\(circleDiameter))]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)}
+        let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|-(18)-[\($0.0)(\(circleDiameter))]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
         
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
             + vConstraits)
         
     }

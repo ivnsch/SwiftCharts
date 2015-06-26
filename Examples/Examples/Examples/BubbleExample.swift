@@ -69,8 +69,6 @@ class BubbleExample: UIViewController {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
         
-        let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.redColor(), animDuration: 0.5, animDelay: 0)
-        
         let bubbleLayer = self.bubblesLayer(xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, chartPoints: chartPoints)
         
         let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
@@ -96,13 +94,13 @@ class BubbleExample: UIViewController {
     
     // We can use a view based layer for easy animation (or interactivity), in which case we use the default chart points layer with a generator to create bubble views.
     // On the other side, if we don't need animation or want a better performance, we use ChartPointsBubbleLayer, which instead of creating views, renders directly to the chart's context.
-    private func bubblesLayer(#xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, chartPoints: [ChartPointBubble]) -> ChartLayer {
+    private func bubblesLayer(xAxis xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, chartPoints: [ChartPointBubble]) -> ChartLayer {
         
         let maxBubbleDiameter: CGFloat = 30, minBubbleDiameter: CGFloat = 2
         
         if self.useViewsLayer == true {
                 
-            let (minDiameterScalar: CGFloat, maxDiameterScalar: CGFloat) = chartPoints.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, chartPoint in
+            let (minDiameterScalar, maxDiameterScalar): (CGFloat, CGFloat) = chartPoints.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, chartPoint in
                 (min: min(tuple.min, chartPoint.diameterScalar), max: max(tuple.max, chartPoint.diameterScalar))
             }
             
@@ -112,7 +110,6 @@ class BubbleExample: UIViewController {
 
                 let diameter = chartPointModel.chartPoint.diameterScalar * diameterFactor
                 
-                let rect = CGRectMake(chartPointModel.screenLoc.x - diameter / 2, chartPointModel.screenLoc.y - diameter / 2, diameter, diameter)
                 let circleView = ChartPointEllipseView(center: chartPointModel.screenLoc, diameter: diameter)
                 circleView.fillColor = chartPointModel.chartPoint.bgColor
                 circleView.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
@@ -143,7 +140,7 @@ class BubbleExample: UIViewController {
         
         init(frame: CGRect, c1: UIColor, c2: UIColor) {
             
-            var gradient: CAGradientLayer = CAGradientLayer()
+            let gradient: CAGradientLayer = CAGradientLayer()
             gradient.frame = CGRectMake(0, 0, frame.width, 30)
             gradient.colors = [UIColor.blueColor().CGColor, UIColor.cyanColor().CGColor, UIColor.yellowColor().CGColor, UIColor.redColor().CGColor]
             gradient.startPoint = CGPointMake(0, 0.5)
@@ -154,10 +151,9 @@ class BubbleExample: UIViewController {
             let imgWidth = Int(gradient.bounds.size.width)
             
             let bitmapBytesPerRow = imgWidth * 4
-            let bitmapByteCount = bitmapBytesPerRow * imgHeight
             
-            let colorSpace:CGColorSpace = CGColorSpaceCreateDeviceRGB()
-            let bitmapInfo = CGBitmapInfo(CGImageAlphaInfo.PremultipliedLast.rawValue)
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue).rawValue
 
             let context = CGBitmapContextCreate (nil,
                 imgWidth,
@@ -168,8 +164,9 @@ class BubbleExample: UIViewController {
                 bitmapInfo)
             
             UIGraphicsBeginImageContext(gradient.bounds.size)
-            gradient.renderInContext(context)
-            let gradientImg = UIImage(CGImage: CGBitmapContextCreateImage(context))!
+            gradient.renderInContext(context!)
+            
+            let gradientImg = UIImage(CGImage: CGBitmapContextCreateImage(context)!)
             
             UIGraphicsEndImageContext()
             self.gradientImg = gradientImg

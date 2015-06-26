@@ -14,7 +14,7 @@ public class ChartPointsBubbleLayer<T: ChartPointBubble>: ChartPointsLayer<T> {
     
     public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], displayDelay: Float = 0, maxBubbleDiameter: CGFloat = 30, minBubbleDiameter: CGFloat = 2) {
         
-        let (minDiameterScalar: CGFloat, maxDiameterScalar: CGFloat) = chartPoints.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, chartPoint in
+        let (minDiameterScalar, maxDiameterScalar): (CGFloat, CGFloat) = chartPoints.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, chartPoint in
             (min: min(tuple.min, chartPoint.diameterScalar), max: max(tuple.max, chartPoint.diameterScalar))
         }
         
@@ -23,7 +23,7 @@ public class ChartPointsBubbleLayer<T: ChartPointBubble>: ChartPointsLayer<T> {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
-    override public func chartViewDrawing(#context: CGContextRef, chart: Chart) {
+    override public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
 
         for chartPointModel in self.chartPointsModels {
 

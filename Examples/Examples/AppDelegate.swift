@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             let navigationController = splitViewController.viewControllers.last as! UINavigationController
             splitViewController.delegate = self
             
-            if  splitViewController.respondsToSelector(Selector("displayModeButtonItem")) {
-                navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
+            if #available(iOS 8.0, *) {
+                navigationController.topViewController?.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
             }
         }
         
@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     // MARK: - Split view
 
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController!, ontoPrimaryViewController primaryViewController:UIViewController!) -> Bool {
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
         if let secondaryAsNavController = secondaryViewController as? UINavigationController {
             if let topAsDetailController = secondaryAsNavController.topViewController as? DetailViewController {
                 if topAsDetailController.detailItem == nil {
@@ -88,8 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 // src: http://stackoverflow.com/a/27399688/930450
 extension UISplitViewController {
     func toggleMasterView() {
-        let splitViewController = UIApplication.sharedApplication().delegate?.window!!.rootViewController as! UISplitViewController
-        if  splitViewController.respondsToSelector(Selector("displayModeButtonItem")) {
+        if #available(iOS 8.0, *) {
             let barButtonItem = self.displayModeButtonItem()
             UIApplication.sharedApplication().sendAction(barButtonItem.action, to: barButtonItem.target, from: nil, forEvent: nil)
         }

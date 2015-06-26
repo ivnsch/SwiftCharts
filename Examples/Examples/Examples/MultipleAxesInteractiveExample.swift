@@ -41,51 +41,51 @@ class MultipleAxesInteractiveExample: UIViewController {
     init() {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFontSmall)
         
-        func createChartPoint(x: CGFloat, y: CGFloat, labelColor: UIColor) -> ChartPoint {
+        func createChartPoint(x x: CGFloat, y: CGFloat, labelColor: UIColor) -> ChartPoint {
             let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: labelColor)
             return ChartPoint(x: ChartAxisValueFloat(x, labelSettings: labelSettings), y: ChartAxisValueFloat(y, labelSettings: labelSettings))
         }
         
         func createChartPoints0(color: UIColor) -> [ChartPoint] {
             return [
-                createChartPoint(0, 0, color),
-                createChartPoint(2, 2, color),
-                createChartPoint(5, 2, color),
-                createChartPoint(8, 11, color),
-                createChartPoint(10, 2, color),
-                createChartPoint(12, 3, color),
-                createChartPoint(16, 22, color),
-                createChartPoint(20, 5, color)
+                createChartPoint(x: 0, y: 0, labelColor: color),
+                createChartPoint(x: 2, y: 2, labelColor: color),
+                createChartPoint(x: 5, y: 2, labelColor: color),
+                createChartPoint(x: 8, y: 11, labelColor: color),
+                createChartPoint(x: 10, y: 2, labelColor: color),
+                createChartPoint(x: 12, y: 3, labelColor: color),
+                createChartPoint(x: 16, y: 22, labelColor: color),
+                createChartPoint(x: 20, y: 5, labelColor: color)
             ]
         }
         
         func createChartPoints1(color: UIColor) -> [ChartPoint] {
             return [
-                createChartPoint(0, 7, color),
-                createChartPoint(1, 10, color),
-                createChartPoint(3, 9, color),
-                createChartPoint(9, 2, color),
-                createChartPoint(10, -5, color),
-                createChartPoint(13, -12, color)
+                createChartPoint(x: 0, y: 7, labelColor: color),
+                createChartPoint(x: 1, y: 10, labelColor: color),
+                createChartPoint(x: 3, y: 9, labelColor: color),
+                createChartPoint(x: 9, y: 2, labelColor: color),
+                createChartPoint(x: 10, y: -5, labelColor: color),
+                createChartPoint(x: 13, y: -12, labelColor: color)
             ]
         }
         
         func createChartPoints2(color: UIColor) -> [ChartPoint] {
             return [
-                createChartPoint(-200, -10, color),
-                createChartPoint(-160, -30, color),
-                createChartPoint(-110, -10, color),
-                createChartPoint(-40, -80, color),
-                createChartPoint(-10, -50, color),
-                createChartPoint(20, 10, color)
+                createChartPoint(x: -200, y: -10, labelColor: color),
+                createChartPoint(x: -160, y: -30, labelColor: color),
+                createChartPoint(x: -110, y: -10, labelColor: color),
+                createChartPoint(x: -40, y: -80, labelColor: color),
+                createChartPoint(x: -10, y: -50, labelColor: color),
+                createChartPoint(x: 20, y: 10, labelColor: color)
             ]
         }
         
         func createChartPoints3(color: UIColor) -> [ChartPoint] {
             return [
-                createChartPoint(10000, 70, color),
-                createChartPoint(20000, 100, color),
-                createChartPoint(30000, 160, color)
+                createChartPoint(x: 10000, y: 70, labelColor: color),
+                createChartPoint(x: 20000, y: 100, labelColor: color),
+                createChartPoint(x: 30000, y: 160, labelColor: color)
             ]
         }
         
@@ -111,8 +111,6 @@ class MultipleAxesInteractiveExample: UIViewController {
         let xValues2 = self.chartPoints2.map{$0.x}
         let xValues3 = self.chartPoints3.map{$0.x}
         
-        let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
-        let chartBounds = CGRectMake(0, 0, chartFrame.width, chartFrame.height)
         let chartSettings = ExamplesDefaults.chartSettings
         
         let top: CGFloat = 80
@@ -162,13 +160,13 @@ class MultipleAxesInteractiveExample: UIViewController {
                 self.xHighAxes = coordsSpace.xHighAxes
                 
                 // create layers with references to axes
-                var guideLinesLayer0Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[0], linesWidth: ExamplesDefaults.guidelinesWidth)
+                let guideLinesLayer0Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[0], linesWidth: ExamplesDefaults.guidelinesWidth)
                 self.guideLinesLayer0 = ChartGuideLinesDottedLayer(xAxis: self.xLowAxes[0], yAxis: self.yLowAxes[1], innerFrame: self.chartInnerFrame, settings: guideLinesLayer0Settings)
-                var guideLinesLayer1Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[1], linesWidth: ExamplesDefaults.guidelinesWidth)
+                let guideLinesLayer1Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[1], linesWidth: ExamplesDefaults.guidelinesWidth)
                 self.guideLinesLayer1 = ChartGuideLinesDottedLayer(xAxis: self.xLowAxes[1], yAxis: self.yLowAxes[0], innerFrame: self.chartInnerFrame, settings: guideLinesLayer1Settings)
-                var guideLinesLayer3Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[2], linesWidth: ExamplesDefaults.guidelinesWidth)
+                let guideLinesLayer3Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[2], linesWidth: ExamplesDefaults.guidelinesWidth)
                 self.guideLinesLayer2 = ChartGuideLinesDottedLayer(xAxis: self.xHighAxes[1], yAxis: self.yHighAxes[0], innerFrame: self.chartInnerFrame, settings: guideLinesLayer3Settings)
-                var guideLinesLayer4Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[3], linesWidth: ExamplesDefaults.guidelinesWidth)
+                let guideLinesLayer4Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[3], linesWidth: ExamplesDefaults.guidelinesWidth)
                 self.guideLinesLayer3 = ChartGuideLinesDottedLayer(xAxis: self.xHighAxes[0], yAxis: self.yHighAxes[1], innerFrame: self.chartInnerFrame, settings: guideLinesLayer4Settings)
                 
                 self.showChart(lineAnimDuration: 1)
@@ -180,7 +178,7 @@ class MultipleAxesInteractiveExample: UIViewController {
         self.view.addSubview(self.createShowGuidesView())
     }
     
-    private func createLineLayers(#animDuration: Float) -> [ChartPointsLineLayer<ChartPoint>] {
+    private func createLineLayers(animDuration animDuration: Float) -> [ChartPointsLineLayer<ChartPoint>] {
         let lineModel0 = ChartLineModel(chartPoints: chartPoints0, lineColor: bgColors[0], animDuration: animDuration, animDelay: 0)
         let lineModel1 = ChartLineModel(chartPoints: chartPoints1, lineColor: bgColors[1], animDuration: animDuration, animDelay: 0)
         let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: bgColors[2], animDuration: animDuration, animDelay: 0)
@@ -195,7 +193,7 @@ class MultipleAxesInteractiveExample: UIViewController {
     }
     
     
-    private func createLayers(#selectedLayersFlags: [Bool], showGuides: Bool, lineAnimDuration: Float) -> ([ChartLayer]) {
+    private func createLayers(selectedLayersFlags selectedLayersFlags: [Bool], showGuides: Bool, lineAnimDuration: Float) -> ([ChartLayer]) {
         
         var axisLayers: [ChartLayer] = []
         var itemsLayers: [ChartLayer] = []
@@ -213,7 +211,7 @@ class MultipleAxesInteractiveExample: UIViewController {
             [yHighAxes[1], xHighAxes[0], lineLayers[3]] + maybeGuides(guideLinesLayer3)
         ]
         
-        return Array(enumerate(selectedLayersFlags)).reduce(Array<ChartLayer>()) {selectedLayers, inTuple in
+        return Array(selectedLayersFlags.enumerate()).reduce(Array<ChartLayer>()) {selectedLayers, inTuple in
             
             let index = inTuple.0
             let selected = inTuple.1
@@ -225,7 +223,7 @@ class MultipleAxesInteractiveExample: UIViewController {
         }
     }
     
-    private func showChart(#lineAnimDuration: Float) -> () {
+    private func showChart(lineAnimDuration lineAnimDuration: Float) -> () {
         
         self.chart?.clearView()
         

@@ -37,10 +37,9 @@ class InfoBubble: UIView {
         CGContextSetFillColorWithColor(context, self.bgColor.CGColor)
         CGContextSetStrokeColorWithColor(context, self.bgColor.CGColor)
         let rrect = CGRectInset(rect, 0, 20)
-        let radius: CGFloat = 0
         
-        let minx = CGRectGetMinX(rrect), midx = CGRectGetMidX(rrect), maxx = CGRectGetMaxX(rrect)
-        let miny = CGRectGetMinY(rrect), midy = CGRectGetMidY(rrect), maxy = CGRectGetMaxY(rrect)
+        let minx = CGRectGetMinX(rrect), maxx = CGRectGetMaxX(rrect)
+        let miny = CGRectGetMinY(rrect), maxy = CGRectGetMaxY(rrect)
         
         let outlinePath = CGPathCreateMutable()
         

@@ -28,7 +28,7 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
         return self.labelsOffset + (self.settings.axisStrokeWidth / 2) + self.settings.labelsToAxisSpacingX + self.labelsTotalHeight
     }()
     
-    override func chartViewDrawing(#context: CGContextRef, chart: Chart) {
+    override func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         super.chartViewDrawing(context: context, chart: chart)
     }
     

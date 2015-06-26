@@ -14,7 +14,7 @@ class GroupedAndStackedBarsExample: UIViewController {
     
     private let dirSelectorHeight: CGFloat = 50
     
-    private func barsChart(#horizontal: Bool) -> Chart {
+    private func barsChart(horizontal horizontal: Bool) -> Chart {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
         let groupsData: [(title: String, bars: [(start: CGFloat, quantities: [CGFloat])])] = [
@@ -66,10 +66,10 @@ class GroupedAndStackedBarsExample: UIViewController {
         
         let frameColors = [UIColor.redColor().colorWithAlphaComponent(0.6), UIColor.blueColor().colorWithAlphaComponent(0.6), UIColor.greenColor().colorWithAlphaComponent(0.6)]
         
-        let groups: [ChartPointsBarGroup<ChartStackedBarModel>] = Array(enumerate(groupsData)).map {index, entry in
+        let groups: [ChartPointsBarGroup<ChartStackedBarModel>] = Array(groupsData.enumerate()).map {index, entry in
             let constant = ChartAxisValueFloat(CGFloat(index))
-            let bars: [ChartStackedBarModel] = Array(enumerate(entry.bars)).map {index, bars in
-                let items = Array(enumerate(bars.quantities)).map {index, quantity in
+            let bars: [ChartStackedBarModel] = Array(entry.bars.enumerate()).map {index, bars in
+                let items = Array(bars.quantities.enumerate()).map {index, quantity in
                     ChartStackedBarItemModel(quantity, frameColors[index])
                 }
                 return ChartStackedBarModel(constant: constant, start: ChartAxisValueFloat(bars.start), items: items)
@@ -77,10 +77,10 @@ class GroupedAndStackedBarsExample: UIViewController {
             return ChartPointsBarGroup(constant: constant, bars: bars)
         }
         
-        let (axisValues1: [ChartAxisValue], axisValues2: [ChartAxisValue]) = (
+        let (axisValues1, axisValues2): ([ChartAxisValue], [ChartAxisValue]) = (
             Array(stride(from: -60, through: 100, by: 20)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
             [ChartAxisValueString(order: -1)] +
-                Array(enumerate(groupsData)).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+                Array(groupsData.enumerate()).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
                 [ChartAxisValueString(order: groupsData.count)]
         )
         let (xValues, yValues) = horizontal ? (axisValues1, axisValues2) : (axisValues2, axisValues1)
@@ -94,7 +94,7 @@ class GroupedAndStackedBarsExample: UIViewController {
         
         let groupsLayer = ChartGroupedStackedBarsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barSpacing: 2, groupSpacing: 30, animDuration: 0.5)
         
-        var settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, axis: horizontal ? .X : .Y, settings: settings)
         
         let dummyZeroChartPoint = ChartPoint(x: ChartAxisValueFloat(0), y: ChartAxisValueFloat(0))
@@ -127,7 +127,7 @@ class GroupedAndStackedBarsExample: UIViewController {
     }
     
     
-    private func showChart(#horizontal: Bool) {
+    private func showChart(horizontal horizontal: Bool) {
         self.chart?.clearView()
         
         let chart = self.barsChart(horizontal: horizontal)
@@ -183,10 +183,10 @@ class GroupedAndStackedBarsExample: UIViewController {
         override func didMoveToSuperview() {
             let views = [self.horizontal, self.vertical]
             for v in views {
-                v.setTranslatesAutoresizingMaskIntoConstraints(false)
+                v.translatesAutoresizingMaskIntoConstraints = false
             }
             
-            let namedViews = Array(enumerate(views)).map{index, view in
+            let namedViews = Array(views.enumerate()).map{index, view in
                 ("v\(index)", view)
             }
             
@@ -201,9 +201,9 @@ class GroupedAndStackedBarsExample: UIViewController {
                 "\(str)-(\(buttonsSpace))-[\(tuple.0)]"
             }
             
-            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|[\($0.0)]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)}
+            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|[\($0.0)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
             
-            self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
+            self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
                 + vConstraits)
         }
         

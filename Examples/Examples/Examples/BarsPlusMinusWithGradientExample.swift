@@ -49,13 +49,13 @@ class BarsPlusMinusWithGradientExample: UIViewController {
             ("A", 75)
         ]
         
-        let (minVal: CGFloat, maxVal: CGFloat) = vals.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, val in
+        let (minVal, maxVal): (CGFloat, CGFloat) = vals.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, val in
             (min: min(tuple.min, val.val), max: max(tuple.max, val.val))
         }
         let length: CGFloat = maxVal - minVal
         
         let zero = ChartAxisValueFloat(0)
-        let bars: [ChartBarModel] = Array(enumerate(vals)).map {index, tuple in
+        let bars: [ChartBarModel] = Array(vals.enumerate()).map {index, tuple in
             let percentage = (tuple.val - minVal - 0.01) / length // FIXME without -0.01 bar with 1 (100 perc) is black
             let color = self.gradientPicker.colorForPercentage(percentage).colorWithAlphaComponent(0.6)
             return ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.val), bgColor: color)
@@ -66,7 +66,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         let xValues = Array(stride(from: -80, through: 80, by: 20)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
         let yValues =
             [ChartAxisValueString(order: -1)] +
-            Array(enumerate(vals)).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+            Array(vals.enumerate()).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
             [ChartAxisValueString(order: vals.count)]
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
@@ -85,7 +85,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
                 
                 let barsLayer = ChartBarsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, bars: bars, horizontal: true, barWidth: Env.iPad ? 40 : 16, animDuration: 0.5)
                 
-                var settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+                let settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
                 let guidelinesLayer = ChartGuideLinesLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, axis: .X, settings: settings)
                 
                 // create x zero guideline as view to be in front of the bars
@@ -126,7 +126,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         
         init(width: CGFloat) {
             
-            var gradient: CAGradientLayer = CAGradientLayer()
+            let gradient: CAGradientLayer = CAGradientLayer()
             gradient.frame = CGRectMake(0, 0, width, 1)
             gradient.colors = [UIColor.redColor().CGColor, UIColor.yellowColor().CGColor, UIColor.cyanColor().CGColor, UIColor.blueColor().CGColor]
             gradient.startPoint = CGPointMake(0, 0.5)
@@ -136,11 +136,10 @@ class BarsPlusMinusWithGradientExample: UIViewController {
             let imgWidth = Int(gradient.bounds.size.width)
             
             let bitmapBytesPerRow = imgWidth * 4
-            let bitmapByteCount = bitmapBytesPerRow * imgHeight
             
-            let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
-            let bitmapInfo = CGBitmapInfo(CGImageAlphaInfo.PremultipliedLast.rawValue)
-            
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue).rawValue
+
             let context = CGBitmapContextCreate (nil,
                 imgWidth,
                 imgHeight,
@@ -150,8 +149,9 @@ class BarsPlusMinusWithGradientExample: UIViewController {
                 bitmapInfo)
             
             UIGraphicsBeginImageContext(gradient.bounds.size)
-            gradient.renderInContext(context)
-            let gradientImg = UIImage(CGImage: CGBitmapContextCreateImage(context))!
+            gradient.renderInContext(context!)
+            
+            let gradientImg = UIImage(CGImage: CGBitmapContextCreateImage(context)!)
             
             UIGraphicsEndImageContext()
             self.gradientImg = gradientImg

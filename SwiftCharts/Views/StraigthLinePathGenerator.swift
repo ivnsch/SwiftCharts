@@ -9,12 +9,12 @@
 import UIKit
 
 class StraigthLinePathGenerator: ChartLinesViewPathGenerator {
-    func generatePath(#points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
-        
+    func generatePath(points points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
+
         let progressline = UIBezierPath()
         progressline.lineWidth = lineWidth
-        progressline.lineCapStyle = kCGLineCapRound
-        progressline.lineJoinStyle = kCGLineJoinRound
+        progressline.lineCapStyle = .Round
+        progressline.lineJoinStyle = .Round
         
         for i in 0..<(points.count - 1) {
             let p1 = points[i]
