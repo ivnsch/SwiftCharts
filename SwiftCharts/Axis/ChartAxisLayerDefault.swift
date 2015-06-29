@@ -88,7 +88,13 @@ class ChartAxisLayerDefault: ChartAxisLayer {
             sum + self.labelMaybeSize(label).height
         }
     }()
-    
+
+    lazy var axisTitleLabelsWidth: CGFloat = {
+        return self.axisTitleLabels.reduce(0) {sum, label in
+            sum + self.labelMaybeSize(label).width
+        }
+    }()
+
     var width: CGFloat {
         fatalError("override")
     }
