@@ -25,7 +25,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     }
     
     override var width: CGFloat {
-        return self.labelsMaxWidth + self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingY + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsHeight
+        return self.labelsMaxWidth + self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingY + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsWidth
     }
     
     override var length: CGFloat {
@@ -42,7 +42,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             let axisLabel = firstTitleLabel
             let labelSize = ChartUtils.textSize(axisLabel.text, font: axisLabel.settings.font)
             let settings = axisLabel.settings
-            let newSettings = ChartLabelSettings(font: settings.font, fontColor: settings.fontColor, rotation: -90, rotationKeep: settings.rotationKeep)
+            let newSettings = ChartLabelSettings(font: settings.font, fontColor: settings.fontColor, rotation: settings.rotation, rotationKeep: settings.rotationKeep)
             let axisLabelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(
                 self.p1.x + offset,
                 self.p2.y + ((self.p1.y - self.p2.y) / 2) - (labelSize.height / 2)), settings: newSettings)

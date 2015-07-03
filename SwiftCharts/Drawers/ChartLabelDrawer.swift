@@ -24,6 +24,12 @@ public class ChartLabelSettings {
     }
 }
 
+public class ChartAxisYLabelSettings: ChartLabelSettings {
+    override public init(font: UIFont = UIFont.systemFontOfSize(14), fontColor: UIColor = UIColor.blackColor(), rotation: CGFloat = -90, rotationKeep: ChartLabelDrawerRotationKeep = .Center, shiftXOnRotation: Bool = true) {
+        super.init(font: font, fontColor: fontColor, rotation: rotation, rotationKeep: rotationKeep, shiftXOnRotation: shiftXOnRotation)
+    }
+}
+
 // coordinate of original label which will be preserved after the rotation
 public enum ChartLabelDrawerRotationKeep {
     case Center, Top, Bottom
