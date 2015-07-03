@@ -22,11 +22,20 @@ public class ChartLabelSettings {
         self.rotationKeep = rotationKeep
         self.shiftXOnRotation = shiftXOnRotation
     }
+    
+    public func copy(font: UIFont? = nil, fontColor: UIColor? = nil, rotation: CGFloat? = nil, rotationKeep: ChartLabelDrawerRotationKeep? = nil, shiftXOnRotation: Bool? = nil) -> ChartLabelSettings {
+        return ChartLabelSettings(
+            font: font ?? self.font,
+            fontColor: fontColor ?? self.fontColor,
+            rotation: rotation ?? self.rotation,
+            rotationKeep: rotationKeep ?? self.rotationKeep,
+            shiftXOnRotation: shiftXOnRotation ?? self.shiftXOnRotation)
+    }
 }
 
-public class ChartAxisYLabelSettings: ChartLabelSettings {
-    override public init(font: UIFont = UIFont.systemFontOfSize(14), fontColor: UIColor = UIColor.blackColor(), rotation: CGFloat = -90, rotationKeep: ChartLabelDrawerRotationKeep = .Center, shiftXOnRotation: Bool = true) {
-        super.init(font: font, fontColor: fontColor, rotation: rotation, rotationKeep: rotationKeep, shiftXOnRotation: shiftXOnRotation)
+public extension ChartLabelSettings {
+    public func defaultVertical() -> ChartLabelSettings {
+        return self.copy(rotation: -90)
     }
 }
 
