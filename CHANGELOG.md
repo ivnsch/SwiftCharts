@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Allow rotating y axis title label
+
+## [0.2.2]
 - Refactor circle and bubble views, now ChartPointEllipseView
 - Rename BubbleView in InfoBubble and move it to example project
 
