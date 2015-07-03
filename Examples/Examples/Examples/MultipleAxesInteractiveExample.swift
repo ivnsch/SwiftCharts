@@ -130,12 +130,12 @@ class MultipleAxesInteractiveExample: UIViewController {
         let axisTitleFont = ExamplesDefaults.labelFontSmall
         
         let yLowModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: yValues1, lineColor: self.bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: self.bgColors[1], font: axisTitleFont))]),
-            ChartAxisModel(axisValues: yValues0, lineColor: self.bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: self.bgColors[0], font: axisTitleFont))])
+            ChartAxisModel(axisValues: yValues1, lineColor: self.bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: self.bgColors[1], font: axisTitleFont).defaultVertical())]),
+            ChartAxisModel(axisValues: yValues0, lineColor: self.bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: self.bgColors[0], font: axisTitleFont).defaultVertical())])
         ]
         let yHighModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: yValues2, lineColor: self.bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: self.bgColors[2], font: axisTitleFont))]),
-            ChartAxisModel(axisValues: yValues3, lineColor: self.bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: self.bgColors[3], font: axisTitleFont))])
+            ChartAxisModel(axisValues: yValues2, lineColor: self.bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: self.bgColors[2], font: axisTitleFont).defaultVertical())]),
+            ChartAxisModel(axisValues: yValues3, lineColor: self.bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: self.bgColors[3], font: axisTitleFont).defaultVertical())])
         ]
         let xLowModels: [ChartAxisModel] = [
             ChartAxisModel(axisValues: xValues0, lineColor: self.bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: self.bgColors[0], font: axisTitleFont))]),

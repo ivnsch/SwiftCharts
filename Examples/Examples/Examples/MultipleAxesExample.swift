@@ -91,12 +91,12 @@ class MultipleAxesExample: UIViewController {
         let axisTitleFont = ExamplesDefaults.labelFontSmall
         
         let yLowModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: yValues2, lineColor: bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[1], font: axisTitleFont))]),
-            ChartAxisModel(axisValues: yValues1, lineColor: bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[0], font: axisTitleFont))])
+            ChartAxisModel(axisValues: yValues2, lineColor: bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[1], font: axisTitleFont).defaultVertical())]),
+            ChartAxisModel(axisValues: yValues1, lineColor: bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[0], font: axisTitleFont).defaultVertical())])
         ]
         let yHighModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: yValues4, lineColor: bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[2], font: axisTitleFont))]),
-            ChartAxisModel(axisValues: yValues5, lineColor: bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[3], font: axisTitleFont))])
+            ChartAxisModel(axisValues: yValues4, lineColor: bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[2], font: axisTitleFont).defaultVertical())]),
+            ChartAxisModel(axisValues: yValues5, lineColor: bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[3], font: axisTitleFont).defaultVertical())])
         ]
         let xLowModels: [ChartAxisModel] = [
             ChartAxisModel(axisValues: xValues0, lineColor: bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[0], font: axisTitleFont))]),

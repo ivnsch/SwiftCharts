@@ -88,7 +88,7 @@ class CandleStickInteractiveExample: UIViewController {
         let yValues = Array(stride(from: 20, through: 55, by: 5)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
-        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
+        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
         
         let defaultChartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
         let infoViewHeight: CGFloat = 50
