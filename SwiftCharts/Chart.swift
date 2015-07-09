@@ -85,8 +85,8 @@ public class ChartBaseView: UIView {
         self.sharedInit()
     }
 
-    required public init(coder aDecoder: NSCoder) {
-        super.init?(coder: aDecoder)
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
         self.sharedInit()
     }
     
