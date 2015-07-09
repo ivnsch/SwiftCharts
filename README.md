@@ -57,7 +57,7 @@ pod 'SwiftCharts', '~> 0.2'
 Or to use the Swift 2.0 branch:
 ```ruby
 use_frameworks!
-pod 'AFNetworking', :git => 'https://github.com/i-schuetz/SwiftCharts.git', :branch => 'swift2.0'
+pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git', :branch => 'swift2.0'
 ```
 
 And then:
