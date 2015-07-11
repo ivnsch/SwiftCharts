@@ -154,16 +154,27 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
             let touchlineP1 = CGPointMake(touchPoint.x, 0)
             let touchlineP2 = CGPointMake(touchPoint.x, view.frame.size.height)
             
-
-            var intersectionMaybe: CGPoint?
+            var intersections: [CGPoint] = []
             for i in 0..<(self.chartPointsModels.count - 1) {
                 let m1 = self.chartPointsModels[i]
                 let m2 = self.chartPointsModels[i + 1]
-                intersectionMaybe = self.linesIntersection(line1P1: touchlineP1, line1P2: touchlineP2, line2P1: m1.screenLoc, line2P2: m2.screenLoc)
-                if intersectionMaybe != nil {
-                    break
+                if let intersection = self.linesIntersection(line1P1: touchlineP1, line1P2: touchlineP2, line2P1: m1.screenLoc, line2P2: m2.screenLoc) {
+                    intersections.append(intersection)
                 }
             }
+
+            // Select point with smallest distance to touch point.
+            // If there's only one intersection, returns intersection. If there's no intersection returns nil.
+            var intersectionMaybe: CGPoint? = {
+                var minDistancePoint: (distance: Float, point: CGPoint?) = (MAXFLOAT, nil)
+                for intersection in intersections {
+                    let distance = hypotf(Float(intersection.x - touchPoint.x), Float(intersection.y - touchPoint.y))
+                    if distance < minDistancePoint.0 {
+                        minDistancePoint = (distance, intersection)
+                    }
+                }
+                return minDistancePoint.point
+            }()
             
             if let intersection = intersectionMaybe {
                 
