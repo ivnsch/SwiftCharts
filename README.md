@@ -21,7 +21,7 @@ Easy to use and highly customizable charts library for iOS
 - Easy extensibility
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
-Swift 1.2, iOS 7/8. Swift 2.0 branch. So far everything seems to be working in iOS9 (beta 2), except stacked bars. Fix coming soon.
+Swift 1.2, iOS 7/8. Swift 2.0 branch (latest test on XCode 7 beta 3).
 
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM) (this will be updated only on new tags - check the [changelog](CHANGELOG.md) for possible new examples in master)
 
