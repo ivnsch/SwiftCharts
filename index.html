@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Swiftcharts : Easy to use and highly customizable charts library for iOS">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Swiftcharts</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/i-schuetz/SwiftCharts">View on GitHub</a>
+
+          <h1 id="project_title">Swiftcharts</h1>
+          <h2 id="project_tagline">Easy to use and highly customizable charts library for iOS</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/i-schuetz/SwiftCharts/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/i-schuetz/SwiftCharts/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="swiftcharts" class="anchor" href="#swiftcharts" aria-hidden="true"><span class="octicon octicon-link"></span></a>SwiftCharts</h1>
+
+<p><a href="http://cocoadocs.org/docsets/Charts"><img src="https://img.shields.io/cocoapods/v/SwiftCharts.svg?style=flat" alt="Version"></a>
+<a href="http://cocoadocs.org/docsets/Charts"><img src="https://img.shields.io/cocoapods/l/SwiftCharts.svg?style=flat" alt="License"></a></p>
+
+<p>Easy to use and highly customizable charts library for iOS</p>
+
+<h5>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features:</h5>
+
+<ul>
+<li>Bars - plain, stacked, grouped, horizontal, vertical</li>
+<li>Scatter</li>
+<li>Line / Multiple lines</li>
+<li>Areas</li>
+<li>Bubble</li>
+<li>Multiple axis</li>
+<li>Custom units</li>
+<li>Custom views</li>
+<li>Multiple labels (x axis)</li>
+<li>Candlestick</li>
+<li>Cubic line</li>
+<li>Complex interactivity support</li>
+<li>Easy extensibility</li>
+<li>
+<strong>Easy to use</strong>: no learning curve, no complicated settings - just assemble chart using well defined components.</li>
+</ul>
+
+<p>Swift 1.2, iOS 7/8. Swift 2.0 branch (latest test on XCode 7 beta 3).</p>
+
+<p><a href="https://www.youtube.com/watch?v=bD6uDF-KckM">Video</a> (this will be updated only on new tags - check the <a href="CHANGELOG.md">changelog</a> for possible new examples in master)</p>
+
+<h5>
+<a id="screenshots" class="anchor" href="#screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Screenshots:</h5>
+
+<p><img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0102.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0022.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0023.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0024.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0025.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0026.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0101.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0027.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0028.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0029.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0031.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0033.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0034.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0037.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0038.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0039.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0040.jpeg" alt="ScreenShot">
+<img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0041.jpeg" alt="ScreenShot"></p>
+
+<h5>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h5>
+
+<p>Add to your podfile:</p>
+
+<div class="highlight highlight-ruby"><pre>use_frameworks!
+pod <span class="pl-s"><span class="pl-pds">'</span>SwiftCharts<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>~&gt; 0.2<span class="pl-pds">'</span></span></pre></div>
+
+<p>Or to use the Swift 2.0 branch:</p>
+
+<div class="highlight highlight-ruby"><pre>use_frameworks!
+pod <span class="pl-s"><span class="pl-pds">'</span>SwiftCharts<span class="pl-pds">'</span></span>, <span class="pl-c1">:git</span> =&gt; <span class="pl-s"><span class="pl-pds">'</span>https://github.com/i-schuetz/SwiftCharts.git<span class="pl-pds">'</span></span>, <span class="pl-c1">:branch</span> =&gt; <span class="pl-s"><span class="pl-pds">'</span>swift2.0<span class="pl-pds">'</span></span></pre></div>
+
+<p>And then:</p>
+
+<div class="highlight highlight-ruby"><pre>pod install</pre></div>
+
+<p>Import the framework in your code:</p>
+
+<div class="highlight highlight-swift"><pre><span class="pl-k">import</span> <span class="pl-c1">SwiftCharts</span></pre></div>
+
+<h4>
+<a id="concept" class="anchor" href="#concept" aria-hidden="true"><span class="octicon octicon-link"></span></a>Concept:</h4>
+
+<ul>
+<li><p>Layer architecture, which makes it extremely easy to customize charts, create new types, combine existing ones and add interactive elements.</p></li>
+<li><p>Creation of views via a generator function, which makes it easy to use custom views in any layer.</p></li>
+</ul>
+
+<h5>
+<a id="main-components" class="anchor" href="#main-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Main Components:</h5>
+
+<h5>
+<a id="1-layers" class="anchor" href="#1-layers" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Layers:</h5>
+
+<p>A chart is the result of composing layers together. Everything is a layer - axis, guidelines, dividers, line, circles, etc. The idea is to have losely coupled components that can be easily changed and combined. This is for example the structure of a basic chart, which shows a line with circles:</p>
+
+<p><img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/layers.png" alt="ScreenShot"></p>
+
+<p>Code:</p>
+
+<div class="highlight highlight-swift"><pre><span class="pl-k">let</span> labelSettings <span class="pl-k">=</span> ChartLabelSettings(font: ExamplesDefaults<span class="pl-k">.</span>labelFont)
+
+<span class="pl-k">let</span> chartPoints <span class="pl-k">=</span> [(<span class="pl-c1">2</span>, <span class="pl-c1">2</span>), (<span class="pl-c1">3</span>, <span class="pl-c1">1</span>), (<span class="pl-c1">5</span>, <span class="pl-c1">9</span>), (<span class="pl-c1">6</span>, <span class="pl-c1">7</span>), (<span class="pl-c1">8</span>, <span class="pl-c1">10</span>), (<span class="pl-c1">9</span>, <span class="pl-c1">9</span>), (<span class="pl-c1">10</span>, <span class="pl-c1">15</span>), (<span class="pl-c1">13</span>, <span class="pl-c1">8</span>), (<span class="pl-c1">15</span>, <span class="pl-c1">20</span>), (<span class="pl-c1">16</span>, <span class="pl-c1">17</span>)]<span class="pl-k">.</span>map{ChartPoint(x: ChartAxisValueInt($<span class="pl-c1">0</span><span class="pl-k">.</span><span class="pl-c1">0</span>), y: ChartAxisValueInt($<span class="pl-c1">0</span><span class="pl-k">.</span><span class="pl-c1">1</span>))}
+
+<span class="pl-k">let</span> xValues <span class="pl-k">=</span> <span class="pl-c1">Array</span>(stride(from: <span class="pl-c1">2</span>, through: <span class="pl-c1">16</span>, by: <span class="pl-c1">2</span>))<span class="pl-k">.</span>map {ChartAxisValueInt($<span class="pl-c1">0</span>, labelSettings: labelSettings)}
+<span class="pl-k">let</span> yValues <span class="pl-k">=</span> <span class="pl-c1">Array</span>(stride(from: <span class="pl-c1">0</span>, through: <span class="pl-c1">20</span>, by: <span class="pl-c1">2</span>))<span class="pl-k">.</span>map {ChartAxisValueInt($<span class="pl-c1">0</span>, labelSettings: labelSettings)}
+
+<span class="pl-k">let</span> xModel <span class="pl-k">=</span> ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: <span class="pl-s"><span class="pl-pds">"</span>Axis title<span class="pl-pds">"</span></span>, settings: labelSettings))
+<span class="pl-k">let</span> yModel <span class="pl-k">=</span> ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: <span class="pl-s"><span class="pl-pds">"</span>Axis title<span class="pl-pds">"</span></span>, settings: labelSettings))
+<span class="pl-k">let</span> chartFrame <span class="pl-k">=</span> ExamplesDefaults<span class="pl-k">.</span>chartFrame(<span class="pl-k">self</span><span class="pl-k">.</span>view<span class="pl-k">.</span>bounds)
+
+<span class="pl-k">let</span> chartSettings <span class="pl-k">=</span> ExamplesDefaults<span class="pl-k">.</span>chartSettings
+<span class="pl-k">let</span> coordsSpace <span class="pl-k">=</span> ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
+<span class="pl-k">let</span> (xAxis, yAxis, innerFrame) <span class="pl-k">=</span> (coordsSpace<span class="pl-k">.</span>xAxis, coordsSpace<span class="pl-k">.</span>yAxis, coordsSpace<span class="pl-k">.</span>chartInnerFrame)
+
+<span class="pl-c">// create layer with line</span>
+<span class="pl-k">let</span> lineModel <span class="pl-k">=</span> ChartLineModel(chartPoints: chartPoints, lineColor: UIColor(red: <span class="pl-c1">0</span><span class="pl-k">.</span><span class="pl-c1">4</span>, green: <span class="pl-c1">0</span><span class="pl-k">.</span><span class="pl-c1">4</span>, blue: <span class="pl-c1">1</span>, alpha: <span class="pl-c1">0</span><span class="pl-k">.</span><span class="pl-c1">2</span>), lineWidth: <span class="pl-c1">3</span>, animDuration: <span class="pl-c1">0</span><span class="pl-k">.</span><span class="pl-c1">7</span>, animDelay: <span class="pl-c1">0</span>)
+<span class="pl-k">let</span> chartPointsLineLayer <span class="pl-k">=</span> ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
+
+<span class="pl-c">// view generator - creates circle view for each chartpoint</span>
+<span class="pl-k">let</span> circleViewGenerator <span class="pl-k">=</span> {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) <span class="pl-k">-&gt;</span> UIView? <span class="pl-k">in</span>
+    <span class="pl-k">return</span> ChartPointCircleView(center: chartPointModel<span class="pl-k">.</span>screenLoc, size: CGSizeMake(<span class="pl-c1">20</span>, <span class="pl-c1">20</span>), settings: ChartPointCircleViewSettings(animDuration: <span class="pl-c1">0</span><span class="pl-k">.</span><span class="pl-c1">5</span>))
+}
+<span class="pl-c">// create layer that uses the view generator</span>
+<span class="pl-k">let</span> chartPointsCircleLayer <span class="pl-k">=</span> ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: circleViewGenerator, displayDelay: <span class="pl-c1">0</span>, delayBetweenItems: <span class="pl-c1">0</span><span class="pl-k">.</span><span class="pl-c1">05</span>)
+
+<span class="pl-c">// create layer with guidelines</span>
+<span class="pl-k">var</span> settings <span class="pl-k">=</span> ChartGuideLinesDottedLayerSettings(linesColor: UIColor<span class="pl-k">.</span>blackColor(), linesWidth: ExamplesDefaults<span class="pl-k">.</span>guidelinesWidth, axis: <span class="pl-k">.</span>XAndY)
+<span class="pl-k">let</span> guidelinesLayer <span class="pl-k">=</span> ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
+
+<span class="pl-k">let</span> chart <span class="pl-k">=</span> Chart(
+    frame: chartFrame,
+    layers: [
+        xAxis,
+        yAxis,
+        guidelinesLayer,
+        chartPointsLineLayer,
+        chartPointsCircleLayer
+    ]
+)
+
+<span class="pl-k">self</span><span class="pl-k">.</span>view<span class="pl-k">.</span>addSubview(chart<span class="pl-k">.</span>view)
+<span class="pl-k">self</span><span class="pl-k">.</span>chart <span class="pl-k">=</span> chart</pre></div>
+
+<p>Layers are semantic units that can add views to the chart, or can simply draw in the chart's context for a better performance. Which makes more sense depends on the requirements.</p>
+
+<h5>
+<a id="2-view-generators" class="anchor" href="#2-view-generators" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. View generators:</h5>
+
+<p>View based layers will use a generator function to generate chart point views. This function receives the complete state of each chartpoint (model data, screen location) and produces an UIView, allowing any type of customization.</p>
+
+<h5>
+<a id="hello-world" class="anchor" href="#hello-world" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hello world:</h5>
+
+<p>There's a <a href="Examples/Examples/Examples/HelloWorld.swift">hello world</a> included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the snippet above, and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!</p>
+
+<h5>
+<a id="functional-concepts" class="anchor" href="#functional-concepts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Functional concepts:</h5>
+
+<p>This library is rather object oriented, but it makes extensive use of functional concepts like high order functions and (preference for) immutability leading to safer code and better maintainability.</p>
+
+<h4>
+<a id="note-on-performance" class="anchor" href="#note-on-performance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Note on performance:</h4>
+
+<p>If you have a lot of axis labels in your chart it may be necessary to do the calculation of the coordinate space in the background. There can be a small delay which is noticeable during transitions or scrolling. See ScrollExample or MultipleAxesExample example for this.</p>
+
+<h4>
+<a id="coming-in-the-next-releases" class="anchor" href="#coming-in-the-next-releases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Coming in the next releases:</h4>
+
+<p>0.3 Performance improvements</p>
+
+<p>0.4 Create well known chart types with little code</p>
+
+<h6>
+<a id="more-documentation-also-coming-soon" class="anchor" href="#more-documentation-also-coming-soon" aria-hidden="true"><span class="octicon octicon-link"></span></a>More documentation also coming soon!</h6>
+
+<h5>
+<a id="version" class="anchor" href="#version" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version:</h5>
+
+<p>0.2.2</p>
+
+<h5>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h5>
+
+<ol>
+<li>Fork</li>
+<li>Commit changes to a branch in your fork</li>
+<li>Push your code and make a pull request</li>
+</ol>
+
+<h5>
+<a id="created-by" class="anchor" href="#created-by" aria-hidden="true"><span class="octicon octicon-link"></span></a>Created By:</h5>
+
+<p>Ivan Schütz</p>
+
+<h5>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h5>
+
+<p>SwiftCharts is Copyright (c) 2015 Ivan Schütz and released as open source under the attached <a href="LICENSE">Apache 2.0 license</a>.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.</p>
+
+<p>This is a port to Swift and (massively improved) continuation of an obj-c project which I did while working at eGym GmbH <a href="https://github.com/egymgmbh/ios-charts">https://github.com/egymgmbh/ios-charts</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Swiftcharts maintained by <a href="https://github.com/i-schuetz">i-schuetz</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
