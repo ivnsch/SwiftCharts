@@ -12,11 +12,11 @@ Easy to use and highly customizable charts library for iOS
 - Areas
 - Bubble
 - Multiple axis
-- Custom units
-- Custom views
 - Multiple labels (x axis)
 - Candlestick
 - Cubic line
+- Everything is customizable - views (uses normal UIViews so everything is possible), animations, colors, units, axis
+- Charts can be combined with each other (e.g. lines + bars + circles)
 - Complex interactivity support
 - Easy extensibility
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
