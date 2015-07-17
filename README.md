@@ -70,7 +70,30 @@ Import the framework in your code:
 import SwiftCharts
 ```
 
-####Concept:
+##### Usage example (multiline chart - quick way):
+
+```swift
+let chartConfig = ChartConfig(
+    xAxisConfig: ChartAxisConfig(from: 2, to: 14, by: 2),
+    yAxisConfig: ChartAxisConfig(from: 0, to: 14, by: 2)
+)
+
+let chart = LineChart(
+    frame: CGRectMake(0, 70, 300, 500),
+    chartConfig: chartConfig,
+    xTitle: "X axis",
+    yTitle: "Y axis",
+    lines: [
+        (chartPoints: [(2.0, 10.6), (4.2, 5.1), (7.3, 3.0), (8.1, 5.5), (14.0, 8.0)], color: UIColor.redColor()),
+        (chartPoints: [(2.0, 2.6), (4.2, 4.1), (7.3, 1.0), (8.1, 11.5), (14.0, 3.0)], color: UIColor.blueColor())
+    ]
+)
+
+self.view.addSubview(chart.view)
+```
+
+
+##### Concept:
 
 - Layer architecture, which makes it extremely easy to customize charts, create new types, combine existing ones and add interactive elements.
 
@@ -85,7 +108,7 @@ A chart is the result of composing layers together. Everything is a layer - axis
 ![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/layers.png)
 
 
-Code:
+Following a more low level example, to provide an insight into the layer system. Note that most examples are written like this, in order to provider maximal flexibility.
 
 ```swift
 let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
@@ -143,22 +166,14 @@ View based layers will use a generator function to generate chart point views. T
 
 There's a [hello world](Examples/Examples/Examples/HelloWorld.swift) included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the snippet above, and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!
 
-##### Functional concepts:
+##### Note on performance:
 
-This library is rather object oriented, but it makes extensive use of functional concepts like high order functions and (preference for) immutability leading to safer code and better maintainability.
+If you have a lot of axis labels in your chart it may be necessary to do the calculation of the coordinate space in the background, to avoid possible delays which are noticeable during transitions or scrolling. See ScrollExample or MultipleAxesExample example for this.
 
 
-####Note on performance:
 
-If you have a lot of axis labels in your chart it may be necessary to do the calculation of the coordinate space in the background. There can be a small delay which is noticeable during transitions or scrolling. See ScrollExample or MultipleAxesExample example for this.
 
-####Coming in the next releases:
-
-0.3 Performance improvements
-
-0.4 Create well known chart types with little code
-
-###### More documentation also coming soon!
+###### [More documentation coming soon!](https://github.com/i-schuetz/SwiftCharts/wiki/Wiki)
 
 
 ##### Version:
