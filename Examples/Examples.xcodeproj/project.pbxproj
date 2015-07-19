@@ -10,6 +10,8 @@
 		EB0FD3771B5BC30700829AE5 /* ConvenienceLinesExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0FD3761B5BC30700829AE5 /* ConvenienceLinesExample.swift */; };
 		EB0FD37A1B5BCC1600829AE5 /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0FD3791B5BCC1600829AE5 /* LineChart.swift */; };
 		EB0FD37C1B5BCCAB00829AE5 /* ChartConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0FD37B1B5BCCAB00829AE5 /* ChartConfig.swift */; };
+		EB0FD37E1B5C42F900829AE5 /* ConvenienceBarsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0FD37D1B5C42F900829AE5 /* ConvenienceBarsExample.swift */; };
+		EB0FD3801B5C432200829AE5 /* BarsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0FD37F1B5C432200829AE5 /* BarsChart.swift */; };
 		EB37D6AF1AFD1A670079438D /* ExamplesDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB37D6AE1AFD1A670079438D /* ExamplesDefaults.swift */; };
 		EB37D6B11AFD1AA10079438D /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB37D6B01AFD1AA10079438D /* Env.swift */; };
 		EB51EB181B02919B0083E052 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB51EB171B02919B0083E052 /* Main_iPhone.storyboard */; };
@@ -124,6 +126,8 @@
 		EB0FD3761B5BC30700829AE5 /* ConvenienceLinesExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvenienceLinesExample.swift; sourceTree = "<group>"; };
 		EB0FD3791B5BCC1600829AE5 /* LineChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
 		EB0FD37B1B5BCCAB00829AE5 /* ChartConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartConfig.swift; sourceTree = "<group>"; };
+		EB0FD37D1B5C42F900829AE5 /* ConvenienceBarsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvenienceBarsExample.swift; sourceTree = "<group>"; };
+		EB0FD37F1B5C432200829AE5 /* BarsChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarsChart.swift; sourceTree = "<group>"; };
 		EB37D6AE1AFD1A670079438D /* ExamplesDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamplesDefaults.swift; sourceTree = "<group>"; };
 		EB37D6B01AFD1AA10079438D /* Env.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
 		EB51EB151B028FBA0083E052 /* Examples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Examples.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -250,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				EB0FD3761B5BC30700829AE5 /* ConvenienceLinesExample.swift */,
+				EB0FD37D1B5C42F900829AE5 /* ConvenienceBarsExample.swift */,
 			);
 			name = Convenience;
 			sourceTree = "<group>";
@@ -258,6 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				EB0FD3791B5BCC1600829AE5 /* LineChart.swift */,
+				EB0FD37F1B5C432200829AE5 /* BarsChart.swift */,
 				EB0FD37B1B5BCCAB00829AE5 /* ChartConfig.swift */,
 			);
 			path = Convenience;
@@ -574,6 +580,7 @@
 			files = (
 				EBC5337B1B00F02600D10448 /* StraigthLinePathGenerator.swift in Sources */,
 				EB5DB69B1AFD08AD00569E59 /* ScrollExample.swift in Sources */,
+				EB0FD3801B5C432200829AE5 /* BarsChart.swift in Sources */,
 				EBC5334A1B00F02600D10448 /* ChartAxisModel.swift in Sources */,
 				EB5DB6971AFD08AD00569E59 /* MultipleAxesInteractiveExample.swift in Sources */,
 				EB5DB6981AFD08AD00569E59 /* MultipleLabelsExample.swift in Sources */,
@@ -596,6 +603,7 @@
 				EBC5334B1B00F02600D10448 /* ChartAxisValuesGenerator.swift in Sources */,
 				EB5DC10F1B091FCC001FD5A8 /* ChartBarsLayer.swift in Sources */,
 				EBC533631B00F02600D10448 /* ChartCoordsSpaceLayer.swift in Sources */,
+				EB0FD37E1B5C42F900829AE5 /* ConvenienceBarsExample.swift in Sources */,
 				EBC5335D1B00F02600D10448 /* ChartUtils.swift in Sources */,
 				EBC5334D1B00F02600D10448 /* ChartAxisXLayerDefault.swift in Sources */,
 				EBC533531B00F02600D10448 /* ChartAxisValueDate.swift in Sources */,

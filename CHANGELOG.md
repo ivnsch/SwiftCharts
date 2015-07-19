@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Allow rotating y axis title label
 - Add LineChart to create (multi)line chart with few lines
+- Add BarChart to create bar chart with few lines
 
 ## [0.2.2]
 - Refactor circle and bubble views, now ChartPointEllipseView
