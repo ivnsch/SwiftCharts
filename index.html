@@ -37,11 +37,11 @@
 <li>Areas</li>
 <li>Bubble</li>
 <li>Multiple axis</li>
-<li>Custom units</li>
-<li>Custom views</li>
 <li>Multiple labels (x axis)</li>
 <li>Candlestick</li>
 <li>Cubic line</li>
+<li>Everything is customizable - views (uses normal UIViews so everything is possible), animations, colors, units, axis</li>
+<li>Charts can be combined with each other (e.g. lines + bars + circles)</li>
 <li>Complex interactivity support</li>
 <li>Easy extensibility</li>
 <li>
@@ -50,9 +50,7 @@
 
 <p>Swift 1.2, iOS 7/8. Swift 2.0 branch (latest test on XCode 7 beta 3).</p>
 
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/bD6uDF-KckM" frameborder="0" allowfullscreen></iframe>
-
+<p><a href="https://www.youtube.com/watch?v=bD6uDF-KckM">Video</a></p>
 
 <h5>
 <a id="screenshots" class="anchor" href="#screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Screenshots:</h5>
@@ -97,8 +95,57 @@ pod <span class="pl-s"><span class="pl-pds">'</span>SwiftCharts<span class="pl-p
 
 <div class="highlight highlight-swift"><pre><span class="pl-k">import</span> <span class="pl-c1">SwiftCharts</span></pre></div>
 
-<h4>
-<a id="concept" class="anchor" href="#concept" aria-hidden="true"><span class="octicon octicon-link"></span></a>Concept:</h4>
+<h5>
+<a id="usage-examples" class="anchor" href="#usage-examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage examples</h5>
+
+<p>Multiline chart:</p>
+
+<div class="highlight highlight-swift"><pre><span class="pl-k">let</span> chartConfig <span class="pl-k">=</span> ChartConfig(
+    xAxisConfig: ChartAxisConfig(from: <span class="pl-c1">2</span>, to: <span class="pl-c1">14</span>, by: <span class="pl-c1">2</span>),
+    yAxisConfig: ChartAxisConfig(from: <span class="pl-c1">0</span>, to: <span class="pl-c1">14</span>, by: <span class="pl-c1">2</span>)
+)
+
+<span class="pl-k">let</span> chart <span class="pl-k">=</span> LineChart(
+    frame: CGRectMake(<span class="pl-c1">0</span>, <span class="pl-c1">70</span>, <span class="pl-c1">300</span>, <span class="pl-c1">500</span>),
+    chartConfig: chartConfig,
+    xTitle: <span class="pl-s"><span class="pl-pds">"</span>X axis<span class="pl-pds">"</span></span>,
+    yTitle: <span class="pl-s"><span class="pl-pds">"</span>Y axis<span class="pl-pds">"</span></span>,
+    lines: [
+        (chartPoints: [(<span class="pl-c1">2</span><span class="pl-k">.</span><span class="pl-c1">0</span>, <span class="pl-c1">10</span><span class="pl-k">.</span><span class="pl-c1">6</span>), (<span class="pl-c1">4</span><span class="pl-k">.</span><span class="pl-c1">2</span>, <span class="pl-c1">5</span><span class="pl-k">.</span><span class="pl-c1">1</span>), (<span class="pl-c1">7</span><span class="pl-k">.</span><span class="pl-c1">3</span>, <span class="pl-c1">3</span><span class="pl-k">.</span><span class="pl-c1">0</span>), (<span class="pl-c1">8</span><span class="pl-k">.</span><span class="pl-c1">1</span>, <span class="pl-c1">5</span><span class="pl-k">.</span><span class="pl-c1">5</span>), (<span class="pl-c1">14</span><span class="pl-k">.</span><span class="pl-c1">0</span>, <span class="pl-c1">8</span><span class="pl-k">.</span><span class="pl-c1">0</span>)], color: UIColor<span class="pl-k">.</span>redColor()),
+        (chartPoints: [(<span class="pl-c1">2</span><span class="pl-k">.</span><span class="pl-c1">0</span>, <span class="pl-c1">2</span><span class="pl-k">.</span><span class="pl-c1">6</span>), (<span class="pl-c1">4</span><span class="pl-k">.</span><span class="pl-c1">2</span>, <span class="pl-c1">4</span><span class="pl-k">.</span><span class="pl-c1">1</span>), (<span class="pl-c1">7</span><span class="pl-k">.</span><span class="pl-c1">3</span>, <span class="pl-c1">1</span><span class="pl-k">.</span><span class="pl-c1">0</span>), (<span class="pl-c1">8</span><span class="pl-k">.</span><span class="pl-c1">1</span>, <span class="pl-c1">11</span><span class="pl-k">.</span><span class="pl-c1">5</span>), (<span class="pl-c1">14</span><span class="pl-k">.</span><span class="pl-c1">0</span>, <span class="pl-c1">3</span><span class="pl-k">.</span><span class="pl-c1">0</span>)], color: UIColor<span class="pl-k">.</span>blueColor())
+    ]
+)
+
+<span class="pl-k">self</span><span class="pl-k">.</span>view<span class="pl-k">.</span>addSubview(chart<span class="pl-k">.</span>view)</pre></div>
+
+<p>Bars chart:</p>
+
+<div class="highlight highlight-swift"><pre><span class="pl-k">let</span> chartConfig <span class="pl-k">=</span> BarsChartConfig(
+    valsAxisConfig: ChartAxisConfig(from: <span class="pl-c1">0</span>, to: <span class="pl-c1">8</span>, by: <span class="pl-c1">2</span>)
+)
+
+<span class="pl-k">let</span> chart <span class="pl-k">=</span> BarsChart(
+    frame: CGRectMake(<span class="pl-c1">0</span>, <span class="pl-c1">70</span>, <span class="pl-c1">300</span>, <span class="pl-c1">500</span>),
+    chartConfig: chartConfig,
+    xTitle: <span class="pl-s"><span class="pl-pds">"</span>X axis<span class="pl-pds">"</span></span>,
+    yTitle: <span class="pl-s"><span class="pl-pds">"</span>Y axis<span class="pl-pds">"</span></span>,
+    bars: [
+        (<span class="pl-s"><span class="pl-pds">"</span>A<span class="pl-pds">"</span></span>, <span class="pl-c1">2</span>),
+        (<span class="pl-s"><span class="pl-pds">"</span>B<span class="pl-pds">"</span></span>, <span class="pl-c1">4</span><span class="pl-k">.</span><span class="pl-c1">5</span>),
+        (<span class="pl-s"><span class="pl-pds">"</span>C<span class="pl-pds">"</span></span>, <span class="pl-c1">3</span>),
+        (<span class="pl-s"><span class="pl-pds">"</span>D<span class="pl-pds">"</span></span>, <span class="pl-c1">5</span><span class="pl-k">.</span><span class="pl-c1">4</span>),
+        (<span class="pl-s"><span class="pl-pds">"</span>E<span class="pl-pds">"</span></span>, <span class="pl-c1">6</span><span class="pl-k">.</span><span class="pl-c1">8</span>),
+        (<span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span>, <span class="pl-c1">0</span><span class="pl-k">.</span><span class="pl-c1">5</span>)
+    ],
+    color: UIColor<span class="pl-k">.</span>redColor(),
+    barWidth: <span class="pl-c1">20</span>
+)
+
+<span class="pl-k">self</span><span class="pl-k">.</span>view<span class="pl-k">.</span>addSubview(chart<span class="pl-k">.</span>view)
+<span class="pl-k">self</span><span class="pl-k">.</span>chart <span class="pl-k">=</span> chart</pre></div>
+
+<h5>
+<a id="concept" class="anchor" href="#concept" aria-hidden="true"><span class="octicon octicon-link"></span></a>Concept:</h5>
 
 <ul>
 <li><p>Layer architecture, which makes it extremely easy to customize charts, create new types, combine existing ones and add interactive elements.</p></li>
@@ -115,7 +162,7 @@ pod <span class="pl-s"><span class="pl-pds">'</span>SwiftCharts<span class="pl-p
 
 <p><img src="https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/layers.png" alt="ScreenShot"></p>
 
-<p>Code:</p>
+<p>Following a more low level example, to provide an insight into the layer system. Note that most examples are written like this, in order to provider maximal flexibility.</p>
 
 <div class="highlight highlight-swift"><pre><span class="pl-k">let</span> labelSettings <span class="pl-k">=</span> ChartLabelSettings(font: ExamplesDefaults<span class="pl-k">.</span>labelFont)
 
@@ -174,24 +221,13 @@ pod <span class="pl-s"><span class="pl-pds">'</span>SwiftCharts<span class="pl-p
 <p>There's a <a href="Examples/Examples/Examples/HelloWorld.swift">hello world</a> included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the snippet above, and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!</p>
 
 <h5>
-<a id="functional-concepts" class="anchor" href="#functional-concepts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Functional concepts:</h5>
+<a id="note-on-performance" class="anchor" href="#note-on-performance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Note on performance:</h5>
 
-<p>This library is rather object oriented, but it makes extensive use of functional concepts like high order functions and (preference for) immutability leading to safer code and better maintainability.</p>
-
-<h4>
-<a id="note-on-performance" class="anchor" href="#note-on-performance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Note on performance:</h4>
-
-<p>If you have a lot of axis labels in your chart it may be necessary to do the calculation of the coordinate space in the background. There can be a small delay which is noticeable during transitions or scrolling. See ScrollExample or MultipleAxesExample example for this.</p>
-
-<h4>
-<a id="coming-in-the-next-releases" class="anchor" href="#coming-in-the-next-releases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Coming in the next releases:</h4>
-
-<p>0.3 Performance improvements</p>
-
-<p>0.4 Create well known chart types with little code</p>
+<p>If you have a lot of axis labels in your chart it may be necessary to do the calculation of the coordinate space in the background, to avoid possible delays which are noticeable during transitions or scrolling. See ScrollExample or MultipleAxesExample example for this.</p>
 
 <h6>
-<a id="more-documentation-also-coming-soon" class="anchor" href="#more-documentation-also-coming-soon" aria-hidden="true"><span class="octicon octicon-link"></span></a>More documentation also coming soon!</h6>
+<a id="more-documentation-coming-soon" class="anchor" href="#more-documentation-coming-soon" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="https://github.com/i-schuetz/SwiftCharts/wiki/Wiki">More documentation coming soon!</a>
+</h6>
 
 <h5>
 <a id="version" class="anchor" href="#version" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version:</h5>
