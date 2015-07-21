@@ -13,7 +13,7 @@ public class ChartAxisValueFloatScreenLoc: ChartAxisValueFloat {
     private let actualFloat: CGFloat
     
     var screenLocFloat: CGFloat {
-        return self.scalar
+        return CGFloat(self.scalar)
     }
     
     override public var text: String {

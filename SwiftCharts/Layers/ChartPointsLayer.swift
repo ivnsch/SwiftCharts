@@ -58,7 +58,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         return self.modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
     }
     
-    public func modelLocToScreenLoc(x x: CGFloat, y: CGFloat) -> CGPoint {
+    public func modelLocToScreenLoc(x x: Double, y: Double) -> CGPoint {
         return CGPointMake(
             self.xAxis.screenLocForScalar(x),
             self.yAxis.screenLocForScalar(y))

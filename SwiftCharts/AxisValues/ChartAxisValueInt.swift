@@ -20,7 +20,7 @@ public class ChartAxisValueInt: ChartAxisValue {
     public init(_ int: Int, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.int = int
         self.labelSettings = labelSettings
-        super.init(scalar: CGFloat(int))
+        super.init(scalar: Double(int))
     }
     
     override public var labels:[ChartAxisLabel] {
@@ -28,7 +28,7 @@ public class ChartAxisValueInt: ChartAxisValue {
         return [axisLabel]
     }
     
-    override public func copy(scalar: CGFloat) -> ChartAxisValueInt {
+    override public func copy(scalar: Double) -> ChartAxisValueInt {
         return ChartAxisValueInt(self.int, labelSettings: self.labelSettings)
     }
 }

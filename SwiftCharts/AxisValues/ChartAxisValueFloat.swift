@@ -14,7 +14,7 @@ public class ChartAxisValueFloat: ChartAxisValue {
     let labelSettings: ChartLabelSettings
 
     public var float: CGFloat {
-        return self.scalar
+        return CGFloat(self.scalar)
     }
   
     override public var text: String {
@@ -24,7 +24,7 @@ public class ChartAxisValueFloat: ChartAxisValue {
     public init(_ float: CGFloat, formatter: NSNumberFormatter = ChartAxisValueFloat.defaultFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.formatter = formatter
         self.labelSettings = labelSettings
-        super.init(scalar: float)
+        super.init(scalar: Double(float))
     }
    
     override public var labels: [ChartAxisLabel] {
@@ -33,8 +33,8 @@ public class ChartAxisValueFloat: ChartAxisValue {
     }
     
     
-    override public func copy(scalar: CGFloat) -> ChartAxisValueFloat {
-        return ChartAxisValueFloat(scalar, formatter: self.formatter, labelSettings: self.labelSettings)
+    override public func copy(scalar: Double) -> ChartAxisValueFloat {
+        return ChartAxisValueFloat(CGFloat(scalar), formatter: self.formatter, labelSettings: self.labelSettings)
     }
     
     static var defaultFormatter: NSNumberFormatter = {
