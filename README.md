@@ -70,7 +70,7 @@ Import the framework in your code:
 import SwiftCharts
 ```
 
-##### Usage examples 
+##### Quick start 
 
 Multiline chart:
 
