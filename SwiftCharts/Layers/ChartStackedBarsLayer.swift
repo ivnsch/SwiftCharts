@@ -8,7 +8,7 @@
 
 import UIKit
 
-public typealias ChartStackedBarItemModel = (quantity: CGFloat, bgColor: UIColor)
+public typealias ChartStackedBarItemModel = (quantity: Double, bgColor: UIColor)
 
 public class ChartStackedBarModel: ChartBarModel {
 
@@ -25,7 +25,7 @@ public class ChartStackedBarModel: ChartBarModel {
         super.init(constant: constant, axisValue1: start, axisValue2: axisValue2)
     }
     
-    lazy var totalQuantity: CGFloat = {
+    lazy var totalQuantity: Double = {
         return self.items.reduce(0) {total, item in
             total + item.quantity
         }
@@ -35,7 +35,7 @@ public class ChartStackedBarModel: ChartBarModel {
 
 class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGenerator<T> {
     
-    private typealias FrameBuilder = (barModel: ChartStackedBarModel, item: ChartStackedBarItemModel, currentTotalQuantity: CGFloat) -> (frame: ChartPointViewBarStackedFrame, length: CGFloat)
+    private typealias FrameBuilder = (barModel: ChartStackedBarModel, item: ChartStackedBarItemModel, currentTotalQuantity: Double) -> (frame: ChartPointViewBarStackedFrame, length: CGFloat)
     
     override init(horizontal: Bool, xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, barWidth barWidthMaybe: CGFloat?, barSpacing barSpacingMaybe: CGFloat?) {
         super.init(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: chartInnerFrame, barWidth: barWidthMaybe, barSpacing: barSpacingMaybe)
@@ -78,7 +78,7 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
             }
         }()
         
-        let stackFrames = barModel.items.reduce((currentTotalQuantity: CGFloat(0), currentTotalLength: CGFloat(0), frames: Array<ChartPointViewBarStackedFrame>())) {tuple, item in
+        let stackFrames = barModel.items.reduce((currentTotalQuantity: Double(0), currentTotalLength: CGFloat(0), frames: Array<ChartPointViewBarStackedFrame>())) {tuple, item in
             let frameWithLength = frameBuilder(barModel: barModel, item: item, currentTotalQuantity: tuple.currentTotalQuantity)
             return (currentTotalQuantity: tuple.currentTotalQuantity + item.quantity, currentTotalLength: tuple.currentTotalLength + frameWithLength.length, frames: tuple.frames + [frameWithLength.frame])
         }

@@ -203,16 +203,16 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
                     // calculate x scalar
                     let pxXDiff = secondModel.screenLoc.x - firstModel.screenLoc.x
                     let scalarXDiff = p2.x.scalar - p1.x.scalar
-                    let factorX = scalarXDiff / pxXDiff
+                    let factorX = CGFloat(scalarXDiff) / pxXDiff
                     let currentXPx = intersection.x - firstModel.screenLoc.x
-                    let currentXScalar = currentXPx * factorX + p1.x.scalar
+                    let currentXScalar = Double(currentXPx * factorX) + p1.x.scalar
 
                     // calculate y scalar
                     let pxYDiff = fabs(secondModel.screenLoc.y - firstModel.screenLoc.y);
                     let scalarYDiff = p2.y.scalar - p1.y.scalar;
-                    let factorY = scalarYDiff / pxYDiff
+                    let factorY = CGFloat(scalarYDiff) / pxYDiff
                     let currentYPx = fabs(intersection.y - firstModel.screenLoc.y)
-                    let currentYScalar = currentYPx * factorY + p1.y.scalar
+                    let currentYScalar = Double(currentYPx * factorY) + p1.y.scalar
                     
                     let x = firstModel.chartPoint.x.copy(currentXScalar)
                     let y = secondModel.chartPoint.y.copy(currentYScalar)

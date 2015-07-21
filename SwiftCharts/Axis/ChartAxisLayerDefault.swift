@@ -77,7 +77,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     
     var modelLength: CGFloat {
         if let first = self.axisValues.first, let last = self.axisValues.last {
-            return last.scalar - first.scalar
+            return CGFloat(last.scalar - first.scalar)
         } else {
             return 0
         }
@@ -168,7 +168,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         return labelMaybe?.textSize ?? CGSizeZero
     }
     
-    final func screenLocForScalar(scalar: CGFloat) -> CGFloat {
+    final func screenLocForScalar(scalar: Double) -> CGFloat {
         if let firstScalar = self.axisValues.first?.scalar {
             return self.screenLocForScalar(scalar, firstAxisScalar: firstScalar)
         } else {
@@ -177,11 +177,11 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         }
     }
 
-    func innerScreenLocForScalar(scalar: CGFloat, firstAxisScalar: CGFloat) -> CGFloat {
-        return self.length * (scalar - firstAxisScalar) / self.modelLength
+    func innerScreenLocForScalar(scalar: Double, firstAxisScalar: Double) -> CGFloat {
+        return self.length * CGFloat(scalar - firstAxisScalar) / self.modelLength
     }
     
-    func screenLocForScalar(scalar: CGFloat, firstAxisScalar: CGFloat) -> CGFloat {
+    func screenLocForScalar(scalar: Double, firstAxisScalar: Double) -> CGFloat {
         fatalError("must override")
     }
     

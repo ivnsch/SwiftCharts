@@ -26,11 +26,11 @@ public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T
             let chartPoint = model.chartPoint
             
             let x = model.screenLoc.x
-            
-            let highScreenY = self.modelLocToScreenLoc(x: x, y: chartPoint.high).y
-            let lowScreenY = self.modelLocToScreenLoc(x: x, y: chartPoint.low).y
-            let openScreenY = self.modelLocToScreenLoc(x: x, y: chartPoint.open).y
-            let closeScreenY = self.modelLocToScreenLoc(x: x, y: chartPoint.close).y
+
+            let highScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.high)).y
+            let lowScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.low)).y
+            let openScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.open)).y
+            let closeScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.close)).y
             
             let (rectTop, rectBottom, fillColor) = closeScreenY < openScreenY ? (closeScreenY, openScreenY, UIColor.whiteColor()) : (openScreenY, closeScreenY, UIColor.blackColor())
             return CandleStickScreenItem(x: x, lineTop: highScreenY, lineBottom: lowScreenY, rectTop: rectTop, rectBottom: rectBottom, width: self.itemWidth, fillColor: fillColor)
