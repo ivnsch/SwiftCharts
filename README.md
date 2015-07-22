@@ -18,6 +18,7 @@ Easy to use and highly customizable charts library for iOS
 - Everything is customizable - views (user can generate arbitrary UIViews for each chartpoint, so everything is possible), animations, units, axis, etc.
 - Charts can be combined with each other (e.g. lines + bars + circles)
 - Complex interactivity support
+- Choice to use core graphics (directly on chart's context) or UIViews, or combine both.
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
 Swift 1.2, iOS 7/8. Swift 2.0 branch (latest test on XCode 7 beta 3).
