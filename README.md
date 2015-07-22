@@ -15,10 +15,9 @@ Easy to use and highly customizable charts library for iOS
 - Multiple labels (x axis)
 - Candlestick
 - Cubic line
-- Everything is customizable - views (uses normal UIViews so everything is possible), animations, colors, units, axis
+- Everything is customizable - views (user can generate arbitrary UIViews for each chartpoint, so everything is possible), animations, units, axis, etc.
 - Charts can be combined with each other (e.g. lines + bars + circles)
 - Complex interactivity support
-- Easy extensibility
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
 Swift 1.2, iOS 7/8. Swift 2.0 branch (latest test on XCode 7 beta 3).
