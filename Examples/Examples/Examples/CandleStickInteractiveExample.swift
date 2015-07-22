@@ -103,9 +103,9 @@ class CandleStickInteractiveExample: UIViewController {
             let width = 10
             
             let highScreenY = screenLoc.y
-            let lowScreenY = layer.modelLocToScreenLoc(x: x, y: chartPoint.low).y
-            let openScreenY = layer.modelLocToScreenLoc(x: x, y: chartPoint.open).y
-            let closeScreenY = layer.modelLocToScreenLoc(x: x, y: chartPoint.close).y
+            let lowScreenY = layer.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.low)).y
+            let openScreenY = layer.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.open)).y
+            let closeScreenY = layer.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.close)).y
             
             let (rectTop, rectBottom, fillColor) = closeScreenY < openScreenY ? (closeScreenY, openScreenY, UIColor.whiteColor()) : (openScreenY, closeScreenY, UIColor.blackColor())
             let v = ChartCandleStickView(lineX: screenLoc.x, width: Env.iPad ? 10 : 5, top: highScreenY, bottom: lowScreenY, innerRectTop: rectTop, innerRectBottom: rectBottom, fillColor: fillColor, strokeWidth: Env.iPad ? 1 : 0.5)
