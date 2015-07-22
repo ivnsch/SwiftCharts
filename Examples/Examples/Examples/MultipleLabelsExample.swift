@@ -59,12 +59,12 @@ class MultipleLabelsExample: UIViewController {
 private class MyMultiLabelAxisValue: ChartAxisValue {
     
     private let myVal: Int
-    private let derivedVal: CGFloat
+    private let derivedVal: Double
     
     init(myVal: Int) {
         self.myVal = myVal
-        self.derivedVal = CGFloat(myVal) / 5.0
-        super.init(scalar: CGFloat(myVal))
+        self.derivedVal = Double(myVal) / 5.0
+        super.init(scalar: Double(myVal))
     }
     
     override var labels:[ChartAxisLabel] {
