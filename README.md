@@ -21,7 +21,7 @@ Easy to use and highly customizable charts library for iOS
 - Choice to use core graphics (directly on chart's context) or UIViews, or combine both.
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
-Swift 1.2, iOS 7/8. Swift 2.0 branch (latest test on XCode 7 beta 3).
+Swift 1.2, iOS 7/8. Swift 2.0 branch (latest test on XCode 7 beta 4).
 
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM)
 
