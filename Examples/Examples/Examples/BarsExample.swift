@@ -9,6 +9,8 @@
 import UIKit
 
 
+// This example uses a normal view generator to create bars. This allows a high degree of customization at view level, since any UIView can be used.
+// Alternatively it's possible to use ChartBarsLayer (see e.g. implementation of BarsChart for a simple example), which provides more ready to use, bar-specific functionality, but is accordingly more constrained.
 class BarsExample: UIViewController {
     
     private var chart: Chart?

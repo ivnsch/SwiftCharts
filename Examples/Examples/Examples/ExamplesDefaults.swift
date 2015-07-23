@@ -52,6 +52,10 @@ struct ExamplesDefaults {
         return CGRectMake(0, 70, containerBounds.size.width, containerBounds.size.height - 70)
     }
     
+    static var labelSettings: ChartLabelSettings {
+        return ChartLabelSettings(font: ExamplesDefaults.labelFont)
+    }
+    
     static var labelFont: UIFont {
         return ExamplesDefaults.fontWithSize(Env.iPad ? 14 : 11)
     }
