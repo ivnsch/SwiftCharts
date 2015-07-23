@@ -22,7 +22,7 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
     
     private var conflictSolver: ChartViewsConflictSolver<T, U>?
     
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints:[T], viewGenerator: ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0) {
+    init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints:[T], viewGenerator: ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0) {
         self.viewGenerator = viewGenerator
         self.conflictSolver = conflictSolver
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay)
@@ -37,18 +37,16 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
             for v in self.viewsWithChartPoints {chart.addSubview(v.view)}
             
         } else {
-            var next: (Int, dispatch_time_t) -> () = {_, _ in} // no-op closure, workaround for local recursive function. See http://stackoverflow.com/a/24272256
-            next = {index, delay in
+            func next(index: Int, delay: dispatch_time_t) {
                 if index < self.viewsWithChartPoints.count {
                     dispatch_after(delay, dispatch_get_main_queue()) {() -> Void in
                         let view = self.viewsWithChartPoints[index].view
                         chart.addSubview(view)
-                        
-                        next(index + 1, ChartUtils.toDispatchTime(self.delayBetweenItems))
+                        next(index + 1, delay: ChartUtils.toDispatchTime(self.delayBetweenItems))
                     }
                 }
             }
-            next(0, 0)
+            next(0, delay: 0)
         }
     }
     
