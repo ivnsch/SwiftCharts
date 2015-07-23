@@ -43,18 +43,18 @@ class GroupedBarsExample: UIViewController {
         
         let groupColors = [UIColor.redColor().colorWithAlphaComponent(0.6), UIColor.blueColor().colorWithAlphaComponent(0.6), UIColor.greenColor().colorWithAlphaComponent(0.6)]
         
-        let groups: [ChartPointsBarGroup] = Array(groupsData.enumerate()).map {index, entry in
+        let groups: [ChartPointsBarGroup] = groupsData.enumerate().map {index, entry in
             let constant = ChartAxisValueFloat(CGFloat(index))
-            let bars = Array(entry.1.enumerate()).map {index, tuple in
+            let bars = entry.1.enumerate().map {index, tuple in
                 ChartBarModel(constant: constant, axisValue1: ChartAxisValueFloat(tuple.min), axisValue2: ChartAxisValueFloat(tuple.max), bgColor: groupColors[index])
             }
             return ChartPointsBarGroup(constant: constant, bars: bars)
         }
         
         let (axisValues1, axisValues2): ([ChartAxisValue], [ChartAxisValue]) = (
-            Array(stride(from: 0, through: 60, by: 5)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
+            stride(from: 0, through: 60, by: 5).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
             [ChartAxisValueString(order: -1)] +
-            Array(groupsData.enumerate()).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+            groupsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
             [ChartAxisValueString(order: groupsData.count)]
         )
         let (xValues, yValues) = horizontal ? (axisValues1, axisValues2) : (axisValues2, axisValues1)
@@ -142,7 +142,7 @@ class GroupedBarsExample: UIViewController {
                 v.translatesAutoresizingMaskIntoConstraints = false
             }
             
-            let namedViews = Array(views.enumerate()).map{index, view in
+            let namedViews = views.enumerate().map{index, view in
                 ("v\(index)", view)
             }
             

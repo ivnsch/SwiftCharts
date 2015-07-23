@@ -29,8 +29,8 @@ class BarsExample: UIViewController {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
         let (axisValues1, axisValues2) = (
-            Array(stride(from: 0, through: 20, by: 2)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
-            Array(stride(from: 0, through: 14, by: 2)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
+            stride(from: 0, through: 20, by: 2).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
+            stride(from: 0, through: 14, by: 2).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
         )
         let (xValues, yValues) = horizontal ? (axisValues1, axisValues2) : (axisValues2, axisValues1)
         
@@ -132,7 +132,7 @@ class BarsExample: UIViewController {
                 v.translatesAutoresizingMaskIntoConstraints = false
             }
             
-            let namedViews = Array(views.enumerate()).map{index, view in
+            let namedViews = views.enumerate().map{index, view in
                 ("v\(index)", view)
             }
             

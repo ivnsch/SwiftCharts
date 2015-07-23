@@ -55,7 +55,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         let length: CGFloat = maxVal - minVal
         
         let zero = ChartAxisValueFloat(0)
-        let bars: [ChartBarModel] = Array(vals.enumerate()).map {index, tuple in
+        let bars: [ChartBarModel] = vals.enumerate().map {index, tuple in
             let percentage = (tuple.val - minVal - 0.01) / length // FIXME without -0.01 bar with 1 (100 perc) is black
             let color = self.gradientPicker.colorForPercentage(percentage).colorWithAlphaComponent(0.6)
             return ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.val), bgColor: color)
@@ -63,10 +63,10 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let xValues = Array(stride(from: -80, through: 80, by: 20)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
+        let xValues = stride(from: -80, through: 80, by: 20).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
         let yValues =
             [ChartAxisValueString(order: -1)] +
-            Array(vals.enumerate()).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+            vals.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
             [ChartAxisValueString(order: vals.count)]
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))

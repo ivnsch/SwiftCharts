@@ -22,8 +22,8 @@ public class LineChart: Chart {
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let xValues = Array(stride(from: chartConfig.xAxisConfig.from, through: chartConfig.xAxisConfig.to, by: chartConfig.xAxisConfig.by)).map{ChartAxisValueFloat($0)}
-        let yValues = Array(stride(from: chartConfig.yAxisConfig.from, through: chartConfig.yAxisConfig.to, by: chartConfig.yAxisConfig.by)).map{ChartAxisValueFloat($0)}
+        let xValues = stride(from: chartConfig.xAxisConfig.from, through: chartConfig.xAxisConfig.to, by: chartConfig.xAxisConfig.by).map{ChartAxisValueFloat($0)}
+        let yValues = stride(from: chartConfig.yAxisConfig.from, through: chartConfig.yAxisConfig.to, by: chartConfig.yAxisConfig.by).map{ChartAxisValueFloat($0)}
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: xTitle, settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: yTitle, settings: labelSettings.defaultVertical()))

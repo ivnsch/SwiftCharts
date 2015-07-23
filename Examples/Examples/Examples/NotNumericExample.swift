@@ -31,7 +31,7 @@ class NotNumericExample: UIViewController {
         let item4 = MyItem(name: "Cereals", quantity: quantityLow)
         
         
-        let chartPoints: [ChartPoint] = Array([item0, item1, item2, item3, item4].enumerate()).map {index, item in
+        let chartPoints: [ChartPoint] = [item0, item1, item2, item3, item4].enumerate().map {index, item in
             let xLabelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont, rotation: 45, rotationKeep: .Top)
             let x = ChartAxisValueString(item.name, order: index, labelSettings: xLabelSettings)
             let y = ChartAxisValueString(item.quantity.text, order: item.quantity.number, labelSettings: labelSettings)

@@ -42,17 +42,17 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         let posColor = UIColor.greenColor().colorWithAlphaComponent(alpha)
         let negColor = UIColor.redColor().colorWithAlphaComponent(alpha)
         let zero = ChartAxisValueFloat(0)
-        let bars: [ChartBarModel] = Array(barsData.enumerate()).flatMap {index, tuple in
+        let bars: [ChartBarModel] = barsData.enumerate().flatMap {index, tuple in
             [
                 ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.min), bgColor: negColor),
                 ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.max), bgColor: posColor)
             ]
         }
         
-        let yValues = Array(stride(from: -80, through: 80, by: 20)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
+        let yValues = stride(from: -80, through: 80, by: 20).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
         let xValues =
             [ChartAxisValueString(order: -1)] +
-            Array(barsData.enumerate()).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+            barsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
             [ChartAxisValueString(order: barsData.count)]
 
         
@@ -95,7 +95,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         }, displayDelay: 0.5) // show after bars animation
         
         // line layer
-        let lineChartPoints = Array(lineData.enumerate()).map {index, tuple in ChartPoint(x: ChartAxisValueFloat(CGFloat(index)), y: ChartAxisValueFloat(tuple.val))}
+        let lineChartPoints = lineData.enumerate().map {index, tuple in ChartPoint(x: ChartAxisValueFloat(CGFloat(index)), y: ChartAxisValueFloat(tuple.val))}
         let lineModel = ChartLineModel(chartPoints: lineChartPoints, lineColor: UIColor.blackColor(), lineWidth: 2, animDuration: 0.5, animDelay: 1)
         let lineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
         

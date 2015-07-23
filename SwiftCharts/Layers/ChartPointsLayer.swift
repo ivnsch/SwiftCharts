@@ -31,7 +31,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }
     
     public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], displayDelay: Float = 0) {
-        self.chartPointsModels = Array(chartPoints.enumerate()).map {index, chartPoint in
+        self.chartPointsModels = chartPoints.enumerate().map {index, chartPoint in
             let screenLoc = CGPointMake(xAxis.screenLocForScalar(chartPoint.x.scalar), yAxis.screenLocForScalar(chartPoint.y.scalar))
             return ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: screenLoc)
         }

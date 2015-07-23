@@ -85,7 +85,7 @@ class CandleStickInteractiveExample: UIViewController {
         }
         
         let xValues = generateDateAxisValues(10, year: 2015)
-        let yValues = Array(stride(from: 20, through: 55, by: 5)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
+        let yValues = stride(from: 20, through: 55, by: 5).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
@@ -227,7 +227,7 @@ private class InfoView: UIView {
             v.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        let namedViews = Array(views.enumerate()).map{index, view in
+        let namedViews = views.enumerate().map{index, view in
             ("v\(index)", view)
         }
         

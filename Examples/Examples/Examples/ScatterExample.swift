@@ -36,8 +36,8 @@ class ScatterExample: UIViewController {
             .Type3 : (.Cross, UIColor.blackColor())
         ]
 
-        let xValues = Array(stride(from: 0, through: 450, by: 50)).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
-        let yValues = Array(stride(from: 0, through: 300, by: 50)).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+        let xValues = stride(from: 0, through: 450, by: 50).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+        let yValues = stride(from: 0, through: 300, by: 50).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))

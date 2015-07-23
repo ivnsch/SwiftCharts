@@ -51,7 +51,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         
         let rowHeights = self.rowHeightsForRows(rows: labels.map{[$0]})
         
-        return Array(labels.enumerate()).map{(index, label) in
+        return labels.enumerate().map{(index, label) in
             
             let rowY = self.calculateRowY(rowHeights: rowHeights, rowIndex: index, spacing: spacingLabelBetweenAxis)
             

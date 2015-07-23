@@ -211,7 +211,7 @@ class MultipleAxesInteractiveExample: UIViewController {
             [yHighAxes[1], xHighAxes[0], lineLayers[3]] + maybeGuides(guideLinesLayer3)
         ]
         
-        return Array(selectedLayersFlags.enumerate()).reduce(Array<ChartLayer>()) {selectedLayers, inTuple in
+        return selectedLayersFlags.enumerate().reduce(Array<ChartLayer>()) {selectedLayers, inTuple in
             
             let index = inTuple.0
             let selected = inTuple.1

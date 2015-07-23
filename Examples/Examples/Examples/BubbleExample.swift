@@ -60,8 +60,8 @@ class BubbleExample: UIViewController {
             
         ].map{ChartPointBubble(x: ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings), y: ChartAxisValueFloat(CGFloat($1)), diameterScalar: $2, bgColor: $3)}
 
-        let xValues = Array(stride(from: -2, through: 14, by: 2)).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
-        let yValues = Array(stride(from: -2, through: 12, by: 2)).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+        let xValues = stride(from: -2, through: 14, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+        let yValues = stride(from: -2, through: 12, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
 
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
