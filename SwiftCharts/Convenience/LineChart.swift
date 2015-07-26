@@ -13,40 +13,38 @@ public class LineChart: Chart {
     public typealias ChartLine = (chartPoints: [(CGFloat, CGFloat)], color: UIColor)
     
     // Initializer for single line
-    public convenience init(frame: CGRect, chartConfig: ChartConfig, xTitle: String, yTitle: String, line: ChartLine) {
+    public convenience init(frame: CGRect, chartConfig: ChartConfigXY, xTitle: String, yTitle: String, line: ChartLine) {
         self.init(frame: frame, chartConfig: chartConfig, xTitle: xTitle, yTitle: yTitle, lines: [line])
     }
     
     // Initializer for multiple lines
-    public init(frame: CGRect, chartConfig: ChartConfig, xTitle: String, yTitle: String, lines: [ChartLine]) {
-        
-        let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
+    public init(frame: CGRect, chartConfig: ChartConfigXY, xTitle: String, yTitle: String, lines: [ChartLine]) {
         
         let xValues = Array(stride(from: chartConfig.xAxisConfig.from, through: chartConfig.xAxisConfig.to, by: chartConfig.xAxisConfig.by)).map{ChartAxisValueFloat($0)}
         let yValues = Array(stride(from: chartConfig.yAxisConfig.from, through: chartConfig.yAxisConfig.to, by: chartConfig.yAxisConfig.by)).map{ChartAxisValueFloat($0)}
         
-        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: xTitle, settings: labelSettings))
-        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: yTitle, settings: labelSettings.defaultVertical()))
-        let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: frame, xModel: xModel, yModel: yModel)
+        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: xTitle, settings: chartConfig.xAxisLabelSettings))
+        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: yTitle, settings: chartConfig.yAxisLabelSettings.defaultVertical()))
+        let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartConfig.chartSettings, chartFrame: frame, xModel: xModel, yModel: yModel)
         let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
         
         let lineLayers: [ChartLayer] = lines.map {line in
             let chartPoints = line.chartPoints.map {chartPointScalar in
-                ChartPoint(x: ChartAxisValueFloat(chartPointScalar.0, labelSettings: labelSettings), y: ChartAxisValueFloat(chartPointScalar.1))
+                ChartPoint(x: ChartAxisValueFloat(chartPointScalar.0), y: ChartAxisValueFloat(chartPointScalar.1))
             }
             
             let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: line.color, animDuration: 0.5, animDelay: 0)
             return ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
         }
         
-        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
+        let guidelinesLayer = GuidelinesDefaultLayerGenerator.generateOpt(xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, guidelinesConfig: chartConfig.guidelinesConfig)
         
         let view = ChartBaseView(frame: frame)
+        let layers: [ChartLayer] = [xAxis, yAxis] + (guidelinesLayer.map{[$0]} ?? []) + lineLayers
         
         super.init(
             view: view,
-            layers: [xAxis, yAxis, guidelinesLayer] + lineLayers
+            layers: layers
         )
     }
     
