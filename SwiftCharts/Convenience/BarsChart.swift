@@ -8,17 +8,17 @@
 
 import UIKit
 
-public struct BarsChartConfig {
-    public let chartSettings: ChartSettings
+public class BarsChartConfig: ChartConfig {
     public let valsAxisConfig: ChartAxisConfig
     public let xAxisLabelSettings: ChartLabelSettings
     public let yAxisLabelSettings: ChartLabelSettings
     
-    public init(chartSettings: ChartSettings = ChartSettings(), valsAxisConfig: ChartAxisConfig, xAxisLabelSettings: ChartLabelSettings = ChartLabelSettings(), yAxisLabelSettings: ChartLabelSettings = ChartLabelSettings()) {
-        self.chartSettings = chartSettings
+    public init(chartSettings: ChartSettings = ChartSettings(), valsAxisConfig: ChartAxisConfig, xAxisLabelSettings: ChartLabelSettings = ChartLabelSettings(), yAxisLabelSettings: ChartLabelSettings = ChartLabelSettings(), guidelinesConfig: GuidelinesConfig = GuidelinesConfig()) {
         self.valsAxisConfig = valsAxisConfig
         self.xAxisLabelSettings = xAxisLabelSettings
         self.yAxisLabelSettings = yAxisLabelSettings
+        
+       super.init(chartSettings: chartSettings, guidelinesConfig: guidelinesConfig)
     }
 }
 
@@ -31,28 +31,26 @@ public class BarsChart: Chart {
             return ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(barModel.1), bgColor: color)
         }
         
-        let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
-        
         let valAxisValues = stride(from: chartConfig.valsAxisConfig.from, through: chartConfig.valsAxisConfig.to, by: chartConfig.valsAxisConfig.by).map{ChartAxisValueFloat($0)}
         let labelAxisValues = [ChartAxisValueString(order: -1)] + barModels.enumerate().map{index, tuple in ChartAxisValueString(tuple.0, order: index)} + [ChartAxisValueString(order: barModels.count)]
 
         let (xValues, yValues): ([ChartAxisValue], [ChartAxisValue]) = horizontal ? (valAxisValues, labelAxisValues) : (labelAxisValues, valAxisValues)
         
-        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: xTitle, settings: labelSettings))
-        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: yTitle, settings: labelSettings.defaultVertical()))
-        let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: frame, xModel: xModel, yModel: yModel)
+        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: xTitle, settings: chartConfig.xAxisLabelSettings))
+        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: yTitle, settings: chartConfig.xAxisLabelSettings.defaultVertical()))
+        let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartConfig.chartSettings, chartFrame: frame, xModel: xModel, yModel: yModel)
         let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
         
-        let barsLayer = ChartBarsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, bars: bars, horizontal: horizontal, barWidth: barWidth, animDuration: animDuration)
+        let barsLayer: ChartLayer = ChartBarsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, bars: bars, horizontal: horizontal, barWidth: barWidth, animDuration: animDuration)
         
-        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
+        let guidelinesLayer = GuidelinesDefaultLayerGenerator.generateOpt(xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, guidelinesConfig: chartConfig.guidelinesConfig)
         
         let view = ChartBaseView(frame: frame)
-        
+        let layers: [ChartLayer] = [xAxis, yAxis] + (guidelinesLayer.map{[$0]} ?? []) + [barsLayer]
+      
         super.init(
             view: view,
-            layers: [xAxis, yAxis, guidelinesLayer, barsLayer]
+            layers: layers
         )
     }
     

@@ -15,7 +15,7 @@ class ConvenienceLinesExample: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let chartConfig = ChartConfig(
+        let chartConfig = ChartConfigXY(
             chartSettings: ExamplesDefaults.chartSettings,
             xAxisConfig: ChartAxisConfig(from: 2, to: 14, by: 2),
             yAxisConfig: ChartAxisConfig(from: 0, to: 14, by: 2),

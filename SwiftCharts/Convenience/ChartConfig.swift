@@ -11,19 +11,30 @@
 
 import UIKit
 
-public struct ChartConfig {
+public class ChartConfig {
     public let chartSettings: ChartSettings
+    public let guidelinesConfig: GuidelinesConfig? // nil means no guidelines
+    
+    public init(chartSettings: ChartSettings, guidelinesConfig: GuidelinesConfig?) {
+        self.chartSettings = chartSettings
+        self.guidelinesConfig = guidelinesConfig
+    }
+}
+
+
+public class ChartConfigXY: ChartConfig {
     public let xAxisConfig: ChartAxisConfig
     public let yAxisConfig: ChartAxisConfig
     public let xAxisLabelSettings: ChartLabelSettings
     public let yAxisLabelSettings: ChartLabelSettings
-    
-    public init(chartSettings: ChartSettings = ChartSettings(), xAxisConfig: ChartAxisConfig, yAxisConfig: ChartAxisConfig, xAxisLabelSettings: ChartLabelSettings = ChartLabelSettings(), yAxisLabelSettings: ChartLabelSettings = ChartLabelSettings()) {
-        self.chartSettings = chartSettings
+
+    public init(chartSettings: ChartSettings = ChartSettings(), xAxisConfig: ChartAxisConfig, yAxisConfig: ChartAxisConfig, xAxisLabelSettings: ChartLabelSettings = ChartLabelSettings(), yAxisLabelSettings: ChartLabelSettings = ChartLabelSettings(), guidelinesConfig: GuidelinesConfig? = GuidelinesConfig()) {
         self.xAxisConfig = xAxisConfig
         self.yAxisConfig = yAxisConfig
         self.xAxisLabelSettings = xAxisLabelSettings
         self.yAxisLabelSettings = yAxisLabelSettings
+        
+        super.init(chartSettings: chartSettings, guidelinesConfig: guidelinesConfig)
     }
 }
 
@@ -36,5 +47,40 @@ public struct ChartAxisConfig {
         self.from = from
         self.to = to
         self.by = by
+    }
+}
+
+public struct GuidelinesConfig {
+    public let dotted: Bool
+    public let lineWidth: CGFloat
+    public let lineColor: UIColor
+    
+    public init(dotted: Bool = true, lineWidth: CGFloat = 0.1, lineColor: UIColor = UIColor.blackColor()) {
+        self.dotted = dotted
+        self.lineWidth = lineWidth
+        self.lineColor = lineColor
+    }
+}
+
+// Helper to generate default guidelines layer for GuidelinesConfig
+public struct GuidelinesDefaultLayerGenerator {
+
+    public static func generateOpt(xAxis xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, guidelinesConfig: GuidelinesConfig?) -> ChartLayer? {
+        if let guidelinesConfig = guidelinesConfig {
+            return self.generate(xAxis: xAxis, yAxis: yAxis, chartInnerFrame: chartInnerFrame, guidelinesConfig: guidelinesConfig)
+        } else {
+            return nil
+        }
+    }
+    
+    public static func generate(xAxis xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, guidelinesConfig: GuidelinesConfig) -> ChartLayer {
+        if guidelinesConfig.dotted {
+            let settings = ChartGuideLinesDottedLayerSettings(linesColor: guidelinesConfig.lineColor, linesWidth: guidelinesConfig.lineWidth)
+            return ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: chartInnerFrame, settings: settings)
+            
+        } else {
+            let settings = ChartGuideLinesDottedLayerSettings(linesColor: guidelinesConfig.lineColor, linesWidth: guidelinesConfig.lineWidth)
+            return ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: chartInnerFrame, settings: settings)
+        }
     }
 }
