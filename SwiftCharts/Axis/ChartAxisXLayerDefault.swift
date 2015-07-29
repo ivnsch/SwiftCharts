@@ -66,7 +66,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     }
     
     
-    override func screenLocForScalar(scalar: CGFloat, firstAxisScalar: CGFloat) -> CGFloat {
+    override func screenLocForScalar(scalar: Double, firstAxisScalar: Double) -> CGFloat {
         return self.p1.x + self.innerScreenLocForScalar(scalar, firstAxisScalar: firstAxisScalar)
     }
     

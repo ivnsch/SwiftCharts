@@ -17,7 +17,7 @@ class GroupedAndStackedBarsExample: UIViewController {
     private func barsChart(horizontal horizontal: Bool) -> Chart {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let groupsData: [(title: String, bars: [(start: CGFloat, quantities: [CGFloat])])] = [
+        let groupsData: [(title: String, bars: [(start: CGFloat, quantities: [Double])])] = [
             ("A", [
                 (0,
                     [-20, -5, -10]

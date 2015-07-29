@@ -10,7 +10,7 @@ import UIKit
 
 public class ChartAxisValue: Equatable {
 
-    public let scalar: CGFloat
+    public let scalar: Double
    
     public var text: String {
         return "\(self.scalar)"
@@ -28,7 +28,7 @@ public class ChartAxisValue: Equatable {
         }
     }
   
-    public init(scalar: CGFloat) {
+    public init(scalar: Double) {
         self.scalar = scalar
     }
     
@@ -36,7 +36,7 @@ public class ChartAxisValue: Equatable {
         return self.copy(self.scalar)
     }
     
-    public func copy(scalar: CGFloat) -> ChartAxisValue {
+    public func copy(scalar: Double) -> ChartAxisValue {
         return ChartAxisValue(scalar: self.scalar)
     }
 }
