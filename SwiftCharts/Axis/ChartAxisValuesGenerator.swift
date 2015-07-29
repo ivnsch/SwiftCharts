@@ -13,15 +13,15 @@ public typealias ChartAxisValueGenerator = (CGFloat) -> ChartAxisValue
 // Dynamic axis values generation
 public struct ChartAxisValuesGenerator {
     
-    public static func generateXAxisValuesWithChartPoints(chartPoints: [ChartPoint], minSegmentCount: CGFloat, maxSegmentCount: CGFloat, multiple: CGFloat = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
+    public static func generateXAxisValuesWithChartPoints(chartPoints: [ChartPoint], minSegmentCount: Double, maxSegmentCount: Double, multiple: Double = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
         return self.generateAxisValuesWithChartPoints(chartPoints, minSegmentCount: minSegmentCount, maxSegmentCount: maxSegmentCount, multiple: multiple, axisValueGenerator: axisValueGenerator, addPaddingSegmentIfEdge: addPaddingSegmentIfEdge, axisPicker: {$0.x})
     }
     
-    public static func generateYAxisValuesWithChartPoints(chartPoints: [ChartPoint], minSegmentCount: CGFloat, maxSegmentCount: CGFloat, multiple: CGFloat = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
+    public static func generateYAxisValuesWithChartPoints(chartPoints: [ChartPoint], minSegmentCount: Double, maxSegmentCount: Double, multiple: Double = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
         return self.generateAxisValuesWithChartPoints(chartPoints, minSegmentCount: minSegmentCount, maxSegmentCount: maxSegmentCount, multiple: multiple, axisValueGenerator: axisValueGenerator, addPaddingSegmentIfEdge: addPaddingSegmentIfEdge, axisPicker: {$0.y})
     }
     
-    private static func generateAxisValuesWithChartPoints(chartPoints: [ChartPoint], minSegmentCount: CGFloat, maxSegmentCount: CGFloat, multiple: CGFloat = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool, axisPicker: (ChartPoint) -> ChartAxisValue) -> [ChartAxisValue] {
+    private static func generateAxisValuesWithChartPoints(chartPoints: [ChartPoint], minSegmentCount: Double, maxSegmentCount: Double, multiple: Double = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool, axisPicker: (ChartPoint) -> ChartAxisValue) -> [ChartAxisValue] {
         
         let sortedChartPoints = chartPoints.sort {(obj1, obj2) in
             return axisPicker(obj1).scalar < axisPicker(obj2).scalar
@@ -36,7 +36,7 @@ public struct ChartAxisValuesGenerator {
         }
     }
     
-    private static func generateAxisValuesWithChartPoints(first: CGFloat, last: CGFloat, minSegmentCount: CGFloat, maxSegmentCount: CGFloat, multiple: CGFloat, axisValueGenerator:ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
+    private static func generateAxisValuesWithChartPoints(first: Double, last: Double, minSegmentCount: Double, maxSegmentCount: Double, multiple: Double, axisValueGenerator:ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
         
         if last < first {
             fatalError("Invalid range generating axis values")
@@ -70,8 +70,8 @@ public struct ChartAxisValuesGenerator {
         
         let offset = firstValue
         return (0...Int(segmentCount)).map {segment in
-            let scalar = offset + (CGFloat(segment) * segmentSize)
-            return axisValueGenerator(scalar)
+            let scalar = offset + (Double(segment) * segmentSize)
+            return axisValueGenerator(CGFloat(scalar))
         }
     }
     

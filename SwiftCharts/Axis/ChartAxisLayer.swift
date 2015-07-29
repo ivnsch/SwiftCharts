@@ -23,5 +23,5 @@ public protocol ChartAxisLayer: ChartLayer {
     var lineP1: CGPoint {get}
     var lineP2: CGPoint {get}
     
-    func screenLocForScalar(scalar: CGFloat) -> CGFloat
+    func screenLocForScalar(scalar: Double) -> CGFloat
 }

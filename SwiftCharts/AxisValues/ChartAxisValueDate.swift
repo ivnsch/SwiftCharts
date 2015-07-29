@@ -29,12 +29,12 @@ public class ChartAxisValueDate: ChartAxisValue {
         return [axisLabel]
     }
     
-    public class func dateFromScalar(scalar: CGFloat) -> NSDate {
+    public class func dateFromScalar(scalar: Double) -> NSDate {
         return NSDate(timeIntervalSince1970: NSTimeInterval(scalar))
     }
     
-    public class func scalarFromDate(date: NSDate) -> CGFloat {
-        return CGFloat(date.timeIntervalSince1970)
+    public class func scalarFromDate(date: NSDate) -> Double {
+        return Double(date.timeIntervalSince1970)
     }
 }
 

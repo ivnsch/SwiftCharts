@@ -16,7 +16,7 @@ public class ChartAxisValueString: ChartAxisValue {
     public init(_ string: String = "", order: Int, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.string = string
         self.labelSettings = labelSettings
-        super.init(scalar: CGFloat(order))
+        super.init(scalar: Double(order))
     }
     
     override public var labels: [ChartAxisLabel] {
