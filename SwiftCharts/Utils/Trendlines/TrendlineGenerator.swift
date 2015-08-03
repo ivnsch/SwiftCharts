@@ -12,11 +12,10 @@ public struct TrendlineGenerator {
     
     public static func trendline(chartPoints: [ChartPoint]) -> [ChartPoint] {
         
-        if chartPoints.count < 2 {
-            return []
-        }
+        guard chartPoints.count > 1 else {return []}
         
-        let (sumX: Double, sumY: Double, sumXY: Double, sumXX: Double) = chartPoints.reduce((sumX: 0, sumY: 0, sumXY: 0, sumXX: 0)) {(tuple, chartPoint) in
+        let doubleO: Double = 0
+        let (sumX, sumY, sumXY, sumXX): (sumX: Double, sumY: Double, sumXY: Double, sumXX: Double) = chartPoints.reduce((sumX: doubleO, sumY: doubleO, sumXY: doubleO, sumXX: doubleO)) {(tuple, chartPoint) in
             
             let x: Double = chartPoint.x.scalar
             let y: Double = chartPoint.y.scalar
@@ -29,7 +28,7 @@ public struct TrendlineGenerator {
             )
         }
         
-        let count: Double = Double(chartPoints.count)
+        let count = Double(chartPoints.count)
         
         let b = (count * sumXY - sumX * sumY) / (count * sumXX - sumX * sumX)
         let a = (sumY - b * sumX) / count
