@@ -100,6 +100,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
             case .CandleStickInteractive:
                 self.setSplitSwipeEnabled(false)
                 self.showExampleController(CandleStickInteractiveExample())
+            case .Trendline:
+                self.setSplitSwipeEnabled(true)
+                self.showExampleController(TrendlineExample())
             }
         }
     }
