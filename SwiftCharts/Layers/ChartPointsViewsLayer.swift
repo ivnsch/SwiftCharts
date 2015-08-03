@@ -11,8 +11,8 @@ import UIKit
 
 public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> {
 
-    typealias ChartPointViewGenerator = (chartPointModel: ChartPointLayerModel<T>, layer: ChartPointsViewsLayer<T, U>, chart: Chart) -> U?
-    typealias ViewWithChartPoint = (view: U, chartPointModel: ChartPointLayerModel<T>)
+    public typealias ChartPointViewGenerator = (chartPointModel: ChartPointLayerModel<T>, layer: ChartPointsViewsLayer<T, U>, chart: Chart) -> U?
+    public typealias ViewWithChartPoint = (view: U, chartPointModel: ChartPointLayerModel<T>)
     
     private(set) var viewsWithChartPoints: [ViewWithChartPoint] = []
     
@@ -22,7 +22,7 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
     
     private var conflictSolver: ChartViewsConflictSolver<T, U>?
     
-    init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints:[T], viewGenerator: ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0) {
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints:[T], viewGenerator: ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0) {
         self.viewGenerator = viewGenerator
         self.conflictSolver = conflictSolver
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay)
