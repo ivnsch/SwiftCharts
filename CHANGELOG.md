@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.2.3]
 - Allow rotating y axis title label
 - Add LineChart to create (multi)line chart with few lines
 - Add BarChart to create bar chart with few lines
