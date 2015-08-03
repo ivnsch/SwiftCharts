@@ -53,6 +53,7 @@
 		EB5DC10F1B091FCC001FD5A8 /* ChartBarsLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC10E1B091FCC001FD5A8 /* ChartBarsLayer.swift */; };
 		EB5DC1111B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC1101B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift */; };
 		EB5DC1131B0A7681001FD5A8 /* HandlingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5DC1121B0A7681001FD5A8 /* HandlingLabel.swift */; };
+		EB76D7091B6FF578001FBB76 /* TrendlineExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB76D7081B6FF578001FBB76 /* TrendlineExample.swift */; };
 		EBC533471B00F02600D10448 /* ChartAxisLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330D1B00F02600D10448 /* ChartAxisLabel.swift */; };
 		EBC533481B00F02600D10448 /* ChartAxisLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330E1B00F02600D10448 /* ChartAxisLayer.swift */; };
 		EBC533491B00F02600D10448 /* ChartAxisLayerDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC5330F1B00F02600D10448 /* ChartAxisLayerDefault.swift */; };
@@ -105,6 +106,7 @@
 		EBC533791B00F02600D10448 /* CubicLinePathGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC533441B00F02600D10448 /* CubicLinePathGenerator.swift */; };
 		EBC5337A1B00F02600D10448 /* HandlingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC533451B00F02600D10448 /* HandlingView.swift */; };
 		EBC5337B1B00F02600D10448 /* StraigthLinePathGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC533461B00F02600D10448 /* StraigthLinePathGenerator.swift */; };
+		EBD6A56B1B7015EA008816C1 /* TrendlineGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD6A56A1B7015EA008816C1 /* TrendlineGenerator.swift */; };
 		EBFA8BE21B052E02008A7C36 /* ChartPointViewBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFA8BE11B052E02008A7C36 /* ChartPointViewBar.swift */; };
 		EBFA8BE41B054425008A7C36 /* BarsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFA8BE31B054425008A7C36 /* BarsExample.swift */; };
 		EBFA8BEA1B065927008A7C36 /* ChartPointViewBarGreyOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFA8BE91B065927008A7C36 /* ChartPointViewBarGreyOut.swift */; };
@@ -160,6 +162,7 @@
 		EB5DC10E1B091FCC001FD5A8 /* ChartBarsLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartBarsLayer.swift; sourceTree = "<group>"; };
 		EB5DC1101B094108001FD5A8 /* BarsPlusMinusWithGradientExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarsPlusMinusWithGradientExample.swift; sourceTree = "<group>"; };
 		EB5DC1121B0A7681001FD5A8 /* HandlingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlingLabel.swift; sourceTree = "<group>"; };
+		EB76D7081B6FF578001FBB76 /* TrendlineExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendlineExample.swift; sourceTree = "<group>"; };
 		EBC5330D1B00F02600D10448 /* ChartAxisLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLabel.swift; sourceTree = "<group>"; };
 		EBC5330E1B00F02600D10448 /* ChartAxisLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLayer.swift; sourceTree = "<group>"; };
 		EBC5330F1B00F02600D10448 /* ChartAxisLayerDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLayerDefault.swift; sourceTree = "<group>"; };
@@ -212,6 +215,7 @@
 		EBC533441B00F02600D10448 /* CubicLinePathGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubicLinePathGenerator.swift; sourceTree = "<group>"; };
 		EBC533451B00F02600D10448 /* HandlingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlingView.swift; sourceTree = "<group>"; };
 		EBC533461B00F02600D10448 /* StraigthLinePathGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StraigthLinePathGenerator.swift; sourceTree = "<group>"; };
+		EBD6A56A1B7015EA008816C1 /* TrendlineGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendlineGenerator.swift; sourceTree = "<group>"; };
 		EBFA8BE11B052E02008A7C36 /* ChartPointViewBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointViewBar.swift; sourceTree = "<group>"; };
 		EBFA8BE31B054425008A7C36 /* BarsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarsExample.swift; sourceTree = "<group>"; };
 		EBFA8BE91B065927008A7C36 /* ChartPointViewBarGreyOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointViewBarGreyOut.swift; sourceTree = "<group>"; };
@@ -313,6 +317,7 @@
 				EB5DC0D51B06995A001FD5A8 /* StackedBarsExample.swift */,
 				EB5515A71B0E23BE003AD19C /* GroupedAndStackedBarsExample.swift */,
 				EBC5333C1B00F02600D10448 /* InfoBubble.swift */,
+				EB76D7081B6FF578001FBB76 /* TrendlineExample.swift */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -331,6 +336,7 @@
 				EBC533271B00F02600D10448 /* Drawers */,
 				EBC5332B1B00F02600D10448 /* Layers */,
 				EBC5333B1B00F02600D10448 /* Views */,
+				EBD6A5681B7015CA008816C1 /* Utils */,
 				EB0FD3781B5BCC0A00829AE5 /* Convenience */,
 			);
 			name = SwiftCharts;
@@ -436,6 +442,22 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		EBD6A5681B7015CA008816C1 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				EBD6A5691B7015CA008816C1 /* Trendlines */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		EBD6A5691B7015CA008816C1 /* Trendlines */ = {
+			isa = PBXGroup;
+			children = (
+				EBD6A56A1B7015EA008816C1 /* TrendlineGenerator.swift */,
+			);
+			path = Trendlines;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -525,6 +547,7 @@
 				EBC533791B00F02600D10448 /* CubicLinePathGenerator.swift in Sources */,
 				EB5DB6991AFD08AD00569E59 /* NotificationsExample.swift in Sources */,
 				EBC5337A1B00F02600D10448 /* HandlingView.swift in Sources */,
+				EBD6A56B1B7015EA008816C1 /* TrendlineGenerator.swift in Sources */,
 				EB0FD37A1B5BCC1600829AE5 /* LineChart.swift in Sources */,
 				EB5DB6911AFD08AD00569E59 /* CoordsExample.swift in Sources */,
 				EBC533621B00F02600D10448 /* ChartCandleStickLayer.swift in Sources */,
@@ -549,6 +572,7 @@
 				EB5DB69C1AFD08AD00569E59 /* TargetExample.swift in Sources */,
 				EBC533671B00F02600D10448 /* ChartLayerBase.swift in Sources */,
 				EB5DB6901AFD08AD00569E59 /* CandleStickInteractiveExample.swift in Sources */,
+				EB76D7091B6FF578001FBB76 /* TrendlineExample.swift in Sources */,
 				EB5DB6921AFD08AD00569E59 /* CubicLinesExample.swift in Sources */,
 				EB5DC0DE1B086F93001FD5A8 /* ChartPointsScatterLayer.swift in Sources */,
 				EBC533751B00F02600D10448 /* ChartPointEllipseView.swift in Sources */,

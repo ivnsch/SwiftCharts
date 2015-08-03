@@ -10,7 +10,7 @@ import UIKit
 
 
 enum Example {
-    case HelloWorld, Bars, StackedBars, BarsPlusMinus, GroupedBars, BarsStackedGrouped, Scatter, Areas, Bubble, Coords, Target, Multival, Notifications, Combination, Scroll, EqualSpacing, Tracker, MultiAxis, MultiAxisInteractive, CandleStick, Cubiclines, NotNumeric, CandleStickInteractive, CustomUnits
+    case HelloWorld, Bars, StackedBars, BarsPlusMinus, GroupedBars, BarsStackedGrouped, Scatter, Areas, Bubble, Coords, Target, Multival, Notifications, Combination, Scroll, EqualSpacing, Tracker, MultiAxis, MultiAxisInteractive, CandleStick, Cubiclines, NotNumeric, CandleStickInteractive, CustomUnits, Trendline
 }
 
 class MasterViewController: UITableViewController {
@@ -40,7 +40,8 @@ class MasterViewController: UITableViewController {
         (.MultiAxisInteractive, "Multiple axes (interactive)"),
         (.CandleStick, "Candlestick"),
         (.CandleStickInteractive, "Candlestick (interactive)"),
-        (.Cubiclines, "Cubic lines")
+        (.Cubiclines, "Cubic lines"),
+        (.Trendline, "Trendline")
     ]
     
     override func awakeFromNib() {
