@@ -206,10 +206,6 @@ If you have a lot of axis labels in your chart it may be necessary to do the cal
 ###### [More documentation coming soon!](https://github.com/i-schuetz/SwiftCharts/wiki/Wiki)
 
 
-##### Version:
-
-0.2.2
-
 ##### Contributing
 
 1. Fork
