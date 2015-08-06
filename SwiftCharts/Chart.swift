@@ -71,7 +71,7 @@ public class Chart {
     private func drawRect(rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
         for layer in self.layers {
-            layer.chartViewDrawing(context: context, chart: self)
+            layer.chartViewDrawing(context: context!, chart: self)
         }
     }
 }
