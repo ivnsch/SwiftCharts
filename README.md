@@ -1,6 +1,7 @@
 # SwiftCharts
 
 [![Version](https://img.shields.io/cocoapods/v/SwiftCharts.svg?style=flat)](http://cocoadocs.org/docsets/Charts)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![License](https://img.shields.io/cocoapods/l/SwiftCharts.svg?style=flat)](http://cocoadocs.org/docsets/Charts)
 
 Easy to use and highly customizable charts library for iOS
@@ -49,7 +50,9 @@ Swift 1.2, iOS 7/8. Swift 2.0 branch (latest test on XCode 7 beta 4).
 
 ##### Installation
 
-Add to your podfile:
+##### CocoaPods
+
+Add to your Podfile:
 ```ruby
 use_frameworks!
 pod 'SwiftCharts', '~> 0.2'
@@ -68,6 +71,14 @@ pod install
 Import the framework in your code:
 ```swift
 import SwiftCharts
+```
+
+##### Carthage
+
+Add to your Cartfile:
+
+```
+github "i-schuetz/SwiftCharts" ~> 0.2
 ```
 
 ##### Quick start 

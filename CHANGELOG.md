@@ -3,7 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.2.4] - 2015.08.09
 - Automatic generation of trendlines
+- Add Carthage support
 
 ## [0.2.3]
 - Allow rotating y axis title label
