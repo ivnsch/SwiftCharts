@@ -13,7 +13,13 @@ public class ChartBarModel {
     public let axisValue1: ChartAxisValue
     public let axisValue2: ChartAxisValue
     public let bgColor: UIColor?
-    
+
+    /**
+    - parameter constant:Value of coordinate which doesn't change between start and end of the bar - if the bar is horizontal, this is y, if it's vertical it's x.
+    - parameter axisValue1:Start, variable coordinate.
+    - parameter axisValue2:End, variable coordinate.
+    - parameter bgColor:Background color of bar.
+    */
     public init(constant: ChartAxisValue, axisValue1: ChartAxisValue, axisValue2: ChartAxisValue, bgColor: UIColor? = nil) {
         self.constant = constant
         self.axisValue1 = axisValue1
