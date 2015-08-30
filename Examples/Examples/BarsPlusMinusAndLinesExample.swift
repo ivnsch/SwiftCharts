@@ -17,7 +17,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let barsData: [(title: String, min: CGFloat, max: CGFloat)] = [
+        let barsData: [(title: String, min: Double, max: Double)] = [
             ("A", -65, 40),
             ("B", -30, 50),
             ("C", -40, 35),
@@ -28,7 +28,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
             ("H", -46, 48)
         ]
 
-        let lineData: [(title: String, val: CGFloat)] = [
+        let lineData: [(title: String, val: Double)] = [
             ("A", -10),
             ("B", 20),
             ("C", -20),
@@ -42,15 +42,16 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         let alpha: CGFloat = 0.5
         let posColor = UIColor.greenColor().colorWithAlphaComponent(alpha)
         let negColor = UIColor.redColor().colorWithAlphaComponent(alpha)
-        let zero = ChartAxisValueFloat(0)
+        let zero = ChartAxisValueDouble(0)
+        
         let bars: [ChartBarModel] = Array(enumerate(barsData)).flatMap {index, tuple in
             [
-                ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.min), bgColor: negColor),
-                ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.max), bgColor: posColor)
+                ChartBarModel(constant: ChartAxisValueDouble(index), axisValue1: zero, axisValue2: ChartAxisValueDouble(tuple.min), bgColor: negColor),
+                ChartBarModel(constant: ChartAxisValueDouble(index), axisValue1: zero, axisValue2: ChartAxisValueDouble(tuple.max), bgColor: posColor)
             ]
         }
         
-        let yValues = Array(stride(from: -80, through: 80, by: 20)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
+        let yValues = Array(stride(from: -80, through: 80, by: 20)).map {ChartAxisValueDouble($0, labelSettings: labelSettings)}
         let xValues =
             [ChartAxisValueString(order: -1)] +
             Array(enumerate(barsData)).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
@@ -96,7 +97,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         }, displayDelay: 0.5) // show after bars animation
         
         // line layer
-        let lineChartPoints = Array(enumerate(lineData)).map {index, tuple in ChartPoint(x: ChartAxisValueFloat(CGFloat(index)), y: ChartAxisValueFloat(tuple.val))}
+        let lineChartPoints = Array(enumerate(lineData)).map {index, tuple in ChartPoint(x: ChartAxisValueDouble(index), y: ChartAxisValueDouble(tuple.val))}
         let lineModel = ChartLineModel(chartPoints: lineChartPoints, lineColor: UIColor.blackColor(), lineWidth: 2, animDuration: 0.5, animDelay: 1)
         let lineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
         
@@ -111,7 +112,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         
         
         // show a gap between positive and negative bar
-        let dummyZeroYChartPoint = ChartPoint(x: ChartAxisValueFloat(0), y: ChartAxisValueFloat(0))
+        let dummyZeroYChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
         let yZeroGapLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: [dummyZeroYChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
             let height: CGFloat = 2
             let v = UIView(frame: CGRectMake(innerFrame.origin.x + 2, chartPointModel.screenLoc.y - height / 2, innerFrame.origin.x + innerFrame.size.height, height))

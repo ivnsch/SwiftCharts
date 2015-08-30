@@ -103,7 +103,7 @@ class CustomUnitsExample: UIViewController {
         self.chart = chart
     }
     
-    func createChartPoint(#dateStr: String, percent: CGFloat, readFormatter: NSDateFormatter, displayFormatter: NSDateFormatter) -> ChartPoint {
+    func createChartPoint(#dateStr: String, percent: Double, readFormatter: NSDateFormatter, displayFormatter: NSDateFormatter) -> ChartPoint {
         return ChartPoint(x: self.createDateAxisValue(dateStr, readFormatter: readFormatter, displayFormatter: displayFormatter), y: ChartAxisValuePercent(percent))
     }
     
@@ -113,9 +113,9 @@ class CustomUnitsExample: UIViewController {
         return ChartAxisValueDate(date: date, formatter: displayFormatter, labelSettings: labelSettings)
     }
     
-    class ChartAxisValuePercent: ChartAxisValueFloat {
+    class ChartAxisValuePercent: ChartAxisValueDouble {
         override var text: String {
-            return "\(self.formatter.stringFromNumber(self.float)!)%"
+            return "\(self.formatter.stringFromNumber(self.scalar)!)%"
         }
     }
 }

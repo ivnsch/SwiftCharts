@@ -23,7 +23,7 @@ class StackedBarsExample: UIViewController {
         let color2 = UIColor.redColor().colorWithAlphaComponent(0.6)
         let color3 = UIColor.greenColor().colorWithAlphaComponent(0.6)
         
-        let zero = ChartAxisValueFloat(0)
+        let zero = ChartAxisValueDouble(0)
         let barModels = [
             ChartStackedBarModel(constant: ChartAxisValueString("A", order: 1, labelSettings: labelSettings), start: zero, items: [
                 ChartStackedBarItemModel(quantity: 20, bgColor: color0),
@@ -52,7 +52,7 @@ class StackedBarsExample: UIViewController {
         ]
         
         let (axisValues1, axisValues2) = (
-            Array(stride(from: 0, through: 150, by: 20)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
+            Array(stride(from: 0, through: 150, by: 20)).map {ChartAxisValueDouble($0, labelSettings: labelSettings)},
             [ChartAxisValueString("", order: 0, labelSettings: labelSettings)] + barModels.map{$0.constant} + [ChartAxisValueString("", order: 5, labelSettings: labelSettings)]
         )
         let (xValues, yValues) = horizontal ? (axisValues1, axisValues2) : (axisValues2, axisValues1)

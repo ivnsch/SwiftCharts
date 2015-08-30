@@ -8,6 +8,7 @@
 
 import UIKit
 
+@availability(*, deprecated=0.2.5, message="use ChartAxisValueDoubleScreenLoc instead")
 public class ChartAxisValueFloatScreenLoc: ChartAxisValueFloat {
     
     private let actualFloat: CGFloat

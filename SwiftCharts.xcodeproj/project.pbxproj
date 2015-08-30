@@ -58,7 +58,7 @@
 		06405E181B8AA81D00A689FF /* ChartAxisYLowLayerDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405DCD1B8AA81D00A689FF /* ChartAxisYLowLayerDefault.swift */; };
 		06405E191B8AA81D00A689FF /* ChartAxisValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405DCF1B8AA81D00A689FF /* ChartAxisValue.swift */; };
 		06405E1A1B8AA81D00A689FF /* ChartAxisValueDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405DD01B8AA81D00A689FF /* ChartAxisValueDate.swift */; };
-		06405E1B1B8AA81D00A689FF /* ChartAxisValueFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405DD11B8AA81D00A689FF /* ChartAxisValueFloat.swift */; };
+		06405E1B1B8AA81D00A689FF /* ChartAxisValueFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405DD11B8AA81D00A689FF /* ChartAxisValueFloat.swift */; settings = {COMPILER_FLAGS = "-w"; }; };
 		06405E1C1B8AA81D00A689FF /* ChartAxisValueFloatScreenLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405DD21B8AA81D00A689FF /* ChartAxisValueFloatScreenLoc.swift */; };
 		06405E1D1B8AA81D00A689FF /* ChartAxisValueInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405DD31B8AA81D00A689FF /* ChartAxisValueInt.swift */; };
 		06405E1E1B8AA81D00A689FF /* ChartAxisValueString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405DD41B8AA81D00A689FF /* ChartAxisValueString.swift */; };
@@ -113,6 +113,8 @@
 		06405E4F1B8AA81D00A689FF /* InfoBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405E0C1B8AA81D00A689FF /* InfoBubble.swift */; };
 		06405E501B8AA81D00A689FF /* StraigthLinePathGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405E0D1B8AA81D00A689FF /* StraigthLinePathGenerator.swift */; };
 		067510BF1B8AB36500A37F64 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 067510C11B8AB36500A37F64 /* Main_iPhone.storyboard */; };
+		EB08E2331B93A15E0030081C /* ChartAxisValueDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */; };
+		EB4CE97F1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4CE97E1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -248,6 +250,8 @@
 		06405E0C1B8AA81D00A689FF /* InfoBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoBubble.swift; sourceTree = "<group>"; };
 		06405E0D1B8AA81D00A689FF /* StraigthLinePathGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StraigthLinePathGenerator.swift; sourceTree = "<group>"; };
 		067510C01B8AB36500A37F64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueDouble.swift; sourceTree = "<group>"; };
+		EB4CE97E1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueDoubleScreenLoc.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -417,7 +421,9 @@
 				06405DCF1B8AA81D00A689FF /* ChartAxisValue.swift */,
 				06405DD01B8AA81D00A689FF /* ChartAxisValueDate.swift */,
 				06405DD11B8AA81D00A689FF /* ChartAxisValueFloat.swift */,
+				EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */,
 				06405DD21B8AA81D00A689FF /* ChartAxisValueFloatScreenLoc.swift */,
+				EB4CE97E1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift */,
 				06405DD31B8AA81D00A689FF /* ChartAxisValueInt.swift */,
 				06405DD41B8AA81D00A689FF /* ChartAxisValueString.swift */,
 			);
@@ -680,6 +686,7 @@
 				06405E121B8AA81D00A689FF /* ChartAxisValuesGenerator.swift in Sources */,
 				06405E391B8AA81D00A689FF /* ChartPointsLayer.swift in Sources */,
 				06405E1D1B8AA81D00A689FF /* ChartAxisValueInt.swift in Sources */,
+				EB08E2331B93A15E0030081C /* ChartAxisValueDouble.swift in Sources */,
 				06405E291B8AA81D00A689FF /* LineChart.swift in Sources */,
 				06405E501B8AA81D00A689FF /* StraigthLinePathGenerator.swift in Sources */,
 				06405E3D1B8AA81D00A689FF /* ChartPointsSingleViewLayer.swift in Sources */,
@@ -719,6 +726,7 @@
 				06405E1E1B8AA81D00A689FF /* ChartAxisValueString.swift in Sources */,
 				06405E401B8AA81D00A689FF /* ChartShowCoordsLinesLayer.swift in Sources */,
 				06405E481B8AA81D00A689FF /* ChartPointTextCircleView.swift in Sources */,
+				EB4CE97F1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift in Sources */,
 				06405E1B1B8AA81D00A689FF /* ChartAxisValueFloat.swift in Sources */,
 				06405E461B8AA81D00A689FF /* ChartPointEllipseView.swift in Sources */,
 				06405E211B8AA81D00A689FF /* ChartLineModel.swift in Sources */,
@@ -911,6 +919,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				INFOPLIST_FILE = "SwiftCharts/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -930,6 +939,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				INFOPLIST_FILE = "SwiftCharts/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

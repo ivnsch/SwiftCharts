@@ -29,7 +29,7 @@ class BubbleExample: UIViewController {
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        func toColor(percentage: CGFloat) -> UIColor {
+        func toColor(percentage: Double) -> UIColor {
             return colorBar.colorForPercentage(percentage).colorWithAlphaComponent(0.6)
         }
         
@@ -59,7 +59,19 @@ class BubbleExample: UIViewController {
             (12, 7, 120, toColor(0.9)),
             (12, 9, 250, toColor(0.8))
             
-        ].map{ChartPointBubble(x: ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings), y: ChartAxisValueFloat(CGFloat($1)), diameterScalar: $2, bgColor: $3)}
+        ].map{
+        
+            
+            let d = ChartAxisValueDouble($0, labelSettings: labelSettings)
+            let e = ChartAxisValueDouble($1)
+            let f = Double($2)
+            let k: UIColor = $3
+            
+            return ChartPointBubble(x: ChartAxisValueDouble($0, labelSettings: labelSettings), y: ChartAxisValueDouble($1), diameterScalar: Double($2), bgColor: $3)
+        
+        
+        
+        }
 
         let xValues = Array(stride(from: -2, through: 14, by: 2)).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
         let yValues = Array(stride(from: -2, through: 12, by: 2)).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
@@ -78,7 +90,7 @@ class BubbleExample: UIViewController {
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesLayerSettings)
 
         let guidelinesHighlightLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.redColor(), linesWidth: 1, dotWidth: 4, dotSpacing: 4)
-        let guidelinesHighlightLayer = ChartGuideLinesForValuesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesHighlightLayerSettings, axisValuesX: [ChartAxisValueFloat(0)], axisValuesY: [ChartAxisValueFloat(0)])
+        let guidelinesHighlightLayer = ChartGuideLinesForValuesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesHighlightLayerSettings, axisValuesX: [ChartAxisValueDouble(0)], axisValuesY: [ChartAxisValueDouble(0)])
         
         let chart = Chart(
             frame: chartFrame,
@@ -99,11 +111,11 @@ class BubbleExample: UIViewController {
     // On the other side, if we don't need animation or want a better performance, we use ChartPointsBubbleLayer, which instead of creating views, renders directly to the chart's context.
     private func bubblesLayer(#xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, chartPoints: [ChartPointBubble]) -> ChartLayer {
         
-        let maxBubbleDiameter: CGFloat = 30, minBubbleDiameter: CGFloat = 2
+        let maxBubbleDiameter: Double = 30, minBubbleDiameter: Double = 2
         
         if self.useViewsLayer == true {
                 
-            let (minDiameterScalar: CGFloat, maxDiameterScalar: CGFloat) = chartPoints.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, chartPoint in
+            let (minDiameterScalar: Double, maxDiameterScalar: Double) = chartPoints.reduce((min: 0, max: 0)) {tuple, chartPoint in
                 (min: min(tuple.min, chartPoint.diameterScalar), max: max(tuple.max, chartPoint.diameterScalar))
             }
             
@@ -111,7 +123,7 @@ class BubbleExample: UIViewController {
 
             return ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: chartInnerFrame, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
 
-                let diameter = chartPointModel.chartPoint.diameterScalar * diameterFactor
+                let diameter = CGFloat(chartPointModel.chartPoint.diameterScalar * diameterFactor)
                 
                 let rect = CGRectMake(chartPointModel.screenLoc.x - diameter / 2, chartPointModel.screenLoc.y - diameter / 2, diameter, diameter)
                 let circleView = ChartPointEllipseView(center: chartPointModel.screenLoc, diameter: diameter)
@@ -204,11 +216,11 @@ class BubbleExample: UIViewController {
             }
         }
         
-        func colorForPercentage(percentage: CGFloat) -> UIColor {
+        func colorForPercentage(percentage: Double) -> UIColor {
 
             let data = self.imgData
             
-            let xNotRounded = self.gradientImg.size.width * percentage
+            let xNotRounded = self.gradientImg.size.width * CGFloat(percentage)
             let x = 4 * (floor(abs(xNotRounded / 4)))
             let pixelIndex = Int(x * 4)
             

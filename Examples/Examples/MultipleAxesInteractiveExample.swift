@@ -42,9 +42,9 @@ class MultipleAxesInteractiveExample: UIViewController {
     init() {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFontSmall)
         
-        func createChartPoint(x: CGFloat, y: CGFloat, labelColor: UIColor) -> ChartPoint {
+        func createChartPoint(x: Double, y: Double, labelColor: UIColor) -> ChartPoint {
             let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: labelColor)
-            return ChartPoint(x: ChartAxisValueFloat(x, labelSettings: labelSettings), y: ChartAxisValueFloat(y, labelSettings: labelSettings))
+            return ChartPoint(x: ChartAxisValueDouble(x, labelSettings: labelSettings), y: ChartAxisValueDouble(y, labelSettings: labelSettings))
         }
         
         func createChartPoints0(color: UIColor) -> [ChartPoint] {
@@ -120,13 +120,13 @@ class MultipleAxesInteractiveExample: UIViewController {
         
         self.viewFrame = CGRectMake(0, top, self.view.frame.size.width, self.view.frame.size.height - selectionViewH - showGuidesViewH - top - 10)
         
-        let yValues0 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(self.chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueFloat($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[0]))}, addPaddingSegmentIfEdge: false)
+        let yValues0 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(self.chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[0]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues1 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(self.chartPoints1, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueFloat($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[1]))}, addPaddingSegmentIfEdge: false)
+        let yValues1 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(self.chartPoints1, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[1]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues2 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(self.chartPoints2, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueFloat($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[2]))}, addPaddingSegmentIfEdge: false)
+        let yValues2 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(self.chartPoints2, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[2]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues3 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(self.chartPoints3, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueFloat($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[3]))}, addPaddingSegmentIfEdge: false)
+        let yValues3 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(self.chartPoints3, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[3]))}, addPaddingSegmentIfEdge: false)
         
         let axisTitleFont = ExamplesDefaults.labelFontSmall
         
@@ -283,8 +283,8 @@ class MultipleAxesInteractiveExample: UIViewController {
         return v
     }
     
-    private func createChartPoint(x: CGFloat, _ y: CGFloat, _ labelColor: UIColor) -> ChartPoint {
+    private func createChartPoint(x: Double, _ y: Double, _ labelColor: UIColor) -> ChartPoint {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: labelColor)
-        return ChartPoint(x: ChartAxisValueFloat(x, labelSettings: labelSettings), y: ChartAxisValueFloat(y, labelSettings: labelSettings))
+        return ChartPoint(x: ChartAxisValueDouble(x, labelSettings: labelSettings), y: ChartAxisValueDouble(y, labelSettings: labelSettings))
     }
 }

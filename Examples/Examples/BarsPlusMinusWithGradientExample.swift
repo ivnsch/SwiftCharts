@@ -26,7 +26,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
     
     override func viewDidLoad() {
         
-        let vals: [(title: String, val: CGFloat)] = [
+        let vals: [(title: String, val: Double)] = [
             ("U", -75),
             ("T", -65),
             ("S", -50),
@@ -50,21 +50,21 @@ class BarsPlusMinusWithGradientExample: UIViewController {
             ("A", 75)
         ]
         
-        let (minVal: CGFloat, maxVal: CGFloat) = vals.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, val in
+        let (minVal: Double, maxVal: Double) = vals.reduce((min: 0, max: 0)) {tuple, val in
             (min: min(tuple.min, val.val), max: max(tuple.max, val.val))
         }
-        let length: CGFloat = maxVal - minVal
+        let length = maxVal - minVal
         
-        let zero = ChartAxisValueFloat(0)
+        let zero = ChartAxisValueDouble(0)
         let bars: [ChartBarModel] = Array(enumerate(vals)).map {index, tuple in
             let percentage = (tuple.val - minVal - 0.01) / length // FIXME without -0.01 bar with 1 (100 perc) is black
             let color = self.gradientPicker.colorForPercentage(percentage).colorWithAlphaComponent(0.6)
-            return ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.val), bgColor: color)
+            return ChartBarModel(constant: ChartAxisValueDouble(index), axisValue1: zero, axisValue2: ChartAxisValueDouble(tuple.val), bgColor: color)
         }
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let xValues = Array(stride(from: -80, through: 80, by: 20)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
+        let xValues = Array(stride(from: -80, through: 80, by: 20)).map {ChartAxisValueDouble($0, labelSettings: labelSettings)}
         let yValues =
             [ChartAxisValueString(order: -1)] +
             Array(enumerate(vals)).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
@@ -90,7 +90,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
                 let guidelinesLayer = ChartGuideLinesLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, axis: .X, settings: settings)
                 
                 // create x zero guideline as view to be in front of the bars
-                let dummyZeroXChartPoint = ChartPoint(x: ChartAxisValueFloat(0), y: ChartAxisValueFloat(0))
+                let dummyZeroXChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
                 let xZeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: [dummyZeroXChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
                     let width: CGFloat = 2
                     let v = UIView(frame: CGRectMake(chartPointModel.screenLoc.x - width / 2, innerFrame.origin.y, width, innerFrame.size.height))
@@ -158,11 +158,11 @@ class BarsPlusMinusWithGradientExample: UIViewController {
             self.gradientImg = gradientImg
         }
         
-        func colorForPercentage(percentage: CGFloat) -> UIColor {
+        func colorForPercentage(percentage: Double) -> UIColor {
             
             let data = self.imgData
             
-            let xNotRounded = self.gradientImg.size.width * percentage
+            let xNotRounded = self.gradientImg.size.width * CGFloat(percentage)
             let x = 4 * (floor(abs(xNotRounded / 4)))
             let pixelIndex = Int(x * 4)
             

@@ -24,14 +24,14 @@ public class BarsChartConfig: ChartConfig {
 
 public class BarsChart: Chart {
     
-    public init(frame: CGRect, chartConfig: BarsChartConfig, xTitle: String, yTitle: String, bars barModels: [(String, CGFloat)], color: UIColor, barWidth: CGFloat, animDuration: Float = 0.5, horizontal: Bool = false) {
+    public init(frame: CGRect, chartConfig: BarsChartConfig, xTitle: String, yTitle: String, bars barModels: [(String, Double)], color: UIColor, barWidth: CGFloat, animDuration: Float = 0.5, horizontal: Bool = false) {
         
-        let zero = ChartAxisValueFloat(0)
+        let zero = ChartAxisValueDouble(0)
         let bars: [ChartBarModel] = Array(enumerate(barModels)).map {index, barModel in
-            return ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(barModel.1), bgColor: color)
+            return ChartBarModel(constant: ChartAxisValueDouble(index), axisValue1: zero, axisValue2: ChartAxisValueDouble(barModel.1), bgColor: color)
         }
         
-        let valAxisValues = Array(stride(from: chartConfig.valsAxisConfig.from, through: chartConfig.valsAxisConfig.to, by: chartConfig.valsAxisConfig.by)).map{ChartAxisValueFloat($0)}
+        let valAxisValues = Array(stride(from: chartConfig.valsAxisConfig.from, through: chartConfig.valsAxisConfig.to, by: chartConfig.valsAxisConfig.by)).map{ChartAxisValueDouble($0)}
         let labelAxisValues = [ChartAxisValueString(order: -1)] + Array(enumerate(barModels)).map{index, tuple in ChartAxisValueString(tuple.0, order: index)} + [ChartAxisValueString(order: barModels.count)]
 
         let (xValues: [ChartAxisValue], yValues: [ChartAxisValue]) = horizontal ? (valAxisValues, labelAxisValues) : (labelAxisValues, valAxisValues)

@@ -86,7 +86,7 @@ class CandleStickInteractiveExample: UIViewController {
         }
         
         let xValues = generateDateAxisValues(10, 2015)
-        let yValues = Array(stride(from: 20, through: 55, by: 5)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
+        let yValues = Array(stride(from: 20, through: 55, by: 5)).map {ChartAxisValueDouble($0, labelSettings: labelSettings)}
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))

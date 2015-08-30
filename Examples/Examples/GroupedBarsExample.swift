@@ -18,7 +18,7 @@ class GroupedBarsExample: UIViewController {
     private func barsChart(#horizontal: Bool) -> Chart {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let groupsData: [(title: String, [(min: CGFloat, max: CGFloat)])] = [
+        let groupsData: [(title: String, [(min: Double, max: Double)])] = [
             ("A", [
                 (0, 40),
                 (0, 50),
@@ -44,15 +44,15 @@ class GroupedBarsExample: UIViewController {
         let groupColors = [UIColor.redColor().colorWithAlphaComponent(0.6), UIColor.blueColor().colorWithAlphaComponent(0.6), UIColor.greenColor().colorWithAlphaComponent(0.6)]
         
         let groups: [ChartPointsBarGroup] = Array(enumerate(groupsData)).map {index, entry in
-            let constant = ChartAxisValueFloat(CGFloat(index))
+            let constant = ChartAxisValueDouble(index)
             let bars = Array(enumerate(entry.1)).map {index, tuple in
-                ChartBarModel(constant: constant, axisValue1: ChartAxisValueFloat(tuple.min), axisValue2: ChartAxisValueFloat(tuple.max), bgColor: groupColors[index])
+                ChartBarModel(constant: constant, axisValue1: ChartAxisValueDouble(tuple.min), axisValue2: ChartAxisValueDouble(tuple.max), bgColor: groupColors[index])
             }
             return ChartPointsBarGroup(constant: constant, bars: bars)
         }
         
         let (axisValues1: [ChartAxisValue], axisValues2: [ChartAxisValue]) = (
-            Array(stride(from: 0, through: 60, by: 5)).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
+            Array(stride(from: 0, through: 60, by: 5)).map {ChartAxisValueDouble($0, labelSettings: labelSettings)},
             [ChartAxisValueString(order: -1)] +
             Array(enumerate(groupsData)).map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
             [ChartAxisValueString(order: groupsData.count)]

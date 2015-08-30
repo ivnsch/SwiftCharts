@@ -19,14 +19,14 @@ class EqualSpacingExample: UIViewController {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
 
         let chartPoints = [
-            ChartPoint(x: ChartAxisValueFloatScreenLoc(screenLocFloat: 1, actualFloat: 2, labelSettings: labelSettings), y: ChartAxisValueFloat(2)),
-            ChartPoint(x: ChartAxisValueFloatScreenLoc(screenLocFloat: 2, actualFloat: 100, labelSettings: labelSettings), y: ChartAxisValueFloat(5)),
-            ChartPoint(x: ChartAxisValueFloatScreenLoc(screenLocFloat: 3, actualFloat: 100.1, labelSettings: labelSettings), y: ChartAxisValueFloat(1)),
-            ChartPoint(x: ChartAxisValueFloatScreenLoc(screenLocFloat: 4, actualFloat: 900000, labelSettings: labelSettings), y: ChartAxisValueFloat(10))
+            ChartPoint(x: ChartAxisValueDoubleScreenLoc(screenLocDouble: 1, actualDouble: 2, labelSettings: labelSettings), y: ChartAxisValueDouble(2)),
+            ChartPoint(x: ChartAxisValueDoubleScreenLoc(screenLocDouble: 2, actualDouble: 100, labelSettings: labelSettings), y: ChartAxisValueDouble(5)),
+            ChartPoint(x: ChartAxisValueDoubleScreenLoc(screenLocDouble: 3, actualDouble: 100.1, labelSettings: labelSettings), y: ChartAxisValueDouble(1)),
+            ChartPoint(x: ChartAxisValueDoubleScreenLoc(screenLocDouble: 4, actualDouble: 900000, labelSettings: labelSettings), y: ChartAxisValueDouble(10))
         ]
         
         let xValues = chartPoints.map{$0.x}
-        let yValues = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueFloat($0, labelSettings: labelSettings)}, addPaddingSegmentIfEdge: false)
+        let yValues = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: labelSettings)}, addPaddingSegmentIfEdge: false)
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))

@@ -39,11 +39,11 @@ public class ChartConfigXY: ChartConfig {
 }
 
 public struct ChartAxisConfig {
-    public let from: CGFloat
-    public let to: CGFloat
-    public let by: CGFloat
+    public let from: Double
+    public let to: Double
+    public let by: Double
     
-    public init(from: CGFloat, to: CGFloat, by: CGFloat) {
+    public init(from: Double, to: Double, by: Double) {
         self.from = from
         self.to = to
         self.by = by

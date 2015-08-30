@@ -8,6 +8,11 @@
 
 import UIKit
 
+//@availability(*, deprecated=0.2.5, message="use ChartAxisValueDouble instead")
+/**
+    DEPRECATED use ChartAxisValueDouble instead
+    Above annotation causes warning inside this file and it was not possible to supress (tried http://stackoverflow.com/a/6921972/930450 etc.)
+*/
 public class ChartAxisValueFloat: ChartAxisValue {
     
     public let formatter: NSNumberFormatter
