@@ -78,7 +78,7 @@ class GroupedAndStackedBarsExample: UIViewController {
         }
         
         let (axisValues1, axisValues2): ([ChartAxisValue], [ChartAxisValue]) = (
-            stride(from: -60, through: 100, by: 20).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
+            (-60).stride(through: 100, by: 20).map {ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings)},
             [ChartAxisValueString(order: -1)] +
                 groupsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
                 [ChartAxisValueString(order: groupsData.count)]

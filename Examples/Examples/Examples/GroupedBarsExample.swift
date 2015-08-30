@@ -52,7 +52,7 @@ class GroupedBarsExample: UIViewController {
         }
         
         let (axisValues1, axisValues2): ([ChartAxisValue], [ChartAxisValue]) = (
-            stride(from: 0, through: 60, by: 5).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
+            0.stride(through: 60, by: 5).map {ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings)},
             [ChartAxisValueString(order: -1)] +
             groupsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
             [ChartAxisValueString(order: groupsData.count)]

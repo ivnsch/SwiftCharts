@@ -58,7 +58,7 @@ class CustomUnitsExample: UIViewController {
             createChartPoint(dateStr: "21.10.2015", percent: 100, readFormatter: readFormatter, displayFormatter: displayFormatter)
         ]
         
-        let yValues = stride(from: 0, through: 100, by: 10).map {ChartAxisValuePercent($0, labelSettings: labelSettings)}
+        let yValues = 0.stride(through: 100, by: 10).map {ChartAxisValuePercent(CGFloat($0), labelSettings: labelSettings)}
         yValues.first?.hidden = true
 
         let xValues = [

@@ -51,7 +51,7 @@ class StackedBarsExample: UIViewController {
         ]
         
         let (axisValues1, axisValues2) = (
-            stride(from: 0, through: 150, by: 20).map {ChartAxisValueFloat($0, labelSettings: labelSettings)},
+            0.stride(through: 150, by: 20).map {ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings)},
             [ChartAxisValueString("", order: 0, labelSettings: labelSettings)] + barModels.map{$0.constant} + [ChartAxisValueString("", order: 5, labelSettings: labelSettings)]
         )
         let (xValues, yValues) = horizontal ? (axisValues1, axisValues2) : (axisValues2, axisValues1)

@@ -21,8 +21,8 @@ class HelloWorld: UIViewController {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
         // define x and y axis values (quick-demo way, see other examples for generation based on chartpoints)
-        let xValues = stride(from: 0, through: 16, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
-        let yValues = stride(from: 0, through: 16, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+        let xValues = 0.stride(through: 16, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+        let yValues = 0.stride(through: 16, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
         
         // create axis models with axis values and axis title
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))

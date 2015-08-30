@@ -63,7 +63,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let xValues = stride(from: -80, through: 80, by: 20).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
+        let xValues = (-80).stride(through: 80, by: 20).map {ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings)}
         let yValues =
             [ChartAxisValueString(order: -1)] +
             vals.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +

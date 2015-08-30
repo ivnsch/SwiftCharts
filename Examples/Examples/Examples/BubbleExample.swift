@@ -60,8 +60,8 @@ class BubbleExample: UIViewController {
             
         ].map{ChartPointBubble(x: ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings), y: ChartAxisValueFloat(CGFloat($1)), diameterScalar: $2, bgColor: $3)}
 
-        let xValues = stride(from: -2, through: 14, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
-        let yValues = stride(from: -2, through: 12, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+        let xValues = (-2).stride(through: 14, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+        let yValues = (-2).stride(through: 12, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
 
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
@@ -172,7 +172,7 @@ class BubbleExample: UIViewController {
             self.gradientImg = gradientImg
             
             let segmentSize = gradient.frame.size.width / 6
-            self.dividers = Array(stride(from: segmentSize, through: gradient.frame.size.width, by: segmentSize))
+            self.dividers = Array(segmentSize.stride(through: gradient.frame.size.width, by: segmentSize))
 
             super.init(frame: frame)
 
@@ -181,7 +181,7 @@ class BubbleExample: UIViewController {
             let numberFormatter = NSNumberFormatter()
             numberFormatter.maximumFractionDigits = 2
             
-            for x in stride(from: segmentSize, through: gradient.frame.size.width - 1, by: segmentSize) {
+            for x in segmentSize.stride(through: gradient.frame.size.width - 1, by: segmentSize) {
                 
                 let dividerW: CGFloat = 1
                 let divider = UIView(frame: CGRectMake(x - dividerW / 2, 25, dividerW, 5))

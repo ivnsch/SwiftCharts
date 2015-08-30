@@ -49,7 +49,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
             ]
         }
         
-        let yValues = stride(from: -80, through: 80, by: 20).map {ChartAxisValueFloat($0, labelSettings: labelSettings)}
+        let yValues = (-80).stride(through: 80, by: 20).map {ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings)}
         let xValues =
             [ChartAxisValueString(order: -1)] +
             barsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
