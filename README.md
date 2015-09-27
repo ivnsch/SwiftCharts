@@ -53,14 +53,22 @@ Swift 1.2, Swift 2.0, iOS 7, 8, 9
 ##### CocoaPods
 
 Add to your Podfile:
+
+Swift 2.x:
+```ruby
+use_frameworks!
+pod 'SwiftCharts', '~> 0.3'
+```
+
+Swift 1.2 (not actively mantained anymore):
+```ruby
+use_frameworks!
+pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git', :branch => 'swift1.2'
+```
+Or use the 0.2 tag:
 ```ruby
 use_frameworks!
 pod 'SwiftCharts', '~> 0.2'
-```
-Or to use the Swift 2.0 branch:
-```ruby
-use_frameworks!
-pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git', :branch => 'swift2.0'
 ```
 
 And then:
@@ -77,6 +85,12 @@ import SwiftCharts
 
 Add to your Cartfile:
 
+Swift 2.x:
+```
+github "i-schuetz/SwiftCharts" ~> 0.3
+```
+
+Swift 1.2:
 ```
 github "i-schuetz/SwiftCharts" ~> 0.2
 ```

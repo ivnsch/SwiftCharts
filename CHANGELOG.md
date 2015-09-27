@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3] - 2015.09.28
+- Merge swift2.0 in master
+
 ## [0.2.5] - 2015.08.31
 - Fix stacked bar frames displaying incorrectly when start is not 0
 - Improve project organization
