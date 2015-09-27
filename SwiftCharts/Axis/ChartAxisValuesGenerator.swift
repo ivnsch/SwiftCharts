@@ -8,7 +8,7 @@
 
 import UIKit
 
-public typealias ChartAxisValueGenerator = (CGFloat) -> ChartAxisValue
+public typealias ChartAxisValueGenerator = Double -> ChartAxisValue
 
 // Dynamic axis values generation
 public struct ChartAxisValuesGenerator {
@@ -71,7 +71,7 @@ public struct ChartAxisValuesGenerator {
         let offset = firstValue
         return (0...Int(segmentCount)).map {segment in
             let scalar = offset + (Double(segment) * segmentSize)
-            return axisValueGenerator(CGFloat(scalar))
+            return axisValueGenerator(scalar)
         }
     }
     

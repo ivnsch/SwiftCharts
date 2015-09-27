@@ -10,11 +10,11 @@ import UIKit
 
 public class ChartPointsBubbleLayer<T: ChartPointBubble>: ChartPointsLayer<T> {
     
-    private let diameterFactor: CGFloat
+    private let diameterFactor: Double
     
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], displayDelay: Float = 0, maxBubbleDiameter: CGFloat = 30, minBubbleDiameter: CGFloat = 2) {
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], displayDelay: Float = 0, maxBubbleDiameter: Double = 30, minBubbleDiameter: Double = 2) {
         
-        let (minDiameterScalar, maxDiameterScalar): (CGFloat, CGFloat) = chartPoints.reduce((min: CGFloat(0), max: CGFloat(0))) {tuple, chartPoint in
+        let (minDiameterScalar, maxDiameterScalar): (Double, Double) = chartPoints.reduce((min: 0, max: 0)) {tuple, chartPoint in
             (min: min(tuple.min, chartPoint.diameterScalar), max: max(tuple.max, chartPoint.diameterScalar))
         }
         
@@ -31,7 +31,7 @@ public class ChartPointsBubbleLayer<T: ChartPointBubble>: ChartPointsLayer<T> {
             CGContextSetStrokeColorWithColor(context, chartPointModel.chartPoint.borderColor.CGColor)
             CGContextSetFillColorWithColor(context, chartPointModel.chartPoint.bgColor.CGColor)
             
-            let diameter = chartPointModel.chartPoint.diameterScalar * diameterFactor
+            let diameter = CGFloat(chartPointModel.chartPoint.diameterScalar * diameterFactor)
             let circleRect = (CGRectMake(chartPointModel.screenLoc.x - diameter / 2, chartPointModel.screenLoc.y - diameter / 2, diameter, diameter))
             
             CGContextFillEllipseInRect(context, circleRect)

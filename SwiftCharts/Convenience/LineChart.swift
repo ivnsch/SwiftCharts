@@ -10,7 +10,7 @@ import UIKit
 
 public class LineChart: Chart {
     
-    public typealias ChartLine = (chartPoints: [(CGFloat, CGFloat)], color: UIColor)
+    public typealias ChartLine = (chartPoints: [(Double, Double)], color: UIColor)
     
     // Initializer for single line
     public convenience init(frame: CGRect, chartConfig: ChartConfigXY, xTitle: String, yTitle: String, line: ChartLine) {
@@ -20,8 +20,8 @@ public class LineChart: Chart {
     // Initializer for multiple lines
     public init(frame: CGRect, chartConfig: ChartConfigXY, xTitle: String, yTitle: String, lines: [ChartLine]) {
         
-        let xValues = chartConfig.xAxisConfig.from.stride(through: chartConfig.xAxisConfig.to, by: chartConfig.xAxisConfig.by).map{ChartAxisValueFloat($0)}
-        let yValues = chartConfig.yAxisConfig.from.stride(through: chartConfig.yAxisConfig.to, by: chartConfig.yAxisConfig.by).map{ChartAxisValueFloat($0)}
+        let xValues = chartConfig.xAxisConfig.from.stride(through: chartConfig.xAxisConfig.to, by: chartConfig.xAxisConfig.by).map{ChartAxisValueDouble($0)}
+        let yValues = chartConfig.yAxisConfig.from.stride(through: chartConfig.yAxisConfig.to, by: chartConfig.yAxisConfig.by).map{ChartAxisValueDouble($0)}
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: xTitle, settings: chartConfig.xAxisLabelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: yTitle, settings: chartConfig.yAxisLabelSettings.defaultVertical()))
@@ -30,7 +30,7 @@ public class LineChart: Chart {
         
         let lineLayers: [ChartLayer] = lines.map {line in
             let chartPoints = line.chartPoints.map {chartPointScalar in
-                ChartPoint(x: ChartAxisValueFloat(chartPointScalar.0), y: ChartAxisValueFloat(chartPointScalar.1))
+                ChartPoint(x: ChartAxisValueDouble(chartPointScalar.0), y: ChartAxisValueDouble(chartPointScalar.1))
             }
             
             let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: line.color, animDuration: 0.5, animDelay: 0)

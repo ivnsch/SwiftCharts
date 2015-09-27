@@ -1,6 +1,7 @@
 # SwiftCharts
 
 [![Version](https://img.shields.io/cocoapods/v/SwiftCharts.svg?style=flat)](http://cocoadocs.org/docsets/Charts)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![License](https://img.shields.io/cocoapods/l/SwiftCharts.svg?style=flat)](http://cocoadocs.org/docsets/Charts)
 
 Easy to use and highly customizable charts library for iOS
@@ -21,35 +22,37 @@ Easy to use and highly customizable charts library for iOS
 - Choice to use core graphics (directly on chart's context) or UIViews, or combine both.
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
-Swift 1.2, iOS 7/8. Swift 2.0 branch (latest test on XCode 7 beta 4).
+Swift 1.2, Swift 2.0, iOS 7, 8, 9
 
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM)
 
 ##### Screenshots:
 
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0102.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0022.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0023.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0024.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0025.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0026.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0101.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0027.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0028.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0029.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0031.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0033.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0034.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0037.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0038.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0039.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0040.jpeg)
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/IMG_0041.jpeg)
+![ScreenShot](Screenshots/IMG_0102.jpeg)
+![ScreenShot](Screenshots/IMG_0022.jpeg)
+![ScreenShot](Screenshots/IMG_0023.jpeg)
+![ScreenShot](Screenshots/IMG_0024.jpeg)
+![ScreenShot](Screenshots/IMG_0025.jpeg)
+![ScreenShot](Screenshots/IMG_0026.jpeg)
+![ScreenShot](Screenshots/IMG_0101.jpeg)
+![ScreenShot](Screenshots/IMG_0027.jpeg)
+![ScreenShot](Screenshots/IMG_0028.jpeg)
+![ScreenShot](Screenshots/IMG_0029.jpeg)
+![ScreenShot](Screenshots/IMG_0031.jpeg)
+![ScreenShot](Screenshots/IMG_0033.jpeg)
+![ScreenShot](Screenshots/IMG_0034.jpeg)
+![ScreenShot](Screenshots/IMG_0037.jpeg)
+![ScreenShot](Screenshots/IMG_0038.jpeg)
+![ScreenShot](Screenshots/IMG_0039.jpeg)
+![ScreenShot](Screenshots/IMG_0040.jpeg)
+![ScreenShot](Screenshots/IMG_0041.jpeg)
 
 
 ##### Installation
 
-Add to your podfile:
+##### CocoaPods
+
+Add to your Podfile:
 ```ruby
 use_frameworks!
 pod 'SwiftCharts', '~> 0.2'
@@ -68,6 +71,14 @@ pod install
 Import the framework in your code:
 ```swift
 import SwiftCharts
+```
+
+##### Carthage
+
+Add to your Cartfile:
+
+```
+github "i-schuetz/SwiftCharts" ~> 0.2
 ```
 
 ##### Quick start 
@@ -135,7 +146,7 @@ self.chart = chart
 
 A chart is the result of composing layers together. Everything is a layer - axis, guidelines, dividers, line, circles, etc. The idea is to have losely coupled components that can be easily changed and combined. This is for example the structure of a basic chart, which shows a line with circles:
 
-![ScreenShot](https://raw.github.com/i-schuetz/SwiftCharts/master/Screenshots/layers.png)
+![ScreenShot](Screenshots/layers.png)
 
 
 Following a more low level example, to provide an insight into the layer system. Note that most examples are written like this, in order to provider maximal flexibility.
@@ -194,7 +205,7 @@ View based layers will use a generator function to generate chart point views. T
 
 ##### Hello world:
 
-There's a [hello world](Examples/Examples/Examples/HelloWorld.swift) included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the snippet above, and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!
+There's a [hello world](Examples/Examples/HelloWorld.swift) included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the snippet above, and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!
 
 ##### Note on performance:
 

@@ -10,14 +10,14 @@ import UIKit
 
 // Quick implementation of info bubble, for demonstration purposes
 // For serious usage you may consider using a library specialized in this e.g. CMPopTipView
-class InfoBubble: UIView {
+public class InfoBubble: UIView {
 
     private let arrowWidth: CGFloat
     private let arrowHeight: CGFloat
     private let bgColor: UIColor
     private let arrowX: CGFloat
     
-    init(frame: CGRect, arrowWidth: CGFloat, arrowHeight: CGFloat, bgColor: UIColor = UIColor.whiteColor(), arrowX: CGFloat) {
+    public init(frame: CGRect, arrowWidth: CGFloat, arrowHeight: CGFloat, bgColor: UIColor = UIColor.whiteColor(), arrowX: CGFloat) {
         self.arrowWidth = arrowWidth
         self.arrowHeight = arrowHeight
         self.bgColor = bgColor
@@ -28,11 +28,11 @@ class InfoBubble: UIView {
         self.backgroundColor = UIColor.clearColor()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func drawRect(rect: CGRect) {
+    override public func drawRect(rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
         CGContextSetFillColorWithColor(context, self.bgColor.CGColor)
         CGContextSetStrokeColorWithColor(context, self.bgColor.CGColor)

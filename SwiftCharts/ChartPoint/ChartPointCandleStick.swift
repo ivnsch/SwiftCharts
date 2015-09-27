@@ -11,18 +11,18 @@ import UIKit
 public class ChartPointCandleStick: ChartPoint {
     
     public let date: NSDate
-    public let open: CGFloat
-    public let close: CGFloat
-    public let low: CGFloat
-    public let high: CGFloat
+    public let open: Double
+    public let close: Double
+    public let low: Double
+    public let high: Double
     
-    public init(date: NSDate, formatter: NSDateFormatter, high: CGFloat, low: CGFloat, open: CGFloat, close: CGFloat, labelHidden: Bool = false) {
+    public init(date: NSDate, formatter: NSDateFormatter, high: Double, low: Double, open: Double, close: Double, labelHidden: Bool = false) {
         
         let x = ChartAxisValueDate(date: date, formatter: formatter)
         self.date = date
         x.hidden = labelHidden
         
-        let highY = ChartAxisValueFloat(high)
+        let highY = ChartAxisValueDouble(high)
         self.high = high
         self.low = low
         self.open = open

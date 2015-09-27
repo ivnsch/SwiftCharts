@@ -3,7 +3,16 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.2.5] - 2015.08.31
+- Fix stacked bar frames displaying incorrectly when start is not 0
+- Improve project organization
+- Make usage of ChartAxisValue clearer, improve docs
+- Use only Double instead of CGFloat for axis values, deprecate ChartAxisValueFloat and ChartAxisValueFloatScreenLoc
+
+## [0.2.4] - 2015.08.09
 - Automatic generation of trendlines
+- Add Carthage support
 
 ## [0.2.3]
 - Allow rotating y axis title label
