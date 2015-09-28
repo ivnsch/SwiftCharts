@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Fix tracker showing NaN on constant coordinate
 
 ## [0.3] - 2015.09.28
 - Merge swift2.0 in master

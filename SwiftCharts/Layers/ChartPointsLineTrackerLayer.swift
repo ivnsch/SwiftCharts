@@ -194,34 +194,29 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 self.currentPositionLineOverlay.frame = CGRectMake(intersection.x, 0, 1, view.frame.size.height)
                 self.thumb.frame = CGRectMake(intersection.x - w/2, intersection.y - h/2, w, h)
                 
-                func createTmpChartPoint(firstModel: ChartPointLayerModel<T>, secondModel: ChartPointLayerModel<T>) -> ChartPoint {
-                    let p1 = firstModel.chartPoint
-                    let p2 = secondModel.chartPoint
+                // Calculate scalar corresponding to intersection screen location along axis
+                func scalar(axis: ChartAxisLayer, intersection: CGFloat) -> Double {
+                    let s1 = axis.axisValues[0].scalar
+                    let sl1 = axis.screenLocForScalar(s1)
+                    let s2 = axis.axisValues[1].scalar
+                    let sl2 = axis.screenLocForScalar(s2)
                     
-                    // calculate x scalar
-                    let pxXDiff = secondModel.screenLoc.x - firstModel.screenLoc.x
-                    let scalarXDiff = p2.x.scalar - p1.x.scalar
-                    let factorX = CGFloat(scalarXDiff) / pxXDiff
-                    let currentXPx = intersection.x - firstModel.screenLoc.x
-                    let currentXScalar = Double(currentXPx * factorX) + p1.x.scalar
-
-                    // calculate y scalar
-                    let pxYDiff = fabs(secondModel.screenLoc.y - firstModel.screenLoc.y);
-                    let scalarYDiff = p2.y.scalar - p1.y.scalar;
-                    let factorY = CGFloat(scalarYDiff) / pxYDiff
-                    let currentYPx = fabs(intersection.y - firstModel.screenLoc.y)
-                    let currentYScalar = Double(currentYPx * factorY) + p1.y.scalar
-                    
-                    let x = firstModel.chartPoint.x.copy(currentXScalar)
-                    let y = secondModel.chartPoint.y.copy(currentYScalar)
-                    let chartPoint = T(x: x, y: y)
-                    return chartPoint
+                    let factor = (s2 - s1) / Double(sl2 - sl1)
+                    let sl = Double(intersection - sl1)
+                    return sl * Double(factor) + Double(s1)
                 }
                 
                 if self.chartPointsModels.count > 1 {
-                    let first = self.chartPointsModels[0]
-                    let second = self.chartPointsModels[1]
-                    self.currentPositionInfoOverlay(view: view).text = "Pos: \(createTmpChartPoint(first, secondModel: second).text)"
+
+                    let xScalar = scalar(self.xAxis, intersection: intersection.x)
+                    let yScalar = scalar(self.yAxis, intersection: intersection.y)
+                    
+                    let dummyModel = self.chartPointsModels[0]
+                    let x = dummyModel.chartPoint.x.copy(xScalar)
+                    let y = dummyModel.chartPoint.y.copy(yScalar)
+                    let chartPoint = T(x: x, y: y)
+                    
+                    self.currentPositionInfoOverlay(view: view).text = "Pos: \(chartPoint.text)"
                 }
             }
         }
