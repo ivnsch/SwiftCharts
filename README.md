@@ -59,6 +59,7 @@ Swift 2.x:
 use_frameworks!
 pod 'SwiftCharts', '~> 0.3'
 ```
+Note: To use Swift 2.x / master, you need Xcode 7+
 
 Swift 1.2 (not actively maintained):
 ```ruby
