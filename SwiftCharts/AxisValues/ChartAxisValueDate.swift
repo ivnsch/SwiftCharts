@@ -12,7 +12,11 @@ public class ChartAxisValueDate: ChartAxisValue {
   
     private let formatter: NSDateFormatter
     private let labelSettings: ChartLabelSettings
-    
+
+    override public var text: String {
+      return formatter.stringFromDate(date)
+    }
+
     public var date: NSDate {
         return ChartAxisValueDate.dateFromScalar(self.scalar)
     }
