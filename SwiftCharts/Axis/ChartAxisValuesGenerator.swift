@@ -41,7 +41,7 @@ public struct ChartAxisValuesGenerator {
         if last < first {
             fatalError("Invalid range generating axis values")
         } else if last == first {
-            return []
+            last++
         }
         
         var firstValue = first - (first % multiple)
