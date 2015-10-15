@@ -33,6 +33,9 @@ public class CubicLinePathGenerator: ChartLinesViewPathGenerator {
         var tensionBezier1: CGFloat
         var tensionBezier2: CGFloat
         
+        path.lineCapStyle = .Round
+        path.lineJoinStyle = .Round
+        
         var previousPoint1: CGPoint = CGPointZero
         
         path.moveToPoint(points.first!)
