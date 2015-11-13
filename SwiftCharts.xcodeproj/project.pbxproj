@@ -250,7 +250,7 @@
 		06405E0B1B8AA81D00A689FF /* HandlingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlingView.swift; sourceTree = "<group>"; };
 		06405E0C1B8AA81D00A689FF /* InfoBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoBubble.swift; sourceTree = "<group>"; };
 		067510C01B8AB36500A37F64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		22E7020F1BF5B8EC00C19675 /* SwiftCharts tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "SwiftCharts tvOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22E7020F1BF5B8EC00C19675 /* SwiftCharts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftCharts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueDouble.swift; sourceTree = "<group>"; };
 		EB4CE97E1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueDoubleScreenLoc.swift; sourceTree = "<group>"; };
 		EB9B7E6A1BB8A575001B89D4 /* StraightLinePathGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StraightLinePathGenerator.swift; sourceTree = "<group>"; };
@@ -372,7 +372,7 @@
 			children = (
 				06405DA61B8AA74700A689FF /* SwiftCharts.framework */,
 				06342AC11B8AAD7F001C9F5D /* Examples.app */,
-				22E7020F1BF5B8EC00C19675 /* SwiftCharts tvOS.framework */,
+				22E7020F1BF5B8EC00C19675 /* SwiftCharts.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -609,7 +609,7 @@
 			);
 			name = "SwiftCharts tvOS";
 			productName = "SwiftCharts tvOS";
-			productReference = 22E7020F1BF5B8EC00C19675 /* SwiftCharts tvOS.framework */;
+			productReference = 22E7020F1BF5B8EC00C19675 /* SwiftCharts.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -1008,7 +1008,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvsimulator*]" = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1030,7 +1030,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvsimulator*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1084,6 +1084,7 @@
 				22E702151BF5B8EC00C19675 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
