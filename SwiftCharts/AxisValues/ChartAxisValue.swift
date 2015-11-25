@@ -45,7 +45,7 @@ public class ChartAxisValue: Equatable {
     }
     
     public func copy(scalar: Double) -> ChartAxisValue {
-        return ChartAxisValue(scalar: self.scalar)
+        return ChartAxisValue(scalar: scalar)
     }
 }
 
