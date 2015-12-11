@@ -8,9 +8,13 @@
 
 import UIKit
 
-// For now as class, which in this case is acceptable. Protocols currently don't work very well with generics.
+/// For now as class, which in this case is acceptable. Protocols currently don't work very well with generics.
 public class ChartViewsConflictSolver<T: ChartPoint, U: UIView> {
-    
-    // Reposition views in case of overlapping
+
+    /**
+    Repositions views if they overlap
+
+    - parameter views: The views to check for overlap and resolve
+    */
     func solveConflicts(views views: [ChartPointsViewsLayer<T, U>.ViewWithChartPoint]) {}
 }

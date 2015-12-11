@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// A ChartAxisLayer for X axes
 class ChartAxisXLayerDefault: ChartAxisLayerDefault {
    
     override var width: CGFloat {
