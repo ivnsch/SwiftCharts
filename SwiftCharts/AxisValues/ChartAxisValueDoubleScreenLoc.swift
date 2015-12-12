@@ -22,7 +22,7 @@ public class ChartAxisValueDoubleScreenLoc: ChartAxisValueDouble {
     
     // screenLocFloat: model value which will be used to calculate screen position
     // actualFloat: scalar which this axis value really represents
-    public init(screenLocDouble: Double, actualDouble: Double, formatter: NSNumberFormatter = ChartAxisValueFloat.defaultFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
+    public init(screenLocDouble: Double, actualDouble: Double, formatter: NSNumberFormatter = ChartAxisValueDouble.defaultFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.actualDouble = actualDouble
         super.init(screenLocDouble, formatter: formatter, labelSettings: labelSettings)
     }

@@ -73,7 +73,7 @@ class CandleStickExample: UIViewController {
             ChartPointCandleStick(date: date("29.10.2015"), formatter: displayFormatter, high: 35, low: 31, open: 31, close: 33)
         ]
         
-        let yValues = 20.stride(through: 55, by: 5).map {ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings)}
+        let yValues = 20.stride(through: 55, by: 5).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
         
         func generateDateAxisValues(month: Int, year: Int) -> [ChartAxisValueDate] {
             let date = dateWithComponents(1, month, year)

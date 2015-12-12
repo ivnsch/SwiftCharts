@@ -68,7 +68,7 @@ class GroupedAndStackedBarsExample: UIViewController {
         let frameColors = [UIColor.redColor().colorWithAlphaComponent(0.6), UIColor.blueColor().colorWithAlphaComponent(0.6), UIColor.greenColor().colorWithAlphaComponent(0.6)]
         
         let groups: [ChartPointsBarGroup<ChartStackedBarModel>] = groupsData.enumerate().map {index, entry in
-            let constant = ChartAxisValueFloat(CGFloat(index))
+            let constant = ChartAxisValueDouble(Double(index))
             let bars: [ChartStackedBarModel] = entry.bars.enumerate().map {index, bars in
                 let items = bars.quantities.enumerate().map {index, quantity in
                     ChartStackedBarItemModel(quantity, frameColors[index])
@@ -79,7 +79,7 @@ class GroupedAndStackedBarsExample: UIViewController {
         }
         
         let (axisValues1, axisValues2): ([ChartAxisValue], [ChartAxisValue]) = (
-            (-60).stride(through: 100, by: 20).map {ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings)},
+            (-60).stride(through: 100, by: 20).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)},
             [ChartAxisValueString(order: -1)] +
                 groupsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
                 [ChartAxisValueString(order: groupsData.count)]
