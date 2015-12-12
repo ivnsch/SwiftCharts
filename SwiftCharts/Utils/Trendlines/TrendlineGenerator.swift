@@ -42,8 +42,8 @@ public struct TrendlineGenerator {
         let last = chartPoints.last!
         
         return [
-            ChartPoint(x: ChartAxisValue(scalar: first.x.scalar), y: ChartAxisValue(scalar: y(first.x.scalar))),
-            ChartPoint(x: ChartAxisValue(scalar: last.x.scalar), y: ChartAxisValue(scalar: y(last.x.scalar)))
+            ChartPoint(x: ChartAxisValueDouble(first.x.scalar), y: ChartAxisValueDouble(y(first.x.scalar))),
+            ChartPoint(x: ChartAxisValueDouble(last.x.scalar), y: ChartAxisValueDouble(y(last.x.scalar)))
         ]
     }
 }

@@ -11,18 +11,10 @@ import UIKit
 public class ChartAxisValueInt: ChartAxisValue {
 
     public let int: Int
-    private let labelSettings: ChartLabelSettings
-    
 
     public init(_ int: Int, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.int = int
-        self.labelSettings = labelSettings
-        super.init(scalar: Double(int))
-    }
-    
-    override public var labels:[ChartAxisLabel] {
-        let axisLabel = ChartAxisLabel(text: self.text, settings: self.labelSettings)
-        return [axisLabel]
+        super.init(scalar: Double(int), labelSettings: labelSettings)
     }
     
     override public func copy(scalar: Double) -> ChartAxisValueInt {

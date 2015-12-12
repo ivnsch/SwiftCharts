@@ -24,11 +24,6 @@ public class ChartAxisValueFloatScreenLoc: ChartAxisValueFloat {
         super.init(screenLocFloat, formatter: formatter, labelSettings: labelSettings)
     }
     
-    override public var labels: [ChartAxisLabel] {
-        let axisLabel = ChartAxisLabel(text: self.text, settings: self.labelSettings)
-        return [axisLabel]
-    }
-
     // MARK: CustomStringConvertible
 
     override public var description: String {
