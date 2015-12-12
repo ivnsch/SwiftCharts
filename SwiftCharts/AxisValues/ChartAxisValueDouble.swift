@@ -13,9 +13,6 @@ public class ChartAxisValueDouble: ChartAxisValue {
     public let formatter: NSNumberFormatter
     let labelSettings: ChartLabelSettings
     
-    override public var text: String {
-        return self.formatter.stringFromNumber(self.scalar)!
-    }
 
     public convenience init(_ int: Int, formatter: NSNumberFormatter = ChartAxisValueDouble.defaultFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.init(Double(int), formatter: formatter, labelSettings: labelSettings)
@@ -42,4 +39,10 @@ public class ChartAxisValueDouble: ChartAxisValue {
         formatter.maximumFractionDigits = 2
         return formatter
     }()
+
+    // MARK: CustomStringConvertible
+
+    override public var description: String {
+        return self.formatter.stringFromNumber(self.scalar)!
+    }
 }

@@ -23,4 +23,10 @@ public class ChartAxisValueString: ChartAxisValue {
         let axisLabel = ChartAxisLabel(text: self.string, settings: self.labelSettings)
         return [axisLabel]
     }
+
+    // MARK: CustomStringConvertible
+
+    override public var description: String {
+        return self.string
+    }
 }

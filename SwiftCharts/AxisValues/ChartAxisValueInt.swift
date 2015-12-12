@@ -13,10 +13,7 @@ public class ChartAxisValueInt: ChartAxisValue {
     public let int: Int
     private let labelSettings: ChartLabelSettings
     
-    override public var text: String {
-        return "\(self.int)"
-    }
-    
+
     public init(_ int: Int, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.int = int
         self.labelSettings = labelSettings
@@ -30,5 +27,11 @@ public class ChartAxisValueInt: ChartAxisValue {
     
     override public func copy(scalar: Double) -> ChartAxisValueInt {
         return ChartAxisValueInt(self.int, labelSettings: self.labelSettings)
+    }
+
+    // MARK: CustomStringConvertible
+    
+    override public var description: String {
+        return String(self.int)
     }
 }

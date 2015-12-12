@@ -36,5 +36,11 @@ public class ChartAxisValueDate: ChartAxisValue {
     public class func scalarFromDate(date: NSDate) -> Double {
         return Double(date.timeIntervalSince1970)
     }
+
+    // MARK: CustomStringConvertible
+
+    override public var description: String {
+        return self.formatter.stringFromDate(self.date)
+    }
 }
 

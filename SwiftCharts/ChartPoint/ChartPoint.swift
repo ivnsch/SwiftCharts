@@ -19,7 +19,7 @@ public class ChartPoint: Equatable {
     }
     
     public var text: String {
-        return "\(self.x.text), \(self.y.text)"
+        return "\(self.x), \(self.y)"
     }
 }
 

@@ -21,11 +21,7 @@ public class ChartAxisValueFloat: ChartAxisValue {
     public var float: CGFloat {
         return CGFloat(self.scalar)
     }
-  
-    override public var text: String {
-        return self.formatter.stringFromNumber(self.float)!
-    }
-    
+
     public init(_ float: CGFloat, formatter: NSNumberFormatter = ChartAxisValueFloat.defaultFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.formatter = formatter
         self.labelSettings = labelSettings
@@ -47,4 +43,10 @@ public class ChartAxisValueFloat: ChartAxisValue {
         formatter.maximumFractionDigits = 2
         return formatter
     }()
+
+    // MARK: CustomStringConvertible
+
+    override public var description: String {
+        return self.formatter.stringFromNumber(self.float)!
+    }
 }
