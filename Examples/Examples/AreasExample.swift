@@ -88,7 +88,7 @@ class AreasExample: UIViewController {
                 let infoView = UILabel(frame: CGRectMake(0, 10, w, h - 30))
                 infoView.textColor = UIColor.whiteColor()
                 infoView.backgroundColor = UIColor.blackColor()
-                infoView.text = "Some text about \(chartPoint.text)"
+                infoView.text = "Some text about \(chartPoint)"
                 infoView.font = ExamplesDefaults.fontWithSize(Env.iPad ? 14 : 12)
                 infoView.textAlignment = NSTextAlignment.Center
                 
