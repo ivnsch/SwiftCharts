@@ -84,14 +84,14 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     }
     
     lazy var axisTitleLabelsHeight: CGFloat = {
-        return self.axisTitleLabels.reduce(0) {sum, label in
-            sum + self.labelMaybeSize(label).height
+        return self.axisTitleLabels.reduce(0) { sum, label in
+            sum + label.textSize.height
         }
     }()
 
     lazy var axisTitleLabelsWidth: CGFloat = {
-        return self.axisTitleLabels.reduce(0) {sum, label in
-            sum + self.labelMaybeSize(label).width
+        return self.axisTitleLabels.reduce(0) { sum, label in
+            sum + label.textSize.width
         }
     }()
 
@@ -164,10 +164,6 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
 
-    func labelMaybeSize(labelMaybe: ChartAxisLabel?) -> CGSize {
-        return labelMaybe?.textSize ?? CGSizeZero
-    }
-    
     final func screenLocForScalar(scalar: Double) -> CGFloat {
         if let firstScalar = self.axisValues.first?.scalar {
             return self.screenLocForScalar(scalar, firstAxisScalar: firstScalar)
