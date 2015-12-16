@@ -35,7 +35,7 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         let x = self.p1.x + offset + halfStrokeWidth
         let p1 = CGPointMake(x, self.p1.y)
         let p2 = CGPointMake(x, self.p2.y)
-        return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor)
+        return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
     }
     
     override func labelsX(offset offset: CGFloat, labelWidth: CGFloat) -> CGFloat {

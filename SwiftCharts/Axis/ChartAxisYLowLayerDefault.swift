@@ -38,7 +38,7 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
         let halfStrokeWidth = self.settings.axisStrokeWidth / 2 // we want that the stroke ends at the end of the frame, not be in the middle of it
         let p1 = CGPointMake(self.p1.x + offset - halfStrokeWidth, self.p1.y)
         let p2 = CGPointMake(self.p2.x + offset - halfStrokeWidth, self.p2.y)
-        return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor)
+        return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
     }
 
     override func labelsX(offset offset: CGFloat, labelWidth: CGFloat) -> CGFloat {
