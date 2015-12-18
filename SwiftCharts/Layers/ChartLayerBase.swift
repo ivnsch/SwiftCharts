@@ -14,4 +14,6 @@ public class ChartLayerBase: ChartLayer {
     public func chartInitialized(chart chart: Chart) {}
     
     public func chartViewDrawing(context context: CGContextRef, chart: Chart) {}
+    
+    public init() {}
 }
