@@ -17,10 +17,6 @@ public class ChartAxisValueFloatScreenLoc: ChartAxisValueFloat {
         return CGFloat(self.scalar)
     }
     
-    override public var text: String {
-        return self.formatter.stringFromNumber(self.actualFloat)!
-    }
-
     // screenLocFloat: model value which will be used to calculate screen position
     // actualFloat: scalar which this axis value really represents
     public init(screenLocFloat: CGFloat, actualFloat: CGFloat, formatter: NSNumberFormatter = ChartAxisValueFloat.defaultFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
@@ -28,8 +24,9 @@ public class ChartAxisValueFloatScreenLoc: ChartAxisValueFloat {
         super.init(screenLocFloat, formatter: formatter, labelSettings: labelSettings)
     }
     
-    override public var labels: [ChartAxisLabel] {
-        let axisLabel = ChartAxisLabel(text: self.text, settings: self.labelSettings)
-        return [axisLabel]
+    // MARK: CustomStringConvertible
+
+    override public var description: String {
+        return self.formatter.stringFromNumber(self.actualFloat)!
     }
 }

@@ -11,16 +11,15 @@ import UIKit
 public class ChartAxisValueString: ChartAxisValue {
    
     let string: String
-    private let labelSettings: ChartLabelSettings
     
     public init(_ string: String = "", order: Int, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.string = string
-        self.labelSettings = labelSettings
-        super.init(scalar: Double(order))
+        super.init(scalar: Double(order), labelSettings: labelSettings)
     }
     
-    override public var labels: [ChartAxisLabel] {
-        let axisLabel = ChartAxisLabel(text: self.string, settings: self.labelSettings)
-        return [axisLabel]
+    // MARK: CustomStringConvertible
+
+    override public var description: String {
+        return self.string
     }
 }

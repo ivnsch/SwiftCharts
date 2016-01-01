@@ -114,7 +114,7 @@ class CustomUnitsExample: UIViewController {
     }
     
     class ChartAxisValuePercent: ChartAxisValueDouble {
-        override var text: String {
+        override var description: String {
             return "\(self.formatter.stringFromNumber(self.scalar)!)%"
         }
     }

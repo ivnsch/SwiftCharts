@@ -216,7 +216,7 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
                     let y = dummyModel.chartPoint.y.copy(yScalar)
                     let chartPoint = T(x: x, y: y)
                     
-                    self.currentPositionInfoOverlay(view: view).text = "Pos: \(chartPoint.text)"
+                    self.currentPositionInfoOverlay(view: view).text = "Pos: \(chartPoint)"
                 }
             }
         }

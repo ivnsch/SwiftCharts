@@ -65,15 +65,15 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }
     
     public func chartPointsForScreenLoc(screenLoc: CGPoint) -> [T] {
-        return self.chartPointsWith(filter: {$0 == screenLoc})
+        return self.filterChartPoints { $0 == screenLoc }
     }
     
     public func chartPointsForScreenLocX(x: CGFloat) -> [T] {
-        return self.chartPointsWith(filter: {$0.x == x})
+        return self.filterChartPoints { $0.x == x }
     }
     
     public func chartPointsForScreenLocY(y: CGFloat) -> [T] {
-        return self.chartPointsWith(filter: {$0.y == y})
+        return self.filterChartPoints { $0.y == y }
 
     }
 
@@ -95,13 +95,13 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         }.0
     }
     
-    private func chartPointsWith(filter filter: (CGPoint) -> Bool) -> [T] {
-        return self.chartPointsModels.reduce(Array<T>()) {u, chartPointModel in
+    private func filterChartPoints(includePoint: (CGPoint) -> Bool) -> [T] {
+        return self.chartPointsModels.reduce(Array<T>()) { includedPoints, chartPointModel in
             let chartPoint = chartPointModel.chartPoint
-            if filter(self.chartPointScreenLoc(chartPoint)) {
-                return u + [chartPoint]
+            if includePoint(self.chartPointScreenLoc(chartPoint)) {
+                return includedPoints + [chartPoint]
             } else {
-                return u
+                return includedPoints
             }
         }
     }

@@ -11,11 +11,6 @@ import UIKit
 public class ChartAxisValueDouble: ChartAxisValue {
     
     public let formatter: NSNumberFormatter
-    let labelSettings: ChartLabelSettings
-    
-    override public var text: String {
-        return self.formatter.stringFromNumber(self.scalar)!
-    }
 
     public convenience init(_ int: Int, formatter: NSNumberFormatter = ChartAxisValueDouble.defaultFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.init(Double(int), formatter: formatter, labelSettings: labelSettings)
@@ -23,15 +18,8 @@ public class ChartAxisValueDouble: ChartAxisValue {
     
     public init(_ double: Double, formatter: NSNumberFormatter = ChartAxisValueDouble.defaultFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.formatter = formatter
-        self.labelSettings = labelSettings
-        super.init(scalar: double)
+        super.init(scalar: double, labelSettings: labelSettings)
     }
-    
-    override public var labels: [ChartAxisLabel] {
-        let axisLabel = ChartAxisLabel(text: self.text, settings: self.labelSettings)
-        return [axisLabel]
-    }
-    
     
     override public func copy(scalar: Double) -> ChartAxisValueDouble {
         return ChartAxisValueDouble(scalar, formatter: self.formatter, labelSettings: self.labelSettings)
@@ -42,4 +30,10 @@ public class ChartAxisValueDouble: ChartAxisValue {
         formatter.maximumFractionDigits = 2
         return formatter
     }()
+
+    // MARK: CustomStringConvertible
+
+    override public var description: String {
+        return self.formatter.stringFromNumber(self.scalar)!
+    }
 }

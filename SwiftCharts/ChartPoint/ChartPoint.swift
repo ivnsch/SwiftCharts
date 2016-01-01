@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ChartPoint: Equatable {
+public class ChartPoint: Equatable, CustomStringConvertible {
     
     public let x: ChartAxisValue
     public let y: ChartAxisValue
@@ -18,8 +18,8 @@ public class ChartPoint: Equatable {
         self.y = y
     }
     
-    public var text: String {
-        return "\(self.x.text), \(self.y.text)"
+    public var description: String {
+        return "\(self.x), \(self.y)"
     }
 }
 

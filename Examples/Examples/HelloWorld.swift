@@ -46,7 +46,7 @@ class HelloWorld: UIViewController {
             let label = UILabel(frame: CGRectMake(center.x - viewSize / 2, center.y - viewSize / 2, viewSize, viewSize))
             label.backgroundColor = UIColor.greenColor()
             label.textAlignment = NSTextAlignment.Center
-            label.text = "\(chartPointModel.chartPoint.y.text)"
+            label.text = chartPointModel.chartPoint.y.description
             label.font = ExamplesDefaults.labelFont
             return label
         }

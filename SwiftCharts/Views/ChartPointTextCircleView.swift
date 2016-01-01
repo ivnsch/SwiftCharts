@@ -35,7 +35,7 @@ public class ChartPointTextCircleView: UILabel {
         super.init(frame: CGRectMake(0, center.y - diameter / 2, diameter, diameter))
 
         self.textColor = UIColor.blackColor()
-        self.text = chartPoint.text
+        self.text = chartPoint.description
         self.font = font
         self.layer.cornerRadius = cornerRadius
         self.layer.borderWidth = borderWidth
