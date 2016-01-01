@@ -55,16 +55,16 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         }
         let length: CGFloat = maxVal - minVal
         
-        let zero = ChartAxisValueFloat(0)
+        let zero = ChartAxisValueDouble(0)
         let bars: [ChartBarModel] = vals.enumerate().map {index, tuple in
             let percentage = (tuple.val - minVal - 0.01) / length // FIXME without -0.01 bar with 1 (100 perc) is black
             let color = self.gradientPicker.colorForPercentage(percentage).colorWithAlphaComponent(0.6)
-            return ChartBarModel(constant: ChartAxisValueFloat(CGFloat(index)), axisValue1: zero, axisValue2: ChartAxisValueFloat(tuple.val), bgColor: color)
+            return ChartBarModel(constant: ChartAxisValueDouble(Double(index)), axisValue1: zero, axisValue2: ChartAxisValueDouble(Double(tuple.val)), bgColor: color)
         }
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let xValues = (-80).stride(through: 80, by: 20).map {ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings)}
+        let xValues = (-80).stride(through: 80, by: 20).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
         let yValues =
             [ChartAxisValueString(order: -1)] +
             vals.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
@@ -90,7 +90,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
                 let guidelinesLayer = ChartGuideLinesLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, axis: .X, settings: settings)
                 
                 // create x zero guideline as view to be in front of the bars
-                let dummyZeroXChartPoint = ChartPoint(x: ChartAxisValueFloat(0), y: ChartAxisValueFloat(0))
+                let dummyZeroXChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
                 let xZeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: [dummyZeroXChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
                     let width: CGFloat = 2
                     let v = UIView(frame: CGRectMake(chartPointModel.screenLoc.x - width / 2, innerFrame.origin.y, width, innerFrame.size.height))

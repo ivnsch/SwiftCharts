@@ -42,7 +42,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         let alpha: CGFloat = 0.5
         let posColor = UIColor.greenColor().colorWithAlphaComponent(alpha)
         let negColor = UIColor.redColor().colorWithAlphaComponent(alpha)
-        let zero = ChartAxisValueFloat(0)
+        let zero = ChartAxisValueDouble(0)
         let bars: [ChartBarModel] = barsData.enumerate().flatMap {index, tuple in
             [
                 ChartBarModel(constant: ChartAxisValueDouble(index), axisValue1: zero, axisValue2: ChartAxisValueDouble(tuple.min), bgColor: negColor),
@@ -50,7 +50,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
             ]
         }
         
-        let yValues = (-80).stride(through: 80, by: 20).map {ChartAxisValueFloat(CGFloat($0), labelSettings: labelSettings)}
+        let yValues = (-80).stride(through: 80, by: 20).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
         let xValues =
             [ChartAxisValueString(order: -1)] +
             barsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
@@ -111,7 +111,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         
         
         // show a gap between positive and negative bar
-        let dummyZeroYChartPoint = ChartPoint(x: ChartAxisValueFloat(0), y: ChartAxisValueFloat(0))
+        let dummyZeroYChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
         let yZeroGapLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: [dummyZeroYChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
             let height: CGFloat = 2
             let v = UIView(frame: CGRectMake(innerFrame.origin.x + 2, chartPointModel.screenLoc.y - height / 2, innerFrame.origin.x + innerFrame.size.height, height))
