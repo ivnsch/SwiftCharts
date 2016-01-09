@@ -148,6 +148,9 @@ self.view.addSubview(chart.view)
 self.chart = chart
 ```
 
+### Important!!!
+##### Don't forget to always keep a strong reference to the chart instance or it will be released, which leads to axis & labels not showing.
+
 
 ##### Concept:
 
