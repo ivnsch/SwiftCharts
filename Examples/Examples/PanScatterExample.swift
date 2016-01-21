@@ -53,11 +53,11 @@ class PanScatterExample: UIViewController, UIGestureRecognizerDelegate {
             .Type3 : (.Cross, UIColor.blackColor())
         ]
 
-        let innerChartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
-        let outerChartFrame = CGRectMake((innerChartFrame.origin.x - innerChartFrame.size.width),
-                                              (innerChartFrame.origin.y - innerChartFrame.size.height),
-                                              3.0 * innerChartFrame.size.width,
-                                              3.0 * innerChartFrame.size.height)
+        let visibleChartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
+        let underlyingChartFrame = CGRectMake((visibleChartFrame.origin.x - visibleChartFrame.size.width),
+                                              (visibleChartFrame.origin.y - visibleChartFrame.size.height),
+                                              3.0 * visibleChartFrame.size.width,
+                                              3.0 * visibleChartFrame.size.height)
 
         let xValues = 0.stride(through: 450, by: 50).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
         let yValues = 0.stride(through: 300, by: 50).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
@@ -65,26 +65,28 @@ class PanScatterExample: UIViewController, UIGestureRecognizerDelegate {
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "X Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Y Axis title", settings: labelSettings.defaultVertical()))
         
-        let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: outerChartFrame, xModel: xModel, yModel: yModel)
-        let (xAxis, yAxis, _) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
+        // TODO: This default CoordsSapce up being very wastefu when we split out the elements into their own views.  Because the various elements (x axis, y axis and plot area) are positioned by this helper relative to a larger underlying canvas, by default we'd need to allocate UIViews of the size of the underlying frame for each of them, tripling our memory consumption.
+        // This problem can be avoided for the y axis since it "hugs" the left border (and we an create a tall, narrow UIView without needing to allocate a whole extra chart-sized one), and is not a huge deal for the plot area since the only space we need to waste is the offset where the y axis lives -- it already is mostly the size of the underlying frame.  But it's a big problem for the x axis as we end up having to allocate an UIView the entire size of the underlying frame so that it can render at the bottom of this frame.
+        let underlyingCoordSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: underlyingChartFrame, xModel: xModel, yModel: yModel)
+        let (xAxis, yAxis, _) = (underlyingCoordSpace.xAxis, underlyingCoordSpace.yAxis, underlyingCoordSpace.chartInnerFrame)
 
-        let innerCoordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: innerChartFrame, xModel: xModel, yModel: yModel)
-        let (_, _, innerFrame) = (innerCoordsSpace.xAxis, innerCoordsSpace.yAxis, innerCoordsSpace.chartInnerFrame)
+        let visibleCoordSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: visibleChartFrame, xModel: xModel, yModel: yModel)
+        let (_, _, innerFrame) = (visibleCoordSpace.xAxis, visibleCoordSpace.yAxis, visibleCoordSpace.chartInnerFrame)
 
         
         let scatterLayers = self.toLayers(models, layerSpecifications: layerSpecifications, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame)
         
         let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: coordsSpace.chartInnerFrame, settings: guidelinesLayerSettings)
+        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: underlyingCoordSpace.chartInnerFrame, settings: guidelinesLayerSettings)
 
         // Create the Chart for the plot area
         let plotChart = Chart(
-            frame: outerChartFrame,
+            frame: underlyingChartFrame,
             layers: [
                 guidelinesLayer
                 ] + scatterLayers
         )
-        let plotAreaUIView = UIView(frame: CGRect(origin: CGPoint(x: innerCoordsSpace.chartInnerFrame.origin.x + innerChartFrame.origin.x, y: (innerCoordsSpace.chartInnerFrame.origin.y+innerChartFrame.origin.y)), size: innerCoordsSpace.chartInnerFrame.size))
+        let plotAreaUIView = UIView(frame: CGRect(origin: CGPoint(x: visibleCoordSpace.chartInnerFrame.origin.x + visibleChartFrame.origin.x, y: (visibleCoordSpace.chartInnerFrame.origin.y+visibleChartFrame.origin.y)), size: visibleCoordSpace.chartInnerFrame.size))
         plotAreaUIView.clipsToBounds = true
         plotAreaUIView.backgroundColor = UIColor(colorLiteralRed: 0.9, green: 0.5, blue: 0.9, alpha: 0.05) // debug colors
         plotAreaUIView.addSubview(plotChart.view)
@@ -92,16 +94,16 @@ class PanScatterExample: UIViewController, UIGestureRecognizerDelegate {
 
         
         // take the axes from the full-size chart and create a new chart with it so it gets it's own view.
-        let xAxisChart = Chart(frame: CGRect(origin: CGPointMake(outerChartFrame.origin.x + innerFrame.origin.x, outerChartFrame.origin.y + innerFrame.size.height*0.0), size: CGSize(width: outerChartFrame.size.width, height: outerChartFrame.size.height) ), layers: [coordsSpace.xAxis])
+        let xAxisChart = Chart(frame: CGRect(origin: CGPointMake(underlyingChartFrame.origin.x + innerFrame.origin.x, underlyingChartFrame.origin.y + innerFrame.size.height*0.0), size: CGSize(width: underlyingChartFrame.size.width, height: underlyingChartFrame.size.height) ), layers: [underlyingCoordSpace.xAxis])
         xAxisChart.view.backgroundColor = UIColor(colorLiteralRed: 0.9, green: 0.5, blue: 0.9, alpha: 0.05) // debug colors
-        xAxisChart.view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0.0, -1*innerChartFrame.size.height)
+        xAxisChart.view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0.0, -1*visibleChartFrame.size.height)
         
-        let yAxisChart = Chart(frame: CGRect(origin: CGPointMake(outerChartFrame.origin.x - ExamplesDefaults.chartSettings.axisTitleLabelsToLabelsSpacing, outerChartFrame.origin.y), size: CGSize(width: coordsSpace.chartInnerFrame.origin.x, height: outerChartFrame.size.height)), layers: [coordsSpace.yAxis])
+        let yAxisChart = Chart(frame: CGRect(origin: CGPointMake(underlyingChartFrame.origin.x - ExamplesDefaults.chartSettings.axisTitleLabelsToLabelsSpacing, underlyingChartFrame.origin.y), size: CGSize(width: underlyingCoordSpace.chartInnerFrame.origin.x, height: underlyingChartFrame.size.height)), layers: [underlyingCoordSpace.yAxis])
         yAxisChart.view.backgroundColor = UIColor(colorLiteralRed: 0.9, green: 0.9, blue: 0.5, alpha: 0.05) // debug colors
-        yAxisChart.view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, +innerChartFrame.size.width, 0.0)
+        yAxisChart.view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, +visibleChartFrame.size.width, 0.0)
         
         // view to clip out the bottom left rectangular region where the axes would tend to overlap each other
-        let axisClipperSubview = UIView(frame: CGRect(origin: CGPoint(x: innerChartFrame.origin.x, y: (innerCoordsSpace.chartInnerFrame.origin.y+innerChartFrame.origin.y)), size: CGSizeMake(innerFrame.origin.x, innerFrame.size.height)))
+        let axisClipperSubview = UIView(frame: CGRect(origin: CGPoint(x: visibleChartFrame.origin.x, y: (visibleCoordSpace.chartInnerFrame.origin.y+visibleChartFrame.origin.y)), size: CGSizeMake(innerFrame.origin.x, innerFrame.size.height)))
         axisClipperSubview.clipsToBounds = true;
         
         // we can chose to clip either x or y:
