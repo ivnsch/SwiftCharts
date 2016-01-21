@@ -48,6 +48,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
             case .Scatter:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(ScatterExample())
+            case .PanScatter:
+                self.setSplitSwipeEnabled(true)
+                self.showExampleController(PanScatterExample())
             case .Notifications:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(NotificationsExample())
