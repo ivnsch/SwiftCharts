@@ -75,7 +75,7 @@ class PanScatterExample: UIViewController, UIGestureRecognizerDelegate {
         let scatterLayers = self.toLayers(models, layerSpecifications: layerSpecifications, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame)
         
         let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesLayerSettings)
+        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: coordsSpace.chartInnerFrame, settings: guidelinesLayerSettings)
 
         // Create the Chart for the plot area
         let plotChart = Chart(
@@ -104,16 +104,18 @@ class PanScatterExample: UIViewController, UIGestureRecognizerDelegate {
         let axisClipperSubview = UIView(frame: CGRect(origin: CGPoint(x: innerChartFrame.origin.x, y: (innerCoordsSpace.chartInnerFrame.origin.y+innerChartFrame.origin.y)), size: CGSizeMake(innerFrame.origin.x, innerFrame.size.height)))
         axisClipperSubview.clipsToBounds = true;
         
-        // we can chose to clip either x or y ticks
-        //axisClipperSubview.addSubview(xAxisChart.view)
-        axisClipperSubview.addSubview(yAxisChart.view)
+        // we can chose to clip either x or y:
         
-        self.view.addSubview(axisClipperSubview)
-        self.view.addSubview(xAxisChart.view)
+        // Y axis clips x Axis
+        //axisClipperSubview.addSubview(xAxisChart.view)
         //self.view.addSubview(yAxisChart.view)
 
-        // Create the Chart for the x axis area
-        
+        // X axis clips Y Axis
+        axisClipperSubview.addSubview(yAxisChart.view)
+        self.view.addSubview(xAxisChart.view)
+
+        self.view.addSubview(axisClipperSubview)
+
         self.charts = ["x" : xAxisChart, "plot" : plotChart, "y" : yAxisChart]
     }
     
