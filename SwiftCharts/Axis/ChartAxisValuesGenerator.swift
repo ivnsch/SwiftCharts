@@ -36,12 +36,12 @@ public struct ChartAxisValuesGenerator {
         }
     }
     
-    private static func generateAxisValuesWithChartPoints(first: Double, last: Double, minSegmentCount: Double, maxSegmentCount: Double, multiple: Double, axisValueGenerator:ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
+    private static func generateAxisValuesWithChartPoints(first: Double, var last: Double, minSegmentCount: Double, maxSegmentCount: Double, multiple: Double, axisValueGenerator:ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
         
         if last < first {
             fatalError("Invalid range generating axis values")
         } else if last == first {
-            return []
+            last++
         }
         
         var firstValue = first - (first % multiple)
