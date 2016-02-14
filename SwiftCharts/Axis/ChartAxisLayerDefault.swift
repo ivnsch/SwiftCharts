@@ -8,6 +8,27 @@
 
 import UIKit
 
+/**
+ This class allows customizing the layout of an axis layer and its contents. An example of how some of these settings affect the layout of a Y axis is shown below.
+
+ ````
+                   ┌───────────────────────────────────────────────────────────────────┐
+                   │                             screenTop                             │
+                   │   ┌───────────────────────────────────────────────────────────┐   │
+                   │   │ ───────────────────────────────────────────────────────── │   │     labelsToAxisSpacingX
+                   │   │                                                       ◀───┼───┼──── similar for labelsToAxisSpacingY
+                   │   │  Label 1     Label 2     Label 3     Label 4     Label 5  │   │
+                   │   │                                                       ◀───┼───┼──── labelsSpacing (only supported for X axes)
+ screenLeading ────┼─▶ │  Label A     Label B     Label C     Label D     Label E  │   │
+                   │   │                                                           │   │
+                   │   │                              ◀────────────────────────────┼───┼──── axisTitleLabelsToLabelsSpacing
+                   │   │                                                           │   │
+                   │   │                           Title                           │ ◀─┼──── screenTrailing
+                   │   └───────────────────────────────────────────────────────────┘   │
+                   │                           screenBottom                            │
+                   └───────────────────────────────────────────────────────────────────┘
+ ````
+ */
 public class ChartAxisSettings {
     var screenLeading: CGFloat = 0
     var screenTrailing: CGFloat = 0
@@ -35,6 +56,7 @@ public class ChartAxisSettings {
     }
 }
 
+/// A default implementation of ChartAxisLayer, which delegates drawing of the axis line and labels to the appropriate Drawers
 class ChartAxisLayerDefault: ChartAxisLayer {
     
     let p1: CGPoint
@@ -70,11 +92,12 @@ class ChartAxisLayerDefault: ChartAxisLayer {
             return (min(minSpace, abs(screenLoc - previousScreenLoc)), screenLoc)
         }.0
     }
-    
+
     var length: CGFloat {
         fatalError("override")
     }
-    
+
+    /// The difference between the first and last axis values
     var modelLength: CGFloat {
         if let first = self.axisValues.first, let last = self.axisValues.last {
             return CGFloat(last.scalar - first.scalar)
@@ -115,8 +138,6 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
 
-    // p1: screen location corresponding to smallest axis value
-    // p2: screen location corresponding to biggest axis value
     required init(p1: CGPoint, p2: CGPoint, axisValues: [ChartAxisValue], axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)  {
         self.p1 = p1
         self.p2 = p2
@@ -131,6 +152,12 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         self.initDrawers()
     }
 
+    /**
+     Draws the axis' line, labels and axis title label
+
+     - parameter context: The context to draw the axis contents in
+     - parameter chart:   The chart that this axis belongs to
+     */
     func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         if self.settings.isAxisLineVisible {
             if let lineDrawer = self.lineDrawer {
@@ -164,6 +191,15 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
 
+    /**
+     Calculates the location for the scalar value in the chart's coordinates.
+     
+     If there are no axis values in this axis layer, returns 0.
+
+     - parameter scalar: An axis value's scalar value
+
+     - returns: The location along the axis' dimension that the axis value should be displayed at
+     */
     final func screenLocForScalar(scalar: Double) -> CGFloat {
         if let firstScalar = self.axisValues.first?.scalar {
             return self.screenLocForScalar(scalar, firstAxisScalar: firstScalar)
@@ -173,10 +209,26 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         }
     }
 
+    /**
+     Finds the location for the scalar value within the bounds of the axis layer
+
+     - parameter scalar:          The axis value's scalar value
+     - parameter firstAxisScalar: The first axis value's scalar value, used to find how many "steps" away the given scalar value is from the first value
+
+     - returns: The location of the axis value within the bounds of the axis layer
+     */
     func innerScreenLocForScalar(scalar: Double, firstAxisScalar: Double) -> CGFloat {
         return self.length * CGFloat(scalar - firstAxisScalar) / self.modelLength
     }
-    
+
+    /**
+     Calculates the location for the scalar value in the chart's coordinates.
+
+     - parameter scalar:          An axis value's scalar value
+     - parameter firstAxisScalar: The first axis value's scalar value, used to find how many "steps" away the given scalar value is from the first value
+
+     - returns: The screen location along the axis' dimension that the axis value should be displayed at
+     */
     func screenLocForScalar(scalar: Double, firstAxisScalar: Double) -> CGFloat {
         fatalError("must override")
     }

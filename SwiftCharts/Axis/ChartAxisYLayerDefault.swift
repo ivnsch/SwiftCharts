@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// A ChartAxisLayer for Y axes
 class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
     override var height: CGFloat {

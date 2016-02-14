@@ -8,22 +8,50 @@
 
 import UIKit
 
+/// A ChartAxisLayer for low Y axes
 class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
     
     override var low: Bool {return true}
-    
+
+    /// The start point of the axis line.
     override var lineP1: CGPoint {
         return CGPointMake(self.p1.x + self.lineOffset, self.p1.y)
     }
-    
+
+    /// The end point of the axis line.
     override var lineP2: CGPoint {
         return CGPointMake(self.p2.x + self.lineOffset, self.p2.y)
     }
-    
+
+    /// The offset of the axis labels from the edge of the axis bounds
+    ///
+    /// Imagine the following image rotated 90 degrees counter-clockwise.
+    ///
+    /// ````
+    /// ─ ─ ─ ─  ▲
+    ///  Title   │
+    ///          │
+    ///          ▼
+    ///  Label
+    /// ````
     private lazy var labelsOffset: CGFloat = {
         return self.axisTitleLabelsWidth + self.settings.axisTitleLabelsToLabelsSpacing
     }()
-    
+
+    /// The offset of the axis line from the edge of the axis bounds.
+    ///
+    /// Imagine the following image rotated 90 degrees counter-clockwise.
+    ///
+    /// ````
+    /// ─ ─ ─ ─  ▲
+    ///  Title   │
+    ///          │
+    ///          │
+    ///  Label   │
+    ///          │
+    ///          │
+    /// ───────  ▼
+    /// ````
     private lazy var lineOffset: CGFloat = {
         return self.labelsOffset + self.labelsMaxWidth + self.settings.labelsToAxisSpacingY + self.settings.axisStrokeWidth
     }()
