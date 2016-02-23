@@ -19,6 +19,9 @@ public class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoin
 
     public let panGestureRecognizer: UIPanGestureRecognizer
 
+    /// The delay after touches end before the highlighted point fades out. Set to `nil` to keep the highlight until the next touch.
+    public var hideDelay: NSTimeInterval? = 1.0
+
     weak var chart: Chart?
 
     public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], gestureRecognizer: UIPanGestureRecognizer = UIPanGestureRecognizer(), modelFilter: ChartPointLayerModelForScreenLocFilter, viewGenerator: ChartPointViewGenerator) {
@@ -57,8 +60,7 @@ public class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoin
 
     var highlightedModel: ChartPointLayerModel<T>? {
         didSet {
-            if highlightedModel?.index != oldValue?.index, let view = view, chart = chart
-            {
+            if highlightedModel?.index != oldValue?.index, let view = view, chart = chart {
                 for subview in view.subviews {
                     subview.removeFromSuperview()
                 }
@@ -67,7 +69,6 @@ public class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoin
                     view.addSubview(pointView)
                 }
             }
-
         }
     }
 
@@ -83,7 +84,21 @@ public class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoin
                 highlightedModel = chartPointLayerModelForScreenLocFilter(screenLoc: point, chartPointModels: chartPointsModels)
             }
         case .Cancelled, .Failed, .Ended:
-            break
+            if let view = view, hideDelay = hideDelay {
+                UIView.animateWithDuration(0.5,
+                    delay: hideDelay,
+                    options: [],
+                    animations: { () -> Void in
+                        for subview in view.subviews {
+                            subview.alpha = 0
+                        }
+                    }, completion: { (completed) -> Void in
+                        if completed {
+                            self.highlightedModel = nil
+                        }
+                    }
+                )
+            }
         }
     }
 }
