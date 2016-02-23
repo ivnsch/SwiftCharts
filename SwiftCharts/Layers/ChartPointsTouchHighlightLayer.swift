@@ -74,7 +74,10 @@ public class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoin
 
     @objc func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
         switch gestureRecognizer.state {
-        case .Possible, .Began, .Changed:
+        case .Possible:
+            // Follow your dreams!
+            break
+        case .Began, .Changed:
             if let view = view {
                 let point = gestureRecognizer.locationInView(view)
 
