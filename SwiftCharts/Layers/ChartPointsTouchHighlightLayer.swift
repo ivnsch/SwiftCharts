@@ -24,9 +24,9 @@ public class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoin
 
     weak var chart: Chart?
 
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], gestureRecognizer: UIPanGestureRecognizer = UIPanGestureRecognizer(), modelFilter: ChartPointLayerModelForScreenLocFilter, viewGenerator: ChartPointViewGenerator) {
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], gestureRecognizer: UIPanGestureRecognizer? = nil, modelFilter: ChartPointLayerModelForScreenLocFilter, viewGenerator: ChartPointViewGenerator) {
         chartPointLayerModelForScreenLocFilter = modelFilter
-        panGestureRecognizer = gestureRecognizer
+        panGestureRecognizer = gestureRecognizer ?? UIPanGestureRecognizer()
 
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
