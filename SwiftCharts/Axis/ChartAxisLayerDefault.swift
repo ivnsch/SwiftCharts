@@ -37,6 +37,7 @@ public class ChartAxisSettings {
     var labelsSpacing: CGFloat = 5
     var labelsToAxisSpacingX: CGFloat = 5
     var labelsToAxisSpacingY: CGFloat = 5
+    var labelsWidthY: CGFloat?
     var axisTitleLabelsToLabelsSpacing: CGFloat = 5
     var lineColor:UIColor = UIColor.blackColor()
     var axisStrokeWidth: CGFloat = 2.0
@@ -47,6 +48,7 @@ public class ChartAxisSettings {
         self.labelsSpacing = chartSettings.labelsSpacing
         self.labelsToAxisSpacingX = chartSettings.labelsToAxisSpacingX
         self.labelsToAxisSpacingY = chartSettings.labelsToAxisSpacingY
+        self.labelsWidthY = chartSettings.labelsWidthY
         self.axisTitleLabelsToLabelsSpacing = chartSettings.axisTitleLabelsToLabelsSpacing
         self.screenLeading = chartSettings.leading
         self.screenTop = chartSettings.top
