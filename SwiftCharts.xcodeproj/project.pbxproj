@@ -182,6 +182,7 @@
 		22DBFFFE1BF5BF3900070F15 /* ChartAxisValueDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */; };
 		22DBFFFF1BF5BF3900070F15 /* ChartAxisValueFloatScreenLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405DD21B8AA81D00A689FF /* ChartAxisValueFloatScreenLoc.swift */; };
 		22E702171BF5B96200C19675 /* SwiftCharts.h in Headers */ = {isa = PBXBuildFile; fileRef = 06405DAB1B8AA74700A689FF /* SwiftCharts.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5A40B0B1C4F0EAA006A5714 /* PanScatterExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A40B0A1C4F0EAA006A5714 /* PanScatterExample.swift */; };
 		EB08E2331B93A15E0030081C /* ChartAxisValueDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */; };
 		EB4CE97F1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4CE97E1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift */; };
 		EB9B7E6B1BB8A575001B89D4 /* StraightLinePathGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9B7E6A1BB8A575001B89D4 /* StraightLinePathGenerator.swift */; };
@@ -320,6 +321,7 @@
 		06405E0C1B8AA81D00A689FF /* InfoBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoBubble.swift; sourceTree = "<group>"; };
 		067510C01B8AB36500A37F64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		22E7020F1BF5B8EC00C19675 /* SwiftCharts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftCharts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5A40B0A1C4F0EAA006A5714 /* PanScatterExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanScatterExample.swift; sourceTree = "<group>"; };
 		EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueDouble.swift; sourceTree = "<group>"; };
 		EB4CE97E1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueDoubleScreenLoc.swift; sourceTree = "<group>"; };
 		EB9B7E6A1BB8A575001B89D4 /* StraightLinePathGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StraightLinePathGenerator.swift; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 				062D238B1B8AAE5D0017ABB8 /* TargetExample.swift */,
 				062D238C1B8AAE5D0017ABB8 /* TrackerExample.swift */,
 				062D238D1B8AAE5D0017ABB8 /* TrendlineExample.swift */,
+				A5A40B0A1C4F0EAA006A5714 /* PanScatterExample.swift */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -756,6 +759,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				06342ACA1B8AAD7F001C9F5D /* DetailViewController.swift in Sources */,
+				A5A40B0B1C4F0EAA006A5714 /* PanScatterExample.swift in Sources */,
 				062D23A51B8AAE5D0017ABB8 /* ScatterExample.swift in Sources */,
 				062D23AA1B8AAE5D0017ABB8 /* TrendlineExample.swift in Sources */,
 				062D23A21B8AAE5D0017ABB8 /* MultipleLabelsExample.swift in Sources */,

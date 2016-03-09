@@ -9,11 +9,11 @@
 import UIKit
 
 public class ChartLabelSettings {
-    let font: UIFont
-    let fontColor: UIColor
-    let rotation: CGFloat
-    let rotationKeep: ChartLabelDrawerRotationKeep
-    let shiftXOnRotation: Bool
+    public let font: UIFont
+    public let fontColor: UIColor
+    public let rotation: CGFloat
+    public let rotationKeep: ChartLabelDrawerRotationKeep
+    public let shiftXOnRotation: Bool
     
     public init(font: UIFont = UIFont.systemFontOfSize(14), fontColor: UIColor = UIColor.blackColor(), rotation: CGFloat = 0, rotationKeep: ChartLabelDrawerRotationKeep = .Center, shiftXOnRotation: Bool = true) {
         self.font = font
@@ -57,7 +57,7 @@ public class ChartLabelDrawer: ChartContextDrawer {
         return ChartUtils.textSize(self.text, font: self.settings.font)
     }
     
-    init(text: String, screenLoc: CGPoint, settings: ChartLabelSettings) {
+    public init(text: String, screenLoc: CGPoint, settings: ChartLabelSettings) {
         self.text = text
         self.screenLoc = screenLoc
         self.settings = settings
@@ -67,7 +67,7 @@ public class ChartLabelDrawer: ChartContextDrawer {
         self.transform = self.transform(screenLoc, settings: settings)
     }
 
-    override func draw(context context: CGContextRef, chart: Chart) {
+    override public func draw(context context: CGContextRef, chart: Chart) {
         let labelSize = self.size
         
         let labelX = self.screenLoc.x
