@@ -14,6 +14,7 @@ import UIKit
  */
 public class ChartAxisValue: Equatable, CustomStringConvertible {
 
+    /// The backing value for all other types of axis values
     public let scalar: Double
     public let labelSettings: ChartLabelSettings
     public var hidden = false

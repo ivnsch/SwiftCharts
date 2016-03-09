@@ -8,6 +8,33 @@
 
 import UIKit
 
+/**
+ A ChartCoordsSpace calculates the chart's inner frame and generates the axis layers based on given axis models, chart size and chart settings. In doing so it's able to calculate the frame for the inner area of the chart where points, bars, lines, etc. are drawn to represent data.
+ 
+ ````
+                         ┌────────────────────────────────────────────────┐
+                         │                ChartSettings.top               │
+                         │  ┌────┬────────────────────────────────┬────┐  │
+                         │  │    │                X               │    │  │
+                         │  │    │               high             │    │  │
+                         │  ├────┼────────────────────────────────┼────┤  │
+                         │  │    │                                │    │  │
+                         │  │    │                                │    │  │
+                         │  │    │                                │    │  │
+                         │  │    │                                │    │  │
+ ChartSettings.leading ──┼▶ │ Y  │        Chart Inner Frame       │ Y  │ ◀┼── ChartSettings.trailing
+                         │  │low │                                │high│  │
+                         │  │    │                                │    │  │
+                         │  │    │                                │    │  │
+                         │  ├────┼────────────────────────────────┼────┤  │
+                         │  │    │                X               │    │  │
+                         │  │    │               low              │    │  │
+                         │  └────┴────────────────────────────────┴────┘  │
+                         │               ChartSettings.bottom             │
+                         └────────────────────────────────────────────────┘
+                         │─────────────────── chartSize ──────────────────│
+ ````
+ */
 public class ChartCoordsSpace {
     
     public typealias ChartAxisLayerModel = (p1: CGPoint, p2: CGPoint, axisValues: [ChartAxisValue], axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)
@@ -17,12 +44,12 @@ public class ChartCoordsSpace {
     private let chartSize: CGSize
     
     public private(set) var chartInnerFrame: CGRect = CGRectZero
-    
+
     private let yLowModels: [ChartAxisModel]
     private let yHighModels: [ChartAxisModel]
     private let xLowModels: [ChartAxisModel]
     private let xHighModels: [ChartAxisModel]
-    
+
     private let yLowGenerator: ChartAxisLayerGenerator
     private let yHighGenerator: ChartAxisLayerGenerator
     private let xLowGenerator: ChartAxisLayerGenerator
@@ -33,6 +60,18 @@ public class ChartCoordsSpace {
     public private(set) var xLowAxes: [ChartAxisLayer] = []
     public private(set) var xHighAxes: [ChartAxisLayer] = []
 
+    /**
+     A convenience initializer with default axis layer generators
+
+     - parameter chartSettings: The chart layout settings
+     - parameter chartSize:     The desired size of the chart
+     - parameter yLowModels:    The chart axis model used to generate the Y low axis
+     - parameter yHighModels:   The chart axis model used to generate the Y high axis
+     - parameter xLowModels:    The chart axis model used to generate the X low axis
+     - parameter xHighModels:   The chart axis model used to generate the X high axis
+
+     - returns: The coordinate space with generated axis layers
+     */
     public convenience init(chartSettings: ChartSettings, chartSize: CGSize, yLowModels: [ChartAxisModel] = [], yHighModels: [ChartAxisModel] = [], xLowModels: [ChartAxisModel] = [], xHighModels: [ChartAxisModel] = []) {
         
         let yLowGenerator: ChartAxisLayerGenerator = {model in
@@ -91,35 +130,63 @@ public class ChartCoordsSpace {
     private func generateXHighAxes() -> [ChartAxisLayer] {
         return self.generateXAxesShared(axisModels: self.xHighModels, offset: chartSettings.top, generator: self.xHighGenerator)
     }
-    
+
+    /**
+     Uses a generator to make X axis layers from axis models. This method is used for both low and high X axes.
+
+     - parameter axisModels: The models used to generate the axis layers
+     - parameter offset:     The offset in points for the generated layers
+     - parameter generator:  The generator used to create the layers
+
+     - returns: An array of ChartAxisLayers
+     */
     private func generateXAxesShared(axisModels axisModels: [ChartAxisModel], offset: CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
         let chartFrame = self.chartInnerFrame
         let chartSettings = self.chartSettings
         let x = chartFrame.origin.x
         let length = chartFrame.width
         
-        return generateAxisShared(axisModels: axisModels, offset: offset, pointsCreator: { varDim in
-            (p1: CGPointMake(x, varDim), p2: CGPointMake(x + length, varDim))
-            }, dimIncr: { layer in
+        return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: { offset in
+            (p1: CGPointMake(x, offset), p2: CGPointMake(x + length, offset))
+            }, nextLayerOffset: { layer in
                 layer.rect.height + chartSettings.spacingBetweenAxesX
             }, generator: generator)
     }
     
-    
+    /**
+     Uses a generator to make Y axis layers from axis models. This method is used for both low and high Y axes.
+
+     - parameter axisModels: The models used to generate the axis layers
+     - parameter offset:     The offset in points for the generated layers
+     - parameter generator:  The generator used to create the layers
+
+     - returns: An array of ChartAxisLayers
+     */
     private func generateYAxisShared(axisModels axisModels: [ChartAxisModel], offset: CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
         let chartFrame = self.chartInnerFrame
         let chartSettings = self.chartSettings
         let y = chartFrame.origin.y
         let length = chartFrame.height
         
-        return generateAxisShared(axisModels: axisModels, offset: offset, pointsCreator: { varDim in
-            (p1: CGPointMake(varDim, y + length), p2: CGPointMake(varDim, y))
-            }, dimIncr: { layer in
+        return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: { offset in
+            (p1: CGPointMake(offset, y + length), p2: CGPointMake(offset, y))
+            }, nextLayerOffset: { layer in
                 layer.rect.width + chartSettings.spacingBetweenAxesY
             }, generator: generator)
     }
-    
-    private func generateAxisShared(axisModels axisModels: [ChartAxisModel], offset: CGFloat, pointsCreator: (varDim: CGFloat) -> (p1: CGPoint, p2: CGPoint), dimIncr: (ChartAxisLayer) -> CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
+
+    /**
+     Uses a generator to make axis layers from axis models. This method is used for all axes.
+
+     - parameter axisModels:            The models used to generate the axis layers
+     - parameter offset:                The offset in points for the generated layers
+     - parameter boundingPointsCreator: A closure that creates a tuple containing the location of the smallest and largest values along the axis. For example, boundingPointsCreator for a Y axis might return a value like (p1: CGPoint(x, 0), p2: CGPoint(x, 100)), where x is the offset of the axis layer.
+     - parameter nextLayerOffset:       A closure that returns the offset of the next axis layer relative to the current layer
+     - parameter generator:             The generator used to create the layers
+
+     - returns: An array of ChartAxisLayers
+     */
+    private func generateAxisShared(axisModels axisModels: [ChartAxisModel], offset: CGFloat, boundingPointsCreator: (offset: CGFloat) -> (p1: CGPoint, p2: CGPoint), nextLayerOffset: (ChartAxisLayer) -> CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
         
         let chartSettings = self.chartSettings
         
@@ -128,15 +195,20 @@ public class ChartCoordsSpace {
             let x: CGFloat = tuple.x
             let axisSettings = ChartAxisSettings(chartSettings)
             axisSettings.lineColor = chartAxisModel.lineColor
-            let points = pointsCreator(varDim: x)
+            let points = boundingPointsCreator(offset: x)
             let layer = generator(p1: points.p1, p2: points.p2, axisValues: chartAxisModel.axisValues, axisTitleLabels: chartAxisModel.axisTitleLabels, settings: axisSettings)
             return (
                 axes: layers + [layer],
-                x: x + dimIncr(layer)
+                x: x + nextLayerOffset(layer)
             )
         }.0
     }
-    
+
+    /**
+     Calculates the inner frame of the chart, which in short is the area where your points, bars, lines etc. are drawn. In order to calculate this frame the axes will be generated.
+
+     - returns: The inner frame as a CGRect
+     */
     private func calculateChartInnerFrame() -> CGRect {
         
         let totalDim = {(axisLayers: [ChartAxisLayer], dimPicker: (ChartAxisLayer) -> CGFloat, spacingBetweenAxes: CGFloat) -> CGFloat in
@@ -173,6 +245,7 @@ public class ChartCoordsSpace {
     }
 }
 
+/// A ChartCoordsSpace subclass specifically for a chart with axes along the left and bottom edges
 public class ChartCoordsSpaceLeftBottomSingleAxis {
 
     public let yAxis: ChartAxisLayer
@@ -188,6 +261,7 @@ public class ChartCoordsSpaceLeftBottomSingleAxis {
     }
 }
 
+/// A ChartCoordsSpace subclass specifically for a chart with axes along the left and top edges
 public class ChartCoordsSpaceLeftTopSingleAxis {
     
     public let yAxis: ChartAxisLayer
@@ -203,6 +277,7 @@ public class ChartCoordsSpaceLeftTopSingleAxis {
     }
 }
 
+/// A ChartCoordsSpace subclass specifically for a chart with axes along the right and bottom edges
 public class ChartCoordsSpaceRightBottomSingleAxis {
     
     public let yAxis: ChartAxisLayer

@@ -8,14 +8,17 @@
 
 import UIKit
 
+/// A ChartAxisLayer for low X axes
 class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
 
     override var low: Bool {return true}
 
+    /// The start point of the axis line.
     override var lineP1: CGPoint {
         return self.p1
     }
-    
+
+    /// The end point of the axis line.
     override var lineP2: CGPoint {
         return self.p2
     }
