@@ -26,19 +26,17 @@ public class SimpleAxisLabelView: UIView {
     weak var chart: Chart?
     var axisLabelDrawer: ChartLabelDrawer?
     
-    public init(frame: CGRect, text: String, settings: ChartLabelSettings, chart: Chart) {
+    public init(frame: CGRect, text: String, settings: ChartLabelSettings, chart: Chart, position: CGPoint) {
         super.init(frame: frame)
         self.sharedInit()
 
-        self.chart = chart // ugly
+        self.chart = chart // ugly: we don't really need a chart, except to draw with the ChartLabelDrawer
         
         let axisLabel = ChartAxisLabel(text: text, settings: settings)
         let labelSize = ChartUtils.textSize(axisLabel.text, font: settings.font)
         let settings = settings
         let newSettings = ChartLabelSettings(font: settings.font, fontColor: settings.fontColor, rotation: settings.rotation, rotationKeep: settings.rotationKeep)
-        self.axisLabelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(
-            frame.origin.x + (frame.size.width / 2) + labelSize.height,
-            (frame.size.height - 0.0 - labelSize.height)), settings: newSettings)
+        self.axisLabelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: position, settings: newSettings)
         
     }
     
@@ -162,8 +160,13 @@ class PanScatterExample: UIViewController, UIGestureRecognizerDelegate {
 
         self.view.addSubview(axisClipperSubview)
         
-        let xAxisView = SimpleAxisLabelView(frame: visibleChartFrame, text: "X Axis title", settings: labelSettings, chart: plotChart)
-        let yAxisView = SimpleAxisLabelView(frame: visibleChartFrame, text: "Y Axis title", settings: labelSettings.defaultVertical(), chart: plotChart)
+        let xAxisView = SimpleAxisLabelView(frame: visibleChartFrame, text: "X Axis title", settings: labelSettings, chart: plotChart, position: CGPointMake(
+            (visibleChartFrame.size.width / 2),
+            (visibleChartFrame.size.height - 12))
+        )
+        let yAxisView = SimpleAxisLabelView(frame: visibleChartFrame, text: "Y Axis title", settings: labelSettings.defaultVertical(), chart: plotChart, position: CGPointMake(
+            0,
+            visibleChartFrame.size.height / 2))
 
         self.view.addSubview(xAxisView)
         self.view.addSubview(yAxisView)
