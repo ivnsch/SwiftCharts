@@ -70,11 +70,11 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
     }
 
     override func labelsX(offset offset: CGFloat, labelWidth: CGFloat, textAlignment: ChartLabelTextAlignment) -> CGFloat {
-        let labelsXRight = self.p1.x + offset + self.labelsMaxWidth
+        let labelsXRight = self.p1.x + offset
         var labelsX: CGFloat
         switch textAlignment {
         case .Right, .Default:
-            labelsX = labelsXRight - labelWidth
+            labelsX = labelsXRight + self.labelsMaxWidth - labelWidth
         case .Left:
             labelsX = labelsXRight
         }

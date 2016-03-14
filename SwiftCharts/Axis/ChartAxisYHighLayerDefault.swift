@@ -47,8 +47,7 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         case .Left, .Default:
             labelsX = self.p1.x + offset
         case .Right:
-            let labelsXRight = self.p1.x + offset + self.labelsMaxWidth
-            labelsX = labelsXRight - labelWidth
+            labelsX = self.p1.x + offset + self.labelsMaxWidth - labelWidth
         }
         return labelsX
     }
