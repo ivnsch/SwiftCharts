@@ -8,19 +8,25 @@
 
 import UIKit
 
+public enum ChartLabelTextAlignment {
+    case Left, Right, Default
+}
+
 public class ChartLabelSettings {
     let font: UIFont
     let fontColor: UIColor
     let rotation: CGFloat
     let rotationKeep: ChartLabelDrawerRotationKeep
     let shiftXOnRotation: Bool
+    let textAlignment: ChartLabelTextAlignment
     
-    public init(font: UIFont = UIFont.systemFontOfSize(14), fontColor: UIColor = UIColor.blackColor(), rotation: CGFloat = 0, rotationKeep: ChartLabelDrawerRotationKeep = .Center, shiftXOnRotation: Bool = true) {
+    public init(font: UIFont = UIFont.systemFontOfSize(14), fontColor: UIColor = UIColor.blackColor(), rotation: CGFloat = 0, rotationKeep: ChartLabelDrawerRotationKeep = .Center, shiftXOnRotation: Bool = true, textAlignment: ChartLabelTextAlignment = .Default) {
         self.font = font
         self.fontColor = fontColor
         self.rotation = rotation
         self.rotationKeep = rotationKeep
         self.shiftXOnRotation = shiftXOnRotation
+        self.textAlignment = textAlignment
     }
     
     public func copy(font: UIFont? = nil, fontColor: UIColor? = nil, rotation: CGFloat? = nil, rotationKeep: ChartLabelDrawerRotationKeep? = nil, shiftXOnRotation: Bool? = nil) -> ChartLabelSettings {

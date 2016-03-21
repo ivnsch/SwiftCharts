@@ -69,7 +69,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             if let axisLabel = axisValue.labels.first { // for now y axis supports only one label x value
                 let labelSize = ChartUtils.textSize(axisLabel.text, font: axisLabel.settings.font)
                 let labelY = y - (labelSize.height / 2)
-                let labelX = self.labelsX(offset: offset, labelWidth: labelSize.width)
+                let labelX = self.labelsX(offset: offset, labelWidth: labelSize.width, textAlignment: axisLabel.settings.textAlignment)
                 let labelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(labelX, labelY), settings: axisLabel.settings)
                 labelDrawer.hidden = axisValue.hidden
                 return arr + [labelDrawer]
@@ -81,7 +81,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         }
     }
     
-    func labelsX(offset offset: CGFloat, labelWidth: CGFloat) -> CGFloat {
+    func labelsX(offset offset: CGFloat, labelWidth: CGFloat, textAlignment: ChartLabelTextAlignment) -> CGFloat {
         fatalError("override")
     }
     
