@@ -22,7 +22,7 @@ public struct ChartPointLayerModel<T: ChartPoint> {
 
 public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
 
-    let chartPointsModels: [ChartPointLayerModel<T>]
+    public let chartPointsModels: [ChartPointLayerModel<T>]
     
     private let displayDelay: Float
     
