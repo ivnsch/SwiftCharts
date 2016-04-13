@@ -32,34 +32,35 @@ class BubbleExample: UIViewController {
         func toColor(percentage: Double) -> UIColor {
             return colorBar.colorForPercentage(percentage).colorWithAlphaComponent(0.6)
         }
-        
-        let chartPoints: [ChartPointBubble] = [
-            (2, 2, 100, toColor(0)),
-            (2.1, 5, 250, toColor(0)),
-            (4, 4, 200, toColor(0.2)),
-            (2.3, 5, 150, toColor(0.7)),
-            (6, 7, 120, toColor(0.9)),
-            (8, 3, 50, toColor(1)),
-            (2, 4.5, 80, toColor(0.7)),
-            (2, 5.2, 50, toColor(0.4)),
-            (2, 4, 100, toColor(0.3)),
-            (2.7, 5.5, 200, toColor(0.5)),
-            (1.7, 2.8, 150, toColor(0.7)),
-            (4.4, 8, 120, toColor(0.9)),
-            (5, 6.3, 250, toColor(1)),
-            (6, 8, 100, toColor(0)),
-            (4, 8.5, 200, toColor(0.5)),
-            (8, 5, 200, toColor(0.6)),
-            (8.5, 10, 150, toColor(0.7)),
-            (9, 11, 120, toColor(0.6)),
-            (10, 6, 100, toColor(1)),
-            (11, 7, 100, toColor(0)),
-            (11, 4, 200, toColor(0.5)),
-            (11.5, 10, 150, toColor(0.7)),
-            (12, 7, 120, toColor(0.9)),
-            (12, 9, 250, toColor(0.8))
-            
-        ].map{ChartPointBubble(x: ChartAxisValueDouble(Double($0), labelSettings: labelSettings), y: ChartAxisValueDouble(Double($1)), diameterScalar: $2, bgColor: $3)}
+
+        let rawData: [(Double, Double, Double, UIColor)] = [
+          (2, 2, 100, toColor(0)),
+          (2.1, 5, 250, toColor(0)),
+          (4, 4, 200, toColor(0.2)),
+          (2.3, 5, 150, toColor(0.7)),
+          (6, 7, 120, toColor(0.9)),
+          (8, 3, 50, toColor(1)),
+          (2, 4.5, 80, toColor(0.7)),
+          (2, 5.2, 50, toColor(0.4)),
+          (2, 4, 100, toColor(0.3)),
+          (2.7, 5.5, 200, toColor(0.5)),
+          (1.7, 2.8, 150, toColor(0.7)),
+          (4.4, 8, 120, toColor(0.9)),
+          (5, 6.3, 250, toColor(1)),
+          (6, 8, 100, toColor(0)),
+          (4, 8.5, 200, toColor(0.5)),
+          (8, 5, 200, toColor(0.6)),
+          (8.5, 10, 150, toColor(0.7)),
+          (9, 11, 120, toColor(0.6)),
+          (10, 6, 100, toColor(1)),
+          (11, 7, 100, toColor(0)),
+          (11, 4, 200, toColor(0.5)),
+          (11.5, 10, 150, toColor(0.7)),
+          (12, 7, 120, toColor(0.9)),
+          (12, 9, 250, toColor(0.8))
+        ]
+
+        let chartPoints: [ChartPointBubble] = rawData.map{ChartPointBubble(x: ChartAxisValueDouble($0, labelSettings: labelSettings), y: ChartAxisValueDouble($1), diameterScalar: $2, bgColor: $3)}
 
         let xValues = (-2).stride(through: 14, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
         let yValues = (-2).stride(through: 12, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
