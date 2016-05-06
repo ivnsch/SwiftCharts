@@ -54,8 +54,18 @@ public class ChartGuideLinesLayerAbstract<T: ChartGuideLinesLayerSettings>: Char
     
     override public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         let originScreenLoc = self.innerFrame.origin
-        let xScreenLocs = onlyVisibleX ? self.xAxis.visibleAxisValuesScreenLocs : self.xAxis.axisValuesScreenLocs
-        let yScreenLocs = onlyVisibleY ? self.yAxis.visibleAxisValuesScreenLocs : self.yAxis.axisValuesScreenLocs
+        
+        // Skip location of the X axis
+        let xScreenLocs = (onlyVisibleX ? self.xAxis.visibleAxisValuesScreenLocs : self.xAxis.axisValuesScreenLocs).filter{
+            return $0 != originScreenLoc.x
+        }
+        
+        let yAxisPosition = CGRectGetMaxY(innerFrame);
+        
+        // Skip location of the Y axis
+        let yScreenLocs = (onlyVisibleY ? self.yAxis.visibleAxisValuesScreenLocs : self.yAxis.axisValuesScreenLocs).filter {
+            return $0 != yAxisPosition
+        }
         
         if self.axis == .X || self.axis == .XAndY {
             for xScreenLoc in xScreenLocs {
