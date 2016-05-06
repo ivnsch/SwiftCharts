@@ -51,11 +51,11 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
     }
     
     private func generateChartPointViews(chartPointModels chartPointModels: [ChartPointLayerModel<T>], chart: Chart) -> [ViewWithChartPoint] {
-        let viewsWithChartPoints = self.chartPointsModels.reduce(Array<ViewWithChartPoint>()) {viewsWithChartPoints, model in
+        let viewsWithChartPoints: [ViewWithChartPoint] = self.chartPointsModels.flatMap { model in
             if let view = self.viewGenerator(chartPointModel: model, layer: self, chart: chart) {
-                return viewsWithChartPoints + [(view: view, chartPointModel: model)]
+                return (view: view, chartPointModel: model)
             } else {
-                return viewsWithChartPoints
+                return nil
             }
         }
         
