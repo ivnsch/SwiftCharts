@@ -65,7 +65,7 @@ public class ChartDividersLayer: ChartCoordsSpaceLayer {
                 let x1 = xScreenLoc
                 let y1 = self.xAxis.lineP1.y + (self.xAxis.low ? -self.settings.end : self.settings.end)
                 let x2 = xScreenLoc
-                let y2 = self.xAxis.lineP1.y + (self.xAxis.low ? self.settings.start : -self.settings.end)
+                let y2 = self.xAxis.lineP1.y + (self.xAxis.low ? self.settings.start : -self.settings.start)
                 self.drawLine(context: context, color: self.settings.linesColor, width: self.settings.linesWidth, p1: CGPointMake(x1, y1), p2: CGPointMake(x2, y2))
             }
         }
