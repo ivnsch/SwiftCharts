@@ -62,7 +62,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
     
     override func generateLabelDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
-        
+
         var drawers: [ChartLabelDrawer] = []
         
         var lastDrawerWithRect: (drawer: ChartLabelDrawer, rect: CGRect)?
