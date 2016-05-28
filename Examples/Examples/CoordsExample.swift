@@ -62,9 +62,10 @@ class CoordsExample: UIViewController {
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
             let s: CGFloat = 30
             let view = HandlingView(frame: CGRectMake(screenLoc.x - s/2, screenLoc.y - s/2, s, s))
-            view.touchHandler = {
-                showCoordsLinesLayer.showChartPointLines(chartPoint, chart: chart)
-                showCoordsTextLayer.showView(chartPoint: chartPoint, chart: chart)
+            view.touchHandler = {[weak showCoordsLinesLayer, weak showCoordsTextLayer, weak chartPoint, weak chart] in
+                guard let chartPoint = chartPoint, chart = chart else {return}
+                showCoordsLinesLayer?.showChartPointLines(chartPoint, chart: chart)
+                showCoordsTextLayer?.showView(chartPoint: chartPoint, chart: chart)
             }
             return view
         }
