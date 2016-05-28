@@ -138,12 +138,11 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
 
+    // NOTE: Assumes axis values sorted by scalar (can be increasing or decreasing)
     required init(p1: CGPoint, p2: CGPoint, axisValues: [ChartAxisValue], axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)  {
         self.p1 = p1
         self.p2 = p2
-        self.axisValues = axisValues.sort {(ca1, ca2) -> Bool in // ensure sorted
-            ca1.scalar < ca2.scalar
-        }
+        self.axisValues = axisValues
         self.axisTitleLabels = axisTitleLabels
         self.settings = settings
     }
