@@ -62,6 +62,7 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 animDelay: screenLine.animDelay)
             
             self.lineViews.append(lineView)
+            lineView.userInteractionEnabled = false
             chart.addSubview(lineView)
         }
     }
