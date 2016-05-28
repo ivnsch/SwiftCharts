@@ -126,7 +126,7 @@ class StackedBarsExample: UIViewController {
             for button in [self.horizontal, self.vertical] {
                 button.titleLabel?.font = ExamplesDefaults.fontWithSize(14)
                 button.setTitleColor(UIColor.blueColor(), forState: .Normal)
-                button.addTarget(self, action: "buttonTapped:", forControlEvents: .TouchUpInside)
+                button.addTarget(self, action: #selector(DirSelector.buttonTapped(_:)), forControlEvents: .TouchUpInside)
             }
         }
         
@@ -145,9 +145,9 @@ class StackedBarsExample: UIViewController {
                 ("v\(index)", view)
             }
             
-            let viewsDict = namedViews.reduce(Dictionary<String, UIView>()) {(var u, tuple) in
-                u[tuple.0] = tuple.1
-                return u
+            var viewsDict = Dictionary<String, UIView>()
+            for namedView in namedViews {
+                viewsDict[namedView.0] = namedView.1
             }
             
             let buttonsSpace: CGFloat = Env.iPad ? 20 : 10

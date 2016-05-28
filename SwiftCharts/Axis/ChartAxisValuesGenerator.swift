@@ -94,13 +94,11 @@ public struct ChartAxisValuesGenerator {
 
      - returns: An array of axis values
      */
-    private static func generateAxisValuesWithChartPoints(first: Double, var last: Double, minSegmentCount: Double, maxSegmentCount: Double, multiple: Double, axisValueGenerator:ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
+    private static func generateAxisValuesWithChartPoints(first: Double, last lastPar: Double, minSegmentCount: Double, maxSegmentCount: Double, multiple: Double, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
         
-        if last < first {
-            fatalError("Invalid range generating axis values")
-        } else if last == first {
-            last++
-        }
+        guard lastPar >= first else {fatalError("Invalid range generating axis values")}
+        
+        let last = lastPar == first ? lastPar + 1 : lastPar
 
         // The first axis value will be less than or equal to the first scalar value, aligned with the desired multiple
         var firstValue = first - (first % multiple)
@@ -131,7 +129,7 @@ public struct ChartAxisValuesGenerator {
 
         // Increase the number of segments until there are enough as desired
         while segmentCount < minSegmentCount {
-            segmentCount++
+            segmentCount += 1
         }
         segmentSize = currentMultiple
 

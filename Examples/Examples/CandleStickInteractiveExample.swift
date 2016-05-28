@@ -232,9 +232,9 @@ private class InfoView: UIView {
             ("v\(index)", view)
         }
         
-        let viewsDict = namedViews.reduce(Dictionary<String, UIView>()) {(var u, tuple) in
-            u[tuple.0] = tuple.1
-            return u
+        var viewsDict = Dictionary<String, UIView>()
+        for namedView in namedViews {
+            viewsDict[namedView.0] = namedView.1
         }
         
         let circleDiameter: CGFloat = Env.iPad ? 26 : 15
