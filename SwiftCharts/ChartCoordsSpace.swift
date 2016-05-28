@@ -292,3 +292,19 @@ public class ChartCoordsSpaceRightBottomSingleAxis {
         self.xAxis = coordsSpaceInitializer.xLowAxes[0]
     }
 }
+
+/// A ChartCoordsSpace subclass specifically for a chart with axes along the right and top edges
+public class ChartCoordsSpaceRightTopSingleAxis {
+    
+    public let yAxis: ChartAxisLayer
+    public let xAxis: ChartAxisLayer
+    public let chartInnerFrame: CGRect
+    
+    public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
+        let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yHighModels: [yModel], xHighModels: [xModel])
+        self.chartInnerFrame = coordsSpaceInitializer.chartInnerFrame
+        
+        self.yAxis = coordsSpaceInitializer.yHighAxes[0]
+        self.xAxis = coordsSpaceInitializer.xHighAxes[0]
+    }
+}

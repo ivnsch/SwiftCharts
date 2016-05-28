@@ -21,7 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix dividers not showing in upper x axis
 - Fix line layer blocking touch
 - Fix memory leak in CoordExample (issue #101)
-
+- Add top right coord space initialisation helper
 
 ## [0.3] - 2015.09.28
 - Merge swift2.0 in master
