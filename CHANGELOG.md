@@ -5,6 +5,23 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Fix tracker showing NaN on constant coordinate
 - Pass tension values to cubic line to be able to modify curviness
+- Add tvOS target
+- Fix value of ChartAxisValue does not update in subsequent calls to copy
+- Fix axis stroke width setting has no effect
+- Add public init so to ChartLayerBase to allow it to be subclassed
+- Update examples to use ChartAxisValueDouble instead of ChartAxisValueFloat (deprecated)
+- Make ChartPoint, ChartAxisValue and subclasses conform to CustomStringConvertible
+- Use closure to map dates instead of date formatter for more flexibility
+- Improve inline documentation
+- Allow to change text alignment of y axis labels
+- Make ChartPointsScatterLayer class along with its' properties and methods public for subclassing outside swift module
+- Use flatMap instead of reduce to improve performance
+- Don't sort axis values in axis layer
+- Move labels in y axis if they overlap
+- Fix dividers not showing in upper x axis
+- Fix line layer blocking touch
+- Fix memory leak in CoordExample (issue #101)
+
 
 ## [0.3] - 2015.09.28
 - Merge swift2.0 in master
