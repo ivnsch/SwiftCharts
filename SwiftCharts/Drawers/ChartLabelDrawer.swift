@@ -55,7 +55,7 @@ public class ChartLabelDrawer: ChartContextDrawer {
     private let text: String
     
     private let settings: ChartLabelSettings
-    private let screenLoc: CGPoint
+    var screenLoc: CGPoint
     
     private var transform: CGAffineTransform?
     
