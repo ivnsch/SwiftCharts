@@ -57,7 +57,7 @@ Add to your Podfile:
 Swift 2.x:
 ```ruby
 use_frameworks!
-pod 'SwiftCharts', '~> 0.3'
+pod 'SwiftCharts', '~> 0.4'
 ```
 Note: To use Swift 2.x / master, you need Xcode 7+
 
@@ -88,7 +88,7 @@ Add to your Cartfile:
 
 Swift 2.x:
 ```
-github "i-schuetz/SwiftCharts" ~> 0.3
+github "i-schuetz/SwiftCharts" ~> 0.4
 ```
 
 Swift 1.2:
@@ -166,18 +166,26 @@ A chart is the result of composing layers together. Everything is a layer - axis
 Following a more low level example, to provide an insight into the layer system. Note that most examples are written like this, in order to provider maximal flexibility.
 
 ```swift
-let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
 
-let chartPoints = [(2, 2), (3, 1), (5, 9), (6, 7), (8, 10), (9, 9), (10, 15), (13, 8), (15, 20), (16, 17)].map{ChartPoint(x: ChartAxisValueInt($0.0), y: ChartAxisValueInt($0.1))}
+let chartPoints: [ChartPoint] = [(2, 2), (4, 4), (6, 6), (8, 10), (12, 14)].map{ChartPoint(x: ChartAxisValueInt($0.0), y: ChartAxisValueInt($0.1))}
 
-let xValues = Array(stride(from: 2, through: 16, by: 2)).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
-let yValues = Array(stride(from: 0, through: 20, by: 2)).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+let xValues = 0.stride(through: 16, by: 2).map {ChartAxisValueInt($0)}
+let yValues = 0.stride(through: 16, by: 2).map {ChartAxisValueInt($0)}
 
+let labelSettings = ChartLabelSettings(font: UIFont.systemFontOfSize(14))
+
+// create axis models with axis values and axis title
 let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
-let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
-let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
+let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
 
-let chartSettings = ExamplesDefaults.chartSettings
+let chartFrame = CGRectMake(20, 100, 300, 400)
+
+let chartSettings = ChartSettings()
+chartSettings.axisStrokeWidth = 0.2
+chartSettings.top = 20
+chartSettings.trailing = 20
+// ...
+
 let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
 let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
 
@@ -185,15 +193,23 @@ let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSp
 let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor(red: 0.4, green: 0.4, blue: 1, alpha: 0.2), lineWidth: 3, animDuration: 0.7, animDelay: 0)
 let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
 
-// view generator - creates circle view for each chartpoint
-let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
-    return ChartPointCircleView(center: chartPointModel.screenLoc, size: CGSizeMake(20, 20), settings: ChartPointCircleViewSettings(animDuration: 0.5))
+// creates custom view for each chartpoint
+let myCustomViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
+    let center = chartPointModel.screenLoc
+    let label = UILabel(frame: CGRectMake(center.x - 20, center.y - 10, 40, 20))
+    label.backgroundColor = UIColor.greenColor()
+    label.textAlignment = NSTextAlignment.Center
+    label.text = chartPointModel.chartPoint.description
+    label.font = ExamplesDefaults.labelFont
+    return label
 }
+
 // create layer that uses the view generator
-let chartPointsCircleLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: circleViewGenerator, displayDelay: 0, delayBetweenItems: 0.05)
+let myCustomViewLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: myCustomViewGenerator, displayDelay: 0, delayBetweenItems: 0.05)
+
 
 // create layer with guidelines
-var settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth, axis: .XAndY)
+let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
 let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
 
 let chart = Chart(
@@ -203,7 +219,7 @@ let chart = Chart(
         yAxis,
         guidelinesLayer,
         chartPointsLineLayer,
-        chartPointsCircleLayer
+        myCustomViewLayer
     ]
 )
 
