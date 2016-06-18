@@ -55,6 +55,11 @@ class ScrollExample: UIViewController {
             self.createChartPoint(50, 20, labelSettings),
         ]
         
+        let chartPoints2 = [
+            self.createChartPoint(2, 10, labelSettings),
+            self.createChartPoint(50, 10, labelSettings),
+        ]
+        
         let xValues = 2.stride(through: 50, by: 1).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
         let yValues = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: labelSettings)}, addPaddingSegmentIfEdge: false)
         
@@ -72,7 +77,11 @@ class ScrollExample: UIViewController {
 
                 let lineModel0 = ChartLineModel(chartPoints: chartPoints0, lineColor: UIColor.redColor(), animDuration: 1, animDelay: 0)
                 let lineModel1 = ChartLineModel(chartPoints: chartPoints1, lineColor: UIColor.blueColor(), animDuration: 1, animDelay: 0)
+                let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: UIColor.greenColor(), animDuration: 1, animDelay: 0)
+            
                 let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel0, lineModel1])
+                
+                let chartPointsLineLayer2 = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel2], pathGenerator: DottedLinePathGenerator(), dashPattern:[5,10])
                 
                 let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
                 let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
@@ -87,7 +96,8 @@ class ScrollExample: UIViewController {
                         xAxis,
                         yAxis,
                         guidelinesLayer,
-                        chartPointsLineLayer
+                        chartPointsLineLayer,
+                        chartPointsLineLayer2
                     ]
                 )
                 

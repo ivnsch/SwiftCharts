@@ -28,11 +28,13 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     private let lineModels: [ChartLineModel<T>]
     private var lineViews: [ChartLinesView] = []
     private let pathGenerator: ChartLinesViewPathGenerator
+    private var dashPattern : [Double]?
 
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0) {
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0, dashPattern:[Double]? = nil) {
         
         self.lineModels = lineModels
         self.pathGenerator = pathGenerator
+        self.dashPattern = dashPattern
         
         let chartPoints: [T] = lineModels.flatMap{$0.chartPoints}
         
@@ -59,8 +61,8 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 lineColor: screenLine.color,
                 lineWidth: screenLine.lineWidth,
                 animDuration: screenLine.animDuration,
-                animDelay: screenLine.animDelay)
-            
+                animDelay: screenLine.animDelay,
+                dashPattern: dashPattern)
             self.lineViews.append(lineView)
             lineView.userInteractionEnabled = false
             chart.addSubview(lineView)

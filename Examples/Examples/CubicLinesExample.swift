@@ -31,7 +31,6 @@ class CubicLinesExample: UIViewController {
         
         let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.purpleColor(), lineWidth: 2, animDuration: 1, animDelay: 0)
         let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel], pathGenerator: CubicLinePathGenerator(tension1: 0.3, tension2: 0.3))
-        
         let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
         
