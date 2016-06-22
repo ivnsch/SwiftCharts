@@ -56,6 +56,8 @@ public class ChartAxisSettings {
     }
 }
 
+typealias ChartAxisValueLabelDrawers = (axisValue: ChartAxisValue, drawers: [ChartLabelDrawer])
+
 /// A default implementation of ChartAxisLayer, which delegates drawing of the axis line and labels to the appropriate Drawers
 class ChartAxisLayerDefault: ChartAxisLayer {
     
@@ -67,7 +69,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     
     // exposed for subclasses
     var lineDrawer: ChartLineDrawer?
-    var labelDrawers: [ChartLabelDrawer] = []
+    var labelDrawers: [ChartAxisValueLabelDrawers] = []
     var axisTitleLabelDrawers: [ChartLabelDrawer] = []
     
     var rect: CGRect {
@@ -76,6 +78,12 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     
     var axisValuesScreenLocs: [CGFloat] {
         return self.axisValues.map{self.screenLocForScalar($0.scalar)}
+    }
+
+    var axisValuesWithFrames: [(axisValue: ChartAxisValue, frames: [CGRect])] {
+        return labelDrawers.map {(axisValue, drawers) in
+            (axisValue: axisValue, frames: drawers.map{$0.frame})
+        }
     }
     
     var visibleAxisValuesScreenLocs: [CGFloat] {
@@ -165,8 +173,10 @@ class ChartAxisLayerDefault: ChartAxisLayer {
             }
         }
         
-        for labelDrawer in self.labelDrawers {
-            labelDrawer.triggerDraw(context: context, chart: chart)
+        for (_, labelDrawers) in self.labelDrawers {
+            for labelDrawer in labelDrawers {
+                labelDrawer.triggerDraw(context: context, chart: chart)
+            }
         }
         for axisTitleLabelDrawer in self.axisTitleLabelDrawers {
             axisTitleLabelDrawer.triggerDraw(context: context, chart: chart)
@@ -186,7 +196,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
     
-    func generateLabelDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
+    func generateLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         fatalError("override")
     }
 

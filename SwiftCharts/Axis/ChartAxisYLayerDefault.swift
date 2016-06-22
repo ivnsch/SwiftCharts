@@ -20,7 +20,9 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             return self.maxLabelWidth(self.axisValues)
         } else {
             return self.labelDrawers.reduce(0) {maxWidth, labelDrawer in
-                max(maxWidth, labelDrawer.size.width)
+                return max(maxWidth, labelDrawer.drawers.reduce(0) {maxWidth, drawer in
+                    max(maxWidth, drawer.size.width)
+                })
             }
         }
     }
@@ -61,14 +63,13 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     }
     
     
-    override func generateLabelDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
+    override func generateLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         
-        var drawers: [ChartLabelDrawer] = []
+        var drawers: [ChartAxisValueLabelDrawers] = []
         
         var lastDrawerWithRect: (drawer: ChartLabelDrawer, rect: CGRect)?
         
-        for i in 0..<axisValues.count {
-            let axisValue = axisValues[i]
+        for axisValue in axisValues {
             let scalar = axisValue.scalar
             let y = self.screenLocForScalar(scalar)
             if let axisLabel = axisValue.labels.first { // for now y axis supports only one label x value
@@ -76,10 +77,11 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
                 let labelY = y - (labelSize.height / 2)
                 let labelX = self.labelsX(offset: offset, labelWidth: labelSize.width, textAlignment: axisLabel.settings.textAlignment)
                 let labelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(labelX, labelY), settings: axisLabel.settings)
+                let labelDrawers = ChartAxisValueLabelDrawers(axisValue, [labelDrawer])
                 labelDrawer.hidden = axisValue.hidden
 
                 let rect = CGRectMake(labelX, labelY, labelSize.width, labelSize.height)
-                drawers.append(labelDrawer)
+                drawers.append(labelDrawers)
                 
                 // move overlapping labels. This is for now a very simple algorithm and doesn't take into account possible overlappings resulting of moving the labels
                 if let (lastDrawer, lastRect) = lastDrawerWithRect {
