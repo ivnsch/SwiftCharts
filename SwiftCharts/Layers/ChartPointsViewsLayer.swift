@@ -14,7 +14,7 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
     public typealias ChartPointViewGenerator = (chartPointModel: ChartPointLayerModel<T>, layer: ChartPointsViewsLayer<T, U>, chart: Chart) -> U?
     public typealias ViewWithChartPoint = (view: U, chartPointModel: ChartPointLayerModel<T>)
     
-    private(set) var viewsWithChartPoints: [ViewWithChartPoint] = []
+    public private(set) var viewsWithChartPoints: [ViewWithChartPoint] = []
     
     private let delayBetweenItems: Float = 0
     

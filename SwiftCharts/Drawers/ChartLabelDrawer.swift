@@ -63,6 +63,10 @@ public class ChartLabelDrawer: ChartContextDrawer {
         return ChartUtils.textSize(self.text, font: self.settings.font)
     }
     
+    var frame: CGRect {
+        return CGRectMake(screenLoc.x, screenLoc.y, size.width, size.height)
+    }
+    
     init(text: String, screenLoc: CGPoint, settings: ChartLabelSettings) {
         self.text = text
         self.screenLoc = screenLoc

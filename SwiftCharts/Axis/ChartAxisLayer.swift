@@ -26,6 +26,9 @@ public protocol ChartAxisLayer: ChartLayer {
     /// The screen locations that corresponds with the axis values
     var axisValuesScreenLocs: [CGFloat] {get}
 
+    /// The axis values with their respective frames relative to the chart's view
+    var axisValuesWithFrames: [(axisValue: ChartAxisValue, frames: [CGRect])] {get}
+    
     /// The screen locations that correspond with the visible axis values
     var visibleAxisValuesScreenLocs: [CGFloat] {get}
 

@@ -88,15 +88,16 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         return self.rowHeightsForRows(rows)
     }
     
-    override func generateLabelDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
+    override func generateLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         
         let spacingLabelBetweenAxis = self.settings.labelsSpacing
         
         let rowHeights = self.rowHeights
         
-        // generate all the label drawers, in a flat list
+        // generate label drawers for each axis value and return them bundled with the respective axis value.
         return self.axisValues.flatMap {axisValue in
-            return Array(axisValue.labels.enumerate()).map {index, label in
+
+            let labelDrawers: [ChartLabelDrawer] = axisValue.labels.enumerate().map {index, label in
                 let rowY = self.calculateRowY(rowHeights: rowHeights, rowIndex: index, spacing: spacingLabelBetweenAxis)
                 
                 let x = self.screenLocForScalar(axisValue.scalar)
@@ -109,6 +110,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
                 labelDrawer.hidden = label.hidden
                 return labelDrawer
             }
+            return ChartAxisValueLabelDrawers(axisValue, labelDrawers)
         }
     }
     
