@@ -35,7 +35,7 @@ public class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoin
         let view = UIView(frame: chart.bounds)
         self.chart = chart
 
-        panGestureRecognizer.addTarget(self, action: "handlePan:")
+        panGestureRecognizer.addTarget(self, action: #selector(handlePan(_:)))
 
         if panGestureRecognizer.view == nil {
             view.addGestureRecognizer(panGestureRecognizer)

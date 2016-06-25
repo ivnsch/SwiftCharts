@@ -73,6 +73,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
             case .Tracker:
                 self.setSplitSwipeEnabled(false)
                 self.showExampleController(TrackerExample())
+            case .MultiTracker:
+                self.setSplitSwipeEnabled(false)
+                self.showExampleController(MultiTrackerExample())
             case .EqualSpacing:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(EqualSpacingExample())
