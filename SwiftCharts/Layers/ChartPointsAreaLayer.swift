@@ -15,7 +15,7 @@ public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
     private let animDelay: Float
     private let addContainerPoints: Bool
     
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], areaColor: UIColor, animDuration: Float, animDelay: Float, addContainerPoints: Bool) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], areaColor: UIColor, animDuration: Float, animDelay: Float, addContainerPoints: Bool) {
         self.areaColor = areaColor
         self.animDuration = animDuration
         self.animDelay = animDelay

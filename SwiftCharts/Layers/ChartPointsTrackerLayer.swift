@@ -23,7 +23,7 @@ public class ChartPointsTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }()
     
     
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], locChangedFunc: (CGPoint) -> (), lineColor: UIColor = UIColor.blackColor(), lineWidth: CGFloat = 1) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], locChangedFunc: (CGPoint) -> (), lineColor: UIColor = UIColor.blackColor(), lineWidth: CGFloat = 1) {
         self.locChangedFunc = locChangedFunc
         self.lineColor = lineColor
         self.lineWidth = lineWidth

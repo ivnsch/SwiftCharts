@@ -61,7 +61,7 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
     private var view: TrackerView?
     
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], lineColor: UIColor, animDuration: Float, animDelay: Float, settings: ChartPointsLineTrackerLayerSettings) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], lineColor: UIColor, animDuration: Float, animDelay: Float, settings: ChartPointsLineTrackerLayerSettings) {
         self.lineColor = lineColor
         self.animDuration = animDuration
         self.animDelay = animDelay
@@ -163,7 +163,7 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
 
             // Select point with smallest distance to touch point.
             // If there's only one intersection, returns intersection. If there's no intersection returns nil.
-            var intersectionMaybe: CGPoint? = {
+            let intersectionMaybe: CGPoint? = {
                 var minDistancePoint: (distance: Float, point: CGPoint?) = (MAXFLOAT, nil)
                 for intersection in intersections {
                     let distance = hypotf(Float(intersection.x - touchPoint.x), Float(intersection.y - touchPoint.y))
@@ -189,27 +189,15 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
                     }, completion: { (Bool) -> Void in
                 })
                 
-                var w: CGFloat = self.settings.thumbSize
-                var h: CGFloat = self.settings.thumbSize
+                let w: CGFloat = self.settings.thumbSize
+                let h: CGFloat = self.settings.thumbSize
                 self.currentPositionLineOverlay.frame = CGRectMake(intersection.x, 0, 1, view.frame.size.height)
                 self.thumb.frame = CGRectMake(intersection.x - w/2, intersection.y - h/2, w, h)
                 
-                // Calculate scalar corresponding to intersection screen location along axis
-                func scalar(axis: ChartAxisLayer, intersection: CGFloat) -> Double {
-                    let s1 = axis.axisValues[0].scalar
-                    let sl1 = axis.screenLocForScalar(s1)
-                    let s2 = axis.axisValues[1].scalar
-                    let sl2 = axis.screenLocForScalar(s2)
-                    
-                    let factor = (s2 - s1) / Double(sl2 - sl1)
-                    let sl = Double(intersection - sl1)
-                    return sl * Double(factor) + Double(s1)
-                }
-                
                 if self.chartPointsModels.count > 1 {
 
-                    let xScalar = scalar(self.xAxis, intersection: intersection.x)
-                    let yScalar = scalar(self.yAxis, intersection: intersection.y)
+                    let xScalar = self.xAxis.scalarForScreenLoc(intersection.x)
+                    let yScalar = self.yAxis.scalarForScreenLoc(intersection.y)
                     
                     let dummyModel = self.chartPointsModels[0]
                     let x = dummyModel.chartPoint.x.copy(xScalar)

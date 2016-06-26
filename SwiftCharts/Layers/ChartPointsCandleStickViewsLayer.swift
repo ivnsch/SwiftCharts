@@ -10,7 +10,7 @@ import UIKit
 
 public class ChartPointsCandleStickViewsLayer<T: ChartPointCandleStick, U: ChartCandleStickView>: ChartPointsViewsLayer<ChartPointCandleStick, ChartCandleStickView> {
 
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], viewGenerator: ChartPointViewGenerator) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], viewGenerator: ChartPointViewGenerator) {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
     

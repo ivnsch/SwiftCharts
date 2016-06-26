@@ -15,12 +15,12 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
 
     /// The start point of the axis line.
     override var lineP1: CGPoint {
-        return self.p1
+        return self.origin
     }
 
     /// The end point of the axis line.
     override var lineP2: CGPoint {
-        return self.p2
+        return self.end
     }
     
     override func initDrawers() {
@@ -35,9 +35,9 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
     
     override func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {
         let halfStrokeWidth = self.settings.axisStrokeWidth / 2 // we want that the stroke begins at the beginning of the frame, not in the middle of it
-        let x = self.p1.x + offset + halfStrokeWidth
-        let p1 = CGPointMake(x, self.p1.y)
-        let p2 = CGPointMake(x, self.p2.y)
+        let x = self.origin.x + offset + halfStrokeWidth
+        let p1 = CGPointMake(x, self.origin.y)
+        let p2 = CGPointMake(x, self.end.y)
         return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
     }
     
@@ -45,9 +45,9 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         var labelsX: CGFloat
         switch textAlignment {
         case .Left, .Default:
-            labelsX = self.p1.x + offset
+            labelsX = self.origin.x + offset
         case .Right:
-            labelsX = self.p1.x + offset + self.labelsMaxWidth - labelWidth
+            labelsX = self.origin.x + offset + self.labelsMaxWidth - labelWidth
         }
         return labelsX
     }

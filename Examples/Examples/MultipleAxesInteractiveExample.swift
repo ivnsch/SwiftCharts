@@ -26,10 +26,10 @@ class MultipleAxesInteractiveExample: UIViewController {
     private var viewFrame: CGRect!
     private var chartInnerFrame: CGRect!
     
-    private var yLowAxes: [ChartAxisLayer]!
-    private var yHighAxes: [ChartAxisLayer]!
-    private var xLowAxes: [ChartAxisLayer]!
-    private var xHighAxes: [ChartAxisLayer]!
+    private var yLowAxesLayers: [ChartAxisLayer]!
+    private var yHighAxesLayers: [ChartAxisLayer]!
+    private var xLowAxesLayers: [ChartAxisLayer]!
+    private var xHighAxesLayers: [ChartAxisLayer]!
     
     private var guideLinesLayer0: ChartLayer!
     private var guideLinesLayer1: ChartLayer!
@@ -155,20 +155,20 @@ class MultipleAxesInteractiveExample: UIViewController {
                 self.chartInnerFrame = coordsSpace.chartInnerFrame
                 
                 // create axes
-                self.yLowAxes = coordsSpace.yLowAxes
-                self.yHighAxes = coordsSpace.yHighAxes
-                self.xLowAxes = coordsSpace.xLowAxes
-                self.xHighAxes = coordsSpace.xHighAxes
+                self.yLowAxesLayers = coordsSpace.yLowAxesLayers
+                self.yHighAxesLayers = coordsSpace.yHighAxesLayers
+                self.xLowAxesLayers = coordsSpace.xLowAxesLayers
+                self.xHighAxesLayers = coordsSpace.xHighAxesLayers
                 
                 // create layers with references to axes
                 let guideLinesLayer0Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[0], linesWidth: ExamplesDefaults.guidelinesWidth)
-                self.guideLinesLayer0 = ChartGuideLinesDottedLayer(xAxis: self.xLowAxes[0], yAxis: self.yLowAxes[1], innerFrame: self.chartInnerFrame, settings: guideLinesLayer0Settings)
+                self.guideLinesLayer0 = ChartGuideLinesDottedLayer(xAxisLayer: self.xLowAxesLayers[0], yAxisLayer: self.yLowAxesLayers[1], innerFrame: self.chartInnerFrame, settings: guideLinesLayer0Settings)
                 let guideLinesLayer1Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[1], linesWidth: ExamplesDefaults.guidelinesWidth)
-                self.guideLinesLayer1 = ChartGuideLinesDottedLayer(xAxis: self.xLowAxes[1], yAxis: self.yLowAxes[0], innerFrame: self.chartInnerFrame, settings: guideLinesLayer1Settings)
+                self.guideLinesLayer1 = ChartGuideLinesDottedLayer(xAxisLayer: self.xLowAxesLayers[1], yAxisLayer: self.yLowAxesLayers[0], innerFrame: self.chartInnerFrame, settings: guideLinesLayer1Settings)
                 let guideLinesLayer3Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[2], linesWidth: ExamplesDefaults.guidelinesWidth)
-                self.guideLinesLayer2 = ChartGuideLinesDottedLayer(xAxis: self.xHighAxes[1], yAxis: self.yHighAxes[0], innerFrame: self.chartInnerFrame, settings: guideLinesLayer3Settings)
+                self.guideLinesLayer2 = ChartGuideLinesDottedLayer(xAxisLayer: self.xHighAxesLayers[1], yAxisLayer: self.yHighAxesLayers[0], innerFrame: self.chartInnerFrame, settings: guideLinesLayer3Settings)
                 let guideLinesLayer4Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[3], linesWidth: ExamplesDefaults.guidelinesWidth)
-                self.guideLinesLayer3 = ChartGuideLinesDottedLayer(xAxis: self.xHighAxes[0], yAxis: self.yHighAxes[1], innerFrame: self.chartInnerFrame, settings: guideLinesLayer4Settings)
+                self.guideLinesLayer3 = ChartGuideLinesDottedLayer(xAxisLayer: self.xHighAxesLayers[0], yAxisLayer: self.yHighAxesLayers[1], innerFrame: self.chartInnerFrame, settings: guideLinesLayer4Settings)
                 
                 self.showChart(lineAnimDuration: 1)
             }
@@ -185,10 +185,10 @@ class MultipleAxesInteractiveExample: UIViewController {
         let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: bgColors[2], animDuration: animDuration, animDelay: 0)
         let lineModel3 = ChartLineModel(chartPoints: chartPoints3, lineColor: bgColors[3], animDuration: animDuration, animDelay: 0)
         
-        let chartPointsLineLayer0 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[0], yAxis: yLowAxes[1], innerFrame: chartInnerFrame, lineModels: [lineModel0])
-        let chartPointsLineLayer1 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[1], yAxis: yLowAxes[0], innerFrame: chartInnerFrame, lineModels: [lineModel1])
-        let chartPointsLineLayer2 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[1], yAxis: yHighAxes[0], innerFrame: chartInnerFrame, lineModels: [lineModel2])
-        let chartPointsLineLayer3 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[0], yAxis: yHighAxes[1], innerFrame: chartInnerFrame, lineModels: [lineModel3])
+        let chartPointsLineLayer0 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxesLayers[0].axis, yAxis: yLowAxesLayers[1].axis, innerFrame: chartInnerFrame, lineModels: [lineModel0])
+        let chartPointsLineLayer1 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxesLayers[1].axis, yAxis: yLowAxesLayers[0].axis, innerFrame: chartInnerFrame, lineModels: [lineModel1])
+        let chartPointsLineLayer2 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxesLayers[1].axis, yAxis: yHighAxesLayers[0].axis, innerFrame: chartInnerFrame, lineModels: [lineModel2])
+        let chartPointsLineLayer3 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxesLayers[0].axis, yAxis: yHighAxesLayers[1].axis, innerFrame: chartInnerFrame, lineModels: [lineModel3])
         
         return [chartPointsLineLayer0, chartPointsLineLayer1, chartPointsLineLayer2, chartPointsLineLayer3]
     }
@@ -206,10 +206,10 @@ class MultipleAxesInteractiveExample: UIViewController {
         }
         
         let layers: [[ChartLayer]] = [
-            [yLowAxes[1], xLowAxes[0], lineLayers[0]] + maybeGuides(guideLinesLayer0),
-            [yLowAxes[0], xLowAxes[1], lineLayers[1]] + maybeGuides(guideLinesLayer1),
-            [yHighAxes[0], xHighAxes[1], lineLayers[2]] + maybeGuides(guideLinesLayer2),
-            [yHighAxes[1], xHighAxes[0], lineLayers[3]] + maybeGuides(guideLinesLayer3)
+            [yLowAxesLayers[1], xLowAxesLayers[0], lineLayers[0]] + maybeGuides(guideLinesLayer0),
+            [yLowAxesLayers[0], xLowAxesLayers[1], lineLayers[1]] + maybeGuides(guideLinesLayer1),
+            [yHighAxesLayers[0], xHighAxesLayers[1], lineLayers[2]] + maybeGuides(guideLinesLayer2),
+            [yHighAxesLayers[1], xHighAxesLayers[0], lineLayers[3]] + maybeGuides(guideLinesLayer3)
         ]
         
         return selectedLayersFlags.enumerate().reduce(Array<ChartLayer>()) {selectedLayers, inTuple in

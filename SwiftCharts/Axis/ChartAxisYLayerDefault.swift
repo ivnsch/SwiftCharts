@@ -12,7 +12,7 @@ import UIKit
 class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
     override var height: CGFloat {
-        return self.p2.y - self.p1.y
+        return self.end.y - self.origin.y
     }
     
     var labelsMaxWidth: CGFloat {
@@ -30,10 +30,6 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     override var width: CGFloat {
         return self.labelsMaxWidth + self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingY + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsWidth
     }
-    
-    override var length: CGFloat {
-        return p1.y - p2.y
-    }
 
     override func generateAxisTitleLabelsDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
         
@@ -47,8 +43,8 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             let settings = axisLabel.settings
             let newSettings = ChartLabelSettings(font: settings.font, fontColor: settings.fontColor, rotation: settings.rotation, rotationKeep: settings.rotationKeep)
             let axisLabelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(
-                self.p1.x + offset,
-                self.p2.y + ((self.p1.y - self.p2.y) / 2) - (labelSize.height / 2)), settings: newSettings)
+                self.origin.x + offset,
+                self.end.y + ((self.origin.y - self.end.y) / 2) - (labelSize.height / 2)), settings: newSettings)
             
             return [axisLabelDrawer]
             
@@ -56,12 +52,6 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             return []
         }
     }
-
-    
-    override func screenLocForScalar(scalar: Double, firstAxisScalar: Double) -> CGFloat {
-        return self.p1.y - self.innerScreenLocForScalar(scalar, firstAxisScalar: firstAxisScalar)
-    }
-    
     
     override func generateLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         
@@ -71,7 +61,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         
         for axisValue in axisValues {
             let scalar = axisValue.scalar
-            let y = self.screenLocForScalar(scalar)
+            let y = self.axis.screenLocForScalar(scalar)
             if let axisLabel = axisValue.labels.first { // for now y axis supports only one label x value
                 let labelSize = ChartUtils.textSize(axisLabel.text, font: axisLabel.settings.font)
                 let labelY = y - (labelSize.height / 2)

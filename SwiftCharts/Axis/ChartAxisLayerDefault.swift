@@ -61,8 +61,11 @@ typealias ChartAxisValueLabelDrawers = (axisValue: ChartAxisValue, drawers: [Cha
 /// A default implementation of ChartAxisLayer, which delegates drawing of the axis line and labels to the appropriate Drawers
 class ChartAxisLayerDefault: ChartAxisLayer {
     
-    let p1: CGPoint
-    let p2: CGPoint
+    var axis: ChartAxis
+
+    let origin: CGPoint // top left corner of frame
+    let end: CGPoint // end starting from origin, parallel to axis
+    
     let axisValues: [ChartAxisValue]
     let axisTitleLabels: [ChartAxisLabel]
     let settings: ChartAxisSettings
@@ -72,12 +75,12 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     var labelDrawers: [ChartAxisValueLabelDrawers] = []
     var axisTitleLabelDrawers: [ChartLabelDrawer] = []
     
-    var rect: CGRect {
-        return CGRectMake(self.p1.x, self.p1.y, self.width, self.height)
+    var frame: CGRect {
+        return CGRectMake(self.origin.x, self.origin.y, self.width, self.height)
     }
     
     var axisValuesScreenLocs: [CGFloat] {
-        return self.axisValues.map{self.screenLocForScalar($0.scalar)}
+        return self.axisValues.map{self.axis.screenLocForScalar($0.scalar)}
     }
 
     var axisValuesWithFrames: [(axisValue: ChartAxisValue, frames: [CGRect])] {
@@ -88,7 +91,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     
     var visibleAxisValuesScreenLocs: [CGFloat] {
         return self.axisValues.reduce(Array<CGFloat>()) {u, axisValue in
-            return axisValue.hidden ? u : u + [self.screenLocForScalar(axisValue.scalar)]
+            return axisValue.hidden ? u : u + [self.axis.screenLocForScalar(axisValue.scalar)]
         }
     }
     
@@ -99,19 +102,6 @@ class ChartAxisLayerDefault: ChartAxisLayer {
             let previousScreenLoc = tuple.1
             return (min(minSpace, abs(screenLoc - previousScreenLoc)), screenLoc)
         }.0
-    }
-
-    var length: CGFloat {
-        fatalError("override")
-    }
-
-    /// The difference between the first and last axis values
-    var modelLength: CGFloat {
-        if let first = self.axisValues.first, let last = self.axisValues.last {
-            return CGFloat(last.scalar - first.scalar)
-        } else {
-            return 0
-        }
     }
     
     lazy var axisTitleLabelsHeight: CGFloat = {
@@ -147,9 +137,10 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     }
 
     // NOTE: Assumes axis values sorted by scalar (can be increasing or decreasing)
-    required init(p1: CGPoint, p2: CGPoint, axisValues: [ChartAxisValue], axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)  {
-        self.p1 = p1
-        self.p2 = p2
+    required init(axis: ChartAxis, origin: CGPoint, end: CGPoint, axisValues: [ChartAxisValue], axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)  {
+        self.axis = axis
+        self.origin = origin
+        self.end = end
         self.axisValues = axisValues
         self.axisTitleLabels = axisTitleLabels
         self.settings = settings
@@ -199,49 +190,4 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     func generateLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         fatalError("override")
     }
-
-    /**
-     Calculates the location for the scalar value in the chart's coordinates.
-     
-     If there are no axis values in this axis layer, returns 0.
-
-     - parameter scalar: An axis value's scalar value
-
-     - returns: The location along the axis' dimension that the axis value should be displayed at
-     */
-    final func screenLocForScalar(scalar: Double) -> CGFloat {
-        if let firstScalar = self.axisValues.first?.scalar {
-            return self.screenLocForScalar(scalar, firstAxisScalar: firstScalar)
-        } else {
-            print("Warning: requesting empty axis for screen location")
-            return 0
-        }
-    }
-
-    /**
-     Finds the location for the scalar value within the bounds of the axis layer
-
-     - parameter scalar:          The axis value's scalar value
-     - parameter firstAxisScalar: The first axis value's scalar value, used to find how many "steps" away the given scalar value is from the first value
-
-     - returns: The location of the axis value within the bounds of the axis layer
-     */
-    func innerScreenLocForScalar(scalar: Double, firstAxisScalar: Double) -> CGFloat {
-        return self.length * CGFloat(scalar - firstAxisScalar) / self.modelLength
-    }
-
-    /**
-     Calculates the location for the scalar value in the chart's coordinates.
-
-     - parameter scalar:          An axis value's scalar value
-     - parameter firstAxisScalar: The first axis value's scalar value, used to find how many "steps" away the given scalar value is from the first value
-
-     - returns: The screen location along the axis' dimension that the axis value should be displayed at
-     */
-    func screenLocForScalar(scalar: Double, firstAxisScalar: Double) -> CGFloat {
-        fatalError("must override")
-    }
-    
-    
-
 }

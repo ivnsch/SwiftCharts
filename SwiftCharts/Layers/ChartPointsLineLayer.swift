@@ -29,7 +29,7 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     private var lineViews: [ChartLinesView] = []
     private let pathGenerator: ChartLinesViewPathGenerator
 
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0) {
         
         self.lineModels = lineModels
         self.pathGenerator = pathGenerator

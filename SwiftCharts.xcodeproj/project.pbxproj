@@ -185,6 +185,9 @@
 		EB08E2331B93A15E0030081C /* ChartAxisValueDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */; };
 		EB4CE97F1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4CE97E1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift */; };
 		EB9B7E6B1BB8A575001B89D4 /* StraightLinePathGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9B7E6A1BB8A575001B89D4 /* StraightLinePathGenerator.swift */; };
+		EB9C88A31D1F365D003C19D1 /* ChartAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C88A21D1F365D003C19D1 /* ChartAxis.swift */; };
+		EB9C88A51D2061F0003C19D1 /* ChartAxisX.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C88A41D2061F0003C19D1 /* ChartAxisX.swift */; };
+		EB9C88A71D2061FA003C19D1 /* ChartAxisY.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C88A61D2061FA003C19D1 /* ChartAxisY.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -323,6 +326,9 @@
 		EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueDouble.swift; sourceTree = "<group>"; };
 		EB4CE97E1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueDoubleScreenLoc.swift; sourceTree = "<group>"; };
 		EB9B7E6A1BB8A575001B89D4 /* StraightLinePathGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StraightLinePathGenerator.swift; sourceTree = "<group>"; };
+		EB9C88A21D1F365D003C19D1 /* ChartAxis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxis.swift; sourceTree = "<group>"; };
+		EB9C88A41D2061F0003C19D1 /* ChartAxisX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisX.swift; sourceTree = "<group>"; };
+		EB9C88A61D2061FA003C19D1 /* ChartAxisY.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisY.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -490,6 +496,9 @@
 				06405DCB1B8AA81D00A689FF /* ChartAxisYHighLayerDefault.swift */,
 				06405DCC1B8AA81D00A689FF /* ChartAxisYLayerDefault.swift */,
 				06405DCD1B8AA81D00A689FF /* ChartAxisYLowLayerDefault.swift */,
+				EB9C88A21D1F365D003C19D1 /* ChartAxis.swift */,
+				EB9C88A41D2061F0003C19D1 /* ChartAxisX.swift */,
+				EB9C88A61D2061FA003C19D1 /* ChartAxisY.swift */,
 			);
 			path = Axis;
 			sourceTree = "<group>";
@@ -796,6 +805,7 @@
 			files = (
 				06405E411B8AA81D00A689FF /* ChartStackedBarsLayer.swift in Sources */,
 				06405E281B8AA81D00A689FF /* ChartConfig.swift in Sources */,
+				EB9C88A51D2061F0003C19D1 /* ChartAxisX.swift in Sources */,
 				06405E351B8AA81D00A689FF /* ChartLayerBase.swift in Sources */,
 				06405E261B8AA81D00A689FF /* ChartViewsConflictSolver.swift in Sources */,
 				06405E381B8AA81D00A689FF /* ChartPointsCandleStickViewsLayer.swift in Sources */,
@@ -808,6 +818,7 @@
 				06405E3D1B8AA81D00A689FF /* ChartPointsSingleViewLayer.swift in Sources */,
 				06405E431B8AA81D00A689FF /* ChartAreasView.swift in Sources */,
 				06405E3B1B8AA81D00A689FF /* ChartPointsLineTrackerLayer.swift in Sources */,
+				EB9C88A31D1F365D003C19D1 /* ChartAxis.swift in Sources */,
 				06405E221B8AA81D00A689FF /* ChartPoint.swift in Sources */,
 				06405E101B8AA81D00A689FF /* ChartAxisLayerDefault.swift in Sources */,
 				06405E341B8AA81D00A689FF /* ChartLayer.swift in Sources */,
@@ -832,6 +843,7 @@
 				06405E4C1B8AA81D00A689FF /* CubicLinePathGenerator.swift in Sources */,
 				06405E2D1B8AA81D00A689FF /* ChartLineDrawer.swift in Sources */,
 				06405E151B8AA81D00A689FF /* ChartAxisXLowLayerDefault.swift in Sources */,
+				EB9C88A71D2061FA003C19D1 /* ChartAxisY.swift in Sources */,
 				06405E3A1B8AA81D00A689FF /* ChartPointsLineLayer.swift in Sources */,
 				06405E231B8AA81D00A689FF /* ChartPointBubble.swift in Sources */,
 				06405E3C1B8AA81D00A689FF /* ChartPointsScatterLayer.swift in Sources */,

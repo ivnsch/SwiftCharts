@@ -12,7 +12,7 @@ import UIKit
 class ChartAxisXLayerDefault: ChartAxisLayerDefault {
    
     override var width: CGFloat {
-        return self.p2.x - self.p1.x
+        return self.end.x - self.origin.x
     }
     
     lazy var labelsTotalHeight: CGFloat = {
@@ -28,18 +28,14 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     override var height: CGFloat {
         return self.labelsTotalHeight + self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingX + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsHeight
     }
-    
-    override var length: CGFloat {
-        return p2.x - p1.x
-    }
-    
+
     override func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         super.chartViewDrawing(context: context, chart: chart)
     }
     
     override func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {
-        let p1 = CGPointMake(self.p1.x, self.p1.y + offset)
-        let p2 = CGPointMake(self.p2.x, self.p2.y + offset)
+        let p1 = CGPointMake(self.origin.x, self.origin.y + offset)
+        let p2 = CGPointMake(self.end.x, self.end.y + offset)
         return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
     }
     
@@ -57,18 +53,13 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
             let rowY = self.calculateRowY(rowHeights: rowHeights, rowIndex: index, spacing: spacingLabelBetweenAxis)
             
             let labelWidth = ChartUtils.textSize(label.text, font: label.settings.font).width
-            let x = (self.p2.x - self.p1.x) / 2 + self.p1.x - labelWidth / 2
-            let y = self.p1.y + offset + rowY
+            let x = (self.end.x - self.origin.x) / 2 + self.origin.x - labelWidth / 2
+            let y = self.origin.y + offset + rowY
             
             let drawer = ChartLabelDrawer(text: label.text, screenLoc: CGPointMake(x, y), settings: label.settings)
             drawer.hidden = label.hidden
             return drawer
         }
-    }
-    
-    
-    override func screenLocForScalar(scalar: Double, firstAxisScalar: Double) -> CGFloat {
-        return self.p1.x + self.innerScreenLocForScalar(scalar, firstAxisScalar: firstAxisScalar)
     }
     
     // calculate row heights (max text height) for each row
@@ -100,8 +91,8 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
             let labelDrawers: [ChartLabelDrawer] = axisValue.labels.enumerate().map {index, label in
                 let rowY = self.calculateRowY(rowHeights: rowHeights, rowIndex: index, spacing: spacingLabelBetweenAxis)
                 
-                let x = self.screenLocForScalar(axisValue.scalar)
-                let y = self.p1.y + offset + rowY
+                let x = self.axis.screenLocForScalar(axisValue.scalar)
+                let y = self.origin.y + offset + rowY
                 
                 let labelSize = ChartUtils.textSize(label.text, font: label.settings.font)
                 let labelX = x - (labelSize.width / 2)

@@ -12,7 +12,7 @@ public class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
     private var view: UIView?
 
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T]) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T]) {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
     }
     

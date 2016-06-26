@@ -30,7 +30,7 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
     
     private let animDuration: Float
 
-    init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<T>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
+    init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, groups: [ChartPointsBarGroup<T>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
         self.groups = groups
         self.horizontal = horizontal
         self.barSpacing = barSpacing
@@ -56,7 +56,7 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
 
         let barsGenerator = self.barsGenerator(barWidth: barWidth)
         
-        let calculateConstantScreenLoc: (axis: ChartAxisLayer, index: Int, group: ChartPointsBarGroup<T>) -> CGFloat = {axis, index, group in
+        let calculateConstantScreenLoc: (axis: ChartAxis, index: Int, group: ChartPointsBarGroup<T>) -> CGFloat = {axis, index, group in
             let totalWidth = CGFloat(group.bars.count) * barWidth + ((self.barSpacing ?? 0) * (maxBarCountInGroup - 1))
             let groupCenter = axis.screenLocForScalar(group.constant.scalar)
             let origin = groupCenter - totalWidth / 2
@@ -68,7 +68,7 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
             for (index, bar) in group.bars.enumerate() {
                 
                 let constantScreenLoc: CGFloat = {
-                    if barsGenerator.direction == .LeftToRight {
+                    if barsGenerator.horizontal {
                         return calculateConstantScreenLoc(axis: self.yAxis, index: index, group: group)
                     } else {
                         return calculateConstantScreenLoc(axis: self.xAxis, index: index, group: group)
@@ -85,23 +85,23 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
 public typealias ChartGroupedPlainBarsLayer = ChartGroupedPlainBarsLayer_<Any>
 public class ChartGroupedPlainBarsLayer_<N>: ChartGroupedBarsLayer<ChartBarModel> {
 
-    public override init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
+    public override init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barSpacing: barSpacing, groupSpacing: groupSpacing, animDuration: animDuration)
     }
     
     override func barsGenerator(barWidth barWidth: CGFloat) -> ChartBarsViewGenerator<ChartBarModel> {
-        return ChartBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: barWidth, barSpacing: self.barSpacing)
+        return ChartBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: barWidth)
     }
 }
 
 public typealias ChartGroupedStackedBarsLayer = ChartGroupedStackedBarsLayer_<Any>
 public class ChartGroupedStackedBarsLayer_<N>: ChartGroupedBarsLayer<ChartStackedBarModel> {
     
-    public override init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
+    public override init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barSpacing: barSpacing, groupSpacing: groupSpacing, animDuration: animDuration)
     }
     
     override func barsGenerator(barWidth barWidth: CGFloat) -> ChartBarsViewGenerator<ChartStackedBarModel> {
-        return ChartStackedBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, barWidth: barWidth, barSpacing: barSpacing)
+        return ChartStackedBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, barWidth: barWidth)
     }
 }

@@ -35,22 +35,22 @@ class AreasExample: UIViewController {
         chartSettings.labelsToAxisSpacingX = 20
         chartSettings.labelsToAxisSpacingY = 20
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
-        let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
+        let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
         let c1 = UIColor(red: 0.1, green: 0.1, blue: 0.9, alpha: 0.4)
         let c2 = UIColor(red: 0.9, green: 0.1, blue: 0.1, alpha: 0.4)
         let c3 = UIColor(red: 0.1, green: 0.9, blue: 0.1, alpha: 0.4)
         
         
-        let chartPointsLayer1 = ChartPointsAreaLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints1, areaColor: c1, animDuration: 3, animDelay: 0, addContainerPoints: true)
-        let chartPointsLayer2 = ChartPointsAreaLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints2, areaColor: c2, animDuration: 3, animDelay: 0, addContainerPoints: true)
-        let chartPointsLayer3 = ChartPointsAreaLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints3, areaColor: c3, animDuration: 3, animDelay: 0, addContainerPoints: true)
+        let chartPointsLayer1 = ChartPointsAreaLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints1, areaColor: c1, animDuration: 3, animDelay: 0, addContainerPoints: true)
+        let chartPointsLayer2 = ChartPointsAreaLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints2, areaColor: c2, animDuration: 3, animDelay: 0, addContainerPoints: true)
+        let chartPointsLayer3 = ChartPointsAreaLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints3, areaColor: c3, animDuration: 3, animDelay: 0, addContainerPoints: true)
         
         let lineModel1 = ChartLineModel(chartPoints: chartPoints1, lineColor: UIColor.blackColor(), animDuration: 1, animDelay: 0)
         let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: UIColor.blackColor(), animDuration: 1, animDelay: 0)
         let lineModel3 = ChartLineModel(chartPoints: chartPoints3, lineColor: UIColor.blackColor(), animDuration: 1, animDelay: 0)
         
-        let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel1, lineModel2, lineModel3])
+        let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, lineModels: [lineModel1, lineModel2, lineModel3])
         
         var popups: [UIView] = []
         var selectedView: ChartPointTextCircleView?
@@ -107,20 +107,20 @@ class AreasExample: UIViewController {
         }
         
         let itemsDelay: Float = 0.08
-        let chartPointsCircleLayer1 = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints1, viewGenerator: circleViewGenerator, displayDelay: 0.9, delayBetweenItems: itemsDelay)
+        let chartPointsCircleLayer1 = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints1, viewGenerator: circleViewGenerator, displayDelay: 0.9, delayBetweenItems: itemsDelay)
         
-        let chartPointsCircleLayer2 = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints2, viewGenerator: circleViewGenerator, displayDelay: 1.8, delayBetweenItems: itemsDelay)
+        let chartPointsCircleLayer2 = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints2, viewGenerator: circleViewGenerator, displayDelay: 1.8, delayBetweenItems: itemsDelay)
         
-        let chartPointsCircleLayer3 = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints3, viewGenerator: circleViewGenerator, displayDelay: 2.7, delayBetweenItems: itemsDelay)
+        let chartPointsCircleLayer3 = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints3, viewGenerator: circleViewGenerator, displayDelay: 2.7, delayBetweenItems: itemsDelay)
         
         let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
+        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, innerFrame: innerFrame, settings: settings)
         
         let chart = Chart(
             frame: chartFrame,
             layers: [
-                xAxis,
-                yAxis,
+                xAxisLayer,
+                yAxisLayer,
                 guidelinesLayer,
                 chartPointsLayer1,
                 chartPointsLayer2,

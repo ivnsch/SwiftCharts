@@ -15,7 +15,7 @@ public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T
     private let itemWidth: CGFloat
     private let strokeWidth: CGFloat
     
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], itemWidth: CGFloat = 10, strokeWidth: CGFloat = 1) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], itemWidth: CGFloat = 10, strokeWidth: CGFloat = 1) {
         self.itemWidth = itemWidth
         self.strokeWidth = strokeWidth
         

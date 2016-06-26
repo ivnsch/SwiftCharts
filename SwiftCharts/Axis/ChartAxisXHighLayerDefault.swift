@@ -15,12 +15,12 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
 
     /// The start point of the axis line.
     override var lineP1: CGPoint {
-        return CGPointMake(self.p1.x, self.p1.y + self.lineOffset)
+        return CGPointMake(self.origin.x, self.origin.y + self.lineOffset)
     }
 
     /// The end point of the axis line
     override var lineP2: CGPoint {
-        return CGPointMake(self.p2.x, self.p2.y + self.lineOffset)
+        return CGPointMake(self.end.x, self.end.y + self.lineOffset)
     }
 
     /// The offset of the axis labels from the edge of the axis bounds
