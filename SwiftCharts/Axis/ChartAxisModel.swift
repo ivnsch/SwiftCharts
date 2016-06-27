@@ -23,12 +23,14 @@ public class ChartAxisModel {
     /// The axis title lables
     let axisTitleLabels: [ChartAxisLabel]
 
-    public convenience init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.blackColor(), axisTitleLabel: ChartAxisLabel) {
-        self.init(axisValues: axisValues, lineColor: lineColor, axisTitleLabels: [axisTitleLabel])
+    let labelsConflictSolver: ChartAxisLabelsConflictSolver?
+    
+    public convenience init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.blackColor(), axisTitleLabel: ChartAxisLabel, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil) {
+        self.init(axisValues: axisValues, lineColor: lineColor, axisTitleLabels: [axisTitleLabel], labelsConflictSolver: labelsConflictSolver)
     }
 
     /// Convenience initializer to pass a fixed axis value array. The array is mapped to axis values and label generators. 
-    public convenience init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.blackColor(), axisTitleLabels: [ChartAxisLabel] = []) {
+    public convenience init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.blackColor(), axisTitleLabels: [ChartAxisLabel] = [], labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil) {
         var scalars: [Double] = []
         var dict = [Double: [ChartAxisLabel]]()
         for axisValue in axisValues {
@@ -43,14 +45,14 @@ public class ChartAxisModel {
         let fixedArrayGenerator = ChartAxisValuesGeneratorFixed(values: scalars)
         let fixedLabelGenerator = ChartAxisLabelsGeneratorFixed(dict: dict)
         
-        self.init(lineColor: lineColor, firstModelValue: firstModelValue, lastModelValue: lastModelValue, axisTitleLabels: axisTitleLabels, axisValuesGenerator: fixedArrayGenerator, labelsGenerator: fixedLabelGenerator)
+        self.init(lineColor: lineColor, firstModelValue: firstModelValue, lastModelValue: lastModelValue, axisTitleLabels: axisTitleLabels, axisValuesGenerator: fixedArrayGenerator, labelsGenerator: fixedLabelGenerator, labelsConflictSolver: labelsConflictSolver)
     }
     
-    public convenience init(lineColor: UIColor = UIColor.blackColor(), firstModelValue: Double, lastModelValue: Double, axisTitleLabel: ChartAxisLabel, axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator) {
-        self.init(lineColor: lineColor, firstModelValue: firstModelValue, lastModelValue: lastModelValue, axisTitleLabels: [axisTitleLabel], axisValuesGenerator: axisValuesGenerator, labelsGenerator: labelsGenerator)
+    public convenience init(lineColor: UIColor = UIColor.blackColor(), firstModelValue: Double, lastModelValue: Double, axisTitleLabel: ChartAxisLabel, axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil) {
+        self.init(lineColor: lineColor, firstModelValue: firstModelValue, lastModelValue: lastModelValue, axisTitleLabels: [axisTitleLabel], axisValuesGenerator: axisValuesGenerator, labelsGenerator: labelsGenerator, labelsConflictSolver: labelsConflictSolver)
     }
 
-    public init(lineColor: UIColor = UIColor.blackColor(), firstModelValue: Double, lastModelValue: Double, axisTitleLabels: [ChartAxisLabel] = [], axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator) {
+    public init(lineColor: UIColor = UIColor.blackColor(), firstModelValue: Double, lastModelValue: Double, axisTitleLabels: [ChartAxisLabel] = [], axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil) {
         
         self.lineColor = lineColor
         self.firstModelValue = firstModelValue
@@ -58,5 +60,6 @@ public class ChartAxisModel {
         self.axisTitleLabels = axisTitleLabels
         self.axisValuesGenerator = axisValuesGenerator
         self.labelsGenerator = labelsGenerator
+        self.labelsConflictSolver = labelsConflictSolver
     }
 }

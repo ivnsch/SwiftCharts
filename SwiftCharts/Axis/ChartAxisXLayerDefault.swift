@@ -82,7 +82,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         return self.rowHeightsForRows(rows)
     }
     
-    override func generateLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
+    override func generateDirectLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         
         let spacingLabelBetweenAxis = self.settings.labelsSpacing
         

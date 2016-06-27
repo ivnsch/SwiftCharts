@@ -56,7 +56,11 @@ public class ChartAxisSettings {
     }
 }
 
-typealias ChartAxisValueLabelDrawers = (scalar: Double, drawers: [ChartLabelDrawer])
+
+
+
+
+public typealias ChartAxisValueLabelDrawers = (scalar: Double, drawers: [ChartLabelDrawer])
 
 /// A default implementation of ChartAxisLayer, which delegates drawing of the axis line and labels to the appropriate Drawers
 class ChartAxisLayerDefault: ChartAxisLayer {
@@ -78,6 +82,8 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     var lineDrawer: ChartLineDrawer?
     var labelDrawers: [ChartAxisValueLabelDrawers] = []
     var axisTitleLabelDrawers: [ChartLabelDrawer] = []
+    
+    let labelsConflictSolver: ChartAxisLabelsConflictSolver?
     
     var frame: CGRect {
         return CGRectMake(self.origin.x, self.origin.y, self.width, self.height)
@@ -141,7 +147,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     }
 
     // NOTE: Assumes axis values sorted by scalar (can be increasing or decreasing)
-    required init(axis: ChartAxis, origin: CGPoint, end: CGPoint, valuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)  {
+    required init(axis: ChartAxis, origin: CGPoint, end: CGPoint, valuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil)  {
         self.axis = axis
         self.origin = origin
         self.end = end
@@ -149,6 +155,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         self.labelsGenerator = labelsGenerator
         self.axisTitleLabels = axisTitleLabels
         self.settings = settings
+        self.labelsConflictSolver = labelsConflictSolver
         
         self.currentAxisValues = valuesGenerator.generate(axis)
         
@@ -195,7 +202,14 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
     
+    /// Generates label drawers to be displayed on the screen. Calls generateDirectLabelDrawers to generate labels and passes result to an optional conflict solver, which maps the labels array to a new one such that the conflicts are solved. If there's no conflict solver returns the drawers unmodified.
     func generateLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
+        let directLabelDrawers = generateDirectLabelDrawers(offset: offset)
+        return labelsConflictSolver.map{$0.solveConflicts(directLabelDrawers)} ?? directLabelDrawers
+    }
+    
+    /// Generates label drawers which correspond directly to axis values. No conflict solving.
+    func generateDirectLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         fatalError("override")
     }
 }

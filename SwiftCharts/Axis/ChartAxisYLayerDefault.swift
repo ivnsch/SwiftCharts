@@ -53,11 +53,9 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         }
     }
     
-    override func generateLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
+    override func generateDirectLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         
         var drawers: [ChartAxisValueLabelDrawers] = []
-        
-        var lastDrawerWithRect: (drawer: ChartLabelDrawer, rect: CGRect)?
         
         for scalar in self.valuesGenerator.generate(self.axis) {
             let labels = self.labelsGenerator.generate(scalar)
@@ -69,19 +67,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
                 let labelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(labelX, labelY), settings: axisLabel.settings)
 
                 let labelDrawers = ChartAxisValueLabelDrawers(scalar, [labelDrawer])
-                let rect = CGRectMake(labelX, labelY, labelSize.width, labelSize.height)
                 drawers.append(labelDrawers)
-                
-                // move overlapping labels. This is for now a very simple algorithm and doesn't take into account possible overlappings resulting of moving the labels
-                if let (lastDrawer, lastRect) = lastDrawerWithRect {
-                    let intersection = rect.intersect(lastRect)
-                    if intersection != CGRectNull {
-                        labelDrawer.screenLoc = CGPointMake(labelDrawer.screenLoc.x, labelDrawer.screenLoc.y - intersection.height / 2)
-                        lastDrawer.screenLoc = CGPointMake(lastDrawer.screenLoc.x, lastDrawer.screenLoc.y + intersection.height / 2)
-                    }
-                }
-                
-                lastDrawerWithRect = (labelDrawer, rect)
             }
         }
         return drawers
