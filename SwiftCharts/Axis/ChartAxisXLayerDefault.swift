@@ -64,15 +64,18 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     
     // calculate row heights (max text height) for each row
     private func calculateRowHeights() -> [CGFloat] {
+  
+        let axisValuesWithLabels: [(axisValue: Double, labels: [ChartAxisLabel])] = self.currentAxisValues.map {
+            ($0, labelsGenerator.generate($0))
+        }
         
         // organize labels in rows
-        let maxRowCount = self.axisValues.reduce(-1) {maxCount, axisValue in
-            max(maxCount, axisValue.labels.count)
+        let maxRowCount = axisValuesWithLabels.reduce(-1) {maxCount, tuple in
+            max(maxCount, tuple.labels.count)
         }
-        let rows:[[ChartAxisLabel?]] = (0..<maxRowCount).map {row in
-            self.axisValues.map {axisValue in
-                let labels = axisValue.labels
-                return row < labels.count ? labels[row] : nil
+        let rows: [[ChartAxisLabel?]] = (0..<maxRowCount).map {row in
+            axisValuesWithLabels.map {tuple in
+                return row < tuple.labels.count ? tuple.labels[row] : nil
             }
         }
         
@@ -86,12 +89,15 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         let rowHeights = self.rowHeights
         
         // generate label drawers for each axis value and return them bundled with the respective axis value.
-        return self.axisValues.flatMap {axisValue in
+        
+        return self.valuesGenerator.generate(self.axis).flatMap {scalar in
+            
+            let labels = self.labelsGenerator.generate(scalar)
 
-            let labelDrawers: [ChartLabelDrawer] = axisValue.labels.enumerate().map {index, label in
+            let labelDrawers: [ChartLabelDrawer] = labels.enumerate().map {index, label in
                 let rowY = self.calculateRowY(rowHeights: rowHeights, rowIndex: index, spacing: spacingLabelBetweenAxis)
                 
-                let x = self.axis.screenLocForScalar(axisValue.scalar)
+                let x = self.axis.screenLocForScalar(scalar)
                 let y = self.origin.y + offset + rowY
                 
                 let labelSize = ChartUtils.textSize(label.text, font: label.settings.font)
@@ -101,7 +107,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
                 labelDrawer.hidden = label.hidden
                 return labelDrawer
             }
-            return ChartAxisValueLabelDrawers(axisValue, labelDrawers)
+            return ChartAxisValueLabelDrawers(scalar, labelDrawers)
         }
     }
     

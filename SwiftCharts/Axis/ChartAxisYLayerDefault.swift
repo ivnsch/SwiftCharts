@@ -17,7 +17,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
     var labelsMaxWidth: CGFloat {
         if self.labelDrawers.isEmpty {
-            return self.maxLabelWidth(self.axisValues)
+            return self.maxLabelWidth(self.currentAxisValues)
         } else {
             return self.labelDrawers.reduce(0) {maxWidth, labelDrawer in
                 return max(maxWidth, labelDrawer.drawers.reduce(0) {maxWidth, drawer in
@@ -59,17 +59,16 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         
         var lastDrawerWithRect: (drawer: ChartLabelDrawer, rect: CGRect)?
         
-        for axisValue in axisValues {
-            let scalar = axisValue.scalar
+        for scalar in self.valuesGenerator.generate(self.axis) {
+            let labels = self.labelsGenerator.generate(scalar)
             let y = self.axis.screenLocForScalar(scalar)
-            if let axisLabel = axisValue.labels.first { // for now y axis supports only one label x value
+            if let axisLabel = labels.first { // for now y axis supports only one label x value
                 let labelSize = ChartUtils.textSize(axisLabel.text, font: axisLabel.settings.font)
                 let labelY = y - (labelSize.height / 2)
                 let labelX = self.labelsX(offset: offset, labelWidth: labelSize.width, textAlignment: axisLabel.settings.textAlignment)
                 let labelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(labelX, labelY), settings: axisLabel.settings)
-                let labelDrawers = ChartAxisValueLabelDrawers(axisValue, [labelDrawer])
-                labelDrawer.hidden = axisValue.hidden
 
+                let labelDrawers = ChartAxisValueLabelDrawers(scalar, [labelDrawer])
                 let rect = CGRectMake(labelX, labelY, labelSize.width, labelSize.height)
                 drawers.append(labelDrawers)
                 
@@ -97,10 +96,10 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             return max(maxWidth, ChartUtils.textSize(label.text, font: label.settings.font).width)
         }
     }
-    
-    private func maxLabelWidth(axisValues: [ChartAxisValue]) -> CGFloat {
-        return axisValues.reduce(CGFloat(0)) {maxWidth, axisValue in
-            return max(maxWidth, self.maxLabelWidth(axisValue.labels))
+    private func maxLabelWidth(axisValues: [Double]) -> CGFloat {
+        return axisValues.reduce(CGFloat(0)) {maxWidth, value in
+            let labels = self.labelsGenerator.generate(value)
+            return max(maxWidth, maxLabelWidth(labels))
         }
     }
 }

@@ -37,7 +37,7 @@ import UIKit
  */
 public class ChartCoordsSpace {
     
-    public typealias ChartAxisLayerModel = (p1: CGPoint, p2: CGPoint, axisValues: [ChartAxisValue], axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)
+    public typealias ChartAxisLayerModel = (p1: CGPoint, p2: CGPoint, firstModelValue: Double, lastModelValue: Double, axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)
     public typealias ChartAxisLayerGenerator = (ChartAxisLayerModel) -> ChartAxisLayer
     
     private let chartSettings: ChartSettings
@@ -73,30 +73,22 @@ public class ChartCoordsSpace {
      - returns: The coordinate space with generated axis layers
      */
     public convenience init(chartSettings: ChartSettings, chartSize: CGSize, yLowModels: [ChartAxisModel] = [], yHighModels: [ChartAxisModel] = [], xLowModels: [ChartAxisModel] = [], xHighModels: [ChartAxisModel] = []) {
-
-        func axisFirstLast(model: ChartAxisLayerModel) -> (min: Double, max: Double) {
-            return model.axisValues.isEmpty ? (0, 0) : (model.axisValues.first!.scalar, model.axisValues.last!.scalar)
-        }
         
         let yLowGenerator: ChartAxisLayerGenerator = {model in
-            let (first, last) = axisFirstLast(model)
-            let axis = ChartAxisY(first: first, last: last, firstScreen: model.p1.y, lastScreen: model.p2.y)
-            return ChartAxisYLowLayerDefault(axis: axis, origin: model.p1, end: model.p2, axisValues: model.axisValues, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
+            let axis = ChartAxisY(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
+            return ChartAxisYLowLayerDefault(axis: axis, origin: model.p1, end: model.p2, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
         }
         let yHighGenerator: ChartAxisLayerGenerator = {model in
-            let (first, last) = axisFirstLast(model)
-            let axis = ChartAxisY(first: first, last: last, firstScreen: model.p1.y, lastScreen: model.p2.y)
-            return ChartAxisYHighLayerDefault(axis: axis, origin: model.p1, end: model.p2, axisValues: model.axisValues, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
+            let axis = ChartAxisY(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
+            return ChartAxisYHighLayerDefault(axis: axis, origin: model.p1, end: model.p2, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
         }
         let xLowGenerator: ChartAxisLayerGenerator = {model in
-            let (first, last) = axisFirstLast(model)
-            let axis = ChartAxisX(first: first, last: last, firstScreen: model.p1.x, lastScreen: model.p2.x)
-            return ChartAxisXLowLayerDefault(axis: axis, origin: model.p1, end: model.p2, axisValues: model.axisValues, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
+            let axis = ChartAxisX(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
+            return ChartAxisXLowLayerDefault(axis: axis, origin: model.p1, end: model.p2, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
         }
         let xHighGenerator: ChartAxisLayerGenerator = {model in
-            let (first, last) = axisFirstLast(model)
-            let axis = ChartAxisX(first: first, last: last, firstScreen: model.p1.x, lastScreen: model.p2.x)
-            return ChartAxisXHighLayerDefault(axis: axis, origin: model.p1, end: model.p2, axisValues: model.axisValues, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
+            let axis = ChartAxisX(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
+            return ChartAxisXHighLayerDefault(axis: axis, origin: model.p1, end: model.p2, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
         }
         
         self.init(chartSettings: chartSettings, chartSize: chartSize, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels, yLowGenerator: yLowGenerator, yHighGenerator: yHighGenerator, xLowGenerator: xLowGenerator, xHighGenerator: xHighGenerator)
@@ -209,7 +201,7 @@ public class ChartCoordsSpace {
             let axisSettings = ChartAxisSettings(chartSettings)
             axisSettings.lineColor = chartAxisModel.lineColor
             let points = boundingPointsCreator(offset: x)
-            let layer = generator(p1: points.p1, p2: points.p2, axisValues: chartAxisModel.axisValues, axisTitleLabels: chartAxisModel.axisTitleLabels, settings: axisSettings)
+            let layer = generator(p1: points.p1, p2: points.p2, firstModelValue: chartAxisModel.firstModelValue, lastModelValue: chartAxisModel.lastModelValue, axisValuesGenerator: chartAxisModel.axisValuesGenerator, labelsGenerator: chartAxisModel.labelsGenerator, axisTitleLabels: chartAxisModel.axisTitleLabels, settings: axisSettings)
             return (
                 axes: layers + [layer],
                 x: x + nextLayerOffset(layer)

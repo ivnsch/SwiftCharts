@@ -56,7 +56,7 @@ public class ChartAxisSettings {
     }
 }
 
-typealias ChartAxisValueLabelDrawers = (axisValue: ChartAxisValue, drawers: [ChartLabelDrawer])
+typealias ChartAxisValueLabelDrawers = (scalar: Double, drawers: [ChartLabelDrawer])
 
 /// A default implementation of ChartAxisLayer, which delegates drawing of the axis line and labels to the appropriate Drawers
 class ChartAxisLayerDefault: ChartAxisLayer {
@@ -66,7 +66,11 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     let origin: CGPoint // top left corner of frame
     let end: CGPoint // end starting from origin, parallel to axis
     
-    let axisValues: [ChartAxisValue]
+    var currentAxisValues: [Double] = []
+    
+    let valuesGenerator: ChartAxisValuesGenerator
+    let labelsGenerator: ChartAxisLabelsGenerator
+    
     let axisTitleLabels: [ChartAxisLabel]
     let settings: ChartAxisSettings
     
@@ -80,18 +84,18 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     }
     
     var axisValuesScreenLocs: [CGFloat] {
-        return self.axisValues.map{self.axis.screenLocForScalar($0.scalar)}
+        return self.currentAxisValues.map{self.axis.screenLocForScalar($0)}
     }
 
-    var axisValuesWithFrames: [(axisValue: ChartAxisValue, frames: [CGRect])] {
+    var axisValuesWithFrames: [(axisValue: Double, frames: [CGRect])] {
         return labelDrawers.map {(axisValue, drawers) in
             (axisValue: axisValue, frames: drawers.map{$0.frame})
         }
     }
     
     var visibleAxisValuesScreenLocs: [CGFloat] {
-        return self.axisValues.reduce(Array<CGFloat>()) {u, axisValue in
-            return axisValue.hidden ? u : u + [self.axis.screenLocForScalar(axisValue.scalar)]
+        return self.currentAxisValues.reduce(Array<CGFloat>()) {u, scalar in
+            return u + [self.axis.screenLocForScalar(scalar)]
         }
     }
     
@@ -137,17 +141,21 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     }
 
     // NOTE: Assumes axis values sorted by scalar (can be increasing or decreasing)
-    required init(axis: ChartAxis, origin: CGPoint, end: CGPoint, axisValues: [ChartAxisValue], axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)  {
+    required init(axis: ChartAxis, origin: CGPoint, end: CGPoint, valuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)  {
         self.axis = axis
         self.origin = origin
         self.end = end
-        self.axisValues = axisValues
+        self.valuesGenerator = valuesGenerator
+        self.labelsGenerator = labelsGenerator
         self.axisTitleLabels = axisTitleLabels
         self.settings = settings
+        
+        self.currentAxisValues = valuesGenerator.generate(axis)
+        
+        self.initDrawers()
     }
     
     func chartInitialized(chart chart: Chart) {
-        self.initDrawers()
     }
 
     /**

@@ -13,14 +13,12 @@ public struct ChartDividersLayerSettings {
     let linesWidth: CGFloat
     let start: CGFloat // points from start to axis, axis is 0
     let end: CGFloat // points from axis to end, axis is 0
-    let onlyVisibleValues: Bool
     
-    public init(linesColor: UIColor = UIColor.grayColor(), linesWidth: CGFloat = 0.3, start: CGFloat = 5, end: CGFloat = 5, onlyVisibleValues: Bool = false) {
+    public init(linesColor: UIColor = UIColor.grayColor(), linesWidth: CGFloat = 0.3, start: CGFloat = 5, end: CGFloat = 5) {
         self.linesColor = linesColor
         self.linesWidth = linesWidth
         self.start = start
         self.end = end
-        self.onlyVisibleValues = onlyVisibleValues
     }
 }
 
@@ -48,8 +46,7 @@ public class ChartDividersLayer: ChartCoordsSpaceLayer {
         self.yAxisLayer = yAxisLayer
         
         func screenLocs(axisLayer: ChartAxisLayer) -> [CGFloat] {
-            let values = settings.onlyVisibleValues ? axisLayer.axisValues.filter{!$0.hidden} : axisLayer.axisValues
-            return values.map{axisLayer.axis.screenLocForScalar($0.scalar)}
+            return axisLayer.currentAxisValues.map{axisLayer.axis.screenLocForScalar($0)}
         }
         
         self.xScreenLocs = screenLocs(xAxisLayer)

@@ -79,13 +79,13 @@ class MultipleAxesExample: UIViewController {
         let top: CGFloat = 80
         let viewFrame = CGRectMake(0, top, self.view.frame.size.width, self.view.frame.size.height - top - 10)
         
-        let yValues1 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[0]))}, addPaddingSegmentIfEdge: false)
+        let yValues1 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[0]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues2 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints1, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[1]))}, addPaddingSegmentIfEdge: false)
+        let yValues2 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints1, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[1]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues4 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints2, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[2]))}, addPaddingSegmentIfEdge: false)
+        let yValues4 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints2, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[2]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues5 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints3, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[3]))}, addPaddingSegmentIfEdge: false)
+        let yValues5 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints3, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[3]))}, addPaddingSegmentIfEdge: false)
         
         let axisTitleFont = ExamplesDefaults.labelFontSmall
         
