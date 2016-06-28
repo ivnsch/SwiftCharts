@@ -16,6 +16,8 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
     // frame where the layer displays chartpoints
     public var innerFrame: CGRect
     
+    var animationEnabled = true
+    
     public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect) {
         self.xAxis = xAxis
         self.yAxis = yAxis

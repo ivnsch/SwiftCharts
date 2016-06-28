@@ -45,7 +45,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     override public func chartInitialized(chart chart: Chart) {
         super.chartInitialized(chart: chart)
         
-        if self.displayDelay == 0 {
+        if !self.animationEnabled || self.displayDelay == 0 {
             self.display(chart: chart)
         } else {
             dispatch_after(ChartUtils.toDispatchTime(self.displayDelay), dispatch_get_main_queue()) {() -> Void in

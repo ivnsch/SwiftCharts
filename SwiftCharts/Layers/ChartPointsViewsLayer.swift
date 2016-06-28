@@ -33,7 +33,7 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
         
         self.viewsWithChartPoints = self.generateChartPointViews(chartPointModels: self.chartPointsModels, chart: chart)
         
-        if self.delayBetweenItems == 0 {
+        if !self.animationEnabled || self.delayBetweenItems == 0 {
             for v in self.viewsWithChartPoints {chart.addSubview(v.view)}
             
         } else {
@@ -59,7 +59,11 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
             v.view.removeFromSuperview()
         }
 
+        animationEnabled = false
+        
         display(chart: chart)
+        
+        animationEnabled = true
     }
     
     private func generateChartPointViews(chartPointModels chartPointModels: [ChartPointLayerModel<T>], chart: Chart) -> [ViewWithChartPoint] {

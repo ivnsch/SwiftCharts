@@ -59,7 +59,11 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             v.removeFromSuperview()
         }
         
+        animationEnabled = false
+        
         display(chart: chart)
+        
+        animationEnabled = true
     }
     
     override func display(chart chart: Chart) {
@@ -71,8 +75,8 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 frame: chart.bounds,
                 lineColor: screenLine.color,
                 lineWidth: screenLine.lineWidth,
-                animDuration: screenLine.animDuration,
-                animDelay: screenLine.animDelay)
+                animDuration: self.animationEnabled ? screenLine.animDuration : 0,
+                animDelay: self.animationEnabled ? screenLine.animDelay : 0)
             
             self.lineViews.append(lineView)
             lineView.userInteractionEnabled = false
