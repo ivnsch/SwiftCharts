@@ -29,13 +29,15 @@ public class ChartLabelSettings {
         self.textAlignment = textAlignment
     }
     
-    public func copy(font: UIFont? = nil, fontColor: UIColor? = nil, rotation: CGFloat? = nil, rotationKeep: ChartLabelDrawerRotationKeep? = nil, shiftXOnRotation: Bool? = nil) -> ChartLabelSettings {
+    public func copy(font: UIFont? = nil, fontColor: UIColor? = nil, rotation: CGFloat? = nil, rotationKeep: ChartLabelDrawerRotationKeep? = nil, shiftXOnRotation: Bool? = nil, textAlignment: ChartLabelTextAlignment? = nil) -> ChartLabelSettings {
         return ChartLabelSettings(
             font: font ?? self.font,
             fontColor: fontColor ?? self.fontColor,
             rotation: rotation ?? self.rotation,
             rotationKeep: rotationKeep ?? self.rotationKeep,
-            shiftXOnRotation: shiftXOnRotation ?? self.shiftXOnRotation)
+            shiftXOnRotation: shiftXOnRotation ?? self.shiftXOnRotation,
+            textAlignment: textAlignment ?? self.textAlignment
+        )
     }
 }
 
