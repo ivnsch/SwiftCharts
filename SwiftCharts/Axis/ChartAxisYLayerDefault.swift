@@ -31,6 +31,24 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         return self.labelsMaxWidth + self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingY + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsWidth
     }
 
+    
+    override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        
+        if let (_, deltaXLow) = xLow {
+            self.axis.firstScreen = self.axis.firstScreen - deltaXLow
+            self.origin = CGPointMake(self.origin.x, self.origin.y - deltaXLow)
+            self.end = CGPointMake(self.end.x, self.end.y)
+        }
+        
+        if let (_, deltaXHigh) = xHigh {
+            self.axis.lastScreen = self.axis.lastScreen + deltaXHigh
+            self.end = CGPointMake(self.end.x, self.end.y + deltaXHigh)
+        }
+        
+        self.initDrawers()
+    }
+    
     override func generateAxisTitleLabelsDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
         
         if let firstTitleLabel = self.axisTitleLabels.first {

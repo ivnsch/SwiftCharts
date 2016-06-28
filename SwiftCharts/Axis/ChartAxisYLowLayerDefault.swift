@@ -34,9 +34,9 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
     ///          ▼
     ///  Label
     /// ````
-    private lazy var labelsOffset: CGFloat = {
+    private var labelsOffset: CGFloat {
         return self.axisTitleLabelsWidth + self.settings.axisTitleLabelsToLabelsSpacing
-    }()
+    }
 
     /// The offset of the axis line from the edge of the axis bounds.
     ///
@@ -52,9 +52,31 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
     ///          │
     /// ───────  ▼
     /// ````
-    private lazy var lineOffset: CGFloat = {
+    private var lineOffset: CGFloat {
         return self.labelsOffset + self.labelsMaxWidth + self.settings.labelsToAxisSpacingY + self.settings.axisStrokeWidth
-    }()
+    }
+    
+    override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        
+        // Handle resizing of other low y axes
+        if let (yLow, deltaYLow) = yLow where yLow.frame.origin.x < self.origin.x {
+            self.origin = CGPointMake(self.origin.x + deltaYLow, self.origin.y)
+            self.end = CGPointMake(self.end.x + deltaYLow, self.end.y)
+        }
+        
+        self.initDrawers()
+    }
+    
+    override func updateInternal() {
+        guard let chart = self.chart else {return}
+        
+        super.updateInternal()
+    
+        if self.lastFrame.width != self.frame.width {
+            chart.notifyAxisInnerFrameChange(yLow: (layer: self, delta: self.frame.width - self.lastFrame.width))
+        }
+    }
     
     override func initDrawers() {
         self.axisTitleLabelDrawers = self.generateAxisTitleLabelsDrawers(offset: 0)

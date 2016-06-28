@@ -18,4 +18,10 @@ public protocol ChartLayer {
     // Note that everything drawn here will appear behind subviews added by any layer (regardless of position in layers array)
     // Everything done here can also be done adding a subview in chartInialized and drawing on that. The reason this method exists is only performance - as long as we know the layers will appear always behind (e.g. axis lines, guidelines) there's no reason to create new views.
     func chartViewDrawing(context context: CGContextRef, chart: Chart)
-}
+    
+    /// Trigger views update, to match updated model data
+    func update()
+    
+    /// Handle a change of the available inner space caused by an axis change of size in a direction orthogonal to the axis.
+    func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?)
+} 

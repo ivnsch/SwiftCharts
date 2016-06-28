@@ -62,18 +62,20 @@ public class ChartAxisSettings {
 
 public typealias ChartAxisValueLabelDrawers = (scalar: Double, drawers: [ChartLabelDrawer])
 
+public typealias ChartAxisLayerWithFrameDelta = (layer: ChartAxisLayer, delta: CGFloat)
+
 /// A default implementation of ChartAxisLayer, which delegates drawing of the axis line and labels to the appropriate Drawers
 class ChartAxisLayerDefault: ChartAxisLayer {
     
     var axis: ChartAxis
 
-    let origin: CGPoint // top left corner of frame
-    let end: CGPoint // end starting from origin, parallel to axis
+    var origin: CGPoint // top left corner of frame
+    var end: CGPoint // end starting from origin, parallel to axis
     
     var currentAxisValues: [Double] = []
     
     let valuesGenerator: ChartAxisValuesGenerator
-    let labelsGenerator: ChartAxisLabelsGenerator
+    var labelsGenerator: ChartAxisLabelsGenerator
     
     let axisTitleLabels: [ChartAxisLabel]
     let settings: ChartAxisSettings
@@ -84,6 +86,8 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     var axisTitleLabelDrawers: [ChartLabelDrawer] = []
     
     let labelsConflictSolver: ChartAxisLabelsConflictSolver?
+    
+    weak var chart: Chart?
     
     var frame: CGRect {
         return CGRectMake(self.origin.x, self.origin.y, self.width, self.height)
@@ -146,6 +150,9 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
 
+    /// Frame of layer after last update. This is used to detect deltas with the frame resulting from an update. Note that the layer's frame can be altered by only updating the model data (this depends on how the concrete axis layer calculates the frame), which is why this frame is not always identical to the layer's frame directly before calling udpate.
+    var lastFrame: CGRect = CGRectZero
+    
     // NOTE: Assumes axis values sorted by scalar (can be increasing or decreasing)
     required init(axis: ChartAxis, origin: CGPoint, end: CGPoint, valuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil)  {
         self.axis = axis
@@ -160,9 +167,38 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         self.currentAxisValues = valuesGenerator.generate(axis)
         
         self.initDrawers()
+        self.lastFrame = frame
+    }
+
+    func update() {
+        self.prepareUpdate()
+        self.updateInternal()
+        self.postUpdate()
+    }
+    
+    private func clearDrawers() {
+        self.lineDrawer = nil
+        self.labelDrawers = []
+        self.axisTitleLabelDrawers = []
+    }
+    
+    func prepareUpdate() {
+        self.clearDrawers()
+    }
+    
+    func updateInternal() {
+        self.initDrawers()
+    }
+    
+    func postUpdate() {
+        self.lastFrame = frame
+    }
+    
+    func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
     }
     
     func chartInitialized(chart chart: Chart) {
+        self.chart = chart
     }
 
     /**

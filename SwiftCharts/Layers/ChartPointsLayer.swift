@@ -22,7 +22,7 @@ public struct ChartPointLayerModel<T: ChartPoint> {
 
 public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
 
-    public let chartPointsModels: [ChartPointLayerModel<T>]
+    public private(set) var chartPointsModels: [ChartPointLayerModel<T>]
     
     private let displayDelay: Float
     
@@ -43,6 +43,8 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
 
 
     override public func chartInitialized(chart chart: Chart) {
+        super.chartInitialized(chart: chart)
+        
         if self.displayDelay == 0 {
             self.display(chart: chart)
         } else {
@@ -53,6 +55,15 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }
     
     func display(chart chart: Chart) {}
+    
+    public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+    
+        self.chartPointsModels = chartPointsModels.enumerate().map {index, chartPointModel in
+            let screenLoc = CGPointMake(xAxis.screenLocForScalar(chartPointModel.chartPoint.x.scalar), yAxis.screenLocForScalar(chartPointModel.chartPoint.y.scalar))
+            return ChartPointLayerModel(chartPoint: chartPointModel.chartPoint, index: index, screenLoc: screenLoc)
+        }
+    }
     
     public func chartPointScreenLoc(chartPoint: ChartPoint) -> CGPoint {
         return self.modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)

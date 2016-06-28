@@ -15,22 +15,36 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         return self.end.x - self.origin.x
     }
     
-    lazy var labelsTotalHeight: CGFloat = {
+    var labelsTotalHeight: CGFloat {
         return self.rowHeights.reduce(0) {sum, height in
             sum + height + self.settings.labelsSpacing
         }
-    }()
+    }
     
-    lazy var rowHeights: [CGFloat] = {
+    var rowHeights: [CGFloat] {
         return self.calculateRowHeights()
-    }()
+    }
     
     override var height: CGFloat {
         return self.labelsTotalHeight + self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingX + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsHeight
     }
 
-    override func chartViewDrawing(context context: CGContextRef, chart: Chart) {
-        super.chartViewDrawing(context: context, chart: chart)
+    
+    override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        
+        if let (_, deltaYLow) = yLow {
+            self.axis.firstScreen = self.axis.firstScreen + deltaYLow
+            self.origin = CGPointMake(self.origin.x + deltaYLow, self.origin.y)
+            self.end = CGPointMake(self.end.x, self.end.y)
+        }
+        
+        if let (_, deltaYHigh) = yHigh {
+            self.axis.lastScreen = self.axis.lastScreen - deltaYHigh
+            self.end = CGPointMake(self.end.x - deltaYHigh, self.end.y)
+        }
+        
+        self.initDrawers()
     }
     
     override func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {

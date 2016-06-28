@@ -91,6 +91,7 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
     }
     
     public override func chartInitialized(chart chart: Chart) {
+        super.chartInitialized(chart: chart)
         
         let barsGenerator = ChartBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: self.barWidth)
         

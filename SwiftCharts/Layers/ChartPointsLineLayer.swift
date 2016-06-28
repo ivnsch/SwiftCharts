@@ -48,6 +48,19 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             animDelay: lineModel.animDelay
         )
     }
+   
+    public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+
+        guard let chart = chart else {return}
+        
+        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        
+        for v in lineViews {
+            v.removeFromSuperview()
+        }
+        
+        display(chart: chart)
+    }
     
     override func display(chart chart: Chart) {
         let screenLines = self.lineModels.map{self.toScreenLine(lineModel: $0, chart: chart)}

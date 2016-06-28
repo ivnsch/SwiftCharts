@@ -107,7 +107,8 @@ public class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
     }
     
     public override func chartInitialized(chart chart: Chart) {
-
+        super.chartInitialized(chart: chart)
+        
         let barsGenerator = ChartStackedBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: self.barWidth)
         
         for barModel in self.barModels {
