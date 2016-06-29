@@ -13,6 +13,8 @@ public protocol ChartAxisLayer: ChartLayer {
     // Axis, used to map between model values and screen locations
     var axis: ChartAxis {get}
 
+    var labelsGenerator: ChartAxisLabelsGenerator {get set}
+    
     /// Displayed axis values
     var currentAxisValues: [Double] {get}
     

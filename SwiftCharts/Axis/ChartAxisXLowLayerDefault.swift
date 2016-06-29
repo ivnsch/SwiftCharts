@@ -26,6 +26,37 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
     override func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         super.chartViewDrawing(context: context, chart: chart)
     }
+
+    override func prepareUpdate() {
+        super.prepareUpdate()
+        
+        // Move frame before updating drawers
+        let newOriginY = origin.y - (self.frame.height - self.lastFrame.height)
+        origin = CGPointMake(origin.x, newOriginY)
+        end = CGPointMake(end.x,  newOriginY)
+    }
+    
+    override func updateInternal() {
+        guard let chart = self.chart else {return}
+        
+        super.updateInternal()
+
+        if lastFrame.height != self.frame.height {
+            chart.notifyAxisInnerFrameChange(xLow: (layer: self, delta: self.frame.height - self.lastFrame.height))
+        }
+    }
+
+    override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        
+        // Handle resizing of other low x axes
+        if let (xLow, deltaXLow) = xLow where xLow.frame.maxY > self.frame.maxY {
+            self.origin = CGPointMake(self.origin.x, self.origin.y - deltaXLow)
+            self.end = CGPointMake(self.end.x, self.end.y - deltaXLow)
+        }
+        
+        self.initDrawers()
+    }
     
     override func initDrawers() {
         self.lineDrawer = self.generateLineDrawer(offset: 0)

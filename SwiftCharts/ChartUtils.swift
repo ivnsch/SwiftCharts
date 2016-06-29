@@ -63,4 +63,14 @@ public class ChartUtils {
     public class func toDispatchTime(secs: Float) -> dispatch_time_t {
         return dispatch_time(DISPATCH_TIME_NOW, Int64(Double(secs) * Double(NSEC_PER_SEC)))
     }
+    
+    
+    public class func insetBy(rect: CGRect, dx: CGFloat = 0, dy: CGFloat = 0, dw: CGFloat = 0, dh: CGFloat = 0) -> CGRect {
+        return CGRectMake(
+            rect.origin.x + dx,
+            rect.origin.y + dy,
+            rect.width - dw - dx,
+            rect.height - dh - dy
+        )
+    }
 }

@@ -14,11 +14,20 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
     let yAxis: ChartAxis
     
     // frame where the layer displays chartpoints
-    public let innerFrame: CGRect
+    public var innerFrame: CGRect
     
     public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect) {
         self.xAxis = xAxis
         self.yAxis = yAxis
         self.innerFrame = innerFrame
+    }
+    
+    public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        
+        func default0(axisWithDeltaMaybe: ChartAxisLayerWithFrameDelta?) -> CGFloat {
+            return axisWithDeltaMaybe?.delta ?? 0
+        }
+        
+        self.innerFrame = ChartUtils.insetBy(self.innerFrame, dx: default0(yLow), dy: default0(xHigh), dw: default0(yHigh), dh: default0(xLow))
     }
 }

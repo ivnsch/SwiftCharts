@@ -17,11 +17,11 @@ public class ChartAxis {
     public let last: Double
     
     // Screen location (relative to chart view's frame) corresponding to first model value
-    public let firstScreen: CGFloat
+    public var firstScreen: CGFloat
     
     // Screen location (relative to chart view's frame) corresponding to last model value
-    public let lastScreen: CGFloat
-
+    public var lastScreen: CGFloat
+    
     // The space between first and last model values. Can be negative (used for mirrored axes)
     public var modelLength: Double {
         fatalError("override")

@@ -50,6 +50,18 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
         }
     }
     
+    public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        guard let chart = chart else {return}
+        
+        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        
+        for v in viewsWithChartPoints {
+            v.view.removeFromSuperview()
+        }
+
+        display(chart: chart)
+    }
+    
     private func generateChartPointViews(chartPointModels chartPointModels: [ChartPointLayerModel<T>], chart: Chart) -> [ViewWithChartPoint] {
         let viewsWithChartPoints: [ViewWithChartPoint] = self.chartPointsModels.flatMap { model in
             if let view = self.viewGenerator(chartPointModel: model, layer: self, chart: chart) {

@@ -46,6 +46,7 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
     
     override public func chartInitialized(chart chart: Chart) {
 
+        super.chartInitialized(chart: chart)
         let axis = self.horizontal ? self.yAxis : self.xAxis
         let groupAvailableLength = (axis.length  - (self.groupSpacing ?? 0) * CGFloat(self.groups.count)) / CGFloat(groups.count + 1)
         let maxBarCountInGroup = self.groups.reduce(CGFloat(0)) {maxCount, group in

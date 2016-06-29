@@ -11,9 +11,17 @@ import UIKit
 // Convenience class to make protocol's methods optional
 public class ChartLayerBase: ChartLayer {
 
-    public func chartInitialized(chart chart: Chart) {}
+    public weak var chart: Chart?
+    
+    public func chartInitialized(chart chart: Chart) {
+        self.chart = chart
+    }
     
     public func chartViewDrawing(context context: CGContextRef, chart: Chart) {}
+
+    public func update() {}
+    
+    public func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {}
     
     public init() {}
 }

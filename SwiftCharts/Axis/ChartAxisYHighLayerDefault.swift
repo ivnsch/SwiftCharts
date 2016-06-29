@@ -23,6 +23,38 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         return self.end
     }
     
+    override func prepareUpdate() {
+        super.prepareUpdate()
+        
+        // Move frame before updating drawers
+        let newOriginX = self.origin.x - (self.frame.width - self.lastFrame.width)
+        self.origin = CGPointMake(newOriginX, self.origin.y)
+        self.end = CGPointMake(newOriginX, self.end.y)
+    }
+    
+    override func updateInternal() {
+        guard let chart = self.chart else {return}
+        
+        super.updateInternal()
+        
+        if lastFrame.width != self.frame.width {
+            chart.notifyAxisInnerFrameChange(yHigh: (layer: self, delta: self.frame.width - self.lastFrame.width))
+        }
+    }
+    
+    
+    override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        
+        // Handle resizing of other high y axes
+        if let (yHigh, deltaYHigh) = yHigh where yHigh.frame.maxX > self.frame.maxX {
+            self.origin = CGPointMake(self.origin.x - deltaYHigh, self.origin.y)
+            self.end = CGPointMake(self.end.x + deltaYHigh, self.end.y)
+        }
+        
+        self.initDrawers()
+    }
+    
     override func initDrawers() {
         
         self.lineDrawer = self.generateLineDrawer(offset: 0)

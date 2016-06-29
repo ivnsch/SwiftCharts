@@ -32,9 +32,9 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
     ///          ▼
     ///  Label
     /// ````
-    private lazy var labelsOffset: CGFloat = {
+    private var labelsOffset: CGFloat {
         return self.axisTitleLabelsHeight + self.settings.axisTitleLabelsToLabelsSpacing
-    }()
+    }
 
     /// The offset of the axis line from the edge of the axis bounds
     ///
@@ -48,12 +48,34 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
     ///          │
     /// ───────  ▼
     /// ````
-    private lazy var lineOffset: CGFloat = {
+    private var lineOffset: CGFloat {
         return self.labelsOffset + (self.settings.axisStrokeWidth / 2) + self.settings.labelsToAxisSpacingX + self.labelsTotalHeight
-    }()
+    }
     
     override func chartViewDrawing(context context: CGContextRef, chart: Chart) {
         super.chartViewDrawing(context: context, chart: chart)
+    }
+    
+    override func updateInternal() {
+        guard let chart = self.chart else {return}
+        
+        super.updateInternal()
+
+        if lastFrame.height != self.frame.height {
+            chart.notifyAxisInnerFrameChange(xHigh: (layer: self, delta: self.frame.height - self.lastFrame.height))
+        }
+    }
+
+    override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        
+        // handle resizing of other high x axes
+        if let (xHigh, deltaXHigh) = xHigh where xHigh.frame.minY < self.frame.minY {
+            self.origin = CGPointMake(self.origin.x, self.origin.y + deltaXHigh)
+            self.end = CGPointMake(self.end.x, self.end.y + deltaXHigh)
+        }
+        
+        self.initDrawers()
     }
     
     override func initDrawers() {

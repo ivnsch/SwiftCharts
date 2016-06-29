@@ -118,6 +118,20 @@ public class Chart {
         self.view.removeFromSuperview()
     }
 
+    public func update() {
+        for layer in self.layers {
+            layer.update()
+        }
+        self.view.setNeedsDisplay()
+    }
+ 
+    public func notifyAxisInnerFrameChange(xLow xLow: ChartAxisLayerWithFrameDelta? = nil, yLow: ChartAxisLayerWithFrameDelta? = nil, xHigh: ChartAxisLayerWithFrameDelta? = nil, yHigh: ChartAxisLayerWithFrameDelta? = nil) {
+        for layer in self.layers {
+            layer.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        }
+        self.view.setNeedsDisplay()
+    }
+    
     /**
      Draws the chart's layers in the chart view
 
