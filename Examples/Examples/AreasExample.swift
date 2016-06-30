@@ -30,7 +30,7 @@ class AreasExample: UIViewController {
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
         let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
-        let chartSettings = ExamplesDefaults.chartSettings
+        let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
         chartSettings.trailing = 20
         chartSettings.labelsToAxisSpacingX = 20
         chartSettings.labelsToAxisSpacingY = 20
@@ -55,9 +55,13 @@ class AreasExample: UIViewController {
         var popups: [UIView] = []
         var selectedView: ChartPointTextCircleView?
         
-        let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
+        let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart, isTransform: Bool) -> UIView? in
             
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
+            
+            if isTransform {
+                for p in popups {p.removeFromSuperview()}
+            }
             
             let v = ChartPointTextCircleView(chartPoint: chartPoint, center: screenLoc, diameter: Env.iPad ? 50 : 30, cornerRadius: Env.iPad ? 24: 15, borderWidth: Env.iPad ? 2 : 1, font: ExamplesDefaults.fontWithSize(Env.iPad ? 14 : 8))
             v.viewTapped = {view in
@@ -100,9 +104,24 @@ class AreasExample: UIViewController {
                     selectedView = view
                     
                     bubbleView.transform = CGAffineTransformIdentity
-                    }, completion: {finished in})
+                }, completion: {finished in})
+            }
+
+            func targetState() {
+                let w: CGFloat = v.frame.size.width
+                let h: CGFloat = v.frame.size.height
+                let frame = CGRectMake(screenLoc.x - (w/2), screenLoc.y - (h/2), w, h)
+                v.frame = frame
             }
             
+            if isTransform {
+                targetState()
+            } else {
+                UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
+                    targetState()
+                }, completion: nil)
+            }
+
             return v
         }
         
@@ -118,6 +137,7 @@ class AreasExample: UIViewController {
         
         let chart = Chart(
             frame: chartFrame,
+            settings: chartSettings,
             layers: [
                 xAxisLayer,
                 yAxisLayer,

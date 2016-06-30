@@ -17,7 +17,7 @@ class ConvenienceBarsExample: UIViewController {
         super.viewDidLoad()
         
         let chartConfig = BarsChartConfig(
-            chartSettings: ExamplesDefaults.chartSettings,
+            chartSettings: ExamplesDefaults.chartSettingsWithPanZoom,
             valsAxisConfig: ChartAxisConfig(from: 0, to: 8, by: 2),
             xAxisLabelSettings: ExamplesDefaults.labelSettings,
             yAxisLabelSettings: ExamplesDefaults.labelSettings.defaultVertical()

@@ -50,6 +50,7 @@ public class BarsChart: Chart {
       
         super.init(
             view: view,
+            settings: chartConfig.chartSettings,
             layers: layers
         )
     }

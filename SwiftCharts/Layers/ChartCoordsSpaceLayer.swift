@@ -16,7 +16,8 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
     // frame where the layer displays chartpoints
     public var innerFrame: CGRect
     
-    var animationEnabled = true
+    /// If layer is generating views as part of a transform (e.g. panning or zooming)
+    var isTransform = false
     
     public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect) {
         self.xAxis = xAxis

@@ -21,20 +21,7 @@ public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T
         
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
         
-        self.screenItems = self.chartPointsModels.map {model in
-            
-            let chartPoint = model.chartPoint
-            
-            let x = model.screenLoc.x
-
-            let highScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.high)).y
-            let lowScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.low)).y
-            let openScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.open)).y
-            let closeScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.close)).y
-            
-            let (rectTop, rectBottom, fillColor) = closeScreenY < openScreenY ? (closeScreenY, openScreenY, UIColor.whiteColor()) : (openScreenY, closeScreenY, UIColor.blackColor())
-            return CandleStickScreenItem(x: x, lineTop: highScreenY, lineBottom: lowScreenY, rectTop: rectTop, rectBottom: rectBottom, width: self.itemWidth, fillColor: fillColor)
-        }
+        self.screenItems = generateScreenItems()
     }
 
     override public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
@@ -52,6 +39,28 @@ public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T
             CGContextFillRect(context, screenItem.rect)
             CGContextStrokeRect(context, screenItem.rect)
         }
+    }
+
+    private func generateScreenItems() -> [CandleStickScreenItem] {
+        return chartPointsModels.map {model in
+            
+            let chartPoint = model.chartPoint
+            
+            let x = model.screenLoc.x
+            
+            let highScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.high)).y
+            let lowScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.low)).y
+            let openScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.open)).y
+            let closeScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.close)).y
+            
+            let (rectTop, rectBottom, fillColor) = closeScreenY < openScreenY ? (closeScreenY, openScreenY, UIColor.whiteColor()) : (openScreenY, closeScreenY, UIColor.blackColor())
+            return CandleStickScreenItem(x: x, lineTop: highScreenY, lineBottom: lowScreenY, rectTop: rectTop, rectBottom: rectBottom, width: self.itemWidth, fillColor: fillColor)
+        }
+    }
+    
+    override func updateChartPointsScreenLocations() {
+        super.updateChartPointsScreenLocations()
+        screenItems = generateScreenItems()
     }
 }
 

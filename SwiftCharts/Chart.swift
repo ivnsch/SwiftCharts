@@ -42,6 +42,10 @@ public class ChartSettings {
     /// The stroke width in points of the axis lines
     public var axisStrokeWidth: CGFloat = 1.0
     
+    public var panEnabled = false
+    
+    public var zoomEnabled = false
+    
     public init() {}
 }
 
@@ -62,8 +66,8 @@ public class Chart {
 
      - returns: The new Chart
      */
-    convenience public init(frame: CGRect, layers: [ChartLayer]) {
-        self.init(view: ChartBaseView(frame: frame), layers: layers)
+    convenience public init(frame: CGRect, settings: ChartSettings, layers: [ChartLayer]) {
+        self.init(view: ChartBaseView(frame: frame), settings: settings, layers: layers)
     }
 
     /**
@@ -74,11 +78,12 @@ public class Chart {
 
      - returns: The new Chart
      */
-    public init(view: ChartView, layers: [ChartLayer]) {
+    public init(view: ChartView, settings: ChartSettings, layers: [ChartLayer]) {
         
         self.layers = layers
         
         self.view = view
+        self.view.configure(settings)
         self.view.chart = self
         
         for layer in self.layers {
@@ -132,6 +137,18 @@ public class Chart {
         self.view.setNeedsDisplay()
     }
     
+    public func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        for layer in layers {
+            layer.zoom(x, y: y, centerX: centerX, centerY: centerY)
+        }
+    }
+    
+    public func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        for layer in layers {
+            layer.pan(deltaX, deltaY: deltaY)
+        }
+    }
+
     /**
      Draws the chart's layers in the chart view
 
@@ -153,10 +170,15 @@ public class ChartBaseView: ChartView {
     }
 }
 
-public class ChartView: UIView {
+public class ChartView: UIView, UIGestureRecognizerDelegate {
     
     /// The chart that will be drawn in this view
     weak var chart: Chart?
+    
+    private var lastPanTranslation: CGPoint?
+    
+    private var pinchRecognizer: UIPinchGestureRecognizer?
+    private var panRecognizer: UIPanGestureRecognizer?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -167,11 +189,71 @@ public class ChartView: UIView {
         super.init(coder: aDecoder)
         self.sharedInit()
     }
-
+   
+    func configure(settings: ChartSettings) {
+        if settings.zoomEnabled {
+            let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(ChartView.onPinch(_:)))
+            pinchRecognizer.delegate = self
+            addGestureRecognizer(pinchRecognizer)
+            self.pinchRecognizer = pinchRecognizer
+        }
+        
+        if settings.panEnabled {
+            let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(ChartView.onPan(_:)))
+            panRecognizer.delegate = self
+            addGestureRecognizer(panRecognizer)
+            self.panRecognizer = panRecognizer
+        }
+    }
+    
     /**
      Initialization code shared between all initializers
      */
     func sharedInit() {
         self.backgroundColor = UIColor.clearColor()
+    }
+    
+    @objc func onPinch(sender: UIPinchGestureRecognizer) {
+        
+        guard sender.numberOfTouches() > 1 else {return}
+        
+        let center = sender.locationInView(self)
+        
+        let x = abs(sender.locationInView(self).x - sender.locationOfTouch(1, inView: self).x)
+        let y = abs(sender.locationInView(self).y - sender.locationOfTouch(1, inView: self).y)
+        
+        // calculate scale x and scale y
+        let (absMax, absMin) = x > y ? (abs(x), abs(y)) : (abs(y), abs(x))
+        let minScale = (absMin * (sender.scale - 1) / absMax) + 1
+        let (scaleX, scaleY) = x > y ? (sender.scale, minScale) : (minScale, sender.scale)
+        
+        chart?.zoom(scaleX, y: scaleY, centerX: center.x, centerY: center.y)
+        
+        sender.scale = 1.0
+    }
+    
+    @objc func onPan(sender: UIPanGestureRecognizer) {
+        
+        switch sender.state {
+            
+        case UIGestureRecognizerState.Began:
+            lastPanTranslation = nil
+            
+        case UIGestureRecognizerState.Changed:
+            
+            let trans = sender.translationInView(self)
+            
+            let deltaX = lastPanTranslation.map{trans.x - $0.x} ?? trans.x
+            let deltaY = lastPanTranslation.map{trans.y - $0.y} ?? trans.y
+            
+            lastPanTranslation = trans
+            
+            chart?.pan(deltaX, deltaY: deltaY)
+            
+        case .Ended: break;
+        case .Cancelled: break;
+        case .Failed: break;
+        case .Possible: break;
+        }
     }
 }

@@ -51,14 +51,7 @@ public class ChartPointTextCircleView: UILabel {
     override public func didMoveToSuperview() {
         
         super.didMoveToSuperview()
-        
-        UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
-            let w: CGFloat = self.frame.size.width
-            let h: CGFloat = self.frame.size.height
-            let frame = CGRectMake(self.targetCenter.x - (w/2), self.targetCenter.y - (h/2), w, h)
-            self.frame = frame
-            
-            }, completion: {finished in})
+
     }
 
     required public init(coder aDecoder: NSCoder) {

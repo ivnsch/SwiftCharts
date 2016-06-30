@@ -11,7 +11,7 @@ import UIKit
 public struct ChartPointLayerModel<T: ChartPoint> {
     public let chartPoint: T
     public let index: Int
-    public let screenLoc: CGPoint
+    public var screenLoc: CGPoint
     
     init(chartPoint: T, index: Int, screenLoc: CGPoint) {
         self.chartPoint = chartPoint
@@ -45,7 +45,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     override public func chartInitialized(chart chart: Chart) {
         super.chartInitialized(chart: chart)
         
-        if !self.animationEnabled || self.displayDelay == 0 {
+        if self.isTransform || self.displayDelay == 0 {
             self.display(chart: chart)
         } else {
             dispatch_after(ChartUtils.toDispatchTime(self.displayDelay), dispatch_get_main_queue()) {() -> Void in
@@ -116,4 +116,22 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
             }
         }
     }
+    
+    func updateChartPointsScreenLocations() {
+        for i in 0..<chartPointsModels.count {
+            let chartPointModel = chartPointsModels[i]
+            chartPointsModels[i].screenLoc = CGPointMake(xAxis.screenLocForScalar(chartPointModel.chartPoint.x.scalar), yAxis.screenLocForScalar(chartPointModel.chartPoint.y.scalar))
+        }
+    }
+    
+    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
+        updateChartPointsScreenLocations()
+    }
+    
+    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        super.pan(deltaX, deltaY: deltaY)
+        updateChartPointsScreenLocations()
+    }
+
 }

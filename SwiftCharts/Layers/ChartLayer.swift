@@ -24,4 +24,9 @@ public protocol ChartLayer {
     
     /// Handle a change of the available inner space caused by an axis change of size in a direction orthogonal to the axis.
     func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?)
-} 
+    
+    func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat)
+    
+    func pan(deltaX: CGFloat, deltaY: CGFloat)
+
+}

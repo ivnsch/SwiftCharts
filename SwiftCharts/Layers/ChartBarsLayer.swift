@@ -80,6 +80,8 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
     private let barWidth: CGFloat
     private let horizontal: Bool
     private let animDuration: Float
+
+    private var barViews: [UIView] = []
     
     public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float) {
         self.bars = bars
@@ -92,11 +94,35 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
     
     public override func chartInitialized(chart chart: Chart) {
         super.chartInitialized(chart: chart)
+        display()
+    }
+    
+    func display() {
+        let barsGenerator = ChartBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, barWidth: barWidth)
         
-        let barsGenerator = ChartBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: self.barWidth)
-        
-        for barModel in self.bars {
-            chart.addSubview(barsGenerator.generateView(barModel, bgColor: barModel.bgColor, animDuration: self.animDuration))
+        for barModel in bars {
+            let barView = barsGenerator.generateView(barModel, bgColor: barModel.bgColor, animDuration: isTransform ? 0 : animDuration)
+            barViews.append(barView)
+            chart?.addSubview(barView)
         }
+    }
+    
+    private func reloadViews() {
+        for v in barViews {
+            v.removeFromSuperview()
+        }
+        isTransform = true
+        display()
+        isTransform = false
+    }
+    
+    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        super.pan(deltaX, deltaY: deltaY)
+        reloadViews()
+    }
+    
+    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
+        reloadViews()
     }
 }

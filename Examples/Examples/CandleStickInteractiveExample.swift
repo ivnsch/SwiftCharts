@@ -94,10 +94,13 @@ class CandleStickInteractiveExample: UIViewController {
         let defaultChartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
         let infoViewHeight: CGFloat = 50
         let chartFrame = CGRectMake(defaultChartFrame.origin.x, defaultChartFrame.origin.y + infoViewHeight, defaultChartFrame.width, defaultChartFrame.height - infoViewHeight)
-        let coordsSpace = ChartCoordsSpaceRightBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
+        
+        let chartSettings = ExamplesDefaults.chartSettings
+
+        let coordsSpace = ChartCoordsSpaceRightBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
-        let viewGenerator = {(chartPointModel: ChartPointLayerModel<ChartPointCandleStick>, layer: ChartPointsViewsLayer<ChartPointCandleStick, ChartCandleStickView>, chart: Chart) -> ChartCandleStickView? in
+        let viewGenerator = {(chartPointModel: ChartPointLayerModel<ChartPointCandleStick>, layer: ChartPointsViewsLayer<ChartPointCandleStick, ChartCandleStickView>, chart: Chart, isTransform: Bool) -> ChartCandleStickView? in
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
             
             let x = screenLoc.x
@@ -136,6 +139,7 @@ class CandleStickInteractiveExample: UIViewController {
         
         let chart = Chart(
             frame: chartFrame,
+            settings: chartSettings,
             layers: [
                 xAxisLayer,
                 yAxisLayer,

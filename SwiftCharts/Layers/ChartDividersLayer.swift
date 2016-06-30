@@ -30,9 +30,6 @@ public class ChartDividersLayer: ChartCoordsSpaceLayer {
     
     private let settings: ChartDividersLayerSettings
     
-    private let xScreenLocs: [CGFloat]
-    private let yScreenLocs: [CGFloat]
-    
     let axis: ChartDividersLayerAxis
 
     private let xAxisLayer: ChartAxisLayer
@@ -44,14 +41,7 @@ public class ChartDividersLayer: ChartCoordsSpaceLayer {
         
         self.xAxisLayer = xAxisLayer
         self.yAxisLayer = yAxisLayer
-        
-        func screenLocs(axisLayer: ChartAxisLayer) -> [CGFloat] {
-            return axisLayer.currentAxisValues.map{axisLayer.axis.screenLocForScalar($0)}
-        }
-        
-        self.xScreenLocs = screenLocs(xAxisLayer)
-        self.yScreenLocs = screenLocs(yAxisLayer)
-        
+
         super.init(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame)
     }
     
@@ -60,8 +50,8 @@ public class ChartDividersLayer: ChartCoordsSpaceLayer {
     }
     
     override public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
-        let xScreenLocs = self.xScreenLocs
-        let yScreenLocs = self.yScreenLocs
+        let xScreenLocs = self.xAxisLayer.axisValuesScreenLocs
+        let yScreenLocs = self.yAxisLayer.axisValuesScreenLocs
         
         if self.axis == .X || self.axis == .XAndY {
             for xScreenLoc in xScreenLocs {

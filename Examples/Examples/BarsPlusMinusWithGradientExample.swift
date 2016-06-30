@@ -78,7 +78,9 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         // calculate coords space in the background to keep UI smooth
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             
-            let coordsSpace = ChartCoordsSpaceLeftTopSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
+            let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
+
+            let coordsSpace = ChartCoordsSpaceLeftTopSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
             
             dispatch_async(dispatch_get_main_queue()) {
                 
@@ -91,7 +93,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
                 
                 // create x zero guideline as view to be in front of the bars
                 let dummyZeroXChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
-                let xZeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: [dummyZeroXChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
+                let xZeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: [dummyZeroXChartPoint], viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
                     let width: CGFloat = 2
                     let v = UIView(frame: CGRectMake(chartPointModel.screenLoc.x - width / 2, innerFrame.origin.y, width, innerFrame.size.height))
                     v.backgroundColor = UIColor(red: 1, green: 69 / 255, blue: 0, alpha: 1)
@@ -100,6 +102,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
                 
                 let chart = Chart(
                     frame: chartFrame,
+                    settings: chartSettings,
                     layers: [
                         xAxisLayer,
                         yAxisLayer,

@@ -72,6 +72,10 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     var origin: CGPoint // top left corner of frame
     var end: CGPoint // end starting from origin, parallel to axis
     
+    // not affected by panning & zooming
+    var originInit: CGPoint
+    var endInit: CGPoint
+    
     var currentAxisValues: [Double] = []
     
     let valuesGenerator: ChartAxisValuesGenerator
@@ -158,6 +162,8 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         self.axis = axis
         self.origin = origin
         self.end = end
+        self.originInit = origin
+        self.endInit = end
         self.valuesGenerator = valuesGenerator
         self.labelsGenerator = labelsGenerator
         self.axisTitleLabels = axisTitleLabels
@@ -247,5 +253,13 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     /// Generates label drawers which correspond directly to axis values. No conflict solving.
     func generateDirectLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         fatalError("override")
+    }
+    
+    func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        // override
+    }
+    
+    func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        // override
     }
 }

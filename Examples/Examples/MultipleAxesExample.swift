@@ -73,7 +73,7 @@ class MultipleAxesExample: UIViewController {
         let xValues2 = chartPoints2.map{$0.x}
         let xValues3 = chartPoints3.map{$0.x}
         
-        let chartSettings = ExamplesDefaults.chartSettings
+        let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
         
         
         let top: CGFloat = 80
@@ -143,6 +143,7 @@ class MultipleAxesExample: UIViewController {
                 
                 let chart = Chart(
                     frame: viewFrame,
+                    settings: chartSettings,
                     layers: layers
                 )
                 

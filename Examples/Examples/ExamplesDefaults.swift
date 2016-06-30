@@ -19,6 +19,14 @@ struct ExamplesDefaults {
         }
     }
 
+    static var chartSettingsWithPanZoom: ChartSettings {
+        if Env.iPad {
+            return self.iPadChartSettingsWithPanZoom
+        } else {
+            return self.iPhoneChartSettingsWithPanZoom
+        }
+    }
+    
     private static var iPadChartSettings: ChartSettings {
         let chartSettings = ChartSettings()
         chartSettings.leading = 20
@@ -46,6 +54,20 @@ struct ExamplesDefaults {
         chartSettings.axisStrokeWidth = 0.2
         chartSettings.spacingBetweenAxesX = 8
         chartSettings.spacingBetweenAxesY = 8
+        return chartSettings
+    }
+
+    private static var iPadChartSettingsWithPanZoom: ChartSettings {
+        let chartSettings = iPadChartSettings
+        chartSettings.panEnabled = true
+        chartSettings.zoomEnabled = true
+        return chartSettings
+    }
+
+    private static var iPhoneChartSettingsWithPanZoom: ChartSettings {
+        let chartSettings = iPhoneChartSettings
+        chartSettings.panEnabled = true
+        chartSettings.zoomEnabled = true
         return chartSettings
     }
     

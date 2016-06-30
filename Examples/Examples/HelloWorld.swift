@@ -31,8 +31,10 @@ class HelloWorld: UIViewController {
         
         let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
         
+        let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
+        
         // generate axes layers and calculate chart inner frame, based on the axis models
-        let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
+        let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
         // create layer with guidelines
@@ -40,7 +42,7 @@ class HelloWorld: UIViewController {
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, innerFrame: innerFrame, settings: guidelinesLayerSettings)
         
         // view generator - this is a function that creates a view for each chartpoint
-        let viewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart) -> UIView? in
+        let viewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart, isTransform: Bool) -> UIView? in
             let viewSize: CGFloat = Env.iPad ? 30 : 20
             let center = chartPointModel.screenLoc
             let label = UILabel(frame: CGRectMake(center.x - viewSize / 2, center.y - viewSize / 2, viewSize, viewSize))
@@ -57,6 +59,7 @@ class HelloWorld: UIViewController {
         // create chart instance with frame and layers
         let chart = Chart(
             frame: chartFrame,
+            settings: chartSettings,
             layers: [
                 xAxisLayer,
                 yAxisLayer,

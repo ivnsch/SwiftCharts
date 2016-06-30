@@ -25,7 +25,7 @@ private struct ScreenLine {
 }
 
 public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
-    private let lineModels: [ChartLineModel<T>]
+    private var lineModels: [ChartLineModel<T>]
     private var lineViews: [ChartLinesView] = []
     private let pathGenerator: ChartLinesViewPathGenerator
 
@@ -50,20 +50,20 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }
    
     public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
-
-        guard let chart = chart else {return}
-        
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        reloadViews()
+    }
+    
+    private func reloadViews() {
+        guard let chart = chart else {return}
         
         for v in lineViews {
             v.removeFromSuperview()
         }
         
-        animationEnabled = false
-        
+        isTransform = true
         display(chart: chart)
-        
-        animationEnabled = true
+        isTransform = false
     }
     
     override func display(chart chart: Chart) {
@@ -75,8 +75,8 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 frame: chart.bounds,
                 lineColor: screenLine.color,
                 lineWidth: screenLine.lineWidth,
-                animDuration: self.animationEnabled ? screenLine.animDuration : 0,
-                animDelay: self.animationEnabled ? screenLine.animDelay : 0)
+                animDuration: self.isTransform ? 0 : screenLine.animDuration,
+                animDelay: self.isTransform ? 0 : screenLine.animDelay)
             
             self.lineViews.append(lineView)
             lineView.userInteractionEnabled = false
@@ -84,4 +84,13 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
         }
     }
     
+    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        super.pan(deltaX, deltaY: deltaY)
+        reloadViews()
+    }
+    
+    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
+        reloadViews()
+    }
 }

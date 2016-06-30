@@ -106,4 +106,69 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             return max(maxWidth, maxLabelWidth(labels))
         }
     }
+    
+    
+    override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        
+        // Zoom around center of gesture. Uses center as anchor point dividing the line in 2 segments which are scaled proportionally.
+        let segment1 = origin.y - centerY
+        let segment2 = centerY - end.y
+        let deltaSegment1 = (segment1 * y) - segment1
+        let deltaSegment2 = (segment2 * y) - segment2
+        let newOriginY = origin.y + deltaSegment1
+        let newEndY = end.y - deltaSegment2
+        
+        if newOriginY - newEndY > originInit.y - endInit.y { // new length > original length
+            origin = CGPointMake(origin.x, newOriginY)
+            end = CGPointMake(end.x, newEndY)
+            
+            // if new origin is above origin, move it back
+            let offsetOriginY = originInit.y - origin.y
+            if offsetOriginY > 0 {
+                origin = CGPointMake(origin.x, origin.y + offsetOriginY)
+                end = CGPointMake(end.x, end.y + offsetOriginY)
+            }
+            
+        } else { // possible correction
+            origin = originInit
+            end = endInit
+        }
+ 
+        axis.firstScreen = origin.y
+        axis.lastScreen = end.y
+        
+        initDrawers()
+        chart?.view.setNeedsDisplay()
+    }
+    
+    override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        
+        let length = axis.length
+        
+        let (newOriginY, newEndY): (CGFloat, CGFloat) = {
+            
+            if deltaY < 0 { // scrolls up
+                let originY = max(originInit.y, origin.y + deltaY)
+                let endY = originY - length
+                return (originY, endY)
+                
+            } else if deltaY > 0 { // scrolls down
+                let endY = min(endInit.y, end.y + deltaY)
+                let originY = endY + length
+                return (originY, endY)
+                
+            } else {
+                return (origin.y, end.y)
+            }
+        }()
+        
+        origin = CGPointMake(origin.x, newOriginY)
+        end = CGPointMake(end.x, newEndY)
+        
+        axis.firstScreen = origin.y 
+        axis.lastScreen = end.y
+
+        initDrawers()
+        chart?.view.setNeedsDisplay()
+    }
 }

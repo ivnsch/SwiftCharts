@@ -68,7 +68,9 @@ class BubbleExample: UIViewController {
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
 
-        let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
+        let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
+
+        let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
         let bubbleLayer = self.bubblesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, chartInnerFrame: innerFrame, chartPoints: chartPoints)
@@ -81,6 +83,7 @@ class BubbleExample: UIViewController {
         
         let chart = Chart(
             frame: chartFrame,
+            settings: chartSettings,
             layers: [
                 xAxisLayer,
                 yAxisLayer,
@@ -108,7 +111,7 @@ class BubbleExample: UIViewController {
             
             let diameterFactor = (maxBubbleDiameter - minBubbleDiameter) / (maxDiameterScalar - minDiameterScalar)
 
-            return ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: chartInnerFrame, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
+            return ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: chartInnerFrame, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
 
                 let diameter = CGFloat(chartPointModel.chartPoint.diameterScalar * diameterFactor)
                 
@@ -116,10 +119,14 @@ class BubbleExample: UIViewController {
                 circleView.fillColor = chartPointModel.chartPoint.bgColor
                 circleView.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
                 circleView.borderWidth = 1
-                circleView.animDelay = Float(chartPointModel.index) * 0.2
-                circleView.animDuration = 1.2
-                circleView.animDamping = 0.4
-                circleView.animInitSpringVelocity = 0.5
+                
+                if !isTransform {
+                    circleView.animDelay = Float(chartPointModel.index) * 0.2
+                    circleView.animDuration = 1.2
+                    circleView.animDamping = 0.4
+                    circleView.animInitSpringVelocity = 0.5
+                }
+
                 return circleView
             })
             

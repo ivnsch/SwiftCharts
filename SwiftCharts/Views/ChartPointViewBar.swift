@@ -41,8 +41,18 @@ public class ChartPointViewBar: UIView {
     }
     
     override public func didMoveToSuperview() {
-        UIView.animateWithDuration(CFTimeInterval(self.animDuration), delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {() -> Void in
-            self.frame = self.targetFrame
-        }, completion: nil)
+        
+        func targetState() {
+            frame = targetFrame
+        }
+        
+        if animDuration == 0 {
+            targetState()
+        } else {
+            UIView.animateWithDuration(CFTimeInterval(animDuration), delay: 0, options: .CurveEaseOut, animations: {
+                targetState()
+            }, completion: nil)
+        }
+
     }
 }

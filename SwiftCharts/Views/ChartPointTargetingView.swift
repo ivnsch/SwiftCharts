@@ -56,13 +56,18 @@ public class ChartPointTargetingView: UIView {
     override public func didMoveToSuperview() {
         addSubview(self.lineHorizontal)
         addSubview(self.lineVertical)
+
+        func targetState() {
+            lineHorizontal.frame = lineHorizontalTargetFrame
+            lineVertical.frame = lineVerticalTargetFrame
+        }
         
-        UIView.animateWithDuration(NSTimeInterval(self.animDuration), delay: NSTimeInterval(self.animDelay), options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-            
-            self.lineHorizontal.frame = self.lineHorizontalTargetFrame
-            self.lineVertical.frame = self.lineVerticalTargetFrame
-            
-            }) { (Bool) -> Void in
+        if animDuration == 0 {
+            targetState()
+        } else {
+            UIView.animateWithDuration(NSTimeInterval(animDuration), delay: NSTimeInterval(animDelay), options: .CurveEaseOut, animations: {
+                targetState()
+            }, completion: nil)
         }
     }
 }

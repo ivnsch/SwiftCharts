@@ -9,7 +9,7 @@
 import UIKit
 
 // Convenience class to make protocol's methods optional
-public class ChartLayerBase: ChartLayer {
+public class ChartLayerBase: NSObject, ChartLayer {
 
     public weak var chart: Chart?
     
@@ -23,5 +23,9 @@ public class ChartLayerBase: ChartLayer {
     
     public func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {}
     
-    public init() {}
+    public func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {}
+    
+    public func pan(deltaX: CGFloat, deltaY: CGFloat) {}
+
+    public override init() {}
 }

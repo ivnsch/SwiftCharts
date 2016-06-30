@@ -30,6 +30,8 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
     
     private let animDuration: Float
 
+    private var barViews: [UIView] = []
+    
     init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, groups: [ChartPointsBarGroup<T>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
         self.groups = groups
         self.horizontal = horizontal
@@ -44,9 +46,12 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
         fatalError("override")
     }
     
-    override public func chartInitialized(chart chart: Chart) {
-
+    public override func chartInitialized(chart chart: Chart) {
         super.chartInitialized(chart: chart)
+        display()
+    }
+    
+    func display() {
         let axis = self.horizontal ? self.yAxis : self.xAxis
         let groupAvailableLength = (axis.length  - (self.groupSpacing ?? 0) * CGFloat(self.groups.count)) / CGFloat(groups.count + 1)
         let maxBarCountInGroup = self.groups.reduce(CGFloat(0)) {maxCount, group in
@@ -75,9 +80,31 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
                         return calculateConstantScreenLoc(axis: self.xAxis, index: index, group: group)
                     }
                 }()
-                chart.addSubview(barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, animDuration: self.animDuration))
+                let barView = barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, animDuration: isTransform ? 0 : animDuration)
+                barViews.append(barView)
+                chart?.addSubview(barView)
             }
         }
+    }
+    
+    private func reloadViews() {
+        for v in barViews {
+            v.removeFromSuperview()
+        }
+        
+        isTransform = true
+        display()
+        isTransform = false
+    }
+    
+    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        super.pan(deltaX, deltaY: deltaY)
+        reloadViews()
+    }
+    
+    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
+        reloadViews()
     }
 }
 

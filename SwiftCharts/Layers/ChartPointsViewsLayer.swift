@@ -11,7 +11,7 @@ import UIKit
 
 public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> {
 
-    public typealias ChartPointViewGenerator = (chartPointModel: ChartPointLayerModel<T>, layer: ChartPointsViewsLayer<T, U>, chart: Chart) -> U?
+    public typealias ChartPointViewGenerator = (chartPointModel: ChartPointLayerModel<T>, layer: ChartPointsViewsLayer<T, U>, chart: Chart, isTransform: Bool) -> U?
     public typealias ViewWithChartPoint = (view: U, chartPointModel: ChartPointLayerModel<T>)
     
     public private(set) var viewsWithChartPoints: [ViewWithChartPoint] = []
@@ -33,42 +33,38 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
         
         self.viewsWithChartPoints = self.generateChartPointViews(chartPointModels: self.chartPointsModels, chart: chart)
         
-        if !self.animationEnabled || self.delayBetweenItems == 0 {
+        if self.isTransform || self.delayBetweenItems == 0 {
             for v in self.viewsWithChartPoints {chart.addSubview(v.view)}
             
         } else {
-            func next(index: Int, delay: dispatch_time_t) {
-                if index < self.viewsWithChartPoints.count {
-                    dispatch_after(delay, dispatch_get_main_queue()) {() -> Void in
-                        let view = self.viewsWithChartPoints[index].view
-                        chart.addSubview(view)
-                        next(index + 1, delay: ChartUtils.toDispatchTime(self.delayBetweenItems))
-                    }
-                }
+            for viewWithChartPoint in viewsWithChartPoints {
+                let view = viewWithChartPoint.view
+                chart.addSubview(view)
             }
-            next(0, delay: 0)
         }
     }
     
     public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
-        guard let chart = chart else {return}
-        
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        
+        reloadViews()
+    }
+    
+    func reloadViews() {
+        guard let chart = chart else {return}
         
         for v in viewsWithChartPoints {
             v.view.removeFromSuperview()
         }
-
-        animationEnabled = false
         
+        isTransform = true
         display(chart: chart)
-        
-        animationEnabled = true
+        isTransform = false
     }
     
     private func generateChartPointViews(chartPointModels chartPointModels: [ChartPointLayerModel<T>], chart: Chart) -> [ViewWithChartPoint] {
-        let viewsWithChartPoints: [ViewWithChartPoint] = self.chartPointsModels.flatMap { model in
-            if let view = self.viewGenerator(chartPointModel: model, layer: self, chart: chart) {
+        let viewsWithChartPoints: [ViewWithChartPoint] = self.chartPointsModels.flatMap {model in
+            if let view = self.viewGenerator(chartPointModel: model, layer: self, chart: chart, isTransform: isTransform) {
                 return (view: view, chartPointModel: model)
             } else {
                 return nil
@@ -108,5 +104,15 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
     
     private func inYBounds(y: CGFloat, view: UIView) -> Bool {
         return (y > view.frame.origin.y) && (y < (view.frame.origin.y + view.frame.height))
+    }
+    
+    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
+        reloadViews()
+    }
+    
+    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        super.pan(deltaX, deltaY: deltaY)
+        reloadViews()
     }
 }

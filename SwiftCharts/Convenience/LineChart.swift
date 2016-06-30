@@ -44,6 +44,7 @@ public class LineChart: Chart {
         
         super.init(
             view: view,
+            settings: chartConfig.chartSettings,
             layers: layers
         )
     }

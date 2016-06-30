@@ -112,7 +112,7 @@ class MultipleAxesInteractiveExample: UIViewController {
         let xValues2 = self.chartPoints2.map{$0.x}
         let xValues3 = self.chartPoints3.map{$0.x}
         
-        let chartSettings = ExamplesDefaults.chartSettings
+        let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
         
         let top: CGFloat = 80
         
@@ -170,13 +170,13 @@ class MultipleAxesInteractiveExample: UIViewController {
                 let guideLinesLayer4Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[3], linesWidth: ExamplesDefaults.guidelinesWidth)
                 self.guideLinesLayer3 = ChartGuideLinesDottedLayer(xAxisLayer: self.xHighAxesLayers[0], yAxisLayer: self.yHighAxesLayers[1], innerFrame: self.chartInnerFrame, settings: guideLinesLayer4Settings)
                 
-                self.showChart(lineAnimDuration: 1)
+                self.showChart(chartSettings, lineAnimDuration: 1)
             }
         }
         
         
-        self.view.addSubview(self.createSelectionView())
-        self.view.addSubview(self.createShowGuidesView())
+        self.view.addSubview(self.createSelectionView(chartSettings))
+        self.view.addSubview(self.createShowGuidesView(chartSettings))
     }
     
     private func createLineLayers(animDuration animDuration: Float) -> [ChartPointsLineLayer<ChartPoint>] {
@@ -224,7 +224,7 @@ class MultipleAxesInteractiveExample: UIViewController {
         }
     }
     
-    private func showChart(lineAnimDuration lineAnimDuration: Float) -> () {
+    private func showChart(chartSettings: ChartSettings, lineAnimDuration: Float) -> () {
         
         self.chart?.clearView()
         
@@ -233,6 +233,7 @@ class MultipleAxesInteractiveExample: UIViewController {
         let view = ChartBaseView(frame: viewFrame)
         let chart = Chart(
             view: view,
+            settings: chartSettings,
             layers: layers
         )
         
@@ -240,7 +241,7 @@ class MultipleAxesInteractiveExample: UIViewController {
         self.chart = chart
     }
     
-    private func createSelectionView() -> UIView {
+    private func createSelectionView(chartSettings: ChartSettings) -> UIView {
         let v = UIView(frame: CGRectMake(0, self.view.frame.height - selectionViewH - showGuidesViewH, self.view.frame.width, selectionViewH))
         v.backgroundColor = UIColor.whiteColor()
         v.userInteractionEnabled = true
@@ -257,7 +258,7 @@ class MultipleAxesInteractiveExample: UIViewController {
             selectorView.touchHandler = {[weak self] in
                 self!.selectedLayersFlags[index] = !self!.selectedLayersFlags[index]
                 selectorViewWeak?.backgroundColor = self!.selectedLayersFlags[index] ? self!.bgColors[index] : UIColor.grayColor()
-                self!.showChart(lineAnimDuration: 0)
+                self!.showChart(chartSettings, lineAnimDuration: 0)
             }
             
             v.addSubview(selectorView)
@@ -265,7 +266,7 @@ class MultipleAxesInteractiveExample: UIViewController {
         return v
     }
     
-    private func createShowGuidesView() -> UIView {
+    private func createShowGuidesView(chartSettings: ChartSettings) -> UIView {
         let v = HandlingView(frame: CGRectMake(0, self.view.frame.height - showGuidesViewH, self.view.frame.width, showGuidesViewH))
         v.backgroundColor = UIColor.greenColor()
         v.userInteractionEnabled = true
@@ -276,7 +277,7 @@ class MultipleAxesInteractiveExample: UIViewController {
         v.touchHandler = {[weak self] in
             self!.showGuides = !self!.showGuides
             label.text = self!.showGuides ? "Hide guidelines" : "Show guidelines"
-            self!.showChart(lineAnimDuration: 0)
+            self!.showChart(chartSettings, lineAnimDuration: 0)
         }
         return v
     }

@@ -65,7 +65,10 @@ class ScrollExample: UIViewController {
         
         // calculate coords space in the background to keep UI smooth
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
+            
+            let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
+
+            let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
             
             dispatch_async(dispatch_get_main_queue()) {
                 let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
@@ -83,6 +86,7 @@ class ScrollExample: UIViewController {
                 
                 let chart = Chart(
                     frame: chartFrame,
+                    settings: chartSettings,
                     layers: [
                         xAxisLayer,
                         yAxisLayer,

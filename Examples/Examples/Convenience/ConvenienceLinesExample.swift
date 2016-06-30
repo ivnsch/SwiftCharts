@@ -17,7 +17,7 @@ class ConvenienceLinesExample: UIViewController {
         super.viewDidLoad()
         
         let chartConfig = ChartConfigXY(
-            chartSettings: ExamplesDefaults.chartSettings,
+            chartSettings: ExamplesDefaults.chartSettingsWithPanZoom,
             xAxisConfig: ChartAxisConfig(from: 2, to: 14, by: 2),
             yAxisConfig: ChartAxisConfig(from: 0, to: 14, by: 2),
             xAxisLabelSettings: ExamplesDefaults.labelSettings,
