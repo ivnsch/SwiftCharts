@@ -31,7 +31,7 @@ Swift 1.2, Swift 2.x, iOS 7, 8, 9
 ![ScreenShot](Screenshots/IMG_0102.jpeg)
 ![ScreenShot](Screenshots/IMG_0022.jpeg)
 ![ScreenShot](Screenshots/IMG_0023.jpeg)
-![ScreenShot](Screenshots/IMG_0024.jpeg)
+![ScreenShot of Multi-chart touch tracking](Screenshots/multi-chart-touch.jpg)
 ![ScreenShot](Screenshots/IMG_0025.jpeg)
 ![ScreenShot](Screenshots/IMG_0026.jpeg)
 ![ScreenShot](Screenshots/IMG_0101.jpeg)
@@ -46,7 +46,6 @@ Swift 1.2, Swift 2.x, iOS 7, 8, 9
 ![ScreenShot](Screenshots/IMG_0039.jpeg)
 ![ScreenShot](Screenshots/IMG_0040.jpeg)
 ![ScreenShot](Screenshots/IMG_0041.jpeg)
-![ScreenShot of Multi-chart touch tracking](Screenshots/multi-chart-touch.jpeg)
 
 
 ##### Installation
