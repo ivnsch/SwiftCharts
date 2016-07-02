@@ -32,6 +32,9 @@ public class ChartSettings {
     /// The spacing in points between Y axis labels and the Y axis line
     public var labelsToAxisSpacingY: CGFloat = 5
 
+    /// The width of the Y-axis labels. If `nil`, it will be auto-calculated from the label text and font.
+    public var labelsWidthY: CGFloat?
+
     public var spacingBetweenAxesX: CGFloat = 15
 
     public var spacingBetweenAxesY: CGFloat = 15

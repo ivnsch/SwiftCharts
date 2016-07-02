@@ -16,7 +16,9 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     }
     
     var labelsMaxWidth: CGFloat {
-        if self.labelDrawers.isEmpty {
+        if let labelsWidthY = settings.labelsWidthY {
+            return labelsWidthY
+        } else if self.labelDrawers.isEmpty {
             return self.maxLabelWidth(self.axisValues)
         } else {
             return self.labelDrawers.reduce(0) {maxWidth, labelDrawer in
@@ -62,7 +64,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
     
     override func generateLabelDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
-        
+
         var drawers: [ChartLabelDrawer] = []
         
         var lastDrawerWithRect: (drawer: ChartLabelDrawer, rect: CGRect)?
