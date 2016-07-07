@@ -74,7 +74,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             let newSettings = ChartLabelSettings(font: settings.font, fontColor: settings.fontColor, rotation: settings.rotation, rotationKeep: settings.rotationKeep)
             let axisLabelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(
                 self.origin.x + offset,
-                self.end.y + ((self.origin.y - self.end.y) / 2) - (labelSize.height / 2)), settings: newSettings)
+                self.endInit.y + ((self.originInit.y - self.endInit.y) / 2) - (labelSize.height / 2)), settings: newSettings)
             
             return [axisLabelDrawer]
             

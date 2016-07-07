@@ -79,7 +79,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
             let rowY = self.calculateRowY(rowHeights: rowHeights, rowIndex: index, spacing: spacingLabelBetweenAxis)
             
             let labelWidth = ChartUtils.textSize(label.text, font: label.settings.font).width
-            let x = (self.end.x - self.origin.x) / 2 + self.origin.x - labelWidth / 2
+            let x = (self.endInit.x - self.originInit.x) / 2 + self.originInit.x - labelWidth / 2
             let y = self.origin.y + offset + rowY
             
             let drawer = ChartLabelDrawer(text: label.text, screenLoc: CGPointMake(x, y), settings: label.settings)
