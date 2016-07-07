@@ -38,7 +38,7 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         super.updateInternal()
         
         if lastFrame.width != self.frame.width {
-            chart.notifyAxisInnerFrameChange(yHigh: (layer: self, delta: self.frame.width - self.lastFrame.width))
+            chart.notifyAxisInnerFrameChange(yHigh: ChartAxisLayerWithFrameDelta(layer: self, delta: self.frame.width - self.lastFrame.width))
         }
     }
     
@@ -47,11 +47,11 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
         
         // Handle resizing of other high y axes
-        if let (yHigh, deltaYHigh) = yHigh where yHigh.frame.maxX > self.frame.maxX {
-            self.origin = CGPointMake(self.origin.x - deltaYHigh, self.origin.y)
-            self.end = CGPointMake(self.end.x + deltaYHigh, self.end.y)
+        if let yHigh = yHigh where yHigh.layer.frame.maxX > frame.maxX {
+            origin = CGPointMake(origin.x - yHigh.delta, origin.y)
+            end = CGPointMake(end.x + yHigh.delta, end.y)
             
-            self.initDrawers()
+            initDrawers()
         }
     }
     

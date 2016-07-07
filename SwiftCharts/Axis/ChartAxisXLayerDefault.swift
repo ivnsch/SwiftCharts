@@ -33,20 +33,20 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
         
-        if let (_, deltaYLow) = yLow {
-            self.axis.firstScreen = self.axis.firstScreen + deltaYLow
-            self.origin = CGPointMake(self.origin.x + deltaYLow, self.origin.y)
-            self.originInit = CGPointMake(self.originInit.x + deltaYLow, self.originInit.y)
-            self.axis.firstVisibleScreen = self.axis.firstVisibleScreen + deltaYLow
+        if let yLow = yLow {
+            self.axis.firstScreen = self.axis.firstScreen + yLow.delta
+            self.origin = CGPointMake(self.origin.x + yLow.delta, self.origin.y)
+            self.originInit = CGPointMake(self.originInit.x + yLow.delta, self.originInit.y)
+            self.axis.firstVisibleScreen = self.axis.firstVisibleScreen + yLow.delta
 
             self.initDrawers()
         }
         
-        if let (_, deltaYHigh) = yHigh {
-            self.axis.lastScreen = self.axis.lastScreen - deltaYHigh
-            self.end = CGPointMake(self.end.x - deltaYHigh, self.end.y)
-            self.endInit = CGPointMake(self.endInit.x - deltaYHigh, self.endInit.y)
-            self.axis.lastVisibleScreen = self.axis.lastVisibleScreen - deltaYHigh
+        if let yHigh = yHigh {
+            self.axis.lastScreen = self.axis.lastScreen - yHigh.delta
+            self.end = CGPointMake(self.end.x - yHigh.delta, self.end.y)
+            self.endInit = CGPointMake(self.endInit.x - yHigh.delta, self.endInit.y)
+            self.axis.lastVisibleScreen = self.axis.lastVisibleScreen - yHigh.delta
             
             self.initDrawers()
         }

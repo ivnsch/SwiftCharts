@@ -60,9 +60,9 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
         
         // Handle resizing of other low y axes
-        if let (yLow, deltaYLow) = yLow where yLow.frame.origin.x < self.origin.x {
-            self.origin = CGPointMake(self.origin.x + deltaYLow, self.origin.y)
-            self.end = CGPointMake(self.end.x + deltaYLow, self.end.y)
+        if let yLow = yLow where yLow.layer.frame.origin.x < self.origin.x {
+            self.origin = CGPointMake(self.origin.x + yLow.delta, self.origin.y)
+            self.end = CGPointMake(self.end.x + yLow.delta, self.end.y)
             self.initDrawers()
         }
     }
@@ -71,7 +71,7 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
         guard let chart = self.chart else {return}
         super.updateInternal()
         if self.lastFrame.width != self.frame.width {
-            chart.notifyAxisInnerFrameChange(yLow: (layer: self, delta: self.frame.width - self.lastFrame.width))
+            chart.notifyAxisInnerFrameChange(yLow: ChartAxisLayerWithFrameDelta(layer: self, delta: self.frame.width - self.lastFrame.width))
         }
     }
     

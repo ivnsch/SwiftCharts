@@ -55,6 +55,7 @@ public class Chart: Pannable, Zoomable {
     /// The view that the chart is drawn in
     public let view: ChartView
 
+    public let containerView: UIView
     public let contentView: UIView
 
     /// The layers of the chart that are drawn in the view
@@ -95,10 +96,12 @@ public class Chart: Pannable, Zoomable {
             view.addSubview(containerView)
 
             self.contentView = contentView
+            self.containerView = containerView
             contentView.chart = self
             
         } else { // backwards compatibility (short term)
             self.contentView = view
+            self.containerView = view
         }
         
         self.view.configure(settings)
@@ -148,11 +151,15 @@ public class Chart: Pannable, Zoomable {
         self.view.setNeedsDisplay()
     }
  
-    public func notifyAxisInnerFrameChange(xLow xLow: ChartAxisLayerWithFrameDelta? = nil, yLow: ChartAxisLayerWithFrameDelta? = nil, xHigh: ChartAxisLayerWithFrameDelta? = nil, yHigh: ChartAxisLayerWithFrameDelta? = nil) {
-        for layer in self.layers {
+    func notifyAxisInnerFrameChange(xLow xLow: ChartAxisLayerWithFrameDelta? = nil, yLow: ChartAxisLayerWithFrameDelta? = nil, xHigh: ChartAxisLayerWithFrameDelta? = nil, yHigh: ChartAxisLayerWithFrameDelta? = nil) {
+        for layer in layers {
             layer.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
         }
-        self.view.setNeedsDisplay()
+
+        containerView.frame = ChartUtils.insetBy(containerView.frame, dx: yLow.deltaDefault0, dy: xHigh.deltaDefault0, dw: yHigh.deltaDefault0, dh: xLow.deltaDefault0)
+        contentView.frame = ChartUtils.insetBy(contentView.frame, dx: 0, dy: 0, dw: yLow.deltaDefault0 + yHigh.deltaDefault0, dh: xLow.deltaDefault0 + xHigh.deltaDefault0)
+        
+        view.setNeedsDisplay()
     }
     
     func onZoom(let x: CGFloat, let y: CGFloat, let centerX: CGFloat, let centerY: CGFloat) {

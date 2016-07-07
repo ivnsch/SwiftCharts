@@ -27,11 +27,6 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
     }
     
     public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
-        
-        func default0(axisWithDeltaMaybe: ChartAxisLayerWithFrameDelta?) -> CGFloat {
-            return axisWithDeltaMaybe?.delta ?? 0
-        }
-        
-        innerFrame = ChartUtils.insetBy(innerFrame, dx: default0(yLow), dy: default0(xHigh), dw: default0(yHigh), dh: default0(xLow))
+        innerFrame = ChartUtils.insetBy(innerFrame, dx: yLow.deltaDefault0, dy: xHigh.deltaDefault0, dw: yHigh.deltaDefault0, dh: xLow.deltaDefault0)
     }
 }

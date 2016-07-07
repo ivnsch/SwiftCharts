@@ -56,13 +56,24 @@ public class ChartAxisSettings {
     }
 }
 
-
-
-
-
 public typealias ChartAxisValueLabelDrawers = (scalar: Double, drawers: [ChartLabelDrawer])
 
-public typealias ChartAxisLayerWithFrameDelta = (layer: ChartAxisLayer, delta: CGFloat)
+/// Helper class to notify other layers about frame changes which affect content available space
+public final class ChartAxisLayerWithFrameDelta {
+    let layer: ChartAxisLayer
+    let delta: CGFloat
+    init(layer: ChartAxisLayer, delta: CGFloat) {
+        self.layer = layer
+        self.delta = delta
+    }
+}
+
+extension Optional where Wrapped: ChartAxisLayerWithFrameDelta {
+    var deltaDefault0: CGFloat {
+        return self?.delta ?? 0
+    }
+}
+
 
 /// A default implementation of ChartAxisLayer, which delegates drawing of the axis line and labels to the appropriate Drawers
 class ChartAxisLayerDefault: ChartAxisLayer {
