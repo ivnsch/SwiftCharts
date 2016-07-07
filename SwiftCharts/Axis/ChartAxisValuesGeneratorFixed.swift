@@ -18,6 +18,6 @@ public class ChartAxisValuesGeneratorFixed: ChartAxisValuesGenerator {
     }
 
     public func generate(axis: ChartAxis) -> [Double] {
-        return values
+        return values.filter{$0 >= axis.firstVisible && $0 <= axis.lastVisible}
     }
 }
