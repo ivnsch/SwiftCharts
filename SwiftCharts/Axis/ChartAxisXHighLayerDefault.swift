@@ -73,9 +73,9 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
         if let (xHigh, deltaXHigh) = xHigh where xHigh.frame.minY < self.frame.minY {
             self.origin = CGPointMake(self.origin.x, self.origin.y + deltaXHigh)
             self.end = CGPointMake(self.end.x, self.end.y + deltaXHigh)
+            
+            self.initDrawers()
         }
-        
-        self.initDrawers()
     }
     
     override func initDrawers() {

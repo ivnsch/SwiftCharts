@@ -34,6 +34,9 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
         let newOriginY = origin.y - (self.frame.height - self.lastFrame.height)
         origin = CGPointMake(origin.x, newOriginY)
         end = CGPointMake(end.x,  newOriginY)
+        let newInitOriginY = originInit.y - (self.frame.height - self.lastFrame.height)
+        originInit = CGPointMake(originInit.x, newInitOriginY)
+        endInit = CGPointMake(endInit.x,  newInitOriginY)
     }
     
     override func updateInternal() {
@@ -53,9 +56,9 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
         if let (xLow, deltaXLow) = xLow where xLow.frame.maxY > self.frame.maxY {
             self.origin = CGPointMake(self.origin.x, self.origin.y - deltaXLow)
             self.end = CGPointMake(self.end.x, self.end.y - deltaXLow)
+            
+            self.initDrawers()
         }
-        
-        self.initDrawers()
     }
     
     override func initDrawers() {

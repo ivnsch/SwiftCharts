@@ -36,15 +36,20 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         if let (_, deltaYLow) = yLow {
             self.axis.firstScreen = self.axis.firstScreen + deltaYLow
             self.origin = CGPointMake(self.origin.x + deltaYLow, self.origin.y)
-            self.end = CGPointMake(self.end.x, self.end.y)
+            self.originInit = CGPointMake(self.originInit.x + deltaYLow, self.originInit.y)
+            self.axis.firstVisibleScreen = self.axis.firstVisibleScreen + deltaYLow
+
+            self.initDrawers()
         }
         
         if let (_, deltaYHigh) = yHigh {
             self.axis.lastScreen = self.axis.lastScreen - deltaYHigh
             self.end = CGPointMake(self.end.x - deltaYHigh, self.end.y)
+            self.endInit = CGPointMake(self.endInit.x - deltaYHigh, self.endInit.y)
+            self.axis.lastVisibleScreen = self.axis.lastVisibleScreen - deltaYHigh
+            
+            self.initDrawers()
         }
-        
-        self.initDrawers()
     }
     
     override func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {

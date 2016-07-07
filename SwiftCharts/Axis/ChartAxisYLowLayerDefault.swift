@@ -63,16 +63,13 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
         if let (yLow, deltaYLow) = yLow where yLow.frame.origin.x < self.origin.x {
             self.origin = CGPointMake(self.origin.x + deltaYLow, self.origin.y)
             self.end = CGPointMake(self.end.x + deltaYLow, self.end.y)
+            self.initDrawers()
         }
-        
-        self.initDrawers()
     }
     
     override func updateInternal() {
         guard let chart = self.chart else {return}
-        
         super.updateInternal()
-    
         if self.lastFrame.width != self.frame.width {
             chart.notifyAxisInnerFrameChange(yLow: (layer: self, delta: self.frame.width - self.lastFrame.width))
         }

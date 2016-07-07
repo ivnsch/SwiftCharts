@@ -39,14 +39,19 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             self.axis.firstScreen = self.axis.firstScreen - deltaXLow
             self.origin = CGPointMake(self.origin.x, self.origin.y - deltaXLow)
             self.end = CGPointMake(self.end.x, self.end.y)
+            self.originInit = CGPointMake(self.originInit.x, self.originInit.y - deltaXLow)
+            self.axis.firstVisibleScreen = self.axis.firstVisibleScreen - deltaXLow
+            self.initDrawers()
         }
         
         if let (_, deltaXHigh) = xHigh {
             self.axis.lastScreen = self.axis.lastScreen + deltaXHigh
             self.end = CGPointMake(self.end.x, self.end.y + deltaXHigh)
+            self.endInit = CGPointMake(self.endInit.x, self.endInit.y + deltaXHigh)
+            self.axis.lastVisibleScreen = self.axis.lastVisibleScreen + deltaXHigh
+            self.initDrawers()
         }
         
-        self.initDrawers()
     }
     
     override func generateAxisTitleLabelsDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {

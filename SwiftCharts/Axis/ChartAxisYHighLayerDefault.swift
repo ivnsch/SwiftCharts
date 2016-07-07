@@ -50,9 +50,9 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         if let (yHigh, deltaYHigh) = yHigh where yHigh.frame.maxX > self.frame.maxX {
             self.origin = CGPointMake(self.origin.x - deltaYHigh, self.origin.y)
             self.end = CGPointMake(self.end.x + deltaYHigh, self.end.y)
+            
+            self.initDrawers()
         }
-        
-        self.initDrawers()
     }
     
     override func initDrawers() {
