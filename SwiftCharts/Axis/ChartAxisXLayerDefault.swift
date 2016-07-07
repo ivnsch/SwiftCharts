@@ -79,6 +79,8 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     // calculate row heights (max text height) for each row
     private func calculateRowHeights() -> [CGFloat] {
   
+        guard !currentAxisValues.isEmpty else {return []}
+
         let axisValuesWithLabels: [(axisValue: Double, labels: [ChartAxisLabel])] = self.currentAxisValues.map {
             ($0, labelsGenerator.generate($0))
         }
@@ -178,7 +180,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     
     override func pan(deltaX: CGFloat, deltaY: CGFloat) {
         
-        let length = self.axis.length
+        let length = self.axis.screenLength
         
         let (newOriginX, newEndX): (CGFloat, CGFloat) = {
             

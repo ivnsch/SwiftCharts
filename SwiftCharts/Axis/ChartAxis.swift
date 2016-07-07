@@ -22,23 +22,48 @@ public class ChartAxis {
     // Screen location (relative to chart view's frame) corresponding to last model value
     public var lastScreen: CGFloat
     
+    public let firstVisibleScreen: CGFloat
+    public let lastVisibleScreen: CGFloat
+    
+    var firstVisible: Double {
+        return scalarForScreenLoc(firstVisibleScreen)
+    }
+    
+    var lastVisible: Double {
+        return scalarForScreenLoc(lastVisibleScreen)
+    }
+    
+    var zoomFactor: Double {
+        return abs(length / visibleLength)
+    }
+    
     // The space between first and last model values. Can be negative (used for mirrored axes)
-    public var modelLength: Double {
+    public var length: Double {
         fatalError("override")
     }
-
+    
     // The space between first and last screen locations. Can be negative (used for mirrored axes)
-    public var length: CGFloat {
+    public var screenLength: CGFloat {
         fatalError("override")
     }
-
+    
+    public var visibleLength: Double {
+        fatalError("override")
+    }
+    
+    public var visibleScreenLength: CGFloat {
+        fatalError("override")
+    }
+    
     public init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat) {
         self.first = first
         self.last = last
         self.firstScreen = firstScreen
         self.lastScreen = lastScreen
+        self.firstVisibleScreen = firstScreen
+        self.lastVisibleScreen = lastScreen
     }
- 
+    
     /// Calculates screen location (relative to chart view's frame) of model value. It's not required that scalar is between first and last model values.
     public func screenLocForScalar(scalar: Double) -> CGFloat {
         fatalError("Override")
@@ -51,6 +76,6 @@ public class ChartAxis {
     
     /// Calculates screen location (relative to axis length) of model value. It's not required that scalar is between first and last model values.
     func innerScreenLocForScalar(scalar: Double) -> CGFloat {
-        return length * CGFloat(scalar - first) / CGFloat(modelLength)
+        return screenLength * CGFloat(scalar - first) / CGFloat(length)
     }
 }

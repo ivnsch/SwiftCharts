@@ -10,12 +10,20 @@ import UIKit
 
 public class ChartAxisY: ChartAxis {
     
-    public override var length: CGFloat {
+    public override var length: Double {
+        return last - first
+    }
+    
+    public override var screenLength: CGFloat {
         return firstScreen - lastScreen
     }
     
-    public override var modelLength: Double {
-        return last - first
+    public override var visibleLength: Double {
+        return lastVisible - firstVisible
+    }
+    
+    public override var visibleScreenLength: CGFloat {
+        return firstVisibleScreen - lastVisibleScreen
     }
     
     public override func screenLocForScalar(scalar: Double) -> CGFloat {
@@ -23,6 +31,6 @@ public class ChartAxisY: ChartAxis {
     }
     
     public override func scalarForScreenLoc(screenLoc: CGFloat) -> Double {
-        return (Double(-(screenLoc - firstScreen)) * modelLength / Double(length)) + first
+        return (Double(-(screenLoc - firstScreen)) * length / Double(screenLength)) + first
     }
 }

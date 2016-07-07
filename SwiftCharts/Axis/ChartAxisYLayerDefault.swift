@@ -143,7 +143,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
     override func pan(deltaX: CGFloat, deltaY: CGFloat) {
         
-        let length = axis.length
+        let length = axis.screenLength
         
         let (newOriginY, newEndY): (CGFloat, CGFloat) = {
             
