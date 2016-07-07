@@ -120,8 +120,20 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         let segment2 = centerY - end.y
         let deltaSegment1 = (segment1 * y) - segment1
         let deltaSegment2 = (segment2 * y) - segment2
-        let newOriginY = origin.y + deltaSegment1
-        let newEndY = end.y - deltaSegment2
+        var newOriginY = origin.y + deltaSegment1
+        var newEndY = end.y - deltaSegment2
+        
+        if newEndY > endInit.y {
+            let delta = newEndY - endInit.y
+            newEndY = endInit.y
+            newOriginY = newOriginY - delta
+        }
+        
+        if newOriginY < originInit.y {
+            let delta = originInit.y - newOriginY
+            newOriginY = originInit.y
+            newEndY = newEndY + delta
+        }
         
         if newOriginY - newEndY > originInit.y - endInit.y { // new length > original length
             origin = CGPointMake(origin.x, newOriginY)
