@@ -64,7 +64,7 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
         
         let calculateConstantScreenLoc: (axis: ChartAxis, index: Int, group: ChartPointsBarGroup<T>) -> CGFloat = {axis, index, group in
             let totalWidth = CGFloat(group.bars.count) * barWidth + ((self.barSpacing ?? 0) * (maxBarCountInGroup - 1))
-            let groupCenter = axis.screenLocForScalar(group.constant.scalar)
+            let groupCenter = axis.innerScreenLocForScalar(group.constant.scalar)
             let origin = groupCenter - totalWidth / 2
             return origin + CGFloat(index) * (barWidth + (self.barSpacing ?? 0)) + barWidth / 2
         }
@@ -85,26 +85,6 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
                 chart?.addSubview(barView)
             }
         }
-    }
-    
-    private func reloadViews() {
-        for v in barViews {
-            v.removeFromSuperview()
-        }
-        
-        isTransform = true
-        display()
-        isTransform = false
-    }
-    
-    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
-        super.pan(deltaX, deltaY: deltaY)
-        reloadViews()
-    }
-    
-    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        reloadViews()
     }
 }
 

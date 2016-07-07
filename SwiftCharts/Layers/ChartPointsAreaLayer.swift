@@ -29,10 +29,10 @@ public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
     override func display(chart chart: Chart) {
         var points = self.chartPointScreenLocs
         
-        let origin = self.innerFrame.origin
-        let xLength = self.innerFrame.width
+        let origin = chart.contentView.frame.origin
+        let xLength = chart.contentView.frame.width
         
-        let bottomY = origin.y + self.innerFrame.height
+        let bottomY = origin.y + chart.contentView.frame.height
         
         if self.addContainerPoints {
             points.append(CGPointMake(origin.x + xLength, bottomY))
@@ -42,34 +42,5 @@ public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
         let areaView = ChartAreasView(points: points, frame: chart.bounds, color: areaColor, animDuration: isTransform ? 0 : animDuration, animDelay: isTransform ? 0 : animDelay)
         areaViews.append(areaView)
         chart.addSubview(areaView)
-    }
-    
-    public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
-        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
-        
-        reloadViews()
-    }
-    
-    private func reloadViews() {
-        guard let chart = chart else {return}
-        
-        for v in areaViews {
-            v.removeFromSuperview()
-        }
-        
-        isTransform = true
-        display(chart: chart)
-        isTransform = false
-    }
-    
-    
-    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        reloadViews()
-    }
-    
-    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
-        super.pan(deltaX, deltaY: deltaY)
-        reloadViews()
     }
 }

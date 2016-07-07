@@ -44,12 +44,6 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
         }
     }
     
-    public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
-        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
-        
-        reloadViews()
-    }
-    
     func reloadViews() {
         guard let chart = chart else {return}
         
@@ -108,11 +102,11 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
     
     public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        reloadViews()
+        updateChartPointsScreenLocations()
     }
     
     public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
         super.pan(deltaX, deltaY: deltaY)
-        reloadViews()
+        updateChartPointsScreenLocations()
     }
 }

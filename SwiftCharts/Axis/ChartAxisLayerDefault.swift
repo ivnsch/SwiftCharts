@@ -231,6 +231,8 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         }
     }
     
+    func chartContentViewDrawing(context context: CGContextRef, chart: Chart) {
+    }
     
     func initDrawers() {
         fatalError("override")

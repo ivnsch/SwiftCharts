@@ -19,7 +19,7 @@ public class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
-    override public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
+    override public func chartContentViewDrawing(context context: CGContextRef, chart: Chart) {
         for chartPointModel in self.chartPointsModels {
             self.drawChartPointModel(context: context, chartPointModel: chartPointModel)
         }
@@ -27,6 +27,16 @@ public class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
     public func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
         fatalError("override")
+    }
+    
+    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
+        chart?.contentView.setNeedsDisplay()
+    }
+    
+    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        super.pan(deltaX, deltaY: deltaY)
+        chart?.contentView.setNeedsDisplay()
     }
 }
 

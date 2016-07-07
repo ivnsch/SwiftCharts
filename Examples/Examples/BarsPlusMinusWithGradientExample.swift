@@ -63,16 +63,17 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         }
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
-        
-        let xValues = (-80).stride(through: 80, by: 20).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
-        let yValues =
-            [ChartAxisValueString(order: -1)] +
-            vals.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
-            [ChartAxisValueString(order: vals.count)]
-        
-        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
-        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
 
+        let labelsGenerator = ChartAxisLabelsGeneratorFunc {scalar in
+            return ChartAxisLabel(text: "\(scalar)", settings: labelSettings)
+        }
+        let xGenerator = ChartAxisGeneratorMultiplier(20)
+        
+        let xModel = ChartAxisModel(firstModelValue: -80, lastModelValue: 80, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings)], axisValuesGenerator: xGenerator, labelsGenerator: labelsGenerator)
+
+        let yValues = [ChartAxisValueString(order: -1)] + vals.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} + [ChartAxisValueString(order: vals.count)]
+        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
+        
         let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
         
         // calculate coords space in the background to keep UI smooth
@@ -95,13 +96,14 @@ class BarsPlusMinusWithGradientExample: UIViewController {
                 let dummyZeroXChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
                 let xZeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: [dummyZeroXChartPoint], viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
                     let width: CGFloat = 2
-                    let v = UIView(frame: CGRectMake(chartPointModel.screenLoc.x - width / 2, innerFrame.origin.y, width, innerFrame.size.height))
+                    let v = UIView(frame: CGRectMake(chartPointModel.screenLoc.x - width / 2, chart.contentView.bounds.origin.y, width, innerFrame.size.height))
                     v.backgroundColor = UIColor(red: 1, green: 69 / 255, blue: 0, alpha: 1)
                     return v
                 })
                 
                 let chart = Chart(
                     frame: chartFrame,
+                    innerFrame: innerFrame,
                     settings: chartSettings,
                     layers: [
                         xAxisLayer,

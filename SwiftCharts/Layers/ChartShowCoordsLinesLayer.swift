@@ -39,8 +39,8 @@ public class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
             }
             
             func finalState() {
-                hLine.frame = CGRectMake(self.innerFrame.origin.x, screenLoc.y, screenLoc.x - self.innerFrame.origin.x, 1)
-                vLine.frame = CGRectMake(screenLoc.x, screenLoc.y, 1, self.innerFrame.origin.y + self.innerFrame.height - screenLoc.y)
+                hLine.frame = CGRectMake(chart.contentView.frame.origin.x, screenLoc.y, screenLoc.x - chart.contentView.frame.origin.x, 1)
+                vLine.frame = CGRectMake(screenLoc.x, screenLoc.y, 1, chart.contentView.frame.origin.y + chart.contentView.frame.height - screenLoc.y)
                 
             }
             if isTransform {
@@ -60,21 +60,13 @@ public class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
         self.view = view
     }
     
-    private func reloadViews() {
-        guard let chart = chart, chartPoint = activeChartPoint else {return}
-
-        isTransform = true
-        showChartPointLines(chartPoint, chart: chart)
-        isTransform = false
-    }
-
     public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        reloadViews()
+        updateChartPointsScreenLocations()
     }
     
     public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
         super.pan(deltaX, deltaY: deltaY)
-        reloadViews()
+        updateChartPointsScreenLocations()
     }
 }

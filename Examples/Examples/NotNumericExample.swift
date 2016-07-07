@@ -77,6 +77,7 @@ class NotNumericExample: UIViewController {
         
         let chart = Chart(
             frame: chartFrame,
+            innerFrame: innerFrame,
             settings: chartSettings,
             layers: [
                 xAxisLayer,

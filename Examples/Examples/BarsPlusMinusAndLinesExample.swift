@@ -53,12 +53,18 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         let yValues = (-80).stride(through: 80, by: 20).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
         let xValues =
             [ChartAxisValueString(order: -1)] +
-            barsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
-            [ChartAxisValueString(order: barsData.count)]
-
+                barsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+                [ChartAxisValueString(order: barsData.count)]
         
-        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
-        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
+        let xGenerator = ChartAxisGeneratorMultiplier(1)
+        let yGenerator = ChartAxisGeneratorMultiplier(20)
+        let labelsGenerator = ChartAxisLabelsGeneratorFunc {scalar in
+            return ChartAxisLabel(text: "\(scalar)", settings: labelSettings)
+        }
+        
+        let xModel = ChartAxisModel(firstModelValue: -1, lastModelValue: Double(barsData.count), axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings)], axisValuesGenerator: xGenerator, labelsGenerator: labelsGenerator)
+        let yModel = ChartAxisModel(firstModelValue: -80, lastModelValue: 80, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical())], axisValuesGenerator: yGenerator, labelsGenerator: labelsGenerator)
+        
         let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
         
         let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
@@ -126,13 +132,14 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         let dummyZeroYChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
         let yZeroGapLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: [dummyZeroYChartPoint], viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
             let height: CGFloat = 2
-            let v = UIView(frame: CGRectMake(innerFrame.origin.x + 2, chartPointModel.screenLoc.y - height / 2, innerFrame.origin.x + innerFrame.size.height, height))
+            let v = UIView(frame: CGRectMake(chart.contentView.frame.origin.x + 2, chartPointModel.screenLoc.y - height / 2, chart.contentView.frame.origin.x + chart.contentView.frame.height, height))
             v.backgroundColor = UIColor.whiteColor()
             return v
         })
         
         let chart = Chart(
             frame: chartFrame,
+            innerFrame: innerFrame,
             settings: chartSettings,
             layers: [
                 xAxisLayer,

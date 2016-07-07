@@ -27,10 +27,18 @@ public class ChartAxisY: ChartAxis {
     }
     
     public override func screenLocForScalar(scalar: Double) -> CGFloat {
-        return firstScreen - innerScreenLocForScalar(scalar)
+        return firstScreen - internalScreenLocForScalar(scalar)
+    }
+    
+    public override func innerScreenLocForScalar(scalar: Double) -> CGFloat {
+        return screenLength - internalScreenLocForScalar(scalar)
     }
     
     public override func scalarForScreenLoc(screenLoc: CGFloat) -> Double {
         return (Double(-(screenLoc - firstScreen)) * length / Double(screenLength)) + first
+    }
+    
+    public override func innerScalarForScreenLoc(screenLoc: CGFloat) -> Double {
+        return length + (Double(-(screenLoc)) * length / Double(screenLength)) + first
     }
 }

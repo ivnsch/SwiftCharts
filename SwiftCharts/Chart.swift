@@ -50,11 +50,13 @@ public class ChartSettings {
 }
 
 /// A Chart object is the highest level access to your chart. It has the view where all of the chart layers are drawn, which you can provide (useful if you want to position it as part of a storyboard or XIB), or it can be created for you.
-public class Chart {
+public class Chart: Pannable, Zoomable {
 
     /// The view that the chart is drawn in
     public let view: ChartView
-    
+
+    public let contentView: UIView
+
     /// The layers of the chart that are drawn in the view
     private let layers: [ChartLayer]
 
@@ -66,8 +68,8 @@ public class Chart {
 
      - returns: The new Chart
      */
-    convenience public init(frame: CGRect, settings: ChartSettings, layers: [ChartLayer]) {
-        self.init(view: ChartBaseView(frame: frame), settings: settings, layers: layers)
+    convenience public init(frame: CGRect, innerFrame: CGRect? = nil, settings: ChartSettings, layers: [ChartLayer]) {
+        self.init(view: ChartBaseView(frame: frame), innerFrame: innerFrame, settings: settings, layers: layers)
     }
 
     /**
@@ -78,11 +80,27 @@ public class Chart {
 
      - returns: The new Chart
      */
-    public init(view: ChartView, settings: ChartSettings, layers: [ChartLayer]) {
+    public init(view: ChartView, innerFrame: CGRect? = nil, settings: ChartSettings, layers: [ChartLayer]) {
         
         self.layers = layers
         
         self.view = view
+        
+        if let innerFrame = innerFrame {
+            let containerView = UIView(frame: innerFrame)
+            let contentView = ChartContentView(frame: containerView.bounds)
+            contentView.backgroundColor = UIColor.clearColor()
+            containerView.addSubview(contentView)
+            containerView.clipsToBounds = true
+            view.addSubview(containerView)
+
+            self.contentView = contentView
+            contentView.chart = self
+            
+        } else { // backwards compatibility (short term)
+            self.contentView = view
+        }
+        
         self.view.configure(settings)
         self.view.chart = self
         
@@ -98,12 +116,12 @@ public class Chart {
     }
 
     /**
-     Adds a subview to the chart's view
+     Adds a subview to the chart's content view
 
-     - parameter view: The subview to add to the chart's view
+     - parameter view: The subview to add to the chart's content view
      */
     public func addSubview(view: UIView) {
-        self.view.addSubview(view)
+        self.contentView.addSubview(view)
     }
 
     /// The frame of the chart's view
@@ -137,13 +155,13 @@ public class Chart {
         self.view.setNeedsDisplay()
     }
     
-    public func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    func onZoom(let x: CGFloat, let y: CGFloat, let centerX: CGFloat, let centerY: CGFloat) {
         for layer in layers {
             layer.zoom(x, y: y, centerX: centerX, centerY: centerY)
         }
     }
     
-    public func pan(deltaX: CGFloat, deltaY: CGFloat) {
+    func onPan(deltaX: CGFloat, deltaY: CGFloat) {
         for layer in layers {
             layer.pan(deltaX, deltaY: deltaY)
         }
@@ -159,6 +177,23 @@ public class Chart {
         for layer in self.layers {
             layer.chartViewDrawing(context: context!, chart: self)
         }
+    }
+    
+    private func drawContentViewRect(rect: CGRect) {
+        let context = UIGraphicsGetCurrentContext()
+        for layer in layers {
+            layer.chartContentViewDrawing(context: context!, chart: self)
+        }
+    }
+}
+
+
+public class ChartContentView: UIView {
+    
+    weak var chart: Chart?
+    
+    override public func drawRect(rect: CGRect) {
+        self.chart?.drawContentViewRect(rect)
     }
 }
 

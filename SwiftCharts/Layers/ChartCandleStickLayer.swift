@@ -23,8 +23,8 @@ public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T
         
         self.screenItems = generateScreenItems()
     }
-
-    override public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
+    
+    override public func chartContentViewDrawing(context context: CGContextRef, chart: Chart) {
         
         for screenItem in self.screenItems {
             
@@ -61,6 +61,16 @@ public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T
     override func updateChartPointsScreenLocations() {
         super.updateChartPointsScreenLocations()
         screenItems = generateScreenItems()
+    }
+    
+    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
+        chart?.contentView.setNeedsDisplay()
+    }
+    
+    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        super.pan(deltaX, deltaY: deltaY)
+        chart?.contentView.setNeedsDisplay()
     }
 }
 

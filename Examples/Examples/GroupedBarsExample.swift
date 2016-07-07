@@ -54,8 +54,8 @@ class GroupedBarsExample: UIViewController {
         let (axisValues1, axisValues2): ([ChartAxisValue], [ChartAxisValue]) = (
             0.stride(through: 60, by: 5).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)},
             [ChartAxisValueString(order: -1)] +
-            groupsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
-            [ChartAxisValueString(order: groupsData.count)]
+                groupsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+                [ChartAxisValueString(order: groupsData.count)]
         )
         let (xValues, yValues) = horizontal ? (axisValues1, axisValues2) : (axisValues2, axisValues1)
         
@@ -76,6 +76,7 @@ class GroupedBarsExample: UIViewController {
         
         return Chart(
             frame: chartFrame,
+            innerFrame: innerFrame,
             settings: chartSettings,
             layers: [
                 xAxisLayer,

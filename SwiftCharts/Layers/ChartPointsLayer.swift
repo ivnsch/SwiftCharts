@@ -32,8 +32,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     
     public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], displayDelay: Float = 0) {
         self.chartPointsModels = chartPoints.enumerate().map {index, chartPoint in
-            let screenLoc = CGPointMake(xAxis.screenLocForScalar(chartPoint.x.scalar), yAxis.screenLocForScalar(chartPoint.y.scalar))
-            return ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: screenLoc)
+            return ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: CGPointMake(xAxis.innerScreenLocForScalar(chartPoint.x.scalar), yAxis.innerScreenLocForScalar(chartPoint.y.scalar)))
         }
         
         self.displayDelay = displayDelay
@@ -60,7 +59,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
     
         self.chartPointsModels = chartPointsModels.enumerate().map {index, chartPointModel in
-            let screenLoc = CGPointMake(xAxis.screenLocForScalar(chartPointModel.chartPoint.x.scalar), yAxis.screenLocForScalar(chartPointModel.chartPoint.y.scalar))
+            let screenLoc = CGPointMake(xAxis.innerScreenLocForScalar(chartPointModel.chartPoint.x.scalar), yAxis.innerScreenLocForScalar(chartPointModel.chartPoint.y.scalar))
             return ChartPointLayerModel(chartPoint: chartPointModel.chartPoint, index: index, screenLoc: screenLoc)
         }
     }
@@ -69,10 +68,11 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         return self.modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
     }
     
+    // TODO differentiate - subclasses of ChartPointsLayer don't necessarily use contentView
     public func modelLocToScreenLoc(x x: Double, y: Double) -> CGPoint {
         return CGPointMake(
-            self.xAxis.screenLocForScalar(x),
-            self.yAxis.screenLocForScalar(y))
+            self.xAxis.innerScreenLocForScalar(x) / (chart?.contentView.transform.a ?? 1),
+            self.yAxis.innerScreenLocForScalar(y) / (chart?.contentView.transform.d ?? 1))
     }
     
     public func chartPointsForScreenLoc(screenLoc: CGPoint) -> [T] {
@@ -123,15 +123,4 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
             chartPointsModels[i].screenLoc = CGPointMake(xAxis.screenLocForScalar(chartPointModel.chartPoint.x.scalar), yAxis.screenLocForScalar(chartPointModel.chartPoint.y.scalar))
         }
     }
-    
-    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        updateChartPointsScreenLocations()
-    }
-    
-    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
-        super.pan(deltaX, deltaY: deltaY)
-        updateChartPointsScreenLocations()
-    }
-
 }

@@ -39,26 +39,4 @@ public class ChartPointsSingleViewLayer<T: ChartPoint, U: UIView>: ChartPointsVi
             chart.addSubview(view)
         }
     }
-    
-    override func reloadViews() {
-        guard let chart = chart, chartPoint = activeChartPoint else {return}
-        
-        for v in addedViews {
-            v.removeFromSuperview()
-        }
-
-        isTransform = true
-        showView(chartPoint: chartPoint, chart: chart)
-        isTransform = false
-    }
-    
-    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        reloadViews()
-    }
-    
-    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
-        super.pan(deltaX, deltaY: deltaY)
-        reloadViews()
-    }
 }

@@ -195,9 +195,9 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 self.thumb.frame = CGRectMake(intersection.x - w/2, intersection.y - h/2, w, h)
                 
                 if self.chartPointsModels.count > 1 {
-
-                    let xScalar = self.xAxis.scalarForScreenLoc(intersection.x)
-                    let yScalar = self.yAxis.scalarForScreenLoc(intersection.y)
+                    
+                    let xScalar = self.xAxis.innerScalarForScreenLoc(intersection.x)
+                    let yScalar = self.yAxis.innerScalarForScreenLoc(intersection.y)
                     
                     let dummyModel = self.chartPointsModels[0]
                     let x = dummyModel.chartPoint.x.copy(xScalar)
@@ -211,7 +211,7 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }
     
     override func display(chart chart: Chart) {
-        let view = TrackerView(frame: chart.bounds, updateFunc: {[weak self] location in
+        let view = TrackerView(frame: chart.contentView.bounds, updateFunc: {[weak self] location in
             self?.updateTrackerLine(touchPoint: location)
         })
         view.userInteractionEnabled = true

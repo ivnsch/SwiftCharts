@@ -104,7 +104,7 @@ class AreasExample: UIViewController {
                     selectedView = view
                     
                     bubbleView.transform = CGAffineTransformIdentity
-                }, completion: {finished in})
+                    }, completion: {finished in})
             }
 
             func targetState() {
@@ -119,7 +119,7 @@ class AreasExample: UIViewController {
             } else {
                 UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
                     targetState()
-                }, completion: nil)
+                    }, completion: nil)
             }
 
             return v
@@ -137,6 +137,7 @@ class AreasExample: UIViewController {
         
         let chart = Chart(
             frame: chartFrame,
+            innerFrame: innerFrame,
             settings: chartSettings,
             layers: [
                 xAxisLayer,

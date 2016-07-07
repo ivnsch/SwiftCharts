@@ -14,6 +14,7 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
     let yAxis: ChartAxis
     
     // frame where the layer displays chartpoints
+    // TODO maybe remove this, use the frame of contentView in chart instead. It should be always the same.
     public var innerFrame: CGRect
     
     /// If layer is generating views as part of a transform (e.g. panning or zooming)
@@ -31,6 +32,6 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
             return axisWithDeltaMaybe?.delta ?? 0
         }
         
-        self.innerFrame = ChartUtils.insetBy(self.innerFrame, dx: default0(yLow), dy: default0(xHigh), dw: default0(yHigh), dh: default0(xLow))
+        innerFrame = ChartUtils.insetBy(innerFrame, dx: default0(yLow), dy: default0(xHigh), dw: default0(yHigh), dh: default0(xLow))
     }
 }

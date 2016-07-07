@@ -75,6 +75,7 @@ class StackedBarsExample: UIViewController {
         
         return Chart(
             frame: chartFrame,
+            innerFrame: innerFrame,
             settings: chartSettings,
             layers: [
                 xAxisLayer,

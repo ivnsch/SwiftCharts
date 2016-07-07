@@ -48,23 +48,6 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             animDelay: lineModel.animDelay
         )
     }
-   
-    public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
-        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
-        reloadViews()
-    }
-    
-    private func reloadViews() {
-        guard let chart = chart else {return}
-        
-        for v in lineViews {
-            v.removeFromSuperview()
-        }
-        
-        isTransform = true
-        display(chart: chart)
-        isTransform = false
-    }
     
     override func display(chart chart: Chart) {
         let screenLines = self.lineModels.map{self.toScreenLine(lineModel: $0, chart: chart)}
@@ -72,7 +55,7 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
         for screenLine in screenLines {
             let lineView = ChartLinesView(
                 path: self.pathGenerator.generatePath(points: screenLine.points, lineWidth: screenLine.lineWidth),
-                frame: chart.bounds,
+                frame: chart.contentView.bounds,
                 lineColor: screenLine.color,
                 lineWidth: screenLine.lineWidth,
                 animDuration: self.isTransform ? 0 : screenLine.animDuration,
@@ -82,15 +65,5 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             lineView.userInteractionEnabled = false
             chart.addSubview(lineView)
         }
-    }
-    
-    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
-        super.pan(deltaX, deltaY: deltaY)
-        reloadViews()
-    }
-    
-    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        reloadViews()
     }
 }

@@ -50,21 +50,21 @@ class ChartBarsViewGenerator<T: ChartBarModel> {
         switch self.horizontal {
         case true:
             return (
-                CGPointMake(self.xAxis.screenLocForScalar(barModel.axisValue1.scalar), constantScreenLoc),
-                CGPointMake(self.xAxis.screenLocForScalar(barModel.axisValue2.scalar), constantScreenLoc))
+                CGPointMake(xAxis.innerScreenLocForScalar(barModel.axisValue1.scalar), constantScreenLoc),
+                CGPointMake(xAxis.innerScreenLocForScalar(barModel.axisValue2.scalar), constantScreenLoc))
         case false:
             return (
-                CGPointMake(constantScreenLoc, self.yAxis.screenLocForScalar(barModel.axisValue1.scalar)),
-                CGPointMake(constantScreenLoc, self.yAxis.screenLocForScalar(barModel.axisValue2.scalar)))
+                CGPointMake(constantScreenLoc, yAxis.innerScreenLocForScalar(barModel.axisValue1.scalar)),
+                CGPointMake(constantScreenLoc, yAxis.innerScreenLocForScalar(barModel.axisValue2.scalar)))
         }
     }
     
     func constantScreenLoc(barModel: T) -> CGFloat {
-        return (self.horizontal ? self.yAxis : self.xAxis).screenLocForScalar(barModel.constant.scalar)
+        return (self.horizontal ? self.yAxis : self.xAxis).innerScreenLocForScalar(barModel.constant.scalar)
     }
     
     // constantScreenLoc: (screen) coordinate that is equal in p1 and p2 - for vertical bar this is the x coordinate, for horizontal bar this is the y coordinate
-    func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor?, animDuration: Float) -> ChartPointViewBar {
+    func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor?, animDuration: Float, chart: Chart? = nil) -> ChartPointViewBar {
         
         let constantScreenLoc = constantScreenLocMaybe ?? self.constantScreenLoc(barModel)
         
@@ -101,7 +101,7 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
         let barsGenerator = ChartBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, barWidth: barWidth)
         
         for barModel in bars {
-            let barView = barsGenerator.generateView(barModel, bgColor: barModel.bgColor, animDuration: isTransform ? 0 : animDuration)
+            let barView = barsGenerator.generateView(barModel, bgColor: barModel.bgColor, animDuration: isTransform ? 0 : animDuration, chart: chart)
             barViews.append(barView)
             chart?.addSubview(barView)
         }
@@ -114,15 +114,5 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
         isTransform = true
         display()
         isTransform = false
-    }
-    
-    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
-        super.pan(deltaX, deltaY: deltaY)
-        reloadViews()
-    }
-    
-    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        reloadViews()
     }
 }

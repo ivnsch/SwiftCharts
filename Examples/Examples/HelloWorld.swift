@@ -17,17 +17,20 @@ class HelloWorld: UIViewController {
         super.viewDidLoad()
 
         // map model data to chart points
-        let chartPoints: [ChartPoint] = [(2, 2), (4, 4), (6, 6), (8, 10), (12, 14)].map{ChartPoint(x: ChartAxisValueInt($0.0), y: ChartAxisValueInt($0.1))}
-
+        let chartPoints: [ChartPoint] = [(2, 2), (4, 4), (6, 6), (8, 8), (8, 10), (15, 15)].map{ChartPoint(x: ChartAxisValueInt($0.0), y: ChartAxisValueInt($0.1))}
+        
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        // define x and y axis values (quick-demo way, see other examples for generation based on chartpoints)
-        let xValues = 0.stride(through: 16, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
-        let yValues = 0.stride(through: 16, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+        let generator = ChartAxisGeneratorMultiplier(2)
+        let labelsGenerator = ChartAxisLabelsGeneratorFunc {scalar in
+            return ChartAxisLabel(text: "\(scalar)", settings: labelSettings)
+        }
         
-        // create axis models with axis values and axis title
-        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
-        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
+        let xGenerator = ChartAxisGeneratorMultiplier(2)
+        
+        let xModel = ChartAxisModel(firstModelValue: 0, lastModelValue: 16, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings)], axisValuesGenerator: xGenerator, labelsGenerator: labelsGenerator)
+        
+        let yModel = ChartAxisModel(firstModelValue: 0, lastModelValue: 16, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical())], axisValuesGenerator: generator, labelsGenerator: labelsGenerator)
         
         let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
         
@@ -45,12 +48,12 @@ class HelloWorld: UIViewController {
         let viewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart, isTransform: Bool) -> UIView? in
             let viewSize: CGFloat = Env.iPad ? 30 : 20
             let center = chartPointModel.screenLoc
-            let label = UILabel(frame: CGRectMake(center.x - viewSize / 2, center.y - viewSize / 2, viewSize, viewSize))
-            label.backgroundColor = UIColor.greenColor()
-            label.textAlignment = NSTextAlignment.Center
-            label.text = chartPointModel.chartPoint.y.description
-            label.font = ExamplesDefaults.labelFont
-            return label
+            let view = UIView(frame: CGRectMake(center.x - viewSize / 2, center.y - viewSize / 2, viewSize, viewSize))
+            view.backgroundColor = UIColor.cyanColor()
+            let dot = UIView(frame: CGRectMake(view.bounds.midX - 1, view.bounds.midY - 1, 2, 2))
+            dot.backgroundColor = UIColor.blueColor()
+            view.addSubview(dot)
+            return view
         }
         
         // create layer that uses viewGenerator to display chartpoints
@@ -59,6 +62,7 @@ class HelloWorld: UIViewController {
         // create chart instance with frame and layers
         let chart = Chart(
             frame: chartFrame,
+            innerFrame: innerFrame,
             settings: chartSettings,
             layers: [
                 xAxisLayer,

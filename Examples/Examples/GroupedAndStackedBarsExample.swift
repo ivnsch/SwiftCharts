@@ -78,16 +78,23 @@ class GroupedAndStackedBarsExample: UIViewController {
             return ChartPointsBarGroup(constant: constant, bars: bars)
         }
         
-        let (axisValues1, axisValues2): ([ChartAxisValue], [ChartAxisValue]) = (
-            (-60).stride(through: 100, by: 20).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)},
-            [ChartAxisValueString(order: -1)] +
-                groupsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
-                [ChartAxisValueString(order: groupsData.count)]
-        )
-        let (xValues, yValues) = horizontal ? (axisValues1, axisValues2) : (axisValues2, axisValues1)
+        let letterAxisValues = [ChartAxisValueString(order: -1)] +
+            groupsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+            [ChartAxisValueString(order: groupsData.count)]
         
-        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
-        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
+        
+        let numberAxisValuesGenerator = ChartAxisGeneratorMultiplier(20)
+        let numberAxisLabelsGenerator = ChartAxisLabelsGeneratorFunc {scalar in
+            return ChartAxisLabel(text: "\(scalar)", settings: labelSettings)
+        }
+        
+        let m1 = ChartAxisModel(firstModelValue: -60, lastModelValue: 100, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: horizontal ? labelSettings : labelSettings.defaultVertical())], axisValuesGenerator: numberAxisValuesGenerator, labelsGenerator: numberAxisLabelsGenerator)
+        
+        let m2 = ChartAxisModel(axisValues: letterAxisValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: horizontal ? labelSettings.defaultVertical() : labelSettings))
+        
+        let (xModel, yModel) = horizontal ? (m1, m2) : (m2, m1)
+        
+        
         let frame = ExamplesDefaults.chartFrame(self.view.bounds)
         let chartFrame = self.chart?.frame ?? CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height - self.dirSelectorHeight)
         
@@ -107,9 +114,9 @@ class GroupedAndStackedBarsExample: UIViewController {
             
             let viewFrame: CGRect = {
                 if horizontal {
-                    return CGRectMake(chartPointModel.screenLoc.x - width / 2, innerFrame.origin.y, width, innerFrame.size.height)
+                    return CGRectMake(chartPointModel.screenLoc.x - width / 2, chart.contentView.frame.origin.y, width, chart.contentView.frame.size.height)
                 } else {
-                    return CGRectMake(innerFrame.origin.x, chartPointModel.screenLoc.y - width / 2, innerFrame.size.width, width)
+                    return CGRectMake(0, chartPointModel.screenLoc.y - width / 2, chart.contentView.frame.size.width, width)
                 }
             }()
             
@@ -120,6 +127,7 @@ class GroupedAndStackedBarsExample: UIViewController {
         
         return Chart(
             frame: chartFrame,
+            innerFrame: innerFrame,
             settings: chartSettings,
             layers: [
                 xAxisLayer,

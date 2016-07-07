@@ -233,6 +233,7 @@ class MultipleAxesInteractiveExample: UIViewController {
         let view = ChartBaseView(frame: viewFrame)
         let chart = Chart(
             view: view,
+            innerFrame: chartInnerFrame,
             settings: chartSettings,
             layers: layers
         )

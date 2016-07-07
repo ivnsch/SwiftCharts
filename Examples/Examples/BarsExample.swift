@@ -27,18 +27,18 @@ class BarsExample: UIViewController {
         let chartPoints = (horizontal ? reverseTuples(tuplesXY) : tuplesXY).map{ChartPoint(x: ChartAxisValueInt($0.0), y: ChartAxisValueInt($0.1))}
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
+
+        let generator = ChartAxisGeneratorMultiplier(2)
+        let labelsGenerator = ChartAxisLabelsGeneratorFunc {scalar in
+            return ChartAxisLabel(text: "\(scalar)", settings: labelSettings)
+        }
+        let xGenerator = ChartAxisGeneratorMultiplier(2)
         
-        let (axisValues1, axisValues2) = (
-            0.stride(through: 20, by: 2).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)},
-            0.stride(through: 14, by: 2).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
-        )
-        let (xValues, yValues) = horizontal ? (axisValues1, axisValues2) : (axisValues2, axisValues1)
-        
-        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
-        let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
+        let xModel = ChartAxisModel(firstModelValue: 0, lastModelValue: 20, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings)], axisValuesGenerator: xGenerator, labelsGenerator: labelsGenerator)
+        let yModel = ChartAxisModel(firstModelValue: 0, lastModelValue: 20, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical())], axisValuesGenerator: generator, labelsGenerator: labelsGenerator)
         
         let barViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart, isTransform: Bool) -> UIView? in
-            let bottomLeft = CGPointMake(layer.innerFrame.origin.x, layer.innerFrame.origin.y + layer.innerFrame.height)
+            let bottomLeft = CGPointMake(chart.contentView.frame.origin.x, chart.contentView.frame.origin.y + layer.innerFrame.height)
             
             let barWidth: CGFloat = Env.iPad ? 60 : 30
             
@@ -67,6 +67,7 @@ class BarsExample: UIViewController {
         
         return Chart(
             frame: chartFrame,
+            innerFrame: innerFrame,
             settings: chartSettings,
             layers: [
                 xAxisLayer,

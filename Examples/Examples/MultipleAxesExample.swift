@@ -143,6 +143,7 @@ class MultipleAxesExample: UIViewController {
                 
                 let chart = Chart(
                     frame: viewFrame,
+                    innerFrame: chartInnerFrame,
                     settings: chartSettings,
                     layers: layers
                 )

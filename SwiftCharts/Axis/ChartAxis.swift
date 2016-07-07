@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ChartAxis {
+public class ChartAxis: CustomStringConvertible {
     
     /// First model value
     public let first: Double
@@ -22,8 +22,8 @@ public class ChartAxis {
     // Screen location (relative to chart view's frame) corresponding to last model value
     public var lastScreen: CGFloat
     
-    public let firstVisibleScreen: CGFloat
-    public let lastVisibleScreen: CGFloat
+    public var firstVisibleScreen: CGFloat
+    public var lastVisibleScreen: CGFloat
     
     var firstVisible: Double {
         return scalarForScreenLoc(firstVisibleScreen)
@@ -75,7 +75,21 @@ public class ChartAxis {
     }
     
     /// Calculates screen location (relative to axis length) of model value. It's not required that scalar is between first and last model values.
-    func innerScreenLocForScalar(scalar: Double) -> CGFloat {
+    func internalScreenLocForScalar(scalar: Double) -> CGFloat {
         return screenLength * CGFloat(scalar - first) / CGFloat(length)
+    }
+    
+    // TODO rename content instead of inner
+    // Calculate screen location (relative to axis length, taking into account inverted y axis). It's not required that scalar is between first and last model values.
+    public func innerScreenLocForScalar(scalar: Double) -> CGFloat {
+        fatalError("Override")
+    }
+    
+    public func innerScalarForScreenLoc(screenLoc: CGFloat) -> Double {
+        fatalError("Override")
+    }
+    
+    public var description: String {
+        return "{\(self.dynamicType), first: \(first), last: \(last), firstScreen: \(firstScreen), lastScreen: \(lastScreen), firstVisible: \(firstVisible), lastVisible: \(lastVisible), firstVisibleScreen: \(firstVisibleScreen), lastVisibleScreen: \(lastVisibleScreen))}"
     }
 }
