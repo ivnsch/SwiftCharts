@@ -15,12 +15,12 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
 
     /// The start point of the axis line.
     override var lineP1: CGPoint {
-        return self.origin
+        return CGPointMake(axis.firstVisibleScreen, origin.y)
     }
 
     /// The end point of the axis line.
     override var lineP2: CGPoint {
-        return self.end
+        return CGPointMake(axis.lastVisibleScreen, end.y)
     }
     
     override func chartViewDrawing(context context: CGContextRef, chart: Chart) {

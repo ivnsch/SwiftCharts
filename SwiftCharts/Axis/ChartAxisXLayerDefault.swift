@@ -48,8 +48,8 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     }
     
     override func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {
-        let p1 = CGPointMake(self.origin.x, self.origin.y + offset)
-        let p2 = CGPointMake(self.end.x, self.end.y + offset)
+        let p1 = CGPointMake(self.axis.firstVisibleScreen, self.origin.y + offset)
+        let p2 = CGPointMake(self.axis.lastVisibleScreen, self.end.y + offset)
         return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
     }
     

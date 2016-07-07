@@ -15,12 +15,12 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
 
     /// The start point of the axis line.
     override var lineP1: CGPoint {
-        return CGPointMake(self.origin.x + self.lineOffset, self.origin.y)
+        return CGPointMake(self.origin.x + self.lineOffset, axis.firstVisibleScreen)
     }
 
     /// The end point of the axis line.
     override var lineP2: CGPoint {
-        return CGPointMake(self.end.x + self.lineOffset, self.end.y)
+        return CGPointMake(self.end.x + self.lineOffset, axis.lastVisibleScreen)
     }
 
     /// The offset of the axis labels from the edge of the axis bounds
@@ -86,8 +86,8 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
     
     override func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {
         let halfStrokeWidth = self.settings.axisStrokeWidth / 2 // we want that the stroke ends at the end of the frame, not be in the middle of it
-        let p1 = CGPointMake(self.origin.x + offset - halfStrokeWidth, self.origin.y)
-        let p2 = CGPointMake(self.end.x + offset - halfStrokeWidth, self.end.y)
+        let p1 = CGPointMake(self.origin.x + offset - halfStrokeWidth, self.axis.firstVisibleScreen)
+        let p2 = CGPointMake(self.end.x + offset - halfStrokeWidth, self.axis.lastVisibleScreen)
         return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
     }
 

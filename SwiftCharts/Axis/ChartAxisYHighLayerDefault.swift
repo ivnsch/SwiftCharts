@@ -15,12 +15,12 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
 
     /// The start point of the axis line.
     override var lineP1: CGPoint {
-        return self.origin
+        return CGPointMake(origin.x, axis.firstVisibleScreen)
     }
 
     /// The end point of the axis line.
     override var lineP2: CGPoint {
-        return self.end
+        return CGPointMake(end.x, axis.lastVisibleScreen)
     }
     
     override func prepareUpdate() {
@@ -68,8 +68,8 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
     override func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {
         let halfStrokeWidth = self.settings.axisStrokeWidth / 2 // we want that the stroke begins at the beginning of the frame, not in the middle of it
         let x = self.origin.x + offset + halfStrokeWidth
-        let p1 = CGPointMake(x, self.origin.y)
-        let p2 = CGPointMake(x, self.end.y)
+        let p1 = CGPointMake(x, self.axis.firstVisibleScreen)
+        let p2 = CGPointMake(x, self.axis.lastVisibleScreen)
         return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
     }
     
