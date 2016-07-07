@@ -39,7 +39,7 @@ class TargetExample: UIViewController {
             if chartPointModel.index != 3 {
                 return nil
             }
-            return ChartPointTargetingView(chartPoint: chartPointModel.chartPoint, screenLoc: chartPointModel.screenLoc, animDuration: isTransform ? 0 : 0.5, animDelay: isTransform ? 0 : 1, frame: chart.bounds, layer: layer)
+            return ChartPointTargetingView(chartPoint: chartPointModel.chartPoint, screenLoc: chartPointModel.screenLoc, animDuration: isTransform ? 0 : 0.5, animDelay: isTransform ? 0 : 1, chart: chart)
         }
         
         let chartPointsTargetLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: targetGenerator)
