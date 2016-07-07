@@ -30,7 +30,14 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     override var width: CGFloat {
         return self.labelsMaxWidth + self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingY + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsWidth
     }
-
+    
+    override var widthWithoutLabels: CGFloat {
+        return self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingY + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsWidth
+    }
+    
+    override var heightWithoutLabels: CGFloat {
+        return height
+    }
     
     override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
@@ -80,7 +87,8 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         
         var drawers: [ChartAxisValueLabelDrawers] = []
         
-        for scalar in self.valuesGenerator.generate(self.axis) {
+        let scalars = self.valuesGenerator.generate(self.axis)
+        for scalar in scalars {
             let labels = self.labelsGenerator.generate(scalar)
             let y = self.axis.screenLocForScalar(scalar)
             if let axisLabel = labels.first { // for now y axis supports only one label x value
@@ -93,6 +101,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
                 drawers.append(labelDrawers)
             }
         }
+        currentAxisValues = scalars
         return drawers
     }
     

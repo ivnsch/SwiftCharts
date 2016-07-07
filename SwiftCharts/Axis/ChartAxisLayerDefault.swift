@@ -104,8 +104,20 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     
     weak var chart: Chart?
     
-    var frame: CGRect {
+    final var frame: CGRect {
         return CGRectMake(self.origin.x, self.origin.y, self.width, self.height)
+    }
+    
+    var frameWithoutLabels: CGRect {
+        return CGRectMake(self.origin.x, self.origin.y, self.widthWithoutLabels, self.heightWithoutLabels)
+    }
+    
+    var widthWithoutLabels: CGFloat {
+        return width
+    }
+    
+    var heightWithoutLabels: CGFloat {
+        return settings.axisStrokeWidth + settings.labelsToAxisSpacingX + settings.axisTitleLabelsToLabelsSpacing + axisTitleLabelsHeight
     }
     
     var axisValuesScreenLocs: [CGFloat] {
@@ -180,11 +192,9 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         self.axisTitleLabels = axisTitleLabels
         self.settings = settings
         self.labelsConflictSolver = labelsConflictSolver
+        self.lastFrame = frame
         
         self.currentAxisValues = valuesGenerator.generate(axis)
-        
-        self.initDrawers()
-        self.lastFrame = frame
     }
 
     func update() {
@@ -216,6 +226,8 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     
     func chartInitialized(chart chart: Chart) {
         self.chart = chart
+        
+        self.update()
     }
 
     /**

@@ -21,6 +21,8 @@ public protocol ChartAxisLayer: ChartLayer {
     /// The frame of the layer. This includes title, labels and line, and takes into account possible rotation and spacing settings.
     var frame: CGRect {get}
 
+    var frameWithoutLabels: CGRect {get}
+    
     /// Screen locations of current axis values
     var axisValuesScreenLocs: [CGFloat] {get}
 

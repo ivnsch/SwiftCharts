@@ -28,7 +28,14 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     override var height: CGFloat {
         return self.labelsTotalHeight + self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingX + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsHeight
     }
-
+    
+    override var widthWithoutLabels: CGFloat {
+        return width
+    }
+    
+    override var heightWithoutLabels: CGFloat {
+        return self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingX + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsHeight
+    }
     
     override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
@@ -111,7 +118,10 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         
         // generate label drawers for each axis value and return them bundled with the respective axis value.
         
-        return self.valuesGenerator.generate(self.axis).flatMap {scalar in
+        let scalars = self.valuesGenerator.generate(self.axis)
+        
+        currentAxisValues = scalars
+        return scalars.flatMap {scalar in
             
             let labels = self.labelsGenerator.generate(scalar)
 

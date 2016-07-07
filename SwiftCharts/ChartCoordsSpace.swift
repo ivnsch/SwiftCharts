@@ -154,7 +154,7 @@ public class ChartCoordsSpace {
         return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: { offset in
             (p1: CGPointMake(x, offset), p2: CGPointMake(x + length, offset))
             }, nextLayerOffset: { layer in
-                layer.frame.height + chartSettings.spacingBetweenAxesX
+                layer.frameWithoutLabels.height + chartSettings.spacingBetweenAxesX
             }, generator: generator)
     }
     
@@ -176,7 +176,7 @@ public class ChartCoordsSpace {
         return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: { offset in
             (p1: CGPointMake(offset, y + length), p2: CGPointMake(offset, y))
             }, nextLayerOffset: { layer in
-                layer.frame.width + chartSettings.spacingBetweenAxesY
+                layer.frameWithoutLabels.width + chartSettings.spacingBetweenAxesY
             }, generator: generator)
     }
 
