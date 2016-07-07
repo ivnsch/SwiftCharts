@@ -162,8 +162,8 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
  
         axis.firstScreen = origin.y
         axis.lastScreen = end.y
-        
-        initDrawers()
+
+        update()
         chart?.view.setNeedsDisplay()
     }
     
@@ -193,8 +193,8 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         
         axis.firstScreen = origin.y 
         axis.lastScreen = end.y
-
-        initDrawers()
+        
+        update()
         chart?.view.setNeedsDisplay()
     }
 }
