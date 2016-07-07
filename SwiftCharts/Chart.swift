@@ -271,10 +271,10 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
         
         switch sender.state {
             
-        case UIGestureRecognizerState.Began:
+        case .Began:
             lastPanTranslation = nil
             
-        case UIGestureRecognizerState.Changed:
+        case .Changed:
             
             let trans = sender.translationInView(self)
             
@@ -285,7 +285,27 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             
             chart?.pan(deltaX, deltaY: deltaY)
             
-        case .Ended: break;
+        case .Ended:
+            
+            guard let view = sender.view else {print("Recogniser has no view"); return}
+            
+            let velocityX = sender.velocityInView(sender.view).x
+            let velocityY = sender.velocityInView(sender.view).y
+            
+            func next(index: Int, velocityX: CGFloat, velocityY: CGFloat) {
+                dispatch_async(dispatch_get_main_queue()) {
+                    
+                    self.chart?.pan(velocityX, deltaY: velocityY)
+                    
+                    if abs(velocityX) > 0.1 || abs(velocityY) > 0.1 {
+                        let friction: CGFloat = 0.9
+                        next(index + 1, velocityX: velocityX * friction, velocityY: velocityY * friction)
+                    }
+                }
+            }
+            let initFriction: CGFloat = 50
+            next(0, velocityX: velocityX / initFriction, velocityY: velocityY / initFriction)
+            
         case .Cancelled: break;
         case .Failed: break;
         case .Possible: break;
