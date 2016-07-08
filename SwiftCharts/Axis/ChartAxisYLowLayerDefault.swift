@@ -63,6 +63,9 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
         if let yLow = yLow where yLow.layer.frame.origin.x < self.origin.x {
             self.origin = CGPointMake(self.origin.x + yLow.delta, self.origin.y)
             self.end = CGPointMake(self.end.x + yLow.delta, self.end.y)
+            self.originInit = CGPointMake(self.originInit.x + yLow.delta, self.originInit.y)
+            self.endInit = CGPointMake(self.endInit.x + yLow.delta, self.endInit.y)
+            
             self.initDrawers()
         }
     }

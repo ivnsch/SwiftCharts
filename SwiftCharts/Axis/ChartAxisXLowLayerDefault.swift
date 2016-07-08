@@ -54,6 +54,8 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
         if let xLow = xLow where xLow.layer.frame.maxY > self.frame.maxY {
             self.origin = CGPointMake(self.origin.x, self.origin.y - xLow.delta)
             self.end = CGPointMake(self.end.x, self.end.y - xLow.delta)
+            self.originInit = CGPointMake(self.originInit.x, self.originInit.y - xLow.delta)
+            self.endInit = CGPointMake(self.endInit.x, self.endInit.y - xLow.delta)
             
             self.initDrawers()
         }

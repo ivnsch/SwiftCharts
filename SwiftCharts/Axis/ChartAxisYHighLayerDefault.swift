@@ -30,6 +30,9 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         let newOriginX = self.origin.x - (self.frame.width - self.lastFrame.width)
         self.origin = CGPointMake(newOriginX, self.origin.y)
         self.end = CGPointMake(newOriginX, self.end.y)
+        let newInitOriginX = self.originInit.x - (self.frame.width - self.lastFrame.width)
+        self.originInit = CGPointMake(newInitOriginX, originInit.y)
+        self.endInit = CGPointMake(newInitOriginX, endInit.y)
     }
     
     override func updateInternal() {
@@ -50,6 +53,8 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         if let yHigh = yHigh where yHigh.layer.frame.maxX > frame.maxX {
             origin = CGPointMake(origin.x - yHigh.delta, origin.y)
             end = CGPointMake(end.x + yHigh.delta, end.y)
+            originInit = CGPointMake(originInit.x - yHigh.delta, originInit.y)
+            endInit = CGPointMake(endInit.x + yHigh.delta, endInit.y)
             
             initDrawers()
         }

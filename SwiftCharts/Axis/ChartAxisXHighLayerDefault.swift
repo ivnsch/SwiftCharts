@@ -73,6 +73,8 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
         if let xHigh = xHigh where xHigh.layer.frame.minY < self.frame.minY {
             self.origin = CGPointMake(self.origin.x, self.origin.y + xHigh.delta)
             self.end = CGPointMake(self.end.x, self.end.y + xHigh.delta)
+            self.originInit = CGPointMake(self.originInit.x, self.originInit.y + xHigh.delta)
+            self.endInit = CGPointMake(self.endInit.x, self.endInit.y + xHigh.delta)
             
             self.initDrawers()
         }
