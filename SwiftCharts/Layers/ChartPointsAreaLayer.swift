@@ -23,7 +23,7 @@ public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
         self.animDelay = animDelay
         self.addContainerPoints = addContainerPoints
         
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
     }
     
     override func display(chart chart: Chart) {

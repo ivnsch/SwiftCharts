@@ -35,14 +35,14 @@ public class ChartDividersLayer: ChartCoordsSpaceLayer {
     private let xAxisLayer: ChartAxisLayer
     private let yAxisLayer: ChartAxisLayer
     
-    public init(xAxisLayer: ChartAxisLayer, yAxisLayer: ChartAxisLayer, innerFrame: CGRect, axis: ChartDividersLayerAxis = .XAndY, settings: ChartDividersLayerSettings) {
+    public init(xAxisLayer: ChartAxisLayer, yAxisLayer: ChartAxisLayer, axis: ChartDividersLayerAxis = .XAndY, settings: ChartDividersLayerSettings) {
         self.axis = axis
         self.settings = settings
         
         self.xAxisLayer = xAxisLayer
         self.yAxisLayer = yAxisLayer
 
-        super.init(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame)
+        super.init(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis)
     }
     
     private func drawLine(context context: CGContextRef, color: UIColor, width: CGFloat, p1: CGPoint, p2: CGPoint) {

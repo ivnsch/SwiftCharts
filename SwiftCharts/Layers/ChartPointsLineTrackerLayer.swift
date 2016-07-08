@@ -66,7 +66,7 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         self.animDuration = animDuration
         self.animDelay = animDelay
         self.settings = settings
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
     }
 
     private func linesIntersection(line1P1 line1P1: CGPoint, line1P2: CGPoint, line2P1: CGPoint, line2P2: CGPoint) -> CGPoint? {

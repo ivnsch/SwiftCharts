@@ -34,16 +34,17 @@ public class LineChart: Chart {
             }
             
             let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: line.color, animDuration: 0.5, animDelay: 0)
-            return ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, lineModels: [lineModel])
+            return ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel])
         }
         
-        let guidelinesLayer = GuidelinesDefaultLayerGenerator.generateOpt(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, chartInnerFrame: innerFrame, guidelinesConfig: chartConfig.guidelinesConfig)
+        let guidelinesLayer = GuidelinesDefaultLayerGenerator.generateOpt(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, guidelinesConfig: chartConfig.guidelinesConfig)
         
         let view = ChartBaseView(frame: frame)
         let layers: [ChartLayer] = [xAxisLayer, yAxisLayer] + (guidelinesLayer.map{[$0]} ?? []) + lineLayers
         
         super.init(
             view: view,
+            innerFrame: innerFrame,
             settings: chartConfig.chartSettings,
             layers: layers
         )

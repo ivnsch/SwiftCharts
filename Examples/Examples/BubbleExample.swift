@@ -76,10 +76,10 @@ class BubbleExample: UIViewController {
         let bubbleLayer = self.bubblesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, chartInnerFrame: innerFrame, chartPoints: chartPoints)
         
         let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, innerFrame: innerFrame, settings: guidelinesLayerSettings)
+        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: guidelinesLayerSettings)
 
         let guidelinesHighlightLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.redColor(), linesWidth: 1, dotWidth: 4, dotSpacing: 4)
-        let guidelinesHighlightLayer = ChartGuideLinesForValuesDottedLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, settings: guidelinesHighlightLayerSettings, axisValuesX: [ChartAxisValueDouble(0)], axisValuesY: [ChartAxisValueDouble(0)])
+        let guidelinesHighlightLayer = ChartGuideLinesForValuesDottedLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, settings: guidelinesHighlightLayerSettings, axisValuesX: [ChartAxisValueDouble(0)], axisValuesY: [ChartAxisValueDouble(0)])
         
         let chart = Chart(
             frame: chartFrame,
@@ -112,7 +112,7 @@ class BubbleExample: UIViewController {
             
             let diameterFactor = (maxBubbleDiameter - minBubbleDiameter) / (maxDiameterScalar - minDiameterScalar)
 
-            return ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: chartInnerFrame, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
+            return ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
 
                 let diameter = CGFloat(chartPointModel.chartPoint.diameterScalar * diameterFactor)
                 
@@ -132,7 +132,7 @@ class BubbleExample: UIViewController {
             })
             
         } else {
-            return ChartPointsBubbleLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: chartInnerFrame, chartPoints: chartPoints)
+            return ChartPointsBubbleLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints)
         }
     }
 

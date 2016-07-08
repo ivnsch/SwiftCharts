@@ -65,22 +65,22 @@ public struct GuidelinesConfig {
 // Helper to generate default guidelines layer for GuidelinesConfig
 public struct GuidelinesDefaultLayerGenerator {
 
-    public static func generateOpt(xAxisLayer xAxisLayer: ChartAxisLayer, yAxisLayer: ChartAxisLayer, chartInnerFrame: CGRect, guidelinesConfig: GuidelinesConfig?) -> ChartLayer? {
+    public static func generateOpt(xAxisLayer xAxisLayer: ChartAxisLayer, yAxisLayer: ChartAxisLayer, guidelinesConfig: GuidelinesConfig?) -> ChartLayer? {
         if let guidelinesConfig = guidelinesConfig {
-            return self.generate(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, chartInnerFrame: chartInnerFrame, guidelinesConfig: guidelinesConfig)
+            return self.generate(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, guidelinesConfig: guidelinesConfig)
         } else {
             return nil
         }
     }
     
-    public static func generate(xAxisLayer xAxisLayer: ChartAxisLayer, yAxisLayer: ChartAxisLayer, chartInnerFrame: CGRect, guidelinesConfig: GuidelinesConfig) -> ChartLayer {
+    public static func generate(xAxisLayer xAxisLayer: ChartAxisLayer, yAxisLayer: ChartAxisLayer, guidelinesConfig: GuidelinesConfig) -> ChartLayer {
         if guidelinesConfig.dotted {
             let settings = ChartGuideLinesDottedLayerSettings(linesColor: guidelinesConfig.lineColor, linesWidth: guidelinesConfig.lineWidth)
-            return ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, innerFrame: chartInnerFrame, settings: settings)
+            return ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)
             
         } else {
             let settings = ChartGuideLinesDottedLayerSettings(linesColor: guidelinesConfig.lineColor, linesWidth: guidelinesConfig.lineWidth)
-            return ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, innerFrame: chartInnerFrame, settings: settings)
+            return ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)
         }
     }
 }

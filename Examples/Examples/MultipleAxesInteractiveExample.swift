@@ -162,13 +162,13 @@ class MultipleAxesInteractiveExample: UIViewController {
                 
                 // create layers with references to axes
                 let guideLinesLayer0Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[0], linesWidth: ExamplesDefaults.guidelinesWidth)
-                self.guideLinesLayer0 = ChartGuideLinesDottedLayer(xAxisLayer: self.xLowAxesLayers[0], yAxisLayer: self.yLowAxesLayers[1], innerFrame: self.chartInnerFrame, settings: guideLinesLayer0Settings)
+                self.guideLinesLayer0 = ChartGuideLinesDottedLayer(xAxisLayer: self.xLowAxesLayers[0], yAxisLayer: self.yLowAxesLayers[1], settings: guideLinesLayer0Settings)
                 let guideLinesLayer1Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[1], linesWidth: ExamplesDefaults.guidelinesWidth)
-                self.guideLinesLayer1 = ChartGuideLinesDottedLayer(xAxisLayer: self.xLowAxesLayers[1], yAxisLayer: self.yLowAxesLayers[0], innerFrame: self.chartInnerFrame, settings: guideLinesLayer1Settings)
+                self.guideLinesLayer1 = ChartGuideLinesDottedLayer(xAxisLayer: self.xLowAxesLayers[1], yAxisLayer: self.yLowAxesLayers[0], settings: guideLinesLayer1Settings)
                 let guideLinesLayer3Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[2], linesWidth: ExamplesDefaults.guidelinesWidth)
-                self.guideLinesLayer2 = ChartGuideLinesDottedLayer(xAxisLayer: self.xHighAxesLayers[1], yAxisLayer: self.yHighAxesLayers[0], innerFrame: self.chartInnerFrame, settings: guideLinesLayer3Settings)
+                self.guideLinesLayer2 = ChartGuideLinesDottedLayer(xAxisLayer: self.xHighAxesLayers[1], yAxisLayer: self.yHighAxesLayers[0], settings: guideLinesLayer3Settings)
                 let guideLinesLayer4Settings = ChartGuideLinesDottedLayerSettings(linesColor: self.bgColors[3], linesWidth: ExamplesDefaults.guidelinesWidth)
-                self.guideLinesLayer3 = ChartGuideLinesDottedLayer(xAxisLayer: self.xHighAxesLayers[0], yAxisLayer: self.yHighAxesLayers[1], innerFrame: self.chartInnerFrame, settings: guideLinesLayer4Settings)
+                self.guideLinesLayer3 = ChartGuideLinesDottedLayer(xAxisLayer: self.xHighAxesLayers[0], yAxisLayer: self.yHighAxesLayers[1], settings: guideLinesLayer4Settings)
                 
                 self.showChart(chartSettings, lineAnimDuration: 1)
             }
@@ -185,10 +185,10 @@ class MultipleAxesInteractiveExample: UIViewController {
         let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: bgColors[2], animDuration: animDuration, animDelay: 0)
         let lineModel3 = ChartLineModel(chartPoints: chartPoints3, lineColor: bgColors[3], animDuration: animDuration, animDelay: 0)
         
-        let chartPointsLineLayer0 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxesLayers[0].axis, yAxis: yLowAxesLayers[1].axis, innerFrame: chartInnerFrame, lineModels: [lineModel0])
-        let chartPointsLineLayer1 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxesLayers[1].axis, yAxis: yLowAxesLayers[0].axis, innerFrame: chartInnerFrame, lineModels: [lineModel1])
-        let chartPointsLineLayer2 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxesLayers[1].axis, yAxis: yHighAxesLayers[0].axis, innerFrame: chartInnerFrame, lineModels: [lineModel2])
-        let chartPointsLineLayer3 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxesLayers[0].axis, yAxis: yHighAxesLayers[1].axis, innerFrame: chartInnerFrame, lineModels: [lineModel3])
+        let chartPointsLineLayer0 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxesLayers[0].axis, yAxis: yLowAxesLayers[1].axis, lineModels: [lineModel0])
+        let chartPointsLineLayer1 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxesLayers[1].axis, yAxis: yLowAxesLayers[0].axis, lineModels: [lineModel1])
+        let chartPointsLineLayer2 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxesLayers[1].axis, yAxis: yHighAxesLayers[0].axis, lineModels: [lineModel2])
+        let chartPointsLineLayer3 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxesLayers[0].axis, yAxis: yHighAxesLayers[1].axis, lineModels: [lineModel3])
         
         return [chartPointsLineLayer0, chartPointsLineLayer1, chartPointsLineLayer2, chartPointsLineLayer3]
     }

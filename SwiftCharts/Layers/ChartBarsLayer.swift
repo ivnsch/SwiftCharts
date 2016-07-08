@@ -31,16 +31,14 @@ public class ChartBarModel {
 class ChartBarsViewGenerator<T: ChartBarModel> {
     let xAxis: ChartAxis
     let yAxis: ChartAxis
-    let chartInnerFrame: CGRect
     let barWidth: CGFloat
     
     let horizontal: Bool
     
-    init(horizontal: Bool, xAxis: ChartAxis, yAxis: ChartAxis, chartInnerFrame: CGRect, barWidth: CGFloat) {
+    init(horizontal: Bool, xAxis: ChartAxis, yAxis: ChartAxis, barWidth: CGFloat) {
         self.horizontal = horizontal
         self.xAxis = xAxis
         self.yAxis = yAxis
-        self.chartInnerFrame = chartInnerFrame
         self.barWidth = barWidth
     }
     
@@ -83,36 +81,24 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
 
     private var barViews: [UIView] = []
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float) {
         self.bars = bars
         self.horizontal = horizontal
         self.barWidth = barWidth
         self.animDuration = animDuration
 
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
+        super.init(xAxis: xAxis, yAxis: yAxis)
     }
     
     public override func chartInitialized(chart chart: Chart) {
         super.chartInitialized(chart: chart)
-        display()
-    }
-    
-    func display() {
-        let barsGenerator = ChartBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, barWidth: barWidth)
+        
+        let barsGenerator = ChartBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, barWidth: barWidth)
         
         for barModel in bars {
             let barView = barsGenerator.generateView(barModel, bgColor: barModel.bgColor, animDuration: isTransform ? 0 : animDuration, chart: chart)
             barViews.append(barView)
-            chart?.addSubview(barView)
+            chart.addSubview(barView)
         }
-    }
-    
-    private func reloadViews() {
-        for v in barViews {
-            v.removeFromSuperview()
-        }
-        isTransform = true
-        display()
-        isTransform = false
     }
 }

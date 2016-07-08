@@ -16,7 +16,7 @@ public class ChartPointsSingleViewLayer<T: ChartPoint, U: UIView>: ChartPointsVi
     private var activeChartPoint: T?
     
     public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], viewGenerator: ChartPointViewGenerator) {
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: viewGenerator)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
 
     override func display(chart chart: Chart) {

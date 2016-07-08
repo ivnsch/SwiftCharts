@@ -29,14 +29,14 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     private var lineViews: [ChartLinesView] = []
     private let pathGenerator: ChartLinesViewPathGenerator
 
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0) {
         
         self.lineModels = lineModels
         self.pathGenerator = pathGenerator
         
         let chartPoints: [T] = lineModels.flatMap{$0.chartPoints}
         
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
     private func toScreenLine(lineModel lineModel: ChartLineModel<T>, chart: Chart) -> ScreenLine {

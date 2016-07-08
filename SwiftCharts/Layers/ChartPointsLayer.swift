@@ -30,14 +30,14 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         return self.chartPointsModels.map{$0.screenLoc}
     }
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], displayDelay: Float = 0) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0) {
         self.chartPointsModels = chartPoints.enumerate().map {index, chartPoint in
             return ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: CGPointMake(xAxis.innerScreenLocForScalar(chartPoint.x.scalar), yAxis.innerScreenLocForScalar(chartPoint.y.scalar)))
         }
         
         self.displayDelay = displayDelay
         
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
+        super.init(xAxis: xAxis, yAxis: yAxis)
     }
 
 

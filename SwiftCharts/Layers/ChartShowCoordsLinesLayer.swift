@@ -14,8 +14,8 @@ public class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
 
     private var activeChartPoint: T?
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T]) {
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T]) {
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
     }
     
     public func showChartPointLines(chartPoint: T, chart: Chart) {

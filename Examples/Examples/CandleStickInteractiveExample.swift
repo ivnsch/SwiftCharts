@@ -121,7 +121,7 @@ class CandleStickInteractiveExample: UIViewController {
         let infoView = InfoWithIntroView(frame: CGRectMake(10, 70, self.view.frame.size.width, infoViewHeight))
         self.view.addSubview(infoView)
         
-        let trackerLayer = ChartPointsTrackerLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints, locChangedFunc: {[weak candleStickLayer, weak infoView] screenLoc in
+        let trackerLayer = ChartPointsTrackerLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, locChangedFunc: {[weak candleStickLayer, weak infoView] screenLoc in
             candleStickLayer?.highlightChartpointView(screenLoc: screenLoc)
             if let chartPoint = candleStickLayer?.chartPointsForScreenLocX(screenLoc.x).first {
                 infoView?.showChartPoint(chartPoint)
@@ -132,10 +132,10 @@ class CandleStickInteractiveExample: UIViewController {
         
         
         let settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, innerFrame: innerFrame, settings: settings)
+        let guidelinesLayer = ChartGuideLinesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)
         
         let dividersSettings =  ChartDividersLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth, start: Env.iPad ? 7 : 3, end: 0)
-        let dividersLayer = ChartDividersLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, innerFrame: innerFrame, settings: dividersSettings)
+        let dividersLayer = ChartDividersLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: dividersSettings)
         
         let chart = Chart(
             frame: chartFrame,

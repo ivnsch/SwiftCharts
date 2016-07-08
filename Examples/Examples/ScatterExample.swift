@@ -53,7 +53,7 @@ class ScatterExample: UIViewController {
         let scatterLayers = self.toLayers(models, layerSpecifications: layerSpecifications, xAxis: xAxisLayer, yAxis: yAxisLayer, chartInnerFrame: innerFrame)
         
         let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, innerFrame: innerFrame, settings: guidelinesLayerSettings)
+        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: guidelinesLayerSettings)
         
         let chart = Chart(
             frame: chartFrame,
@@ -91,13 +91,13 @@ class ScatterExample: UIViewController {
             let layerSpecification = layerSpecifications[type]!
             switch layerSpecification.shape {
                 case .Triangle:
-                    return ChartPointsScatterTrianglesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, innerFrame: chartInnerFrame, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
+                    return ChartPointsScatterTrianglesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
                 case .Square:
-                    return ChartPointsScatterSquaresLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, innerFrame: chartInnerFrame, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
+                    return ChartPointsScatterSquaresLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
                 case .Circle:
-                    return ChartPointsScatterCirclesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, innerFrame: chartInnerFrame, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
+                    return ChartPointsScatterCirclesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
                 case .Cross:
-                    return ChartPointsScatterCrossesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, innerFrame: chartInnerFrame, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
+                    return ChartPointsScatterCrossesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
             }
         }
         

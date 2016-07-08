@@ -23,11 +23,11 @@ public class ChartPointsTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }()
     
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], locChangedFunc: (CGPoint) -> (), lineColor: UIColor = UIColor.blackColor(), lineWidth: CGFloat = 1) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], locChangedFunc: (CGPoint) -> (), lineColor: UIColor = UIColor.blackColor(), lineWidth: CGFloat = 1) {
         self.locChangedFunc = locChangedFunc
         self.lineColor = lineColor
         self.lineWidth = lineWidth
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
     }
     
     override func display(chart chart: Chart) {
@@ -40,7 +40,7 @@ public class ChartPointsTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         self.view = view
         
         view.addSubview(self.currentPositionLineOverlay)
-        self.currentPositionLineOverlay.frame = CGRectMake(self.innerFrame.origin.x + 200 - self.lineWidth / 2, self.innerFrame.origin.y, self.lineWidth, self.innerFrame.height)
+        self.currentPositionLineOverlay.frame = CGRectMake(chart.containerFrame.origin.x + 200 - self.lineWidth / 2, chart.containerFrame.origin.y, self.lineWidth, chart.containerFrame.height)
     }
 }
 

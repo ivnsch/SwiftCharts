@@ -59,7 +59,7 @@ class NotNumericExample: UIViewController {
         let minBarSpacing: CGFloat = ExamplesDefaults.minBarSpacing + 16
 
         let generator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart, isTransform: Bool) -> UIView? in
-            let bottomLeft = CGPointMake(layer.innerFrame.origin.x, layer.innerFrame.origin.y + layer.innerFrame.height)
+            let bottomLeft = CGPointMake(chart.containerFrame.origin.x, chart.containerFrame.origin.y + chart.containerFrame.height)
             
             let barWidth = layer.minXScreenSpace - minBarSpacing
             
@@ -67,13 +67,13 @@ class NotNumericExample: UIViewController {
             return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: UIColor.blueColor().colorWithAlphaComponent(0.6), animDuration: isTransform ? 0 : 0.5)
         }
         
-        let chartPointsLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: generator)
+        let chartPointsLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: generator)
         
         let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, innerFrame: innerFrame, settings: settings)
+        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)
         
         let dividersSettings =  ChartDividersLayerSettings(linesColor: UIColor.blackColor(), linesWidth: Env.iPad ? 1 : 0.2, start: Env.iPad ? 7 : 3, end: 0)
-        let dividersLayer = ChartDividersLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, innerFrame: innerFrame, settings: dividersSettings)
+        let dividersLayer = ChartDividersLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: dividersSettings)
         
         let chart = Chart(
             frame: chartFrame,

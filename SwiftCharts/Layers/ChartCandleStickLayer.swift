@@ -15,11 +15,11 @@ public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T
     private let itemWidth: CGFloat
     private let strokeWidth: CGFloat
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], itemWidth: CGFloat = 10, strokeWidth: CGFloat = 1) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], itemWidth: CGFloat = 10, strokeWidth: CGFloat = 1) {
         self.itemWidth = itemWidth
         self.strokeWidth = strokeWidth
         
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
         
         self.screenItems = generateScreenItems()
     }

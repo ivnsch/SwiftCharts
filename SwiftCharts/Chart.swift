@@ -64,45 +64,44 @@ public class Chart: Pannable, Zoomable {
     /**
      Create a new Chart with a frame and layers. A new ChartBaseView will be created for you.
 
+     - parameter innerFrame: Frame comprised by axes, where the chart displays content
+     - parameter settings: Chart settings
      - parameter frame:  The frame used for the ChartBaseView
      - parameter layers: The layers that are drawn in the chart
 
      - returns: The new Chart
      */
-    convenience public init(frame: CGRect, innerFrame: CGRect? = nil, settings: ChartSettings, layers: [ChartLayer]) {
+    convenience public init(frame: CGRect, innerFrame: CGRect, settings: ChartSettings, layers: [ChartLayer]) {
         self.init(view: ChartBaseView(frame: frame), innerFrame: innerFrame, settings: settings, layers: layers)
     }
 
     /**
      Create a new Chart with a view and layers.
 
+     
+     - parameter innerFrame: Frame comprised by axes, where the chart displays content
+     - parameter settings: Chart settings
      - parameter view:   The view that the chart will be drawn in
      - parameter layers: The layers that are drawn in the chart
 
      - returns: The new Chart
      */
-    public init(view: ChartView, innerFrame: CGRect? = nil, settings: ChartSettings, layers: [ChartLayer]) {
+    public init(view: ChartView, innerFrame: CGRect, settings: ChartSettings, layers: [ChartLayer]) {
         
         self.layers = layers
         
         self.view = view
-        
-        if let innerFrame = innerFrame {
-            let containerView = UIView(frame: innerFrame)
-            let contentView = ChartContentView(frame: containerView.bounds)
-            contentView.backgroundColor = UIColor.clearColor()
-            containerView.addSubview(contentView)
-            containerView.clipsToBounds = true
-            view.addSubview(containerView)
 
-            self.contentView = contentView
-            self.containerView = containerView
-            contentView.chart = self
-            
-        } else { // backwards compatibility (short term)
-            self.contentView = view
-            self.containerView = view
-        }
+        let containerView = UIView(frame: innerFrame)
+        let contentView = ChartContentView(frame: containerView.bounds)
+        contentView.backgroundColor = UIColor.clearColor()
+        containerView.addSubview(contentView)
+        containerView.clipsToBounds = true
+        view.addSubview(containerView)
+
+        self.contentView = contentView
+        self.containerView = containerView
+        contentView.chart = self
         
         self.view.configure(settings)
         self.view.chart = self
@@ -132,6 +131,10 @@ public class Chart: Pannable, Zoomable {
         return self.view.frame
     }
 
+    public var containerFrame: CGRect {
+        return containerView.frame
+    }
+    
     /// The bounds of the chart's view
     public var bounds: CGRect {
         return self.view.bounds

@@ -37,8 +37,8 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
     
     private typealias FrameBuilder = (barModel: ChartStackedBarModel, item: ChartStackedBarItemModel, currentTotalQuantity: Double) -> (frame: ChartPointViewBarStackedFrame, length: CGFloat)
     
-    override init(horizontal: Bool, xAxis: ChartAxis, yAxis: ChartAxis, chartInnerFrame: CGRect, barWidth: CGFloat) {
-        super.init(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: chartInnerFrame, barWidth: barWidth)
+    override init(horizontal: Bool, xAxis: ChartAxis, yAxis: ChartAxis, barWidth: CGFloat) {
+        super.init(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, barWidth: barWidth)
     }
     
     override func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor? = nil, animDuration: Float, chart: Chart? = nil) -> ChartPointViewBar {
@@ -105,32 +105,18 @@ public class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
         self.barWidth = barWidth
         self.animDuration = animDuration
         
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
+        super.init(xAxis: xAxis, yAxis: yAxis)
     }
     
     public override func chartInitialized(chart chart: Chart) {
         super.chartInitialized(chart: chart)
-        display()
-    }
-    
-    func display() {
-        let barsGenerator = ChartStackedBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: self.barWidth)
+        
+        let barsGenerator = ChartStackedBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, barWidth: self.barWidth)
         
         for barModel in barModels {
             let barView = barsGenerator.generateView(barModel, animDuration: isTransform ? 0 : animDuration, chart: self.chart)
             barViews.append(barView)
-            chart?.addSubview(barView)
+            chart.addSubview(barView)
         }
     }
-    
-    private func reloadViews() {
-        for v in barViews {
-            v.removeFromSuperview()
-        }
-        
-        isTransform = true
-        display()
-        isTransform = false
-    }
-    
 }
