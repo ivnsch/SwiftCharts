@@ -71,7 +71,7 @@ public class Chart: Pannable, Zoomable {
 
      - returns: The new Chart
      */
-    convenience public init(frame: CGRect, innerFrame: CGRect, settings: ChartSettings? = nil, layers: [ChartLayer]) {
+    convenience public init(frame: CGRect, innerFrame: CGRect? = nil, settings: ChartSettings? = nil, layers: [ChartLayer]) {
         self.init(view: ChartBaseView(frame: frame), innerFrame: innerFrame, settings: settings, layers: layers)
     }
 
@@ -86,13 +86,13 @@ public class Chart: Pannable, Zoomable {
 
      - returns: The new Chart
      */
-    public init(view: ChartView, innerFrame: CGRect, settings: ChartSettings? = nil, layers: [ChartLayer]) {
+    public init(view: ChartView, innerFrame: CGRect? = nil, settings: ChartSettings? = nil, layers: [ChartLayer]) {
         
         self.layers = layers
         
         self.view = view
 
-        let containerView = UIView(frame: innerFrame)
+        let containerView = UIView(frame: innerFrame ?? view.bounds)
         let contentView = ChartContentView(frame: containerView.bounds)
         contentView.backgroundColor = UIColor.clearColor()
         containerView.addSubview(contentView)
