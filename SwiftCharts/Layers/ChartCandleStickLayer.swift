@@ -62,16 +62,6 @@ public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T
         super.updateChartPointsScreenLocations()
         screenItems = generateScreenItems()
     }
-    
-    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        chart?.contentView.setNeedsDisplay()
-    }
-    
-    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
-        super.pan(deltaX, deltaY: deltaY)
-        chart?.contentView.setNeedsDisplay()
-    }
 }
 
 

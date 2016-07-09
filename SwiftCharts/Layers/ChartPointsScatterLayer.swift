@@ -28,16 +28,6 @@ public class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
     public func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>) {
         fatalError("override")
     }
-    
-    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        chart?.contentView.setNeedsDisplay()
-    }
-    
-    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
-        super.pan(deltaX, deltaY: deltaY)
-        chart?.contentView.setNeedsDisplay()
-    }
 }
 
 public class ChartPointsScatterTrianglesLayer<T: ChartPoint>: ChartPointsScatterLayer<T> {
