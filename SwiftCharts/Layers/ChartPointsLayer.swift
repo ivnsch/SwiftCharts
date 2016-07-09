@@ -59,7 +59,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
     
         self.chartPointsModels = chartPointsModels.enumerate().map {index, chartPointModel in
-            let screenLoc = CGPointMake(xAxis.innerScreenLocForScalar(chartPointModel.chartPoint.x.scalar), yAxis.innerScreenLocForScalar(chartPointModel.chartPoint.y.scalar))
+            let screenLoc = modelLocToScreenLoc(x: chartPointModel.chartPoint.x.scalar, y: chartPointModel.chartPoint.y.scalar)
             return ChartPointLayerModel(chartPoint: chartPointModel.chartPoint, index: index, screenLoc: screenLoc)
         }
     }
