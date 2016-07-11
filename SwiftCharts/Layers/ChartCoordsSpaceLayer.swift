@@ -20,4 +20,25 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
         self.xAxis = xAxis
         self.yAxis = yAxis
     }
+    
+    // TODO differentiate - subclasses of ChartPointsLayer don't necessarily use contentView
+    public func modelLocToScreenLoc(x x: Double, y: Double) -> CGPoint {
+        return CGPointMake(modelLocToScreenLoc(x: x), modelLocToScreenLoc(y: y))
+    }
+    
+    public func modelLocToScreenLoc(x x: Double) -> CGFloat {
+        return xAxis.innerScreenLocForScalar(x) / (chart?.contentView.transform.a ?? 1)
+    }
+    
+    public func modelLocToScreenLoc(y y: Double) -> CGFloat {
+        return yAxis.innerScreenLocForScalar(y) / (chart?.contentView.transform.d ?? 1)
+    }
+    
+    public func scalarForScreenLoc(x x: CGFloat) -> Double {
+        return xAxis.innerScalarForScreenLoc(x * (chart?.contentView.transform.a ?? 1))
+    }
+    
+    public func scalarForScreenLoc(y y: CGFloat) -> Double {
+        return yAxis.innerScalarForScreenLoc(y * (chart?.contentView.transform.d ?? 1))
+    }
 }

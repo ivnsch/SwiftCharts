@@ -59,9 +59,9 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
         
         let barsGenerator = self.barsGenerator(barWidth: barWidth, chart: chart)
         
-        let calculateConstantScreenLoc: (axis: ChartAxis, index: Int, group: ChartPointsBarGroup<T>) -> CGFloat = {axis, index, group in
+        let calculateConstantScreenLoc: (screenLocCalculator: Double -> CGFloat, index: Int, group: ChartPointsBarGroup<T>) -> CGFloat = {screenLocCalculator, index, group in
             let totalWidth = CGFloat(group.bars.count) * barWidth + ((self.barSpacing ?? 0) * (maxBarCountInGroup - 1))
-            let groupCenter = axis.innerScreenLocForScalar(group.constant.scalar)
+            let groupCenter = screenLocCalculator(group.constant.scalar)
             let origin = groupCenter - totalWidth / 2
             return origin + CGFloat(index) * (barWidth + (self.barSpacing ?? 0)) + barWidth / 2
         }
@@ -72,9 +72,9 @@ public class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
                 
                 let constantScreenLoc: CGFloat = {
                     if barsGenerator.horizontal {
-                        return calculateConstantScreenLoc(axis: self.yAxis, index: index, group: group)
+                        return calculateConstantScreenLoc(screenLocCalculator: {self.modelLocToScreenLoc(y: $0)}, index: index, group: group)
                     } else {
-                        return calculateConstantScreenLoc(axis: self.xAxis, index: index, group: group)
+                        return calculateConstantScreenLoc(screenLocCalculator: {self.modelLocToScreenLoc(x: $0)}, index: index, group: group)
                     }
                 }()
                 let barView = barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, animDuration: isTransform ? 0 : animDuration)
@@ -95,7 +95,7 @@ public class ChartGroupedPlainBarsLayer_<N>: ChartGroupedBarsLayer<ChartBarModel
     }
     
     override func barsGenerator(barWidth barWidth: CGFloat, chart: Chart) -> ChartBarsViewGenerator<ChartBarModel> {
-        return ChartBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, barWidth: barWidth)
+        return ChartBarsViewGenerator(horizontal: self.horizontal, layer: self, barWidth: barWidth)
     }
 }
 
@@ -107,6 +107,6 @@ public class ChartGroupedStackedBarsLayer_<N>: ChartGroupedBarsLayer<ChartStacke
     }
     
     override func barsGenerator(barWidth barWidth: CGFloat, chart: Chart) -> ChartBarsViewGenerator<ChartStackedBarModel> {
-        return ChartStackedBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, barWidth: barWidth)
+        return ChartStackedBarsViewGenerator(horizontal: horizontal, layer: self, barWidth: barWidth)
     }
 }

@@ -29,16 +29,14 @@ public class ChartBarModel {
 }
 
 class ChartBarsViewGenerator<T: ChartBarModel> {
-    let xAxis: ChartAxis
-    let yAxis: ChartAxis
+    let layer: ChartCoordsSpaceLayer
     let barWidth: CGFloat
     
     let horizontal: Bool
     
-    init(horizontal: Bool, xAxis: ChartAxis, yAxis: ChartAxis, barWidth: CGFloat) {
+    init(horizontal: Bool, layer: ChartCoordsSpaceLayer, barWidth: CGFloat) {
+        self.layer = layer
         self.horizontal = horizontal
-        self.xAxis = xAxis
-        self.yAxis = yAxis
         self.barWidth = barWidth
     }
     
@@ -48,17 +46,17 @@ class ChartBarsViewGenerator<T: ChartBarModel> {
         switch self.horizontal {
         case true:
             return (
-                CGPointMake(xAxis.innerScreenLocForScalar(barModel.axisValue1.scalar), constantScreenLoc),
-                CGPointMake(xAxis.innerScreenLocForScalar(barModel.axisValue2.scalar), constantScreenLoc))
+                CGPointMake(layer.modelLocToScreenLoc(x: barModel.axisValue1.scalar), constantScreenLoc),
+                CGPointMake(layer.modelLocToScreenLoc(x: barModel.axisValue2.scalar), constantScreenLoc))
         case false:
             return (
-                CGPointMake(constantScreenLoc, yAxis.innerScreenLocForScalar(barModel.axisValue1.scalar)),
-                CGPointMake(constantScreenLoc, yAxis.innerScreenLocForScalar(barModel.axisValue2.scalar)))
+                CGPointMake(constantScreenLoc, layer.modelLocToScreenLoc(y: barModel.axisValue1.scalar)),
+                CGPointMake(constantScreenLoc, layer.modelLocToScreenLoc(y: barModel.axisValue2.scalar)))
         }
     }
     
     func constantScreenLoc(barModel: T) -> CGFloat {
-        return (self.horizontal ? self.yAxis : self.xAxis).innerScreenLocForScalar(barModel.constant.scalar)
+        return horizontal ? layer.modelLocToScreenLoc(y: barModel.constant.scalar) : layer.modelLocToScreenLoc(x: barModel.constant.scalar)
     }
     
     // constantScreenLoc: (screen) coordinate that is equal in p1 and p2 - for vertical bar this is the x coordinate, for horizontal bar this is the y coordinate
@@ -93,7 +91,7 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
     public override func chartInitialized(chart chart: Chart) {
         super.chartInitialized(chart: chart)
         
-        let barsGenerator = ChartBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, barWidth: barWidth)
+        let barsGenerator = ChartBarsViewGenerator(horizontal: horizontal, layer: self, barWidth: barWidth)
         
         for barModel in bars {
             let barView = barsGenerator.generateView(barModel, bgColor: barModel.bgColor, animDuration: isTransform ? 0 : animDuration, chart: chart)

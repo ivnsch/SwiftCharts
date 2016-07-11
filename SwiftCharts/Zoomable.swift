@@ -40,14 +40,13 @@ extension Zoomable {
         let offsetX = frame.width * (previousAnchor.x - view.layer.anchorPoint.x)
         let offsetY = frame.height * (previousAnchor.y - view.layer.anchorPoint.y)
         
-        let newY = view.frame.minY - offsetY
-        
-        view.frame = CGRectMake(view.frame.minX - offsetX, newY, frame.width, frame.height)
-        
-        view.transform = CGAffineTransformScale(view.transform, x, y)
-        
-        view.transform.a = max(1, view.transform.a)
-        view.transform.d = max(1, view.transform.d)
+        view.transform.tx = view.transform.tx - offsetX
+        view.transform.ty = view.transform.ty - offsetY
+
+        // Min scale
+        let scaleX = max(superframe.width / frame.width, x)
+        let scaleY = max(superframe.height / frame.height, y)
+        view.transform = CGAffineTransformScale(view.transform, scaleX, scaleY)
         
         if view.frame.origin.y > 0 {
             view.transform.ty = view.transform.ty - view.frame.origin.y

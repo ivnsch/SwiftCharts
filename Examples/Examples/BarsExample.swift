@@ -38,7 +38,7 @@ class BarsExample: UIViewController {
         let yModel = ChartAxisModel(firstModelValue: 0, lastModelValue: 20, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical())], axisValuesGenerator: generator, labelsGenerator: labelsGenerator)
         
         let barViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart, isTransform: Bool) -> UIView? in
-            let bottomLeft = CGPointMake(chart.contentView.frame.origin.x, chart.contentView.frame.origin.y + chart.containerFrame.height)
+            let bottomLeft = layer.modelLocToScreenLoc(x: 0, y: 0)
             
             let barWidth: CGFloat = Env.iPad ? 60 : 30
             

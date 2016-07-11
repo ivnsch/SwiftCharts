@@ -240,6 +240,8 @@ class MultipleAxesInteractiveExample: UIViewController {
         
         self.view.addSubview(chart.view)
         self.chart = chart
+        
+        self.chartInnerFrame = chart.containerView.frame
     }
     
     private func createSelectionView(chartSettings: ChartSettings) -> UIView {

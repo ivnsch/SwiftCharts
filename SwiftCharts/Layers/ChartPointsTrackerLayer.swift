@@ -40,7 +40,8 @@ public class ChartPointsTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         self.view = view
         
         view.addSubview(self.currentPositionLineOverlay)
-        self.currentPositionLineOverlay.frame = CGRectMake(chart.containerFrame.origin.x + 200 - self.lineWidth / 2, chart.containerFrame.origin.y, self.lineWidth, chart.containerFrame.height)
+        
+        self.currentPositionLineOverlay.frame = CGRectMake(chart.containerFrame.origin.x + 200 - self.lineWidth / 2, modelLocToScreenLoc(y: yAxis.last), self.lineWidth, modelLocToScreenLoc(y: yAxis.first))
     }
 }
 

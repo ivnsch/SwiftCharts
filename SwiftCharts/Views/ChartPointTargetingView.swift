@@ -21,16 +21,14 @@ public class ChartPointTargetingView: UIView {
     private let lineHorizontalTargetFrame: CGRect
     private let lineVerticalTargetFrame: CGRect
     
-    public init(chartPoint: ChartPoint, screenLoc: CGPoint, animDuration: Float, animDelay: Float, chart: Chart) {
+    public init(chartPoint: ChartPoint, screenLoc: CGPoint, animDuration: Float, animDelay: Float, layer: ChartCoordsSpaceLayer, chart: Chart) {
         self.animDuration = animDuration
         self.animDelay = animDelay
       
-        let contentFrame = chart.contentView.frame
-        
-        let axisOriginX = contentFrame.origin.x
-        let axisOriginY = contentFrame.origin.y
-        let axisLengthX = contentFrame.width
-        let axisLengthY = contentFrame.height
+        let axisOriginX = layer.modelLocToScreenLoc(x: layer.xAxis.first)
+        let axisOriginY = layer.modelLocToScreenLoc(y: layer.yAxis.last)
+        let axisLengthX = layer.modelLocToScreenLoc(x: layer.xAxis.last) - axisOriginX
+        let axisLengthY = abs(axisOriginY - layer.modelLocToScreenLoc(y: layer.yAxis.first))
         
         self.lineHorizontal = UIView(frame: CGRectMake(axisOriginX, axisOriginY, axisLengthX, CGFloat(lineWidth)))
         self.lineVertical = UIView(frame: CGRectMake(axisOriginX, axisOriginY, CGFloat(lineWidth), axisLengthY))

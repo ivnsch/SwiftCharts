@@ -114,9 +114,9 @@ class GroupedAndStackedBarsExample: UIViewController {
             
             let viewFrame: CGRect = {
                 if horizontal {
-                    return CGRectMake(chartPointModel.screenLoc.x - width / 2, chart.contentView.frame.origin.y, width, chart.contentView.frame.size.height)
+                    return CGRectMake(chartPointModel.screenLoc.x - width / 2, 0, width, layer.modelLocToScreenLoc(y: -1))
                 } else {
-                    return CGRectMake(0, chartPointModel.screenLoc.y - width / 2, chart.contentView.frame.size.width, width)
+                    return CGRectMake(0, chartPointModel.screenLoc.y - width / 2, layer.modelLocToScreenLoc(x: Double(groups.count)), width)
                 }
             }()
             

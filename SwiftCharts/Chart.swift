@@ -161,11 +161,24 @@ public class Chart: Pannable, Zoomable {
         for layer in layers {
             layer.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
         }
-
-        containerView.frame = ChartUtils.insetBy(containerView.frame, dx: yLow.deltaDefault0, dy: xHigh.deltaDefault0, dw: yHigh.deltaDefault0, dh: xLow.deltaDefault0)
-        contentView.frame = ChartUtils.insetBy(contentView.frame, dx: 0, dy: 0, dw: yLow.deltaDefault0 + yHigh.deltaDefault0, dh: xLow.deltaDefault0 + xHigh.deltaDefault0)
         
-        view.setNeedsDisplay()
+        handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+    }
+    
+    private func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        let previousContentFrame = contentView.frame
+        
+        // Resize container view
+        containerView.frame = ChartUtils.insetBy(containerView.frame, dx: yLow.deltaDefault0, dy: xHigh.deltaDefault0, dw: yHigh.deltaDefault0, dh: xLow.deltaDefault0)
+        // Change dimensions of content view by total delta of container view
+        contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.width - (yLow.deltaDefault0 + yHigh.deltaDefault0), contentView.frame.height - (xLow.deltaDefault0 + xHigh.deltaDefault0))
+
+        // Scale contents of content view
+        let widthChangeFactor = contentView.frame.width / previousContentFrame.width
+        let heightChangeFactor = contentView.frame.height / previousContentFrame.height
+        let frameBeforeScale = contentView.frame
+        contentView.transform = CGAffineTransformMakeScale(contentView.transform.a * widthChangeFactor, contentView.transform.d * heightChangeFactor)
+        contentView.frame = frameBeforeScale
     }
     
     func onZoom(let x: CGFloat, let y: CGFloat, let centerX: CGFloat, let centerY: CGFloat) {

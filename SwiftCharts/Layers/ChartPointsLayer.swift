@@ -22,7 +22,7 @@ public struct ChartPointLayerModel<T: ChartPoint> {
 
 public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
 
-    public private(set) var chartPointsModels: [ChartPointLayerModel<T>]
+    public private(set) var chartPointsModels: [ChartPointLayerModel<T>] = []
     
     private let displayDelay: Float
     
@@ -30,11 +30,10 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         return self.chartPointsModels.map{$0.screenLoc}
     }
     
+    private let chartPoints: [T]
+    
     public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0) {
-        self.chartPointsModels = chartPoints.enumerate().map {index, chartPoint in
-            return ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: CGPointMake(xAxis.innerScreenLocForScalar(chartPoint.x.scalar), yAxis.innerScreenLocForScalar(chartPoint.y.scalar)))
-        }
-        
+        self.chartPoints = chartPoints
         self.displayDelay = displayDelay
         
         super.init(xAxis: xAxis, yAxis: yAxis)
@@ -43,6 +42,10 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
 
     override public func chartInitialized(chart chart: Chart) {
         super.chartInitialized(chart: chart)
+        
+        chartPointsModels = chartPoints.enumerate().map {index, chartPoint in
+            return ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar))
+        }
         
         if self.isTransform || self.displayDelay == 0 {
             self.display(chart: chart)
@@ -66,13 +69,6 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     
     public func chartPointScreenLoc(chartPoint: ChartPoint) -> CGPoint {
         return self.modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
-    }
-    
-    // TODO differentiate - subclasses of ChartPointsLayer don't necessarily use contentView
-    public func modelLocToScreenLoc(x x: Double, y: Double) -> CGPoint {
-        return CGPointMake(
-            self.xAxis.innerScreenLocForScalar(x) / (chart?.contentView.transform.a ?? 1),
-            self.yAxis.innerScreenLocForScalar(y) / (chart?.contentView.transform.d ?? 1))
     }
     
     public func chartPointsForScreenLoc(screenLoc: CGPoint) -> [T] {

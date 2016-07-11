@@ -39,8 +39,13 @@ public class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
             }
             
             func finalState() {
-                hLine.frame = CGRectMake(chart.contentView.frame.origin.x, screenLoc.y, screenLoc.x - chart.contentView.frame.origin.x, 1)
-                vLine.frame = CGRectMake(screenLoc.x, screenLoc.y, 1, chart.contentView.frame.origin.y + chart.contentView.frame.height - screenLoc.y)
+                
+                let axisOriginX = modelLocToScreenLoc(x: xAxis.first)
+                let axisOriginY = modelLocToScreenLoc(y: yAxis.first)
+                let axisLengthY = axisOriginY - modelLocToScreenLoc(y: yAxis.last)
+                
+                hLine.frame = CGRectMake(axisOriginX, screenLoc.y, screenLoc.x - axisOriginX, 1)
+                vLine.frame = CGRectMake(screenLoc.x, screenLoc.y, 1, axisLengthY - screenLoc.y)
                 
             }
             if isTransform {

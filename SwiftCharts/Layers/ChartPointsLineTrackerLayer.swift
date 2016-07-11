@@ -196,8 +196,8 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 
                 if self.chartPointsModels.count > 1 {
                     
-                    let xScalar = self.xAxis.innerScalarForScreenLoc(intersection.x)
-                    let yScalar = self.yAxis.innerScalarForScreenLoc(intersection.y)
+                    let xScalar = self.scalarForScreenLoc(x: intersection.x)
+                    let yScalar = self.scalarForScreenLoc(y: intersection.y)
                     
                     let dummyModel = self.chartPointsModels[0]
                     let x = dummyModel.chartPoint.x.copy(xScalar)
@@ -215,7 +215,7 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
             self?.updateTrackerLine(touchPoint: location)
         })
         view.userInteractionEnabled = true
-        chart.addSubview(view)
+        chart.contentView.addSubview(view)
         self.view = view
     }
 }

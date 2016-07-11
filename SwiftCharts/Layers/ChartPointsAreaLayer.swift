@@ -30,9 +30,9 @@ public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
         var points = self.chartPointScreenLocs
         
         let origin = chart.contentView.frame.origin
-        let xLength = chart.contentView.frame.width
-        
-        let bottomY = origin.y + chart.contentView.frame.height
+        let xLength = modelLocToScreenLoc(x: xAxis.last) - modelLocToScreenLoc(x: xAxis.first)
+
+        let bottomY = modelLocToScreenLoc(y: yAxis.first)
         
         if self.addContainerPoints {
             points.append(CGPointMake(origin.x + xLength, bottomY))

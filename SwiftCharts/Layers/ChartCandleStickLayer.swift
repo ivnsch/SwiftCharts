@@ -20,6 +20,10 @@ public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T
         self.strokeWidth = strokeWidth
         
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
+    }
+    
+    public override func chartInitialized(chart chart: Chart) {
+        super.chartInitialized(chart: chart)
         
         self.screenItems = generateScreenItems()
     }
