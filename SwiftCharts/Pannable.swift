@@ -10,6 +10,8 @@ import UIKit
 
 protocol Pannable {
     
+    var containerView: UIView {get}
+    
     var contentView: UIView {get}
     
     func pan(deltaX: CGFloat, deltaY: CGFloat)
@@ -23,8 +25,6 @@ extension Pannable {
         
         onPan(deltaX, deltaY: deltaY)
         
-        guard let superframe = contentView.superview?.frame else {return}
-        
         func maxTX(minXLimit: CGFloat) -> CGFloat {
             return minXLimit - (contentView.frame.minX - contentView.transform.tx)
         }
@@ -33,10 +33,7 @@ extension Pannable {
             return minYLimit - (contentView.frame.minY - contentView.transform.ty)
         }
 
-        let tx = max(maxTX(superframe.width - contentView.frame.width), min(maxTX(0), contentView.transform.tx + deltaX))
-        contentView.transform.tx = tx
-        
-        let ty = max(maxTY(superframe.height - contentView.frame.height), min(maxTY(0), contentView.transform.ty + deltaY))
-        contentView.transform.ty = ty
+        contentView.transform.tx = max(maxTX(containerView.frame.width - contentView.frame.width), min(maxTX(0), contentView.transform.tx + deltaX))
+        contentView.transform.ty = max(maxTY(containerView.frame.height - contentView.frame.height), min(maxTY(0), contentView.transform.ty + deltaY))
     }
 }

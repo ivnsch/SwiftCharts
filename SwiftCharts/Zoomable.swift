@@ -10,6 +10,8 @@ import UIKit
 
 protocol Zoomable {
     
+    var containerView: UIView {get}
+    
     var contentView: UIView {get}
     
     func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat)
@@ -22,46 +24,39 @@ extension Zoomable {
     func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         
         onZoom(x, y: y, centerX: centerX, centerY: centerY)
+        
+        let containerFrame = containerView.frame
+        let contentFrame = contentView.frame
 
-        let view = contentView
-        
-        let superframe = view.superview!.frame
-        let frame = view.frame
-        
-        let transCenterX = centerX - frame.minX - superframe.minX
-        let transCenterY = centerY - frame.minY - superframe.minY
-        
-        let anchorX = transCenterX / frame.width
-        let anchorY = transCenterY / frame.height
-        
-        let previousAnchor = view.layer.anchorPoint
-        view.layer.anchorPoint = CGPointMake(anchorX, anchorY)
-        
-        let offsetX = frame.width * (previousAnchor.x - view.layer.anchorPoint.x)
-        let offsetY = frame.height * (previousAnchor.y - view.layer.anchorPoint.y)
-        
-        view.transform.tx = view.transform.tx - offsetX
-        view.transform.ty = view.transform.ty - offsetY
+        // Set anchor and translate to scale around center
+        let transCenterX = centerX - contentFrame.minX - containerFrame.minX
+        let transCenterY = centerY - contentFrame.minY - containerFrame.minY
+        let anchorX = transCenterX / contentFrame.width
+        let anchorY = transCenterY / contentFrame.height
+        let previousAnchor = contentView.layer.anchorPoint
+        contentView.layer.anchorPoint = CGPointMake(anchorX, anchorY)
+        let offsetX = contentFrame.width * (previousAnchor.x - contentView.layer.anchorPoint.x)
+        let offsetY = contentFrame.height * (previousAnchor.y - contentView.layer.anchorPoint.y)
+        contentView.transform.tx = contentView.transform.tx - offsetX
+        contentView.transform.ty = contentView.transform.ty - offsetY
 
-        // Min scale
-        let scaleX = max(superframe.width / frame.width, x)
-        let scaleY = max(superframe.height / frame.height, y)
-        view.transform = CGAffineTransformScale(view.transform, scaleX, scaleY)
+        // Scale, ensure min scale (container size)
+        let scaleX = max(containerFrame.width / contentFrame.width, x)
+        let scaleY = max(containerFrame.height / contentFrame.height, y)
+        contentView.transform = CGAffineTransformScale(contentView.transform, scaleX, scaleY)
         
-        if view.frame.origin.y > 0 {
-            view.transform.ty = view.transform.ty - view.frame.origin.y
+        // Keep in boundaries
+        if contentView.frame.origin.y > 0 {
+            contentView.transform.ty = contentView.transform.ty - contentView.frame.origin.y
         }
-        
-        if view.frame.maxY < superframe.height {
-            view.transform.ty = view.transform.ty + (superframe.height - view.frame.maxY)
+        if contentView.frame.maxY < containerFrame.height {
+            contentView.transform.ty = contentView.transform.ty + (containerFrame.height - contentView.frame.maxY)
         }
-        
-        if view.frame.origin.x > 0 {
-            view.transform.tx = view.transform.tx - view.frame.origin.x
+        if contentView.frame.origin.x > 0 {
+            contentView.transform.tx = contentView.transform.tx - contentView.frame.origin.x
         }
-        
-        if view.frame.maxX < superframe.width {
-            view.transform.tx = view.transform.tx + (superframe.width - view.frame.maxX)
+        if contentView.frame.maxX < containerFrame.width {
+            contentView.transform.tx = contentView.transform.tx + (containerFrame.width - contentView.frame.maxX)
         }
     }
 }
