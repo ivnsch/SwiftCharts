@@ -88,6 +88,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         var drawers: [ChartAxisValueLabelDrawers] = []
         
         let scalars = self.valuesGenerator.generate(self.axis)
+        currentAxisValues = scalars
         for scalar in scalars {
             let labels = self.labelsGenerator.generate(scalar)
             let y = self.axis.screenLocForScalar(scalar)
@@ -101,7 +102,6 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
                 drawers.append(labelDrawers)
             }
         }
-        currentAxisValues = scalars
         return drawers
     }
     
