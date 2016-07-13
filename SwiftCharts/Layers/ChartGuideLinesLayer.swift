@@ -60,6 +60,7 @@ public class ChartGuideLinesLayerAbstract<T: ChartGuideLinesLayerSettings>: Char
         
         if self.axis == .X || self.axis == .XAndY {
             for xScreenLoc in xScreenLocs {
+                guard (!yAxisLayer.low || xScreenLoc > yAxisLayer.frame.maxX) && (yAxisLayer.low || xScreenLoc < yAxisLayer.frame.minX) else {continue}
                 let x1 = xScreenLoc
                 let y1 = originScreenLoc.y
                 let x2 = x1
@@ -70,6 +71,7 @@ public class ChartGuideLinesLayerAbstract<T: ChartGuideLinesLayerSettings>: Char
         
         if self.axis == .Y || self.axis == .XAndY {
             for yScreenLoc in yScreenLocs {
+                guard (xAxisLayer.low || yScreenLoc > xAxisLayer.frame.maxY) && (!xAxisLayer.low || yScreenLoc < xAxisLayer.frame.minY) else {continue}
                 let x1 = originScreenLoc.x
                 let y1 = yScreenLoc
                 let x2 = originScreenLoc.x + chart.containerFrame.width
