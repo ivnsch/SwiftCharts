@@ -8,22 +8,35 @@
 
 import UIKit
 
-protocol Zoomable {
+public protocol Zoomable {
     
     var containerView: UIView {get}
     
     var contentView: UIView {get}
     
-    func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat)
+    var scaleX: CGFloat {get}
+    var scaleY: CGFloat {get}
     
-    func onZoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat)
+    func zoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat)
+    
+    func onZoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat)
 }
 
-extension Zoomable {
+public extension Zoomable {
     
-    func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    public func zoom(scaleX scaleX: CGFloat, scaleY: CGFloat, anchorX: CGFloat = 0.5, anchorY: CGFloat = 0.5) {
+        let centerX = containerView.frame.width * anchorX
+        let centerY = containerView.frame.height - (containerView.frame.height * anchorY)
+        zoom(scaleX: scaleX, scaleY: scaleY, centerX: centerX, centerY: centerY)
+    }
+    
+    public func zoom(scaleX scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        zoom(deltaX: scaleX, deltaY: scaleY, centerX: centerX + containerView.frame.minX, centerY: centerY + containerView.frame.minY)
+    }
+    
+    func zoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         
-        onZoom(x, y: y, centerX: centerX, centerY: centerY)
+        onZoom(deltaX: deltaX, deltaY: deltaY, centerX: centerX, centerY: centerY)
         
         let containerFrame = containerView.frame
         let contentFrame = contentView.frame
@@ -41,8 +54,8 @@ extension Zoomable {
         contentView.transform.ty = contentView.transform.ty - offsetY
 
         // Scale, ensure min scale (container size)
-        let scaleX = max(containerFrame.width / contentFrame.width, x)
-        let scaleY = max(containerFrame.height / contentFrame.height, y)
+        let scaleX = max(containerFrame.width / contentFrame.width, deltaX)
+        let scaleY = max(containerFrame.height / contentFrame.height, deltaY)
         contentView.transform = CGAffineTransformScale(contentView.transform, scaleX, scaleY)
         
         // Keep in boundaries

@@ -69,6 +69,22 @@ public class Chart: Pannable, Zoomable {
     private let layers: [ChartLayer]
 
     public let delegate = ChartDelegate()
+
+    public var transX: CGFloat {
+        return contentFrame.minX
+    }
+    
+    public var transY: CGFloat {
+        return contentFrame.minY
+    }
+
+    public var scaleX: CGFloat {
+        return contentFrame.width / containerFrame.width
+    }
+    
+    public var scaleY: CGFloat {
+        return contentFrame.height / containerFrame.height
+    }
     
     /**
      Create a new Chart with a frame and layers. A new ChartBaseView will be created for you.
@@ -194,18 +210,18 @@ public class Chart: Pannable, Zoomable {
         contentView.frame = frameBeforeScale
     }
     
-    func onZoom(let x: CGFloat, let y: CGFloat, let centerX: CGFloat, let centerY: CGFloat) {
+    public func onZoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         for layer in layers {
-            layer.zoom(x, y: y, centerX: centerX, centerY: centerY)
+            layer.zoom(deltaX, y: deltaY, centerX: centerX, centerY: centerY)
         }
-        delegate.onZoom?(scaleX: contentFrame.width / containerFrame.width, scaleY: contentFrame.height / containerFrame.height)
+        delegate.onZoom?(scaleX: scaleX, scaleY: scaleY)
     }
     
-    func onPan(deltaX: CGFloat, deltaY: CGFloat) {
+    public func onPan(deltaX deltaX: CGFloat, deltaY: CGFloat) {
         for layer in layers {
             layer.pan(deltaX, deltaY: deltaY)
         }
-        delegate.onPan?(transX: contentFrame.minX, transY: contentFrame.minY)
+        delegate.onPan?(transX: transX, transY: transY)
     }
 
     /**
@@ -301,9 +317,9 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
         // calculate scale x and scale y
         let (absMax, absMin) = x > y ? (abs(x), abs(y)) : (abs(y), abs(x))
         let minScale = (absMin * (sender.scale - 1) / absMax) + 1
-        let (scaleX, scaleY) = x > y ? (sender.scale, minScale) : (minScale, sender.scale)
+        let (deltaX, deltaY) = x > y ? (sender.scale, minScale) : (minScale, sender.scale)
         
-        chart?.zoom(scaleX, y: scaleY, centerX: center.x, centerY: center.y)
+        chart?.zoom(deltaX: deltaX, deltaY: deltaY, centerX: center.x, centerY: center.y)
         
         sender.scale = 1.0
     }
@@ -324,7 +340,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             
             lastPanTranslation = trans
             
-            chart?.pan(deltaX, deltaY: deltaY)
+            chart?.pan(deltaX: deltaX, deltaY: deltaY)
             
         case .Ended:
             
@@ -336,7 +352,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             func next(index: Int, velocityX: CGFloat, velocityY: CGFloat) {
                 dispatch_async(dispatch_get_main_queue()) {
                     
-                    self.chart?.pan(velocityX, deltaY: velocityY)
+                    self.chart?.pan(deltaX: velocityX, deltaY: velocityY)
                     
                     if abs(velocityX) > 0.1 || abs(velocityY) > 0.1 {
                         let friction: CGFloat = 0.9

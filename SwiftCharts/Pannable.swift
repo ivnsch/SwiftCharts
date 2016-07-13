@@ -8,22 +8,31 @@
 
 import UIKit
 
-protocol Pannable {
+public protocol Pannable {
     
     var containerView: UIView {get}
     
     var contentView: UIView {get}
     
-    func pan(deltaX: CGFloat, deltaY: CGFloat)
+    var transX: CGFloat {get}
+    var transY: CGFloat {get}
     
-    func onPan(deltaX: CGFloat, deltaY: CGFloat)
+    func pan(x x: CGFloat, y: CGFloat)
+    
+    func pan(deltaX deltaX: CGFloat, deltaY: CGFloat)
+    
+    func onPan(deltaX deltaX: CGFloat, deltaY: CGFloat)
 }
 
-extension Pannable {
+public extension Pannable {
 
-    func pan(deltaX: CGFloat, deltaY: CGFloat) {
+    func pan(x x: CGFloat, y: CGFloat) {
+        pan(deltaX: x - transX, deltaY: transY - y)
+    }
+    
+    func pan(deltaX deltaX: CGFloat, deltaY: CGFloat) {
         
-        onPan(deltaX, deltaY: deltaY)
+        onPan(deltaX: deltaX, deltaY: deltaY)
         
         func maxTX(minXLimit: CGFloat) -> CGFloat {
             return minXLimit - (contentView.frame.minX - contentView.transform.tx)
