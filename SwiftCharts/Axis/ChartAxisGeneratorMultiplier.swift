@@ -26,9 +26,11 @@ public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
         let modelStart = floor(axis.firstVisible / zoomedMultiplier) * zoomedMultiplier
         
         var values = [Double]()
-        var scalar = modelStart + zoomedMultiplier
+        var scalar = modelStart
         while scalar <= axis.lastVisible {
-            values.append(scalar)
+            if scalar >= axis.firstVisible {
+                values.append(scalar)
+            }
             scalar = scalar + zoomedMultiplier
         }
         
