@@ -49,6 +49,13 @@ public class ChartSettings {
     public init() {}
 }
 
+public class ChartDelegate {
+    
+    public var onZoom: ((scaleX: CGFloat, scaleY: CGFloat) -> Void)?
+    
+    public var onPan: ((transX: CGFloat, transY: CGFloat) -> Void)?
+}
+
 /// A Chart object is the highest level access to your chart. It has the view where all of the chart layers are drawn, which you can provide (useful if you want to position it as part of a storyboard or XIB), or it can be created for you.
 public class Chart: Pannable, Zoomable {
 
@@ -61,6 +68,8 @@ public class Chart: Pannable, Zoomable {
     /// The layers of the chart that are drawn in the view
     private let layers: [ChartLayer]
 
+    public let delegate = ChartDelegate()
+    
     /**
      Create a new Chart with a frame and layers. A new ChartBaseView will be created for you.
 
@@ -138,6 +147,10 @@ public class Chart: Pannable, Zoomable {
         return containerView.frame
     }
     
+    public var contentFrame: CGRect {
+        return contentView.frame
+    }
+    
     /// The bounds of the chart's view
     public var bounds: CGRect {
         return self.view.bounds
@@ -185,12 +198,14 @@ public class Chart: Pannable, Zoomable {
         for layer in layers {
             layer.zoom(x, y: y, centerX: centerX, centerY: centerY)
         }
+        delegate.onZoom?(scaleX: contentFrame.width / containerFrame.width, scaleY: contentFrame.height / containerFrame.height)
     }
     
     func onPan(deltaX: CGFloat, deltaY: CGFloat) {
         for layer in layers {
             layer.pan(deltaX, deltaY: deltaY)
         }
+        delegate.onPan?(transX: contentFrame.minX, transY: contentFrame.minY)
     }
 
     /**
