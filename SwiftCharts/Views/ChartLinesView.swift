@@ -16,13 +16,16 @@ public class ChartLinesView: UIView {
 
     private let lineColor: UIColor
     private let lineWidth: CGFloat
+    private let lineJoin: String
+    private let lineCap: String
     private let animDuration: Float
     private let animDelay: Float
 
-    init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, animDuration: Float, animDelay: Float) {
-        
+    init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, lineJoin: String, lineCap: String, animDuration: Float, animDelay: Float) {
         self.lineColor = lineColor
         self.lineWidth = lineWidth
+        self.lineJoin = lineJoin
+        self.lineCap = lineCap
         self.animDuration = animDuration
         self.animDelay = animDelay
         
@@ -50,7 +53,8 @@ public class ChartLinesView: UIView {
 
     private func generateLayer(path path: UIBezierPath) -> CAShapeLayer {
         let lineLayer = CAShapeLayer()
-        lineLayer.lineJoin = kCALineJoinBevel
+        lineLayer.lineJoin = lineJoin
+        lineLayer.lineCap = lineCap
         lineLayer.fillColor   = UIColor.clearColor().CGColor
         lineLayer.lineWidth   = self.lineWidth
         

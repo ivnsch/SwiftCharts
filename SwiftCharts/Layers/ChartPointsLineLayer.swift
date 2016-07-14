@@ -12,13 +12,17 @@ private struct ScreenLine {
     let points: [CGPoint]
     let color: UIColor
     let lineWidth: CGFloat
+    let lineJoin: String
+    let lineCap: String
     let animDuration: Float
     let animDelay: Float
     
-    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, animDuration: Float, animDelay: Float) {
+    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: String, lineCap: String, animDuration: Float, animDelay: Float) {
         self.points = points
         self.color = color
         self.lineWidth = lineWidth
+        self.lineJoin = lineJoin
+        self.lineCap = lineCap
         self.animDuration = animDuration
         self.animDelay = animDelay
     }
@@ -44,6 +48,8 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             points: lineModel.chartPoints.map{self.chartPointScreenLoc($0)},
             color: lineModel.lineColor,
             lineWidth: lineModel.lineWidth,
+            lineJoin: lineModel.lineJoin,
+            lineCap: lineModel.lineCap,
             animDuration: lineModel.animDuration,
             animDelay: lineModel.animDelay
         )
@@ -58,6 +64,8 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 frame: chart.contentView.bounds,
                 lineColor: screenLine.color,
                 lineWidth: screenLine.lineWidth,
+                lineJoin: screenLine.lineJoin,
+                lineCap: screenLine.lineCap,
                 animDuration: self.isTransform ? 0 : screenLine.animDuration,
                 animDelay: self.isTransform ? 0 : screenLine.animDelay)
             
