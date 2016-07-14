@@ -55,11 +55,16 @@ public class ChartAxis: CustomStringConvertible {
         fatalError("override")
     }
     
+    var firstScreenInit: CGFloat
+    var lastScreenInit: CGFloat
+    
     public init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat) {
         self.first = first
         self.last = last
         self.firstScreen = firstScreen
         self.lastScreen = lastScreen
+        self.firstScreenInit = firstScreen
+        self.lastScreenInit = lastScreen
         self.firstVisibleScreen = firstScreen
         self.lastVisibleScreen = lastScreen
     }
@@ -89,6 +94,14 @@ public class ChartAxis: CustomStringConvertible {
         fatalError("Override")
     }
     
+    func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        fatalError("Override")
+    }
+
+    func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        fatalError("Override")
+    }
+
     public var description: String {
         return "{\(self.dynamicType), first: \(first), last: \(last), firstScreen: \(firstScreen), lastScreen: \(lastScreen), firstVisible: \(firstVisible), lastVisible: \(lastVisible), firstVisibleScreen: \(firstVisibleScreen), lastVisibleScreen: \(lastVisibleScreen))}"
     }

@@ -29,14 +29,7 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
 
     override func prepareUpdate() {
         super.prepareUpdate()
-        
-        // Move frame before updating drawers
-        let newOriginY = origin.y - (self.frame.height - self.lastFrame.height)
-        origin = CGPointMake(origin.x, newOriginY)
-        end = CGPointMake(end.x,  newOriginY)
-        let newInitOriginY = originInit.y - (self.frame.height - self.lastFrame.height)
-        originInit = CGPointMake(originInit.x, newInitOriginY)
-        endInit = CGPointMake(endInit.x,  newInitOriginY)
+        offset = offset - (frame.height - lastFrame.height)
     }
     
     override func updateInternal() {
@@ -52,11 +45,7 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
         
         // Handle resizing of other low x axes
         if let xLow = xLow where xLow.layer.frame.maxY > self.frame.maxY {
-            self.origin = CGPointMake(self.origin.x, self.origin.y - xLow.delta)
-            self.end = CGPointMake(self.end.x, self.end.y - xLow.delta)
-            self.originInit = CGPointMake(self.originInit.x, self.originInit.y - xLow.delta)
-            self.endInit = CGPointMake(self.endInit.x, self.endInit.y - xLow.delta)
-            
+            offset = offset - xLow.delta
             self.initDrawers()
         }
     }

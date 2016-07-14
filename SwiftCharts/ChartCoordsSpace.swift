@@ -76,19 +76,19 @@ public class ChartCoordsSpace {
         
         let yLowGenerator: ChartAxisLayerGenerator = {model in
             let axis = ChartAxisY(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
-            return ChartAxisYLowLayerDefault(axis: axis, origin: model.p1, end: model.p2, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
+            return ChartAxisYLowLayerDefault(axis: axis, offset: model.p1.x, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
         }
         let yHighGenerator: ChartAxisLayerGenerator = {model in
             let axis = ChartAxisY(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
-            return ChartAxisYHighLayerDefault(axis: axis, origin: model.p1, end: model.p2, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
+            return ChartAxisYHighLayerDefault(axis: axis, offset: model.p1.x, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
         }
         let xLowGenerator: ChartAxisLayerGenerator = {model in
             let axis = ChartAxisX(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
-            return ChartAxisXLowLayerDefault(axis: axis, origin: model.p1, end: model.p2, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
+            return ChartAxisXLowLayerDefault(axis: axis, offset: model.p1.y, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
         }
         let xHighGenerator: ChartAxisLayerGenerator = {model in
             let axis = ChartAxisX(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
-            return ChartAxisXHighLayerDefault(axis: axis, origin: model.p1, end: model.p2, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
+            return ChartAxisXHighLayerDefault(axis: axis, offset: model.p1.y, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
         }
         
         self.init(chartSettings: chartSettings, chartSize: chartSize, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels, yLowGenerator: yLowGenerator, yHighGenerator: yHighGenerator, xLowGenerator: xLowGenerator, xHighGenerator: xHighGenerator)

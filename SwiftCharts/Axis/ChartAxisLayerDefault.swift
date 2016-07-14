@@ -80,12 +80,24 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     
     var axis: ChartAxis
 
-    var origin: CGPoint // top left corner of frame
-    var end: CGPoint // end starting from origin, parallel to axis
+    var origin: CGPoint {
+        fatalError("Override")
+    }
     
-    // not affected by panning & zooming
-    var originInit: CGPoint
-    var endInit: CGPoint
+    var end: CGPoint {
+        fatalError("Override")
+    }
+    
+    var frame: CGRect {
+        return CGRectMake(origin.x, origin.y, width, height)
+    }
+    
+    var frameWithoutLabels: CGRect {
+        return CGRectMake(origin.x, origin.y, widthWithoutLabels, heightWithoutLabels)
+    }
+    
+    /// Constant dimension between origin and end
+    var offset: CGFloat
     
     var currentAxisValues: [Double] = []
     
@@ -103,15 +115,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     let labelsConflictSolver: ChartAxisLabelsConflictSolver?
     
     weak var chart: Chart?
-    
-    final var frame: CGRect {
-        return CGRectMake(self.origin.x, self.origin.y, self.width, self.height)
-    }
-    
-    var frameWithoutLabels: CGRect {
-        return CGRectMake(self.origin.x, self.origin.y, self.widthWithoutLabels, self.heightWithoutLabels)
-    }
-    
+
     var widthWithoutLabels: CGFloat {
         return width
     }
@@ -181,12 +185,9 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     var lastFrame: CGRect = CGRectZero
     
     // NOTE: Assumes axis values sorted by scalar (can be increasing or decreasing)
-    required init(axis: ChartAxis, origin: CGPoint, end: CGPoint, valuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil)  {
+    required init(axis: ChartAxis, offset: CGFloat, valuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil)  {
         self.axis = axis
-        self.origin = origin
-        self.end = end
-        self.originInit = origin
-        self.endInit = end
+        self.offset = offset
         self.valuesGenerator = valuesGenerator
         self.labelsGenerator = labelsGenerator
         self.axisTitleLabels = axisTitleLabels
@@ -281,10 +282,10 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     }
     
     func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        // override
+        fatalError("override")
     }
     
     func pan(deltaX: CGFloat, deltaY: CGFloat) {
-        // override
+        fatalError("override")
     }
 }

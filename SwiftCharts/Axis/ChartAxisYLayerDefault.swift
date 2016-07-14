@@ -11,8 +11,16 @@ import UIKit
 /// A ChartAxisLayer for Y axes
 class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
+    override var origin: CGPoint {
+        return CGPointMake(offset, axis.firstScreen)
+    }
+    
+    override var end: CGPoint {
+        return CGPointMake(offset, axis.lastScreen)
+    }
+    
     override var height: CGFloat {
-        return self.end.y - self.origin.y
+        return axis.screenLength
     }
     
     var labelsMaxWidth: CGFloat {
@@ -44,17 +52,14 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         
         if let xLow = xLow {
             self.axis.firstScreen = self.axis.firstScreen - xLow.delta
-            self.origin = CGPointMake(self.origin.x, self.origin.y - xLow.delta)
-            self.end = CGPointMake(self.end.x, self.end.y)
-            self.originInit = CGPointMake(self.originInit.x, self.originInit.y - xLow.delta)
+            self.axis.firstScreenInit = self.axis.firstScreenInit - xLow.delta
             self.axis.firstVisibleScreen = self.axis.firstVisibleScreen - xLow.delta
             self.initDrawers()
         }
         
         if let xHigh = xHigh {
             self.axis.lastScreen = self.axis.lastScreen + xHigh.delta
-            self.end = CGPointMake(self.end.x, self.end.y + xHigh.delta)
-            self.endInit = CGPointMake(self.endInit.x, self.endInit.y + xHigh.delta)
+            self.axis.lastScreenInit = self.axis.lastScreenInit + xHigh.delta
             self.axis.lastVisibleScreen = self.axis.lastVisibleScreen + xHigh.delta
             self.initDrawers()
         }
@@ -73,8 +78,8 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             let settings = axisLabel.settings
             let newSettings = ChartLabelSettings(font: settings.font, fontColor: settings.fontColor, rotation: settings.rotation, rotationKeep: settings.rotationKeep)
             let axisLabelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(
-                self.origin.x + offset,
-                self.endInit.y + ((self.originInit.y - self.endInit.y) / 2) - (labelSize.height / 2)), settings: newSettings)
+                self.offset + offset,
+                axis.lastScreenInit + ((axis.firstScreenInit - axis.lastScreenInit) / 2) - (labelSize.height / 2)), settings: newSettings)
             
             return [axisLabelDrawer]
             
@@ -121,79 +126,14 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         }
     }
     
-    
     override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        
-        // Zoom around center of gesture. Uses center as anchor point dividing the line in 2 segments which are scaled proportionally.
-        let segment1 = origin.y - centerY
-        let segment2 = centerY - end.y
-        let deltaSegment1 = (segment1 * y) - segment1
-        let deltaSegment2 = (segment2 * y) - segment2
-        var newOriginY = origin.y + deltaSegment1
-        var newEndY = end.y - deltaSegment2
-        
-        if newEndY > endInit.y {
-            let delta = newEndY - endInit.y
-            newEndY = endInit.y
-            newOriginY = newOriginY - delta
-        }
-        
-        if newOriginY < originInit.y {
-            let delta = originInit.y - newOriginY
-            newOriginY = originInit.y
-            newEndY = newEndY + delta
-        }
-        
-        if newOriginY - newEndY > originInit.y - endInit.y { // new length > original length
-            origin = CGPointMake(origin.x, newOriginY)
-            end = CGPointMake(end.x, newEndY)
-            
-            // if new origin is above origin, move it back
-            let offsetOriginY = originInit.y - origin.y
-            if offsetOriginY > 0 {
-                origin = CGPointMake(origin.x, origin.y + offsetOriginY)
-                end = CGPointMake(end.x, end.y + offsetOriginY)
-            }
-            
-        } else { // possible correction
-            origin = originInit
-            end = endInit
-        }
- 
-        axis.firstScreen = origin.y
-        axis.lastScreen = end.y
-
+        axis.zoom(x, y: y, centerX: centerX, centerY: centerY)
         update()
         chart?.view.setNeedsDisplay()
     }
     
     override func pan(deltaX: CGFloat, deltaY: CGFloat) {
-        
-        let length = axis.screenLength
-        
-        let (newOriginY, newEndY): (CGFloat, CGFloat) = {
-            
-            if deltaY < 0 { // scrolls up
-                let originY = max(originInit.y, origin.y + deltaY)
-                let endY = originY - length
-                return (originY, endY)
-                
-            } else if deltaY > 0 { // scrolls down
-                let endY = min(endInit.y, end.y + deltaY)
-                let originY = endY + length
-                return (originY, endY)
-                
-            } else {
-                return (origin.y, end.y)
-            }
-        }()
-        
-        origin = CGPointMake(origin.x, newOriginY)
-        end = CGPointMake(end.x, newEndY)
-        
-        axis.firstScreen = origin.y 
-        axis.lastScreen = end.y
-        
+        axis.pan(deltaX, deltaY: deltaY)
         update()
         chart?.view.setNeedsDisplay()
     }

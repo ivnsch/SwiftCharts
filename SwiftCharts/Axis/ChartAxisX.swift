@@ -41,4 +41,70 @@ public class ChartAxisX: ChartAxis {
     public override func innerScalarForScreenLoc(screenLoc: CGFloat) -> Double {
         return (Double(screenLoc) * length / Double(screenLength)) + first
     }
+    
+    
+    override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        
+        // Zoom around center of gesture. Uses center as anchor point dividing the line in 2 segments which are scaled proportionally.
+        let segment1 = centerX - firstScreen
+        let segment2 = lastScreen - centerX
+        let deltaSegment1 = (segment1 * x) - segment1
+        let deltaSegment2 = (segment2 * x) - segment2
+        var newOriginX = firstScreen - deltaSegment1
+        var newEndX = lastScreen + deltaSegment2
+        
+        if newEndX < lastScreenInit {
+            let delta = lastScreenInit - newEndX
+            newEndX = lastScreenInit
+            newOriginX = newOriginX + delta
+        }
+        
+        if newOriginX > firstScreenInit {
+            let delta = newOriginX - firstScreenInit
+            newOriginX = firstScreenInit
+            newEndX = newEndX - delta
+        }
+        
+        if newEndX - newOriginX > lastScreenInit - firstScreenInit { // new length > original length
+            firstScreen = newOriginX
+            lastScreen = newEndX
+            
+            // if p1 is to the right of origin, move it back
+            let offsetOriginX = firstScreen - firstScreenInit
+            if offsetOriginX > 0 {
+                firstScreen = firstScreen - offsetOriginX
+                lastScreen = lastScreen - offsetOriginX
+            }
+            
+        } else { // possible correction
+            firstScreen = firstScreenInit
+            lastScreen = lastScreenInit
+        }
+    }
+    
+    
+    override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        
+        let length = screenLength
+        
+        let (newOriginX, newEndX): (CGFloat, CGFloat) = {
+            
+            if deltaX < 0 { // scrolls left
+                let endX = max(lastScreenInit, lastScreen + deltaX)
+                let originX = endX - length
+                return (originX, endX)
+                
+            } else if deltaX > 0 {  // scrolls right
+                let originX = min(firstScreen + deltaX, firstScreenInit)
+                let endX = originX + length
+                return (originX, endX)
+                
+            } else {
+                return (firstScreen, lastScreen)
+            }
+        }()
+        
+        firstScreen = newOriginX
+        lastScreen = newEndX
+    }    
 }
