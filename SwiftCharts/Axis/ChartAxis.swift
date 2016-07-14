@@ -101,7 +101,19 @@ public class ChartAxis: CustomStringConvertible {
     func pan(deltaX: CGFloat, deltaY: CGFloat) {
         fatalError("Override")
     }
+    
+    func offsetFirstScreen(offset: CGFloat) {
+        firstScreen += offset
+        firstScreenInit += offset
+        firstVisibleScreen += offset
+    }
 
+    func offsetLastScreen(offset: CGFloat) {
+        lastScreen += offset
+        lastScreenInit += offset
+        lastVisibleScreen += offset
+    }
+    
     public var description: String {
         return "{\(self.dynamicType), first: \(first), last: \(last), firstScreen: \(firstScreen), lastScreen: \(lastScreen), firstVisible: \(firstVisible), lastVisible: \(lastVisible), firstVisibleScreen: \(firstVisibleScreen), lastVisibleScreen: \(lastVisibleScreen))}"
     }

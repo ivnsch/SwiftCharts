@@ -51,16 +51,12 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
         
         if let xLow = xLow {
-            self.axis.firstScreen = self.axis.firstScreen - xLow.delta
-            self.axis.firstScreenInit = self.axis.firstScreenInit - xLow.delta
-            self.axis.firstVisibleScreen = self.axis.firstVisibleScreen - xLow.delta
+            axis.offsetFirstScreen(-xLow.delta)
             self.initDrawers()
         }
         
         if let xHigh = xHigh {
-            self.axis.lastScreen = self.axis.lastScreen + xHigh.delta
-            self.axis.lastScreenInit = self.axis.lastScreenInit + xHigh.delta
-            self.axis.lastVisibleScreen = self.axis.lastVisibleScreen + xHigh.delta
+            axis.offsetLastScreen(xHigh.delta)
             self.initDrawers()
         }
         
