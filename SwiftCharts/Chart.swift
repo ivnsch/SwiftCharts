@@ -49,11 +49,11 @@ public class ChartSettings {
     public init() {}
 }
 
-public class ChartDelegate {
+public protocol ChartDelegate {
     
-    public var onZoom: ((scaleX: CGFloat, scaleY: CGFloat) -> Void)?
+    func onZoom(scaleX scaleX: CGFloat, scaleY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool)
     
-    public var onPan: ((transX: CGFloat, transY: CGFloat) -> Void)?
+    func onPan(transX transX: CGFloat, transY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool)
 }
 
 /// A Chart object is the highest level access to your chart. It has the view where all of the chart layers are drawn, which you can provide (useful if you want to position it as part of a storyboard or XIB), or it can be created for you.
@@ -68,7 +68,7 @@ public class Chart: Pannable, Zoomable {
     /// The layers of the chart that are drawn in the view
     private let layers: [ChartLayer]
 
-    public let delegate = ChartDelegate()
+    public var delegate: ChartDelegate?
 
     public var transX: CGFloat {
         return contentFrame.minX
@@ -210,18 +210,30 @@ public class Chart: Pannable, Zoomable {
         contentView.frame = frameBeforeScale
     }
     
-    public func onZoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    public func onZoomStart(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         for layer in layers {
             layer.zoom(deltaX, y: deltaY, centerX: centerX, centerY: centerY)
         }
-        delegate.onZoom?(scaleX: scaleX, scaleY: scaleY)
     }
     
-    public func onPan(deltaX deltaX: CGFloat, deltaY: CGFloat) {
+    public func onZoomStart(scaleX scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        for layer in layers {
+            layer.zoom(scaleX, scaleY: scaleY, centerX: centerX, centerY: centerY)
+        }
+    }
+    
+    public func onZoomFinish(scaleX scaleX: CGFloat, scaleY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool) {
+        delegate?.onZoom(scaleX: scaleX, scaleY: scaleY, deltaX: deltaX, deltaY: deltaY, centerX: centerX, centerY: centerY, isGesture: isGesture)
+    }
+    
+    public func onPanStart(deltaX deltaX: CGFloat, deltaY: CGFloat) {
         for layer in layers {
             layer.pan(deltaX, deltaY: deltaY)
         }
-        delegate.onPan?(transX: transX, transY: transY)
+    }
+    
+    public func onPanFinish(transX transX: CGFloat, transY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) {
+        delegate?.onPan(transX: transX, transY: transY, deltaX: deltaX, deltaY: deltaY, isGesture: isGesture, isDeceleration: isDeceleration)
     }
 
     /**
@@ -319,7 +331,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
         let minScale = (absMin * (sender.scale - 1) / absMax) + 1
         let (deltaX, deltaY) = x > y ? (sender.scale, minScale) : (minScale, sender.scale)
         
-        chart?.zoom(deltaX: deltaX, deltaY: deltaY, centerX: center.x, centerY: center.y)
+        chart?.zoom(deltaX: deltaX, deltaY: deltaY, centerX: center.x, centerY: center.y, isGesture: true)
         
         sender.scale = 1.0
     }
@@ -340,7 +352,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             
             lastPanTranslation = trans
             
-            chart?.pan(deltaX: deltaX, deltaY: deltaY)
+            chart?.pan(deltaX: deltaX, deltaY: deltaY, isGesture: true, isDeceleration: false)
             
         case .Ended:
             
@@ -352,7 +364,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             func next(index: Int, velocityX: CGFloat, velocityY: CGFloat) {
                 dispatch_async(dispatch_get_main_queue()) {
                     
-                    self.chart?.pan(deltaX: velocityX, deltaY: velocityY)
+                    self.chart?.pan(deltaX: velocityX, deltaY: velocityY, isGesture: true, isDeceleration: true)
                     
                     if abs(velocityX) > 0.1 || abs(velocityY) > 0.1 {
                         let friction: CGFloat = 0.9

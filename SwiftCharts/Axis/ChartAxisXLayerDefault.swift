@@ -170,4 +170,10 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         initDrawers()
         chart?.view.setNeedsDisplay()
     }
+    
+    override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        axis.zoom(scaleX, scaleY: scaleY, centerX: centerX, centerY: centerX)
+        initDrawers()
+        chart?.view.setNeedsDisplay()
+    }
 }

@@ -27,6 +27,8 @@ public class ChartLayerBase: NSObject, ChartLayer {
     
     public func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {}
     
+    public func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {}
+    
     public func pan(deltaX: CGFloat, deltaY: CGFloat) {}
 
     public override init() {}

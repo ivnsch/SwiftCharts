@@ -97,6 +97,10 @@ public class ChartAxis: CustomStringConvertible {
     func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         fatalError("Override")
     }
+    
+    func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        fatalError("Override")
+    }
 
     func pan(deltaX: CGFloat, deltaY: CGFloat) {
         fatalError("Override")

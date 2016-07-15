@@ -285,6 +285,10 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
     
+    func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        fatalError("override")
+    }
+    
     func pan(deltaX: CGFloat, deltaY: CGFloat) {
         fatalError("override")
     }

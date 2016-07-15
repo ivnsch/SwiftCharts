@@ -31,6 +31,8 @@ public protocol ChartLayer {
     
     func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat)
     
+    func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat)
+
     func pan(deltaX: CGFloat, deltaY: CGFloat)
 
 }

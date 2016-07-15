@@ -133,4 +133,10 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         update()
         chart?.view.setNeedsDisplay()
     }
+    
+    override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        axis.zoom(scaleX, scaleY: scaleY, centerX: centerX, centerY: centerY)
+        update()
+        chart?.view.setNeedsDisplay()
+    }
 }

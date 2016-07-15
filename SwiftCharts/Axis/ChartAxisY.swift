@@ -107,4 +107,8 @@ public class ChartAxisY: ChartAxis {
         firstScreen = newOriginY
         lastScreen = newEndY
     }
+    
+    override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        zoom(scaleX, y: scaleY / CGFloat(zoomFactor), centerX: centerX, centerY: centerY)
+    }
 }

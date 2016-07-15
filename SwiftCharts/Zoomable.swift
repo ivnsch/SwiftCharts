@@ -17,31 +17,63 @@ public protocol Zoomable {
     var scaleX: CGFloat {get}
     var scaleY: CGFloat {get}
     
-    func zoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat)
+    func zoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool)
     
-    func onZoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat)
+    func onZoomStart(scaleX scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat)
+
+    func onZoomStart(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat)
+    
+    func onZoomFinish(scaleX scaleX: CGFloat, scaleY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool)
 }
 
 public extension Zoomable {
     
     public func zoom(scaleX scaleX: CGFloat, scaleY: CGFloat, anchorX: CGFloat = 0.5, anchorY: CGFloat = 0.5) {
-        let centerX = containerView.frame.width * anchorX
-        let centerY = containerView.frame.height - (containerView.frame.height * anchorY)
+        let centerX = containerView.frame.minX + contentView.frame.minX + containerView.frame.width * anchorX
+        let centerY = containerView.frame.minY + contentView.frame.minY + (containerView.frame.height * anchorY)
+        
         zoom(scaleX: scaleX, scaleY: scaleY, centerX: centerX, centerY: centerY)
     }
     
     public func zoom(scaleX scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        zoom(deltaX: scaleX, deltaY: scaleY, centerX: centerX + containerView.frame.minX, centerY: centerY + containerView.frame.minY)
+        
+        onZoomStart(scaleX: scaleX, scaleY: scaleY, centerX: centerX, centerY: centerY)
+        
+        setContentViewAnchor(centerX, centerY: centerY)
+        
+        let newContentWidth = scaleX * containerView.frame.width
+        let newScale = newContentWidth / contentView.frame.width
+        let newContentHeight = scaleY * containerView.frame.height
+        let newScaleY = newContentHeight / contentView.frame.height
+        
+        setContentViewScale(scaleX: newScale, scaleY: newScaleY)
     }
     
-    func zoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    public func zoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool) {
         
-        onZoom(deltaX: deltaX, deltaY: deltaY, centerX: centerX, centerY: centerY)
+        onZoomStart(deltaX: deltaX, deltaY: deltaY, centerX: centerX, centerY: centerY)
         
+        zoomContentView(deltaX: deltaX, deltaY: deltaY, centerX: centerX, centerY: centerY)
+        
+        onZoomFinish(scaleX: contentView.frame.width / containerView.frame.width, scaleY: contentView.frame.height / containerView.frame.height, deltaX: deltaX, deltaY: deltaY, centerX: centerX, centerY: centerY, isGesture: isGesture)
+    }
+    
+    private func zoomContentView(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         let containerFrame = containerView.frame
         let contentFrame = contentView.frame
+        
+        setContentViewAnchor(centerX, centerY: centerY)
+        
+        let scaleX = max(containerFrame.width / contentFrame.width, deltaX)
+        let scaleY = max(containerFrame.height / contentFrame.height, deltaY)
 
-        // Set anchor and translate to scale around center
+        setContentViewScale(scaleX: scaleX, scaleY: scaleY)
+    }
+    
+    private func setContentViewAnchor(centerX: CGFloat, centerY: CGFloat) {
+        let containerFrame = containerView.frame
+        let contentFrame = contentView.frame
+        
         let transCenterX = centerX - contentFrame.minX - containerFrame.minX
         let transCenterY = centerY - contentFrame.minY - containerFrame.minY
         let anchorX = transCenterX / contentFrame.width
@@ -52,13 +84,16 @@ public extension Zoomable {
         let offsetY = contentFrame.height * (previousAnchor.y - contentView.layer.anchorPoint.y)
         contentView.transform.tx = contentView.transform.tx - offsetX
         contentView.transform.ty = contentView.transform.ty - offsetY
+    }
 
-        // Scale, ensure min scale (container size)
-        let scaleX = max(containerFrame.width / contentFrame.width, deltaX)
-        let scaleY = max(containerFrame.height / contentFrame.height, deltaY)
+    private func setContentViewScale(scaleX scaleX: CGFloat, scaleY: CGFloat) {
         contentView.transform = CGAffineTransformScale(contentView.transform, scaleX, scaleY)
+        keepInBoundaries()
+    }
+    
+    private func keepInBoundaries() {
+        let containerFrame = containerView.frame
         
-        // Keep in boundaries
         if contentView.frame.origin.y > 0 {
             contentView.transform.ty = contentView.transform.ty - contentView.frame.origin.y
         }
