@@ -42,7 +42,14 @@ public class ChartAxisX: ChartAxis {
         return (Double(screenLoc) * length / Double(screenLength)) + first
     }
     
+    public override var firstModelValueInBounds: Double {
+        return firstVisible + screenToModelLength(paddingFirstScreen)
+    }
     
+    public override var lastModelValueInBounds: Double {
+        return lastVisible - screenToModelLength(paddingLastScreen)
+    }
+
     override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         
         // Zoom around center of gesture. Uses center as anchor point dividing the line in 2 segments which are scaled proportionally.
@@ -110,5 +117,11 @@ public class ChartAxisX: ChartAxis {
     
     override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         zoom(scaleX / CGFloat(zoomFactor), y: scaleY, centerX: centerX, centerY: centerY)
+    }
+    
+    public override init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat, paddingFirstScreen: CGFloat = 0, paddingLastScreen: CGFloat = 0) {
+        super.init(first: first, last: last, firstScreen: firstScreen, lastScreen: lastScreen, paddingFirstScreen: paddingFirstScreen, paddingLastScreen: paddingLastScreen)
+        self.first = firstInit - screenToModelLength(paddingFirstScreen)
+        self.last = lastInit + screenToModelLength(paddingLastScreen)
     }
 }

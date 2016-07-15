@@ -11,10 +11,10 @@ import UIKit
 public class ChartAxis: CustomStringConvertible {
     
     /// First model value
-    public let first: Double
+    var first: Double
     
     /// Last model value
-    public let last: Double
+    var last: Double
     
     // Screen location (relative to chart view's frame) corresponding to first model value
     public var firstScreen: CGFloat
@@ -24,6 +24,9 @@ public class ChartAxis: CustomStringConvertible {
     
     public var firstVisibleScreen: CGFloat
     public var lastVisibleScreen: CGFloat
+    
+    public let paddingFirstScreen: CGFloat
+    public let paddingLastScreen: CGFloat
     
     var firstVisible: Double {
         return scalarForScreenLoc(firstVisibleScreen)
@@ -55,16 +58,22 @@ public class ChartAxis: CustomStringConvertible {
         fatalError("override")
     }
     
+    var firstInit: Double
+    var lastInit: Double
     var firstScreenInit: CGFloat
     var lastScreenInit: CGFloat
     
-    public init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat) {
+    public init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat, paddingFirstScreen: CGFloat, paddingLastScreen: CGFloat) {
         self.first = first
         self.last = last
+        self.firstInit = first
+        self.lastInit = last
         self.firstScreen = firstScreen
         self.lastScreen = lastScreen
         self.firstScreenInit = firstScreen
         self.lastScreenInit = lastScreen
+        self.paddingFirstScreen = paddingFirstScreen
+        self.paddingLastScreen = paddingLastScreen
         self.firstVisibleScreen = firstScreen
         self.lastVisibleScreen = lastScreen
     }
@@ -118,7 +127,19 @@ public class ChartAxis: CustomStringConvertible {
         lastVisibleScreen += offset
     }
     
+    func screenToModelLength(screenLength: CGFloat) -> Double {
+        return scalarForScreenLoc(screenLength) - scalarForScreenLoc(0)
+    }
+    
+    public var firstModelValueInBounds: Double {
+        fatalError("Overrode")
+    }
+    
+    public var lastModelValueInBounds: Double {
+        fatalError("Overrode")
+    }
+    
     public var description: String {
-        return "{\(self.dynamicType), first: \(first), last: \(last), firstScreen: \(firstScreen), lastScreen: \(lastScreen), firstVisible: \(firstVisible), lastVisible: \(lastVisible), firstVisibleScreen: \(firstVisibleScreen), lastVisibleScreen: \(lastVisibleScreen))}"
+        return "{\(self.dynamicType), first: \(first), last: \(last), firstScreen: \(firstScreen), lastScreen: \(lastScreen), firstVisible: \(firstVisible), lastVisible: \(lastVisible), firstVisibleScreen: \(firstVisibleScreen), lastVisibleScreen: \(lastVisibleScreen), paddingFirstScreen: \(paddingFirstScreen), paddingLastScreen: \(paddingLastScreen))}"
     }
 }
