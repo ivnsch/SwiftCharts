@@ -11,19 +11,19 @@ import UIKit
 public class ChartAxis: CustomStringConvertible {
     
     /// First model value
-    public var first: Double
+    public internal(set) var first: Double
     
     /// Last model value
-    public var last: Double
+    public internal(set) var last: Double
     
     // Screen location (relative to chart view's frame) corresponding to first model value
-    public var firstScreen: CGFloat
+    public internal(set) var firstScreen: CGFloat
     
     // Screen location (relative to chart view's frame) corresponding to last model value
-    public var lastScreen: CGFloat
+    public internal(set) var lastScreen: CGFloat
     
-    public var firstVisibleScreen: CGFloat
-    public var lastVisibleScreen: CGFloat
+    public internal(set) var firstVisibleScreen: CGFloat
+    public internal(set) var lastVisibleScreen: CGFloat
     
     public let paddingFirstScreen: CGFloat
     public let paddingLastScreen: CGFloat
