@@ -35,11 +35,11 @@ public class ChartAxisY: ChartAxis {
     }
     
     public override func scalarForScreenLoc(screenLoc: CGFloat) -> Double {
-        return (Double(-(screenLoc - firstScreen)) * length / Double(screenLength)) + first
+        return Double(-(screenLoc - firstScreen) * modelToScreenRatio) + first
     }
     
     public override func innerScalarForScreenLoc(screenLoc: CGFloat) -> Double {
-        return length + (Double(-(screenLoc)) * length / Double(screenLength)) + first
+        return length + Double(-screenLoc * modelToScreenRatio) + first
     }
     
     public override var firstModelValueInBounds: Double {

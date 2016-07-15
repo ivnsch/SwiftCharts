@@ -58,6 +58,14 @@ public class ChartAxis: CustomStringConvertible {
         fatalError("override")
     }
     
+    public var screenToModelRatio: CGFloat {
+        return screenLength / CGFloat(length)
+    }
+    
+    public var modelToScreenRatio: CGFloat {
+        return CGFloat(length) / screenLength
+    }
+    
     var firstInit: Double
     var lastInit: Double
     var firstScreenInit: CGFloat
@@ -90,7 +98,7 @@ public class ChartAxis: CustomStringConvertible {
     
     /// Calculates screen location (relative to axis length) of model value. It's not required that scalar is between first and last model values.
     func internalScreenLocForScalar(scalar: Double) -> CGFloat {
-        return screenLength * CGFloat(scalar - first) / CGFloat(length)
+        return CGFloat(scalar - first) * screenToModelRatio
     }
     
     // TODO rename content instead of inner
