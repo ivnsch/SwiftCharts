@@ -11,10 +11,10 @@ import UIKit
 public class ChartAxis: CustomStringConvertible {
     
     /// First model value
-    var first: Double
+    public var first: Double
     
     /// Last model value
-    var last: Double
+    public var last: Double
     
     // Screen location (relative to chart view's frame) corresponding to first model value
     public var firstScreen: CGFloat
