@@ -21,7 +21,8 @@ public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
         // Update intervals when zooming duplicates / halves
         // In order to do this, we round the zooming factor to the lowest value in 2^0, 2^1...2^n sequence (this corresponds to 1x, 2x...nx zooming) and divide the original multiplier by this
         // For example, given a 2 multiplier, when zooming in, zooming factors in 2x..<4x are rounded down to 2x, and dividing our multiplier by 2x, we get a 1 multiplier, meaning during zoom  2x..<4x the values have 1 interval length. If continue zooming in, for 4x..<8x, we get a 0.5 multiplier, etc.
-        let zoomedMultiplier = multiplier / pow(2, floor(log2(axis.zoomFactor)))
+        let roundDecimals = pow(10, Double(Int(DBL_MAX_10_EXP / 5)))
+        let zoomedMultiplier = multiplier / pow(2, floor(round(log2(axis.zoomFactor) * roundDecimals) / roundDecimals))
         
         let modelStart = floor(axis.firstVisible / zoomedMultiplier) * zoomedMultiplier
         
