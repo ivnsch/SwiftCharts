@@ -50,7 +50,7 @@ public class CubicLinePathGenerator: ChartLinesViewPathGenerator {
             if i > 0 {  // Exception for first line because there is no previous point
                 p0 = previousPoint1
                 
-                if p2.y - p1.y == p2.y - p0.y {
+                if p2.y - p1.y =~ p2.y - p0.y {
                     tensionBezier1 = 0
                 }
                 
@@ -61,7 +61,7 @@ public class CubicLinePathGenerator: ChartLinesViewPathGenerator {
             
             if i < points.count - 2 { // Exception for last line because there is no next point
                 p3 = points[i + 2]
-                if p3.y - p2.y == p2.y - p1.y {
+                if p3.y - p2.y =~ p2.y - p1.y {
                     tensionBezier2 = 0
                 }
             } else {

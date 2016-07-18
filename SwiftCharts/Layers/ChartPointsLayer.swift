@@ -76,11 +76,11 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }
     
     public func chartPointsForScreenLocX(x: CGFloat) -> [T] {
-        return self.filterChartPoints { $0.x == x }
+        return self.filterChartPoints { $0.x =~ x }
     }
     
     public func chartPointsForScreenLocY(y: CGFloat) -> [T] {
-        return self.filterChartPoints { $0.y == y }
+        return self.filterChartPoints { $0.y =~ y }
 
     }
 

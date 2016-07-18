@@ -84,7 +84,7 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         s32y = p3y - p2y
         
         denom = s10x * s32y - s32x * s10y
-        if denom == 0 {
+        if denom =~ 0 {
             return nil // Collinear
         }
         let denomPositive: Bool = denom > 0

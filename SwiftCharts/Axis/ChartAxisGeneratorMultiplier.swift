@@ -27,8 +27,8 @@ public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
         
         var values = [Double]()
         var scalar = modelStart
-        while scalar <= axis.lastVisible {
-            if ((scalar == axis.firstInit && axis.zoomFactor == 1) || scalar >= axis.firstModelValueInBounds) && ((scalar == axis.lastInit && axis.zoomFactor == 1) || scalar <= axis.lastModelValueInBounds) {
+        while scalar <=~ axis.lastVisible {
+            if ((scalar =~ axis.firstInit && axis.zoomFactor =~ 1) || scalar >=~ axis.firstModelValueInBounds) && ((scalar =~ axis.lastInit && axis.zoomFactor =~ 1) || scalar <=~ axis.lastModelValueInBounds) {
                 values.append(scalar)
             }
             scalar = scalar + zoomedMultiplier

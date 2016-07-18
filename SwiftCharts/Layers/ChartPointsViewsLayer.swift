@@ -33,7 +33,7 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
         
         self.viewsWithChartPoints = self.generateChartPointViews(chartPointModels: self.chartPointsModels, chart: chart)
         
-        if self.isTransform || self.delayBetweenItems == 0 {
+        if self.isTransform || self.delayBetweenItems =~ 0 {
             for v in self.viewsWithChartPoints {chart.addSubview(v.view)}
             
         } else {

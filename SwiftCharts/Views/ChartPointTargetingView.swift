@@ -60,7 +60,7 @@ public class ChartPointTargetingView: UIView {
             lineVertical.frame = lineVerticalTargetFrame
         }
         
-        if animDuration == 0 {
+        if animDuration =~ 0 {
             targetState()
         } else {
             UIView.animateWithDuration(NSTimeInterval(animDuration), delay: NSTimeInterval(animDelay), options: .CurveEaseOut, animations: {

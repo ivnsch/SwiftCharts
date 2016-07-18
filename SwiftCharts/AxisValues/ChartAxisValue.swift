@@ -47,5 +47,5 @@ public class ChartAxisValue: Equatable, CustomStringConvertible {
 }
 
 public func ==(lhs: ChartAxisValue, rhs: ChartAxisValue) -> Bool {
-    return lhs.scalar == rhs.scalar
+    return lhs.scalar =~ rhs.scalar
 }
