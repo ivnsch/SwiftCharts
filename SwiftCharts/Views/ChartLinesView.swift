@@ -13,25 +13,27 @@ public protocol ChartLinesViewPathGenerator {
 }
 
 public class ChartLinesView: UIView {
-
+    
     private let lineColor: UIColor
     private let lineWidth: CGFloat
     private let animDuration: Float
     private let animDelay: Float
-
-    init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, animDuration: Float, animDelay: Float) {
+    private let dashPattern: [Double]?
+    
+    init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
         
         self.lineColor = lineColor
         self.lineWidth = lineWidth
         self.animDuration = animDuration
         self.animDelay = animDelay
+        self.dashPattern = dashPattern
         
         super.init(frame: frame)
-
+        
         self.backgroundColor = UIColor.clearColor()
         self.show(path: path)
     }
-
+    
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -47,7 +49,7 @@ public class ChartLinesView: UIView {
         
         return lineMaskLayer
     }
-
+    
     private func generateLayer(path path: UIBezierPath) -> CAShapeLayer {
         let lineLayer = CAShapeLayer()
         lineLayer.lineJoin = kCALineJoinBevel
@@ -71,6 +73,9 @@ public class ChartLinesView: UIView {
             pathAnimation.beginTime = CACurrentMediaTime() + CFTimeInterval(self.animDelay)
             lineLayer.addAnimation(pathAnimation, forKey: "strokeEndAnimation")
             
+            if self.dashPattern != nil {
+                lineLayer.lineDashPattern = dashPattern
+            }
         } else {
             lineLayer.strokeEnd = 1
         }
@@ -83,4 +88,4 @@ public class ChartLinesView: UIView {
         self.layer.mask = lineMask
         self.layer.addSublayer(self.generateLayer(path: path))
     }
- }
+}
