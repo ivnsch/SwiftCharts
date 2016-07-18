@@ -13,6 +13,17 @@ public class ChartAxisLabelsGeneratorFixed: ChartAxisLabelsGenerator {
     
     let dict: [Double: [ChartAxisLabel]]
     
+    public convenience init(axisValues: [ChartAxisValue]) {
+        var dict = [Double: [ChartAxisLabel]]()
+        for axisValue in axisValues {
+            if !axisValue.hidden {
+                dict[axisValue.scalar] = axisValue.labels
+            }
+            
+        }
+        self.init(dict: dict)
+    }
+    
     public init(dict: [Double: [ChartAxisLabel]]) {
         self.dict = dict
     }
