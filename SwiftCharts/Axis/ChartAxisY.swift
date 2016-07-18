@@ -115,6 +115,9 @@ public class ChartAxisY: ChartAxis {
         lastScreen = newEndY
     }
     
+    override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        zoom(scaleX, y: scaleY / CGFloat(zoomFactor), centerX: centerX, centerY: centerY)
+    }
     
     public override init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat, paddingFirstScreen: CGFloat = 0, paddingLastScreen: CGFloat = 0) {
         super.init(first: first, last: last, firstScreen: firstScreen, lastScreen: lastScreen, paddingFirstScreen: paddingFirstScreen, paddingLastScreen: paddingLastScreen)
