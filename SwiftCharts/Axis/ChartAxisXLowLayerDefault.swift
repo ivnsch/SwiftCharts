@@ -27,16 +27,17 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
         super.chartViewDrawing(context: context, chart: chart)
     }
 
-    override func prepareUpdate() {
-        super.prepareUpdate()
-        offset = offset - (frame.height - lastFrame.height)
-    }
-    
     override func updateInternal() {
         guard let chart = self.chart else {return}
         super.updateInternal()
         if lastFrame.height != self.frame.height {
-            chart.notifyAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta(layer: self, delta: self.frame.height - self.lastFrame.height))
+            
+            // Move drawers by delta
+            let delta = frame.height - lastFrame.height
+            offset -= delta
+            initDrawers()
+            
+            chart.notifyAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta(layer: self, delta: delta))
         }
     }
 

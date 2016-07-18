@@ -23,20 +23,17 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         return CGPointMake(end.x, axis.lastVisibleScreen)
     }
     
-    override func prepareUpdate() {
-        super.prepareUpdate()
-        
-        // Move frame before updating drawers
-        offset = offset - (frame.width - lastFrame.width)
-    }
-    
     override func updateInternal() {
         guard let chart = self.chart else {return}
-        
         super.updateInternal()
-        
         if lastFrame.width != self.frame.width {
-            chart.notifyAxisInnerFrameChange(yHigh: ChartAxisLayerWithFrameDelta(layer: self, delta: self.frame.width - self.lastFrame.width))
+            
+            // Move drawers by delta
+            let delta = frame.width - lastFrame.width
+            offset -= delta
+            initDrawers()
+            
+            chart.notifyAxisInnerFrameChange(yHigh: ChartAxisLayerWithFrameDelta(layer: self, delta: delta))
         }
     }
     
