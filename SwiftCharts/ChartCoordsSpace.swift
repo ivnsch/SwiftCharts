@@ -37,7 +37,7 @@ import UIKit
  */
 public class ChartCoordsSpace {
     
-    public typealias ChartAxisLayerModel = (p1: CGPoint, p2: CGPoint, firstModelValue: Double, lastModelValue: Double, axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver?, addPaddingForFirstLabelSize: Bool, addPaddingForLastLabelSize: Bool)
+    public typealias ChartAxisLayerModel = (p1: CGPoint, p2: CGPoint, firstModelValue: Double, lastModelValue: Double, axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver?, leadingPadding: ChartAxisPadding, trailingPadding: ChartAxisPadding)
     public typealias ChartAxisLayerGenerator = (ChartAxisLayerModel) -> ChartAxisLayer
     
     private let chartSettings: ChartSettings
@@ -75,19 +75,34 @@ public class ChartCoordsSpace {
     public convenience init(chartSettings: ChartSettings, chartSize: CGSize, yLowModels: [ChartAxisModel] = [], yHighModels: [ChartAxisModel] = [], xLowModels: [ChartAxisModel] = [], xHighModels: [ChartAxisModel] = []) {
         
         func calculatePaddingValues(axis: ChartAxis, model: ChartAxisLayerModel, dimensionExtractor: CGSize -> CGFloat) -> (CGFloat, CGFloat) {
-            func calculatePadding(axisValueMaybe: Double?) -> CGFloat {
+
+            func paddingForAxisValue(axisValueMaybe: Double?) -> CGFloat {
                 return axisValueMaybe.map{model.labelsGenerator.generate($0)}?.first.map{dimensionExtractor($0.textSize) / 2} ?? 0
             }
             
-            if model.addPaddingForFirstLabelSize || model.addPaddingForLastLabelSize {
-                let axisValues = model.axisValuesGenerator.generate(axis)
-                let firstPadding = model.addPaddingForFirstLabelSize ? calculatePadding(axisValues.first) : 0
-                let lastPadding = model.addPaddingForLastLabelSize ? calculatePadding(axisValues.last) : 0
-                return (firstPadding, lastPadding)
-                
-            } else {
-                return (0, 0)
+            func calculatePadding(padding: ChartAxisPadding, axisValueMaybe: Double?) -> CGFloat {
+                switch padding {
+                case .Label: return paddingForAxisValue(axisValueMaybe)
+                case .MaxLabelFixed(let length): return max(paddingForAxisValue(axisValueMaybe), length)
+                case .Fixed(let length): return length
+                case .None: return 0
+                }
             }
+            
+            let axisValues: [Double] = {
+                switch (model.leadingPadding, model.trailingPadding) {
+                case (.Label, _): fallthrough
+                case (_, .Label): fallthrough
+                case (.MaxLabelFixed(_), _): fallthrough
+                case (_, .MaxLabelFixed(_)): return model.axisValuesGenerator.generate(axis)
+                default: return []
+                }
+            }()
+
+            return (
+                calculatePadding(model.leadingPadding, axisValueMaybe: axisValues.first),
+                calculatePadding(model.trailingPadding, axisValueMaybe: axisValues.last)
+            )
         }
         
         let yLowGenerator: ChartAxisLayerGenerator = {model in
@@ -221,7 +236,7 @@ public class ChartCoordsSpace {
             let axisSettings = ChartAxisSettings(chartSettings)
             axisSettings.lineColor = chartAxisModel.lineColor
             let points = boundingPointsCreator(offset: x)
-            let layer = generator(p1: points.p1, p2: points.p2, firstModelValue: chartAxisModel.firstModelValue, lastModelValue: chartAxisModel.lastModelValue, axisValuesGenerator: chartAxisModel.axisValuesGenerator, labelsGenerator: chartAxisModel.labelsGenerator, axisTitleLabels: chartAxisModel.axisTitleLabels, settings: axisSettings, labelsConflictSolver: chartAxisModel.labelsConflictSolver, addPaddingForFirstLabelSize: chartAxisModel.addPaddingForFirstLabelSize, addPaddingForLastLabelSize: chartAxisModel.addPaddingForLastLabelSize)
+            let layer = generator(p1: points.p1, p2: points.p2, firstModelValue: chartAxisModel.firstModelValue, lastModelValue: chartAxisModel.lastModelValue, axisValuesGenerator: chartAxisModel.axisValuesGenerator, labelsGenerator: chartAxisModel.labelsGenerator, axisTitleLabels: chartAxisModel.axisTitleLabels, settings: axisSettings, labelsConflictSolver: chartAxisModel.labelsConflictSolver, leadingPadding: chartAxisModel.leadingPadding, trailingPadding: chartAxisModel.trailingPadding)
             return (
                 axes: layers + [layer],
                 x: x + nextLayerOffset(layer)
