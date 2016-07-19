@@ -16,6 +16,8 @@ public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
         self.multiplier = multiplier
     }
     
+    public func axisLayerInitialized(layer: ChartAxisLayer) {}
+    
     public func generate(axis: ChartAxis) -> [Double] {
         
         // Update intervals when zooming duplicates / halves
