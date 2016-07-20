@@ -13,12 +13,12 @@ public enum ChartLabelTextAlignment {
 }
 
 public class ChartLabelSettings {
-    let font: UIFont
-    let fontColor: UIColor
-    let rotation: CGFloat
-    let rotationKeep: ChartLabelDrawerRotationKeep
-    let shiftXOnRotation: Bool
-    let textAlignment: ChartLabelTextAlignment
+    public let font: UIFont
+    public let fontColor: UIColor
+    public let rotation: CGFloat
+    public let rotationKeep: ChartLabelDrawerRotationKeep
+    public let shiftXOnRotation: Bool
+    public let textAlignment: ChartLabelTextAlignment
     
     public init(font: UIFont = UIFont.systemFontOfSize(14), fontColor: UIColor = UIColor.blackColor(), rotation: CGFloat = 0, rotationKeep: ChartLabelDrawerRotationKeep = .Center, shiftXOnRotation: Bool = true, textAlignment: ChartLabelTextAlignment = .Default) {
         self.font = font
