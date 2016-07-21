@@ -12,7 +12,7 @@ import UIKit
 public class ChartAxisLabel {
 
     public let text: String
-    let settings: ChartLabelSettings
+    public let settings: ChartLabelSettings
 
     var hidden: Bool = false
 
