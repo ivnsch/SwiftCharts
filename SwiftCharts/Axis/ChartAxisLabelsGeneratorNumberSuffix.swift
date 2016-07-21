@@ -8,14 +8,42 @@
 
 import Foundation
 
+public enum ChartAxisLabelNumberSuffixUnit {
+    case K, M, G, T, P, E
+
+    static var seq: [ChartAxisLabelNumberSuffixUnit] {
+        return [K, M, G, T, P, E]
+    }
+    
+    var values: (factor: Double, text: String) {
+        switch self {
+        case .K: return (pow(10, 3), "K")
+        case .M: return (pow(10, 6), "M")
+        case .G: return (pow(10, 9), "G")
+        case .T: return (pow(10, 12), "T")
+        case .P: return (pow(10, 15), "P")
+        case .E: return (pow(10, 18), "E")
+        }
+    }
+    
+    public var factor: Double {
+        return values.factor
+    }
+    
+    public var text: String {
+        return values.text
+    }
+}
+
 public class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGenerator {
     
     public let labelSettings: ChartLabelSettings
     
-    public let units = ["K", "M", "G", "T", "P", "E"]
+    public let startUnit: ChartAxisLabelNumberSuffixUnit
     
-    public init(labelSettings: ChartLabelSettings) {
+    public init(labelSettings: ChartLabelSettings, startUnit: ChartAxisLabelNumberSuffixUnit = .M) {
         self.labelSettings = labelSettings
+        self.startUnit = startUnit
     }
 
     // src: http://stackoverflow.com/a/23290016/930450
@@ -25,13 +53,13 @@ public class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGenerator {
         let absScalar = fabs(scalar)
 
         let text: String = {
-            if (absScalar < 1000) {
+            if (absScalar < startUnit.factor) {
                 return "\(sign)\(absScalar)"
                 
             } else {
                 let exp = Int(log10(absScalar) / 3)
                 let roundedScalar = round(10 * absScalar / pow(1000, Double(exp))) / 10
-                return "\(sign)\(roundedScalar)\(units[exp-1])"
+                return "\(sign)\(roundedScalar)\(ChartAxisLabelNumberSuffixUnit.seq[exp - 1].text)"
             }
         }()
 
