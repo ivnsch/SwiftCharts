@@ -19,6 +19,8 @@ public protocol Pannable {
     
     func pan(x x: CGFloat, y: CGFloat)
     
+    func pan(deltaX deltaX: CGFloat, deltaY: CGFloat)
+    
     func pan(deltaX deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool)
     
     func onPanStart(deltaX deltaX: CGFloat, deltaY: CGFloat)
@@ -30,6 +32,10 @@ public extension Pannable {
 
     func pan(x x: CGFloat, y: CGFloat) {
         pan(deltaX: x - transX, deltaY: transY - y, isGesture: false, isDeceleration: false)
+    }
+    
+    func pan(deltaX deltaX: CGFloat, deltaY: CGFloat) {
+        pan(deltaX: deltaX, deltaY: deltaY, isGesture: false, isDeceleration: false)
     }
     
     func pan(deltaX deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) {

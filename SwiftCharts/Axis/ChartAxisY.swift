@@ -42,6 +42,14 @@ public class ChartAxisY: ChartAxis {
         return length + Double(-screenLoc * modelToScreenRatio) + first
     }
     
+    public override func screenToModelLength(screenLength: CGFloat) -> Double {
+        return super.screenToModelLength(screenLength) * -1
+    }
+    
+    public override func modelToScreenLength(modelLength: Double) -> CGFloat {
+        return super.modelToScreenLength(modelLength) * -1
+    }
+    
     public override var firstModelValueInBounds: Double {
         return firstVisible - screenToModelLength(paddingFirstScreen)
     }

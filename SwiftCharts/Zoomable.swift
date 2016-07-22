@@ -29,10 +29,13 @@ public protocol Zoomable {
 public extension Zoomable {
     
     public func zoom(scaleX scaleX: CGFloat, scaleY: CGFloat, anchorX: CGFloat = 0.5, anchorY: CGFloat = 0.5) {
-        let centerX = containerView.frame.minX + contentView.frame.minX + containerView.frame.width * anchorX
-        let centerY = containerView.frame.minY + contentView.frame.minY + (containerView.frame.height * anchorY)
-        
-        zoom(scaleX: scaleX, scaleY: scaleY, centerX: centerX, centerY: centerY)
+        let center = calculateCenter(anchorX: anchorX, anchorY: anchorX)
+        zoom(scaleX: scaleX, scaleY: scaleY, centerX: center.x, centerY: center.y)
+    }
+    
+    public func zoom(deltaX deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat = 0.5, anchorY: CGFloat = 0.5) {
+        let center = calculateCenter(anchorX: anchorX, anchorY: anchorX)
+        zoom(deltaX: deltaX, deltaY: deltaY, centerX: center.x, centerY: center.y, isGesture: false)
     }
     
     public func zoom(scaleX scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
@@ -106,5 +109,11 @@ public extension Zoomable {
         if contentView.frame.maxX < containerFrame.width {
             contentView.transform.tx = contentView.transform.tx + (containerFrame.width - contentView.frame.maxX)
         }
+    }
+    
+    private func calculateCenter(anchorX anchorX: CGFloat = 0.5, anchorY: CGFloat = 0.5) -> CGPoint {
+        let centerX = containerView.frame.minX + contentView.frame.minX + containerView.frame.width * anchorX
+        let centerY = containerView.frame.minY + contentView.frame.minY + (containerView.frame.height * anchorY)
+        return CGPointMake(centerX, centerY)
     }
 }

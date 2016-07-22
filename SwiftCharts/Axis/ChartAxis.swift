@@ -135,8 +135,12 @@ public class ChartAxis: CustomStringConvertible {
         lastVisibleScreen += offset
     }
     
-    func screenToModelLength(screenLength: CGFloat) -> Double {
+    public func screenToModelLength(screenLength: CGFloat) -> Double {
         return scalarForScreenLoc(screenLength) - scalarForScreenLoc(0)
+    }
+    
+    public func modelToScreenLength(modelLength: Double) -> CGFloat {
+        return screenLocForScalar(modelLength) - screenLocForScalar(0)
     }
     
     public var firstModelValueInBounds: Double {
