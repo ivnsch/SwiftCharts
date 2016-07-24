@@ -256,8 +256,9 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         }
     }
     
-    func chartContentViewDrawing(context context: CGContextRef, chart: Chart) {
-    }
+    func chartContentViewDrawing(context context: CGContextRef, chart: Chart) {}
+    
+    func chartDrawersContentViewDrawing(context context: CGContextRef, chart: Chart, view: UIView) {}
     
     func initDrawers() {
         fatalError("override")

@@ -21,6 +21,8 @@ public class ChartLayerBase: NSObject, ChartLayer {
 
     public func chartContentViewDrawing(context context: CGContextRef, chart: Chart) {}
 
+    public func chartDrawersContentViewDrawing(context context: CGContextRef, chart: Chart, view: UIView) {}
+    
     public func update() {}
     
     public func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {}

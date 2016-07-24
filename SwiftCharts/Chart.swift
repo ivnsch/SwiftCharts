@@ -64,6 +64,7 @@ public class Chart: Pannable, Zoomable {
 
     public let containerView: UIView
     public let contentView: UIView
+    public let drawersContentView: UIView
 
     /// The layers of the chart that are drawn in the view
     private let layers: [ChartLayer]
@@ -118,15 +119,23 @@ public class Chart: Pannable, Zoomable {
         self.view = view
 
         let containerView = UIView(frame: innerFrame ?? view.bounds)
+        
+        let drawersContentView = ChartContentView(frame: containerView.bounds)
+        drawersContentView.backgroundColor = UIColor.clearColor()
+        containerView.addSubview(drawersContentView)
+        
         let contentView = ChartContentView(frame: containerView.bounds)
         contentView.backgroundColor = UIColor.clearColor()
         containerView.addSubview(contentView)
+        
         containerView.clipsToBounds = true
         view.addSubview(containerView)
 
         self.contentView = contentView
+        self.drawersContentView = drawersContentView
         self.containerView = containerView
         contentView.chart = self
+        drawersContentView.chart = self
         
         if let settings = settings {
             self.view.configure(settings)
@@ -248,10 +257,17 @@ public class Chart: Pannable, Zoomable {
         }
     }
     
-    private func drawContentViewRect(rect: CGRect) {
+    private func drawContentViewRect(rect: CGRect, sender: ChartContentView) {
         let context = UIGraphicsGetCurrentContext()
-        for layer in layers {
-            layer.chartContentViewDrawing(context: context!, chart: self)
+        if sender == drawersContentView {
+            for layer in layers {
+                layer.chartDrawersContentViewDrawing(context: context!, chart: self, view: sender)
+            }
+        } else if sender == contentView {
+            for layer in layers {
+                layer.chartContentViewDrawing(context: context!, chart: self)
+            }
+            self.drawersContentView.setNeedsDisplay()
         }
     }
 }
@@ -262,7 +278,7 @@ public class ChartContentView: UIView {
     weak var chart: Chart?
     
     override public func drawRect(rect: CGRect) {
-        self.chart?.drawContentViewRect(rect)
+        self.chart?.drawContentViewRect(rect, sender: self)
     }
 }
 

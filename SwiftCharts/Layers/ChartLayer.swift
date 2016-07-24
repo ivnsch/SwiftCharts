@@ -23,6 +23,8 @@ public protocol ChartLayer {
     
     func chartContentViewDrawing(context context: CGContextRef, chart: Chart)
 
+    func chartDrawersContentViewDrawing(context context: CGContextRef, chart: Chart, view: UIView)
+    
     /// Trigger views update, to match updated model data
     func update()
     
