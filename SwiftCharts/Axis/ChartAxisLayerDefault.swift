@@ -219,7 +219,11 @@ class ChartAxisLayerDefault: ChartAxisLayer {
      - returns: The location of the axis value within the bounds of the axis layer
      */
     func innerScreenLocForScalar(scalar: Double, firstAxisScalar: Double) -> CGFloat {
-        return self.length * CGFloat(scalar - firstAxisScalar) / self.modelLength
+        if self.modelLength > 0 {
+            return self.length * CGFloat(scalar - firstAxisScalar) / self.modelLength
+        } else {
+            return 0
+        }
     }
 
     /**
