@@ -46,7 +46,7 @@ public class ChartAxisValue: Equatable, Hashable, CustomStringConvertible {
     }
     
     public var hashValue: Int {
-        return ~Int(scalar._toBitPattern())
+        return scalar.hashValue
     }
 }
 
