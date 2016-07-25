@@ -129,7 +129,7 @@ public class ChartAxisY: ChartAxis {
     
     public override init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat, paddingFirstScreen: CGFloat = 0, paddingLastScreen: CGFloat = 0) {
         super.init(first: first, last: last, firstScreen: firstScreen, lastScreen: lastScreen, paddingFirstScreen: paddingFirstScreen, paddingLastScreen: paddingLastScreen)
-        self.first = firstInit + screenToModelLength(paddingFirstScreen)
-        self.last = lastInit - screenToModelLength(paddingLastScreen)
+        self.first = firstInit - screenToModelLength(paddingFirstScreen)
+        self.last = lastInit + screenToModelLength(paddingLastScreen)
     }
 }
