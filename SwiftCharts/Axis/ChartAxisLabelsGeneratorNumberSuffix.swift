@@ -41,9 +41,12 @@ public class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGenerator {
     
     public let startUnit: ChartAxisLabelNumberSuffixUnit
     
-    public init(labelSettings: ChartLabelSettings, startUnit: ChartAxisLabelNumberSuffixUnit = .M) {
+    public let formatter: NSNumberFormatter
+    
+    public init(labelSettings: ChartLabelSettings, startUnit: ChartAxisLabelNumberSuffixUnit = .M, formatter: NSNumberFormatter = ChartAxisLabelsGeneratorNumberSuffix.defaultFormatter) {
         self.labelSettings = labelSettings
         self.startUnit = startUnit
+        self.formatter = formatter
     }
 
     // src: http://stackoverflow.com/a/23290016/930450
@@ -51,18 +54,25 @@ public class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGenerator {
         let sign = scalar < 0 ? "-" : ""
         
         let absScalar = fabs(scalar)
-
-        let text: String = {
+        
+        let (number, suffix): (Double, String) = {
             if (absScalar < startUnit.factor) {
-                return "\(sign)\(absScalar)"
+                return (absScalar, "")
                 
             } else {
                 let exp = Int(log10(absScalar) / 3)
                 let roundedScalar = round(10 * absScalar / pow(1000, Double(exp))) / 10
-                return "\(sign)\(roundedScalar)\(ChartAxisLabelNumberSuffixUnit.seq[exp - 1].text)"
+                return (roundedScalar, ChartAxisLabelNumberSuffixUnit.seq[exp - 1].text)
             }
         }()
 
+        let text = "\(sign)\(formatter.stringFromNumber(number)!)\(suffix)"
         return [ChartAxisLabel(text: text, settings: labelSettings)]
     }
+    
+    static var defaultFormatter: NSNumberFormatter = {
+        let formatter = NSNumberFormatter()
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }()
 }
