@@ -19,7 +19,7 @@ func =~ (a: CGFloat, b: CGFloat) -> Bool {
 }
 
 func =~ (a: Double, b: Double) -> Bool {
-    return fabs(a - b) < DBL_EPSILON
+    return fabs(a - b) < Double(FLT_EPSILON)
 }
 
 infix operator !=~ { associativity left precedence 130 }
