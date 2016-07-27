@@ -193,6 +193,9 @@
 		EB093E6E1D21AD09001157BD /* ChartAxisLabelsConflictSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB093E6D1D21AD09001157BD /* ChartAxisLabelsConflictSolver.swift */; };
 		EB093E701D21AD81001157BD /* ChartAxisLabelsConflictSolverMoveUpDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB093E6F1D21AD81001157BD /* ChartAxisLabelsConflictSolverMoveUpDown.swift */; };
 		EB093E721D2288FB001157BD /* ChartAxisLabelsGeneratorFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB093E711D2288FB001157BD /* ChartAxisLabelsGeneratorFunc.swift */; };
+		EB1019981D46A5720009C574 /* ChartAxisValuesGeneratorXDividers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1019971D46A5720009C574 /* ChartAxisValuesGeneratorXDividers.swift */; };
+		EB10199A1D4752930009C574 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1019991D4752930009C574 /* Int.swift */; };
+		EB10199E1D4762770009C574 /* ChartAxisValueArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB10199D1D4762770009C574 /* ChartAxisValueArray.swift */; };
 		EB1351071D3E2B6600B1C1C2 /* ChartAxisValuesGeneratorXFixedNonOverlapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1351061D3E2B6600B1C1C2 /* ChartAxisValuesGeneratorXFixedNonOverlapping.swift */; };
 		EB13511D1D40B74C00B1C1C2 /* ChartAxisValuesGeneratorFixedNonOverlapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB13511C1D40B74B00B1C1C2 /* ChartAxisValuesGeneratorFixedNonOverlapping.swift */; };
 		EB1351211D40BC5400B1C1C2 /* ChartAxisValuesGeneratorYFixedNonOverlapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1351201D40BC5400B1C1C2 /* ChartAxisValuesGeneratorYFixedNonOverlapping.swift */; };
@@ -351,6 +354,9 @@
 		EB093E6D1D21AD09001157BD /* ChartAxisLabelsConflictSolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLabelsConflictSolver.swift; sourceTree = "<group>"; };
 		EB093E6F1D21AD81001157BD /* ChartAxisLabelsConflictSolverMoveUpDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLabelsConflictSolverMoveUpDown.swift; sourceTree = "<group>"; };
 		EB093E711D2288FB001157BD /* ChartAxisLabelsGeneratorFunc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLabelsGeneratorFunc.swift; sourceTree = "<group>"; };
+		EB1019971D46A5720009C574 /* ChartAxisValuesGeneratorXDividers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValuesGeneratorXDividers.swift; sourceTree = "<group>"; };
+		EB1019991D4752930009C574 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		EB10199D1D4762770009C574 /* ChartAxisValueArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueArray.swift; sourceTree = "<group>"; };
 		EB1351061D3E2B6600B1C1C2 /* ChartAxisValuesGeneratorXFixedNonOverlapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValuesGeneratorXFixedNonOverlapping.swift; sourceTree = "<group>"; };
 		EB13511C1D40B74B00B1C1C2 /* ChartAxisValuesGeneratorFixedNonOverlapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValuesGeneratorFixedNonOverlapping.swift; sourceTree = "<group>"; };
 		EB1351201D40BC5400B1C1C2 /* ChartAxisValuesGeneratorYFixedNonOverlapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValuesGeneratorYFixedNonOverlapping.swift; sourceTree = "<group>"; };
@@ -674,6 +680,7 @@
 			children = (
 				EB093E5E1D2141EF001157BD /* ChartAxisValuesGenerator.swift */,
 				EB093E661D214DEF001157BD /* ChartAxisGeneratorMultiplier.swift */,
+				EB1019971D46A5720009C574 /* ChartAxisValuesGeneratorXDividers.swift */,
 				EB093E601D21421D001157BD /* ChartAxisValuesGeneratorFixed.swift */,
 				EB13511C1D40B74B00B1C1C2 /* ChartAxisValuesGeneratorFixedNonOverlapping.swift */,
 				EB1351061D3E2B6600B1C1C2 /* ChartAxisValuesGeneratorXFixedNonOverlapping.swift */,
@@ -700,6 +707,8 @@
 			children = (
 				EB18B5921D2ECEF400491A7F /* Pannable.swift */,
 				EB18B5941D2ED04E00491A7F /* Zoomable.swift */,
+				EB1019991D4752930009C574 /* Int.swift */,
+				EB10199D1D4762770009C574 /* ChartAxisValueArray.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -914,6 +923,7 @@
 				EB9C88A31D1F365D003C19D1 /* ChartAxis.swift in Sources */,
 				06405E221B8AA81D00A689FF /* ChartPoint.swift in Sources */,
 				06405E101B8AA81D00A689FF /* ChartAxisLayerDefault.swift in Sources */,
+				EB1019981D46A5720009C574 /* ChartAxisValuesGeneratorXDividers.swift in Sources */,
 				06405E341B8AA81D00A689FF /* ChartLayer.swift in Sources */,
 				EB093E651D2142D7001157BD /* ChartAxisLabelsGeneratorFixed.swift in Sources */,
 				06405E1A1B8AA81D00A689FF /* ChartAxisValueDate.swift in Sources */,
@@ -942,6 +952,7 @@
 				06405E2E1B8AA81D00A689FF /* ChartBarsLayer.swift in Sources */,
 				06405E4C1B8AA81D00A689FF /* CubicLinePathGenerator.swift in Sources */,
 				EBB5F2A51D3ACFB7001BD19E /* Operators.swift in Sources */,
+				EB10199E1D4762770009C574 /* ChartAxisValueArray.swift in Sources */,
 				06405E2D1B8AA81D00A689FF /* ChartLineDrawer.swift in Sources */,
 				06405E151B8AA81D00A689FF /* ChartAxisXLowLayerDefault.swift in Sources */,
 				EB093E6E1D21AD09001157BD /* ChartAxisLabelsConflictSolver.swift in Sources */,
@@ -959,6 +970,7 @@
 				06405E401B8AA81D00A689FF /* ChartShowCoordsLinesLayer.swift in Sources */,
 				06405E481B8AA81D00A689FF /* ChartPointTextCircleView.swift in Sources */,
 				EB4CE97F1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift in Sources */,
+				EB10199A1D4752930009C574 /* Int.swift in Sources */,
 				06405E1B1B8AA81D00A689FF /* ChartAxisValueFloat.swift in Sources */,
 				06405E461B8AA81D00A689FF /* ChartPointEllipseView.swift in Sources */,
 				06405E211B8AA81D00A689FF /* ChartLineModel.swift in Sources */,

@@ -11,7 +11,11 @@ import Foundation
 /// Generates axis values to be displayed
 public protocol ChartAxisValuesGenerator {
     
-    func axisLayerInitialized(layer: ChartAxisLayer)
+    var first: Double? {get}
+
+    var last: Double? {get}
+    
+    func axisInitialized(axis: ChartAxis)
     
     func generate(axis: ChartAxis) -> [Double]
 }

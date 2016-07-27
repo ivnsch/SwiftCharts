@@ -10,13 +10,21 @@ import Foundation
 
 public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
     
-    let multiplier: Double
+    public var first: Double? {
+        return nil
+    }
+    
+    public var last: Double?  {
+        return nil
+    }
+    
+    var multiplier: Double
     
     public init(_ multiplier: Double) {
         self.multiplier = multiplier
     }
     
-    public func axisLayerInitialized(layer: ChartAxisLayer) {}
+    public func axisInitialized(axis: ChartAxis) {}
     
     public func generate(axis: ChartAxis) -> [Double] {
         

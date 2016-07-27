@@ -195,7 +195,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         self.labelsConflictSolver = labelsConflictSolver
         self.lastFrame = frame
         
-        valuesGenerator.axisLayerInitialized(self)
+        valuesGenerator.axisInitialized(self.axis)
         self.currentAxisValues = valuesGenerator.generate(axis)
     }
 

@@ -23,15 +23,11 @@ public class ChartAxisValuesGeneratorFixedNonOverlapping: ChartAxisValuesGenerat
         self.spacing = spacing
         self.isX = isX
         
-        (totalLabelSize, maxLabelSize) = ChartAxisValuesGeneratorFixedNonOverlapping.calculateLabelsDimensions(axisValues)
+        (totalLabelSize, maxLabelSize) = axisValues.calculateLabelsDimensions()
         
         super.init(values: axisValues.map{$0.scalar})
     }
-    
-    public override func axisLayerInitialized(layer: ChartAxisLayer) {
-        updateAxisValues(layer.axis)
-    }
-    
+        
     public override func generate(axis: ChartAxis) -> [Double] {
         updateAxisValues(axis)
         return super.generate(axis)
@@ -63,17 +59,5 @@ public class ChartAxisValuesGeneratorFixedNonOverlapping: ChartAxisValuesGenerat
         }
         
         return filteredAxisValues
-    }
-    
-    private static func calculateLabelsDimensions(values: [ChartAxisValue]) -> (total: CGSize, max: CGSize) {
-        return values.flatMap({
-            guard let label = $0.labels.first else {return nil}
-            return ChartUtils.textSize(label.text, font: label.settings.font)
-        }).reduce((total: CGSizeZero, max: CGSizeZero), combine: {(lhs: (total: CGSize, max: CGSize), rhs: CGSize) in
-            return (
-                CGSize(width: lhs.total.width + rhs.width, height: lhs.total.height + rhs.height),
-                CGSize(width: max(lhs.max.width, rhs.width), height: max(lhs.max.height, rhs.height))
-            )
-        })
     }
 }
