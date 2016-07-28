@@ -8,16 +8,60 @@
 
 import UIKit
 
+public enum LineJoin {
+    case Miter
+    case Round
+    case Bevel
+    
+    var CALayerString: String {
+        switch self {
+        case .Miter: return kCALineJoinMiter
+        case .Round: return kCALineCapRound
+        case .Bevel: return kCALineJoinBevel
+        }
+    }
+    
+    var CGValue: CGLineJoin {
+        switch self {
+        case .Miter: return .Miter
+        case .Round: return .Round
+        case .Bevel: return .Bevel
+        }
+    }
+}
+
+public enum LineCap {
+    case Butt
+    case Round
+    case Square
+    
+    var CALayerString: String {
+        switch self {
+        case .Butt: return kCALineCapButt
+        case .Round: return kCALineCapRound
+        case .Square: return kCALineCapSquare
+        }
+    }
+    
+    var CGValue: CGLineCap {
+        switch self {
+        case .Butt: return .Butt
+        case .Round: return .Round
+        case .Square: return .Square
+        }
+    }
+}
+
 private struct ScreenLine {
     let points: [CGPoint]
     let color: UIColor
     let lineWidth: CGFloat
-    let lineJoin: String
-    let lineCap: String
+    let lineJoin: LineJoin
+    let lineCap: LineCap
     let animDuration: Float
     let animDelay: Float
     
-    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: String, lineCap: String, animDuration: Float, animDelay: Float) {
+    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float) {
         self.points = points
         self.color = color
         self.lineWidth = lineWidth
@@ -86,6 +130,8 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             for lineModel in lineModels {
                 CGContextSetStrokeColorWithColor(context, lineModel.lineColor.CGColor)
                 CGContextSetLineWidth(context, lineModel.lineWidth)
+                CGContextSetLineJoin(context, lineModel.lineJoin.CGValue)
+                CGContextSetLineCap(context, lineModel.lineCap.CGValue)
                 for i in 0..<lineModel.chartPoints.count {
                     let chartPoint = lineModel.chartPoints[i]
                     let p1 = modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)

@@ -19,18 +19,18 @@ public struct ChartLineModel<T: ChartPoint> {
 
     /// The width of the line in points
     let lineWidth: CGFloat
-
-    let lineJoin: String
     
-    let lineCap: String
-
+    let lineJoin: LineJoin
+    
+    let lineCap: LineCap
+    
     /// The duration in seconds of the animation that is run when the line appears
     let animDuration: Float
 
     /// The delay in seconds before the animation runs
     let animDelay: Float
     
-    public init(chartPoints: [T], lineColor: UIColor, lineWidth: CGFloat = 1, lineJoin: String = kCALineJoinRound, lineCap: String = kCALineCapRound, animDuration: Float, animDelay: Float) {
+    public init(chartPoints: [T], lineColor: UIColor, lineWidth: CGFloat = 1, lineJoin: LineJoin = .Round, lineCap: LineCap = .Round, animDuration: Float, animDelay: Float) {
         self.chartPoints = chartPoints
         self.lineColor = lineColor
         self.lineWidth = lineWidth

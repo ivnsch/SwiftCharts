@@ -16,12 +16,12 @@ public class ChartLinesView: UIView {
 
     private let lineColor: UIColor
     private let lineWidth: CGFloat
-    private let lineJoin: String
-    private let lineCap: String
+    private let lineJoin: LineJoin
+    private let lineCap: LineCap
     private let animDuration: Float
     private let animDelay: Float
-
-    init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, lineJoin: String, lineCap: String, animDuration: Float, animDelay: Float) {
+    
+    init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float) {
         self.lineColor = lineColor
         self.lineWidth = lineWidth
         self.lineJoin = lineJoin
@@ -53,16 +53,16 @@ public class ChartLinesView: UIView {
 
     private func generateLayer(path path: UIBezierPath) -> CAShapeLayer {
         let lineLayer = CAShapeLayer()
-        lineLayer.lineJoin = lineJoin
-        lineLayer.lineCap = lineCap
-        lineLayer.fillColor   = UIColor.clearColor().CGColor
-        lineLayer.lineWidth   = self.lineWidth
+        lineLayer.lineJoin = lineJoin.CALayerString
+        lineLayer.lineCap = lineCap.CALayerString
+        lineLayer.fillColor = UIColor.clearColor().CGColor
+        lineLayer.lineWidth = self.lineWidth
         
         lineLayer.path = path.CGPath;
         lineLayer.strokeColor = self.lineColor.CGColor;
         
         if self.animDuration > 0 {
-            lineLayer.strokeEnd   = 0.0
+            lineLayer.strokeEnd = 0.0
             let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
             pathAnimation.duration = CFTimeInterval(self.animDuration)
             pathAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
