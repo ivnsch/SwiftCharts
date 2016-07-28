@@ -1,5 +1,4 @@
-![ScreenShot](Screenshots/logo.png)
-
+# SwiftCharts
 
 [![Version](https://img.shields.io/cocoapods/v/SwiftCharts.svg?style=flat)](http://cocoadocs.org/docsets/Charts)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
