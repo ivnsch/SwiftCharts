@@ -8,6 +8,8 @@
 
 import UIKit
 
+// TODO finish zoom_pan_global_transform branch and replace this
+
 public protocol Zoomable {
     
     var containerView: UIView {get}
@@ -16,6 +18,11 @@ public protocol Zoomable {
     
     var scaleX: CGFloat {get}
     var scaleY: CGFloat {get}
+    
+    var maxScaleX: CGFloat? {get}
+    var minScaleX: CGFloat? {get}
+    var maxScaleY: CGFloat? {get}
+    var minScaleY: CGFloat? {get}
     
     func zoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool)
     
@@ -27,6 +34,14 @@ public protocol Zoomable {
 }
 
 public extension Zoomable {
+    
+    var contentScaleRatioX: CGFloat {
+        return contentView.transform.a / scaleX
+    }
+
+    var contentScaleRatioY: CGFloat {
+        return contentView.transform.d / scaleY
+    }
     
     public func zoom(scaleX scaleX: CGFloat, scaleY: CGFloat, anchorX: CGFloat = 0.5, anchorY: CGFloat = 0.5) {
         let center = calculateCenter(anchorX: anchorX, anchorY: anchorX)
@@ -40,25 +55,35 @@ public extension Zoomable {
     
     public func zoom(scaleX scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         
-        onZoomStart(scaleX: scaleX, scaleY: scaleY, centerX: centerX, centerY: centerY)
+        let finalMinScaleX = minScaleX.map{max($0, scaleX)} ?? scaleX
+        let finalScaleX = maxScaleX.map{min(finalMinScaleX, $0)} ?? scaleX
+        let finalMinScaleY = minScaleY.map{max($0, scaleY)} ?? scaleY
+        let finalScaleY = maxScaleY.map{min(finalMinScaleY, $0)} ?? scaleY
+
+        onZoomStart(scaleX: finalScaleX, scaleY: finalScaleY, centerX: centerX, centerY: centerY)
         
         setContentViewAnchor(centerX, centerY: centerY)
-        
-        let newContentWidth = scaleX * containerView.frame.width
+
+        let newContentWidth = finalScaleX * containerView.frame.width
         let newScale = newContentWidth / contentView.frame.width
-        let newContentHeight = scaleY * containerView.frame.height
+        let newContentHeight = finalScaleY * containerView.frame.height
         let newScaleY = newContentHeight / contentView.frame.height
         
         setContentViewScale(scaleX: newScale, scaleY: newScaleY)
     }
     
     public func zoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool) {
+
+        let finalMinDeltaX = minScaleX.map{max($0 / scaleX, deltaX)} ?? deltaX
+        let finalDeltaX = maxScaleX.map{min($0 / scaleX, finalMinDeltaX)} ?? deltaX
+        let finalMinDeltaY = minScaleY.map{max($0 / scaleY, deltaY)} ?? deltaY
+        let finalDeltaY = maxScaleY.map{min($0 / scaleY, finalMinDeltaY)} ?? deltaY
         
-        onZoomStart(deltaX: deltaX, deltaY: deltaY, centerX: centerX, centerY: centerY)
+        onZoomStart(deltaX: finalDeltaX, deltaY: finalDeltaY, centerX: centerX, centerY: centerY)
         
-        zoomContentView(deltaX: deltaX, deltaY: deltaY, centerX: centerX, centerY: centerY)
+        zoomContentView(deltaX: finalDeltaX, deltaY: finalDeltaY, centerX: centerX, centerY: centerY)
         
-        onZoomFinish(scaleX: contentView.frame.width / containerView.frame.width, scaleY: contentView.frame.height / containerView.frame.height, deltaX: deltaX, deltaY: deltaY, centerX: centerX, centerY: centerY, isGesture: isGesture)
+        onZoomFinish(scaleX: contentView.frame.width / containerView.frame.width, scaleY: contentView.frame.height / containerView.frame.height, deltaX: finalDeltaX, deltaY: finalDeltaY, centerX: centerX, centerY: centerY, isGesture: isGesture)
     }
     
     private func zoomContentView(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat) {

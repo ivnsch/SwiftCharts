@@ -45,6 +45,14 @@ public class ChartSettings {
     public var panEnabled = false
     
     public var zoomEnabled = false
+
+    public var minZoomX: CGFloat?
+    
+    public var minZoomY: CGFloat?
+    
+    public var maxZoomX: CGFloat?
+    
+    public var maxZoomY: CGFloat?
     
     public init() {}
 }
@@ -86,6 +94,24 @@ public class Chart: Pannable, Zoomable {
     public var scaleY: CGFloat {
         return contentFrame.height / containerFrame.height
     }
+ 
+    public var maxScaleX: CGFloat? {
+        return settings?.maxZoomX
+    }
+    
+    public var minScaleX: CGFloat? {
+        return settings?.minZoomX
+    }
+    
+    public var maxScaleY: CGFloat? {
+        return settings?.maxZoomY
+    }
+    
+    public var minScaleY: CGFloat? {
+        return settings?.minZoomY
+    }
+
+    let settings: ChartSettings?
     
     /**
      Create a new Chart with a frame and layers. A new ChartBaseView will be created for you.
@@ -118,6 +144,8 @@ public class Chart: Pannable, Zoomable {
         
         self.view = view
 
+        self.settings = settings
+        
         let containerView = UIView(frame: innerFrame ?? view.bounds)
         
         let drawersContentView = ChartContentView(frame: containerView.bounds)
@@ -148,6 +176,12 @@ public class Chart: Pannable, Zoomable {
         }
         
         self.view.setNeedsDisplay()
+        
+        if let settings = settings {
+            if settings.minZoomX != nil || settings.minZoomY != nil {
+                zoom(scaleX: settings.minZoomX ?? 1, scaleY: settings.minZoomY ?? 1)
+            }
+        }
     }
     
     public required init(coder aDecoder: NSCoder) {
