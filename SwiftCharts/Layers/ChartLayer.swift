@@ -37,4 +37,5 @@ public protocol ChartLayer {
 
     func pan(deltaX: CGFloat, deltaY: CGFloat)
 
+    func handleGlobalTap(location: CGPoint)
 }

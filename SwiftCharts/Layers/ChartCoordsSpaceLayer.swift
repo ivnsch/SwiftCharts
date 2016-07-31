@@ -41,4 +41,14 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
     public func scalarForScreenLoc(y y: CGFloat) -> Double {
         return yAxis.innerScalarForScreenLoc(y * (chart?.contentView.transform.d ?? 1))
     }
+    
+    public func globalToDrawersContainerCoordinates(point: CGPoint) -> CGPoint? {
+        guard let chart = chart else {return nil}
+        return point.substract(chart.containerView.frame.origin)
+    }
+    
+    public func containerToGlobalCoordinates(point: CGPoint) -> CGPoint? {
+        guard let chart = chart else {return nil}
+        return point.add(chart.containerView.frame.origin)
+    }
 }

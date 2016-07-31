@@ -196,6 +196,7 @@
 		EB1019981D46A5720009C574 /* ChartAxisValuesGeneratorXDividers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1019971D46A5720009C574 /* ChartAxisValuesGeneratorXDividers.swift */; };
 		EB10199A1D4752930009C574 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1019991D4752930009C574 /* Int.swift */; };
 		EB10199E1D4762770009C574 /* ChartAxisValueArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB10199D1D4762770009C574 /* ChartAxisValueArray.swift */; };
+		EB1019AA1D4D465E0009C574 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1019A91D4D465E0009C574 /* CGPoint.swift */; };
 		EB1351071D3E2B6600B1C1C2 /* ChartAxisValuesGeneratorXFixedNonOverlapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1351061D3E2B6600B1C1C2 /* ChartAxisValuesGeneratorXFixedNonOverlapping.swift */; };
 		EB13511D1D40B74C00B1C1C2 /* ChartAxisValuesGeneratorFixedNonOverlapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB13511C1D40B74B00B1C1C2 /* ChartAxisValuesGeneratorFixedNonOverlapping.swift */; };
 		EB1351211D40BC5400B1C1C2 /* ChartAxisValuesGeneratorYFixedNonOverlapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1351201D40BC5400B1C1C2 /* ChartAxisValuesGeneratorYFixedNonOverlapping.swift */; };
@@ -357,6 +358,7 @@
 		EB1019971D46A5720009C574 /* ChartAxisValuesGeneratorXDividers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValuesGeneratorXDividers.swift; sourceTree = "<group>"; };
 		EB1019991D4752930009C574 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		EB10199D1D4762770009C574 /* ChartAxisValueArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueArray.swift; sourceTree = "<group>"; };
+		EB1019A91D4D465E0009C574 /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		EB1351061D3E2B6600B1C1C2 /* ChartAxisValuesGeneratorXFixedNonOverlapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValuesGeneratorXFixedNonOverlapping.swift; sourceTree = "<group>"; };
 		EB13511C1D40B74B00B1C1C2 /* ChartAxisValuesGeneratorFixedNonOverlapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValuesGeneratorFixedNonOverlapping.swift; sourceTree = "<group>"; };
 		EB1351201D40BC5400B1C1C2 /* ChartAxisValuesGeneratorYFixedNonOverlapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValuesGeneratorYFixedNonOverlapping.swift; sourceTree = "<group>"; };
@@ -709,6 +711,7 @@
 				EB18B5941D2ED04E00491A7F /* Zoomable.swift */,
 				EB1019991D4752930009C574 /* Int.swift */,
 				EB10199D1D4762770009C574 /* ChartAxisValueArray.swift */,
+				EB1019A91D4D465E0009C574 /* CGPoint.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -984,6 +987,7 @@
 				06405E471B8AA81D00A689FF /* ChartPointTargetingView.swift in Sources */,
 				06405E2C1B8AA81D00A689FF /* ChartLabelDrawer.swift in Sources */,
 				06405E201B8AA81D00A689FF /* ChartCoordsSpace.swift in Sources */,
+				EB1019AA1D4D465E0009C574 /* CGPoint.swift in Sources */,
 				06405E321B8AA81D00A689FF /* ChartGroupedBarsLayer.swift in Sources */,
 				06405E301B8AA81D00A689FF /* ChartCoordsSpaceLayer.swift in Sources */,
 				EB13511D1D40B74C00B1C1C2 /* ChartAxisValuesGeneratorFixedNonOverlapping.swift in Sources */,

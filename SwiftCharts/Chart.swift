@@ -279,6 +279,12 @@ public class Chart: Pannable, Zoomable {
         delegate?.onPan(transX: transX, transY: transY, deltaX: deltaX, deltaY: deltaY, isGesture: isGesture, isDeceleration: isDeceleration)
     }
 
+    func onTap(location: CGPoint) {
+        for layer in layers {
+            layer.handleGlobalTap(location)
+        }
+    }
+    
     /**
      Draws the chart's layers in the chart view
 
@@ -333,6 +339,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
     
     private var pinchRecognizer: UIPinchGestureRecognizer?
     private var panRecognizer: UIPanGestureRecognizer?
+    private var tapRecognizer: UITapGestureRecognizer?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -358,6 +365,12 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             addGestureRecognizer(panRecognizer)
             self.panRecognizer = panRecognizer
         }
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ChartView.onTap(_:)))
+        tapRecognizer.delegate = self
+        tapRecognizer.cancelsTouchesInView = false
+        addGestureRecognizer(tapRecognizer)
+        self.tapRecognizer = tapRecognizer
     }
     
     /**
@@ -429,5 +442,9 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
         case .Failed: break;
         case .Possible: break;
         }
+    }
+    
+    @objc func onTap(sender: UITapGestureRecognizer) {
+        chart?.onTap(sender.locationInView(self))
     }
 }

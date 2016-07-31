@@ -84,6 +84,10 @@ class ScatterExample: UIViewController {
             }
         }
         
+        let tapHandler = ChartPointsTapHandler {
+            print("tapped: \($0)")
+        }
+        
         // create layer for each group
         let dim: CGFloat = Env.iPad ? 14 : 7
         let size = CGSizeMake(dim, dim)
@@ -91,13 +95,13 @@ class ScatterExample: UIViewController {
             let layerSpecification = layerSpecifications[type]!
             switch layerSpecification.shape {
                 case .Triangle:
-                    return ChartPointsScatterTrianglesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
+                    return ChartPointsScatterTrianglesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color, tapHandler: tapHandler)
                 case .Square:
-                    return ChartPointsScatterSquaresLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
+                    return ChartPointsScatterSquaresLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color, tapHandler: tapHandler)
                 case .Circle:
-                    return ChartPointsScatterCirclesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
+                    return ChartPointsScatterCirclesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color, tapHandler: tapHandler)
                 case .Cross:
-                    return ChartPointsScatterCrossesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color)
+                    return ChartPointsScatterCrossesLayer(xAxis: xAxis.axis, yAxis: yAxis.axis, chartPoints: chartPoints, itemSize: size, itemFillColor: layerSpecification.color, tapHandler: tapHandler)
             }
         }
         

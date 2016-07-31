@@ -260,6 +260,8 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     
     func chartDrawersContentViewDrawing(context context: CGContextRef, chart: Chart, view: UIView) {}
     
+    func handleGlobalTap(location: CGPoint) {}
+    
     func initDrawers() {
         fatalError("override")
     }

@@ -15,11 +15,11 @@ public class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
     private let optimized: Bool
     
-    required public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor, optimized: Bool) {
+    required public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor, optimized: Bool, tapHandler: ChartPointsTapHandler<T>?) {
         self.itemSize = itemSize
         self.itemFillColor = itemFillColor
         self.optimized = optimized
-        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, tapHandler: tapHandler)
     }
     
     override public func chartContentViewDrawing(context context: CGContextRef, chart: Chart) {
@@ -45,6 +45,10 @@ public class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 CGContextRestoreGState(context)
             }
         }
+    }
+    
+    override func toLocalCoordinates(globalPoint: CGPoint) -> CGPoint? {
+        return globalToDrawersContainerCoordinates(globalPoint)
     }
     
     public override func modelLocToScreenLoc(x x: Double) -> CGFloat {
@@ -89,9 +93,9 @@ public class ChartPointsScatterTrianglesLayer<T: ChartPoint>: ChartPointsScatter
     
     private let trianglePointsCG: [CGPoint]
     
-    required public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor, optimized: Bool = true) {
+    required public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor, optimized: Bool = true, tapHandler: ChartPointsTapHandler<T>? = nil) {
         trianglePointsCG = [CGPointMake(0, itemSize.height), CGPointMake(itemSize.width / 2, 0), CGPointMake(itemSize.width, itemSize.height), CGPointMake(0, itemSize.height)]
-        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized, tapHandler: tapHandler)
     }
     
     override func generateCGLayer(context context: CGContextRef, view: UIView, contentScale: CGFloat) -> CGLayer? {
@@ -128,9 +132,9 @@ public class ChartPointsScatterSquaresLayer<T: ChartPoint>: ChartPointsScatterLa
     
     private let squarePointsCG: [CGPoint]
     
-    required public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor, optimized: Bool = true) {
+    required public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor, optimized: Bool = true, tapHandler: ChartPointsTapHandler<T>? = nil) {
         squarePointsCG = [CGPointMake(0, 0), CGPointMake(itemSize.width, 0), CGPointMake(itemSize.width, itemSize.height), CGPointMake(0, itemSize.height), CGPointMake(0, 0)]
-        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized, tapHandler: tapHandler)
     }
     
     override public func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
@@ -158,8 +162,8 @@ public class ChartPointsScatterSquaresLayer<T: ChartPoint>: ChartPointsScatterLa
 
 public class ChartPointsScatterCirclesLayer<T: ChartPoint>: ChartPointsScatterLayer<T> {
     
-    required public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor, optimized: Bool = true) {
-        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized)
+    required public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor, optimized: Bool = true, tapHandler: ChartPointsTapHandler<T>? = nil) {
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized, tapHandler: tapHandler)
     }
     
     override public func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
@@ -191,11 +195,11 @@ public class ChartPointsScatterCrossesLayer<T: ChartPoint>: ChartPointsScatterLa
     private let line1PointsCG: [CGPoint]
     private let line2PointsCG: [CGPoint]
     
-    required public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor, strokeWidth: CGFloat = 2, optimized: Bool = true) {
+    required public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor, strokeWidth: CGFloat = 2, optimized: Bool = true, tapHandler: ChartPointsTapHandler<T>? = nil) {
         self.strokeWidth = strokeWidth
         line1PointsCG = [CGPointMake(0, 0), CGPointMake(itemSize.width, itemSize.height)]
         line2PointsCG = [CGPointMake(itemSize.width, 0), CGPointMake(0, itemSize.height)]
-        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized, tapHandler: tapHandler)
     }
     
     override public func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
