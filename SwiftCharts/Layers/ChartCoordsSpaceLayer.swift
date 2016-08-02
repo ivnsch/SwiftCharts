@@ -21,7 +21,6 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
         self.yAxis = yAxis
     }
     
-    // TODO differentiate - subclasses of ChartPointsLayer don't necessarily use contentView
     public func modelLocToScreenLoc(x x: Double, y: Double) -> CGPoint {
         return CGPointMake(modelLocToScreenLoc(x: x), modelLocToScreenLoc(y: y))
     }
@@ -50,5 +49,10 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
     public func containerToGlobalCoordinates(point: CGPoint) -> CGPoint? {
         guard let chart = chart else {return nil}
         return point.add(chart.containerView.frame.origin)
+    }
+    
+    public func containerToGlobalScreenLoc(chartPoint: ChartPoint) -> CGPoint? {
+        let containerScreenLoc = CGPointMake(modelLocToScreenLoc(x: chartPoint.x.scalar), modelLocToScreenLoc(y: chartPoint.y.scalar))
+        return containerToGlobalCoordinates(containerScreenLoc)
     }
 }
