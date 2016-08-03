@@ -21,6 +21,10 @@ public class ChartAxisValuesGeneratorFixed: ChartAxisValuesGenerator {
     
     var values: [Double]
     
+    public convenience init(values: [ChartAxisValue]) {
+        self.init(values: values.map{$0.scalar})
+    }
+
     public init(values: [Double]) {
         self.values = values
     }
