@@ -18,15 +18,15 @@ public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
         return Double(maxValue)
     }
     
-    private var minValue: Int
-    private var maxValue: Int
+    private var minValue: Double
+    private var maxValue: Double
     private let minSpace: CGFloat
     private let nice: Bool
     private let preferredDividers: Int
     
     private let maxTextSize: CGFloat
     
-    public init(minValue: Int, maxValue: Int, preferredDividers: Int, nice: Bool, formatter: NSNumberFormatter, font: UIFont, minSpace: CGFloat = 10) {
+    public init(minValue: Double, maxValue: Double, preferredDividers: Int, nice: Bool, formatter: NSNumberFormatter, font: UIFont, minSpace: CGFloat = 10) {
         
         self.minValue = minValue
         self.maxValue = maxValue
@@ -40,7 +40,7 @@ public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
         super.init(DBL_MAX)
     }
     
-    private static func largestSize(minValue: Int, maxValue: Int, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
+    private static func largestSize(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
         
         let minNumberTextSize = ChartUtils.textSize(formatter.stringFromNumber(minValue)!, font: font).width
         let maxNumberTextSize = ChartUtils.textSize(formatter.stringFromNumber(maxValue)!, font: font).width
@@ -59,26 +59,26 @@ public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
         return max(minNumberTextSize, maxNumberTextSize) + remainingWidth
     }
     
-    public func calculateFittingRangeAndFactor(axis: ChartAxis) -> (min: Int, max: Int, factor: Double)? {
+    public func calculateFittingRangeAndFactor(axis: ChartAxis) -> (min: Double, max: Double, factor: Double)? {
         
         if nice {
             let niceMinMax = self.nice(minValue: Double(minValue), maxValue: Double(maxValue))
-            self.minValue = Int(niceMinMax.minValue)
-            self.maxValue = Int(niceMinMax.maxValue)
+            self.minValue = niceMinMax.minValue
+            self.maxValue = niceMinMax.maxValue
         }
         
-        let growDelta = Int(pow(10, round(log10(Double(min(abs(minValue), abs(maxValue)))))))
+        let growDelta = floor(pow(10, round(log10(Double(min(abs(minValue), abs(maxValue)))))))
         
         let length = maxValue - minValue
         let maxDelta = length / 6 // try to expand range to the left/right of initial range
         
-        var fittingFactorsPerDelta = [(min: Int, max: Int, factor: Double)]()
-        var currentDelta = 0
+        var fittingFactorsPerDelta = [(min: Double, max: Double, factor: Double)]()
+        var currentDelta: Double = 0
         var counter = 0 // just in case
         while(currentDelta < maxDelta && counter < 100) {
             let min = minValue - currentDelta
             let max = maxValue + currentDelta
-            if let fittingFactor = findFittingFactor(axis, modelLength: max - min) {
+            if let fittingFactor = findFittingFactor(axis, modelLength: Int(max - min)) {
                 fittingFactorsPerDelta.append((min, max, Double(fittingFactor)))
             }
 
@@ -86,7 +86,7 @@ public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
             counter += 1
         }
         
-        var maxFittingFactorOpt: (min: Int, max: Int, factor: Double)?
+        var maxFittingFactorOpt: (min: Double, max: Double, factor: Double)?
         for f in fittingFactorsPerDelta {
             
             if let maxFittingFactor = maxFittingFactorOpt {
