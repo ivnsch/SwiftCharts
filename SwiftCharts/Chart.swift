@@ -179,7 +179,7 @@ public class Chart: Pannable, Zoomable {
         
         if let settings = settings {
             if settings.minZoomX != nil || settings.minZoomY != nil {
-                zoom(scaleX: settings.minZoomX ?? 1, scaleY: settings.minZoomY ?? 1)
+                zoom(scaleX: settings.minZoomX ?? 1, scaleY: settings.minZoomY ?? 1, anchorX: 0, anchorY: 0)
             }
         }
     }
