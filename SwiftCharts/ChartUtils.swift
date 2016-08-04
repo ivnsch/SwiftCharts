@@ -73,4 +73,30 @@ public class ChartUtils {
             rect.height - dh - dy
         )
     }
+    
+    public static func maxTextWidth(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
+        
+        let noDecimalsFormatter = NSNumberFormatter()
+        noDecimalsFormatter.maximumFractionDigits = 0
+        noDecimalsFormatter.roundingMode = .RoundDown
+        
+        let noDecimalsMin = noDecimalsFormatter.stringFromNumber(minValue)!
+        let noDecimalsMax = noDecimalsFormatter.stringFromNumber(maxValue)!
+        
+        let minNumberNoDecimalsTextSize = textSize(noDecimalsMin, font: font).width
+        let maxNumberNoDecimalsTextSize = textSize(noDecimalsMax, font: font).width
+        
+        let maxNoDecimalsLength = max(minNumberNoDecimalsTextSize, maxNumberNoDecimalsTextSize)
+        
+        let digitMaxWidth = textSize("8", font: font).width
+        let maxDecimalsWidth = CGFloat(formatter.maximumFractionDigits) * digitMaxWidth
+        
+        let widthForDecimalSign = formatter.maximumFractionDigits > 0 ? textSize(formatter.decimalSeparator, font: font).width : 0
+        
+        return maxNoDecimalsLength + maxDecimalsWidth + widthForDecimalSign
+    }
+
+    public static func maxTextHeight(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
+        return ChartUtils.textSize("H", font: font).height
+    }
 }

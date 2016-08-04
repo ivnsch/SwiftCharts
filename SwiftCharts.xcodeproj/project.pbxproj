@@ -204,6 +204,7 @@
 		EB18B5931D2ECEF400491A7F /* Pannable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB18B5921D2ECEF400491A7F /* Pannable.swift */; };
 		EB18B5951D2ED04E00491A7F /* Zoomable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB18B5941D2ED04E00491A7F /* Zoomable.swift */; };
 		EB4CE97F1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4CE97E1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift */; };
+		EB66F7CA1D53766D00168EE0 /* ChartAxisValuesGeneratorNice.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB66F7C91D53766C00168EE0 /* ChartAxisValuesGeneratorNice.swift */; };
 		EB9B7E6B1BB8A575001B89D4 /* StraightLinePathGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9B7E6A1BB8A575001B89D4 /* StraightLinePathGenerator.swift */; };
 		EB9C88A31D1F365D003C19D1 /* ChartAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C88A21D1F365D003C19D1 /* ChartAxis.swift */; };
 		EB9C88A51D2061F0003C19D1 /* ChartAxisX.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C88A41D2061F0003C19D1 /* ChartAxisX.swift */; };
@@ -366,6 +367,7 @@
 		EB18B5921D2ECEF400491A7F /* Pannable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pannable.swift; sourceTree = "<group>"; };
 		EB18B5941D2ED04E00491A7F /* Zoomable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zoomable.swift; sourceTree = "<group>"; };
 		EB4CE97E1B93B2C1005E4264 /* ChartAxisValueDoubleScreenLoc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueDoubleScreenLoc.swift; sourceTree = "<group>"; };
+		EB66F7C91D53766C00168EE0 /* ChartAxisValuesGeneratorNice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValuesGeneratorNice.swift; sourceTree = "<group>"; };
 		EB9B7E6A1BB8A575001B89D4 /* StraightLinePathGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StraightLinePathGenerator.swift; sourceTree = "<group>"; };
 		EB9C88A21D1F365D003C19D1 /* ChartAxis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxis.swift; sourceTree = "<group>"; };
 		EB9C88A41D2061F0003C19D1 /* ChartAxisX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisX.swift; sourceTree = "<group>"; };
@@ -687,6 +689,7 @@
 				EB13511C1D40B74B00B1C1C2 /* ChartAxisValuesGeneratorFixedNonOverlapping.swift */,
 				EB1351061D3E2B6600B1C1C2 /* ChartAxisValuesGeneratorXFixedNonOverlapping.swift */,
 				EB1351201D40BC5400B1C1C2 /* ChartAxisValuesGeneratorYFixedNonOverlapping.swift */,
+				EB66F7C91D53766C00168EE0 /* ChartAxisValuesGeneratorNice.swift */,
 			);
 			name = AxisValue;
 			sourceTree = "<group>";
@@ -988,6 +991,7 @@
 				06405E2C1B8AA81D00A689FF /* ChartLabelDrawer.swift in Sources */,
 				06405E201B8AA81D00A689FF /* ChartCoordsSpace.swift in Sources */,
 				EB1019AA1D4D465E0009C574 /* CGPoint.swift in Sources */,
+				EB66F7CA1D53766D00168EE0 /* ChartAxisValuesGeneratorNice.swift in Sources */,
 				06405E321B8AA81D00A689FF /* ChartGroupedBarsLayer.swift in Sources */,
 				06405E301B8AA81D00A689FF /* ChartCoordsSpaceLayer.swift in Sources */,
 				EB13511D1D40B74C00B1C1C2 /* ChartAxisValuesGeneratorFixedNonOverlapping.swift in Sources */,
