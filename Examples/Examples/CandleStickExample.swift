@@ -74,21 +74,28 @@ class CandleStickExample: UIViewController {
         ]
         
         let yValues = 20.stride(through: 55, by: 5).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
+
+        // Static x axis dates - alternative to using generators
+//        func generateDateAxisValues(month: Int, year: Int) -> [ChartAxisValueDate] {
+//            let date = dateWithComponents(1, month, year)
+//            let calendar = NSCalendar.currentCalendar()
+//            let monthDays = calendar.rangeOfUnit(.Day, inUnit: .Month, forDate: date)
+//            return Array(monthDays.toRange()!).map {day in
+//                let date = dateWithComponents(day, month, year)
+//                let axisValue = ChartAxisValueDate(date: date, formatter: displayFormatter, labelSettings: labelSettings)
+//                axisValue.hidden = !(day % 5 == 0)
+//                return axisValue
+//            }
+//        }
+//        let xValues = generateDateAxisValues(10, year: 2015)
+//        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         
-        func generateDateAxisValues(month: Int, year: Int) -> [ChartAxisValueDate] {
-            let date = dateWithComponents(1, month, year)
-            let calendar = NSCalendar.currentCalendar()
-            let monthDays = calendar.rangeOfUnit(.Day, inUnit: .Month, forDate: date)
-            return Array(monthDays.toRange()!).map {day in
-                let date = dateWithComponents(day, month, year)
-                let axisValue = ChartAxisValueDate(date: date, formatter: displayFormatter, labelSettings: labelSettings)
-                axisValue.hidden = !(day % 5 == 0)
-                return axisValue
-            }
-        }
-        let xValues = generateDateAxisValues(10, year: 2015)
+        let xGeneratorDate = ChartAxisValuesGeneratorDate(multiplier: 5, unit: .Day)
+        let xLabelGeneratorDate = ChartAxisLabelsGeneratorDate(labelSettings: labelSettings, formatter: displayFormatter)
+        let firstDate = date("01.10.2015")
+        let lastDate = date("31.10.2015")
+        let xModel = ChartAxisModel(firstModelValue: firstDate.timeIntervalSince1970, lastModelValue: lastDate.timeIntervalSince1970, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings)], axisValuesGenerator: xGeneratorDate, labelsGenerator: xLabelGeneratorDate)
         
-        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
         let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
         

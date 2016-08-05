@@ -34,17 +34,29 @@ public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
         let roundDecimals: Double = 1000000000000
         let zoomedMultiplier = multiplier / pow(2, floor(round(log2(axis.zoomFactor) * roundDecimals) / roundDecimals))
         
-        let modelStart = (floor((axis.firstVisible - axis.firstInit) / zoomedMultiplier) * zoomedMultiplier) + (axis.firstInit)
-    
+        let modelStart = calculateModelStart(axis, multiplier: zoomedMultiplier)
+        
         var values = [Double]()
         var scalar = modelStart
         while scalar <=~ axis.lastVisible {
             if ((scalar =~ axis.firstInit && axis.zoomFactor =~ 1) || scalar >=~ axis.firstModelValueInBounds) && ((scalar =~ axis.lastInit && axis.zoomFactor =~ 1) || scalar <=~ axis.lastModelValueInBounds) {
                 values.append(scalar)
             }
-            scalar = scalar + zoomedMultiplier
+            let newScalar = incrementScalar(scalar, multiplier: zoomedMultiplier)
+            
+            if newScalar == scalar {break}
+            
+            scalar = newScalar
         }
         
         return values
+    }
+    
+    func calculateModelStart(axis: ChartAxis, multiplier: Double) -> Double {
+        return (floor((axis.firstVisible - axis.firstInit) / multiplier) * multiplier) + (axis.firstInit)
+    }
+    
+    func incrementScalar(scalar: Double, multiplier: Double) -> Double {
+        return scalar + multiplier
     }
 }
