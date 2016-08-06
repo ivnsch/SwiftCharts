@@ -20,6 +20,9 @@ public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
     
     var multiplier: Double
     
+    /// After zooming in a while the multiplier may be rounded down to 0, which means the intervals are not divisible anymore. We store the last multiplier which worked and keep returning values corresponding to it until the user zooms out until a new valid multiplier.
+    private var lastValidMultiplier: Double?
+    
     public init(_ multiplier: Double) {
         self.multiplier = multiplier
     }
@@ -34,7 +37,12 @@ public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
         let roundDecimals: Double = 1000000000000
         let zoomedMultiplier = multiplier / pow(2, floor(round(log2(axis.zoomFactor) * roundDecimals) / roundDecimals))
         
-        let modelStart = calculateModelStart(axis, multiplier: zoomedMultiplier)
+        return generate(axis, multiplier: zoomedMultiplier)
+    }
+    
+    private func generate(axis: ChartAxis, multiplier: Double) -> [Double] {
+        
+        let modelStart = calculateModelStart(axis, multiplier: multiplier)
         
         var values = [Double]()
         var scalar = modelStart
@@ -42,9 +50,16 @@ public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
             if ((scalar =~ axis.firstInit && axis.zoomFactor =~ 1) || scalar >=~ axis.firstModelValueInBounds) && ((scalar =~ axis.lastInit && axis.zoomFactor =~ 1) || scalar <=~ axis.lastModelValueInBounds) {
                 values.append(scalar)
             }
-            let newScalar = incrementScalar(scalar, multiplier: zoomedMultiplier)
+            let newScalar = incrementScalar(scalar, multiplier: multiplier)
             
-            if newScalar == scalar {break}
+            if newScalar == scalar {
+                return lastValidMultiplier.map{lastMultiplier in
+                    generate(axis, multiplier: lastMultiplier).filter{$0 >= axis.firstModelValueInBounds && $0 <= axis.lastModelValueInBounds}
+                } ?? []
+                
+            } else {
+                lastValidMultiplier = multiplier
+            }
             
             scalar = newScalar
         }
