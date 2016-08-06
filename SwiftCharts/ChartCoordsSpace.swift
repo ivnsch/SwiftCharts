@@ -37,7 +37,7 @@ import UIKit
  */
 public class ChartCoordsSpace {
     
-    public typealias ChartAxisLayerModel = (p1: CGPoint, p2: CGPoint, firstModelValue: Double, lastModelValue: Double, axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver?, leadingPadding: ChartAxisPadding, trailingPadding: ChartAxisPadding)
+    public typealias ChartAxisLayerModel = (p1: CGPoint, p2: CGPoint, firstModelValue: Double, lastModelValue: Double, axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver?, leadingPadding: ChartAxisPadding, trailingPadding: ChartAxisPadding, labelSpaceReservationMode: AxisLabelsSpaceReservationMode)
     public typealias ChartAxisLayerGenerator = (ChartAxisLayerModel) -> ChartAxisLayer
     
     private let chartSettings: ChartSettings
@@ -111,7 +111,7 @@ public class ChartCoordsSpace {
             let tmpAxis2 = ChartAxisY(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
             let (firstPadding, lastPadding) = calculatePaddingValues(tmpAxis2, model: model, dimensionExtractor: {$0.height})
             let axis = ChartAxisY(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
-            return ChartAxisYLowLayerDefault(axis: axis, offset: model.p1.x, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
+            return ChartAxisYLowLayerDefault(axis: axis, offset: model.p1.x, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver, labelSpaceReservationMode: model.labelSpaceReservationMode)
         }
         let yHighGenerator: ChartAxisLayerGenerator = {model in
             let tmpAxis = ChartAxisY(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
@@ -119,7 +119,7 @@ public class ChartCoordsSpace {
             let tmpAxis2 = ChartAxisY(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
             let (firstPadding, lastPadding) = calculatePaddingValues(tmpAxis2, model: model, dimensionExtractor: {$0.height})
             let axis = ChartAxisY(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
-            return ChartAxisYHighLayerDefault(axis: axis, offset: model.p1.x, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
+            return ChartAxisYHighLayerDefault(axis: axis, offset: model.p1.x, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver, labelSpaceReservationMode: model.labelSpaceReservationMode)
         }
         let xLowGenerator: ChartAxisLayerGenerator = {model in
             let tmpAxis = ChartAxisX(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
@@ -127,7 +127,7 @@ public class ChartCoordsSpace {
             let tmpAxis2 = ChartAxisX(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
             let (firstPadding, lastPadding) = calculatePaddingValues(tmpAxis2, model: model, dimensionExtractor: {$0.width})
             let axis = ChartAxisX(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
-            return ChartAxisXLowLayerDefault(axis: axis, offset: model.p1.y, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
+            return ChartAxisXLowLayerDefault(axis: axis, offset: model.p1.y, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver, labelSpaceReservationMode: model.labelSpaceReservationMode)
         }
         let xHighGenerator: ChartAxisLayerGenerator = {model in
             let tmpAxis = ChartAxisX(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
@@ -135,7 +135,7 @@ public class ChartCoordsSpace {
             let tmpAxis2 = ChartAxisX(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
             let (firstPadding, lastPadding) = calculatePaddingValues(tmpAxis2, model: model, dimensionExtractor: {$0.width})
             let axis = ChartAxisX(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
-            return ChartAxisXHighLayerDefault(axis: axis, offset: model.p1.y, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver)
+            return ChartAxisXHighLayerDefault(axis: axis, offset: model.p1.y, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver, labelSpaceReservationMode: model.labelSpaceReservationMode)
         }
         
         self.init(chartSettings: chartSettings, chartSize: chartSize, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels, yLowGenerator: yLowGenerator, yHighGenerator: yHighGenerator, xLowGenerator: xLowGenerator, xHighGenerator: xHighGenerator)
@@ -248,7 +248,7 @@ public class ChartCoordsSpace {
             let axisSettings = ChartAxisSettings(chartSettings)
             axisSettings.lineColor = chartAxisModel.lineColor
             let points = boundingPointsCreator(offset: x)
-            let layer = generator(p1: points.p1, p2: points.p2, firstModelValue: chartAxisModel.firstModelValue, lastModelValue: chartAxisModel.lastModelValue, axisValuesGenerator: chartAxisModel.axisValuesGenerator, labelsGenerator: chartAxisModel.labelsGenerator, axisTitleLabels: chartAxisModel.axisTitleLabels, settings: axisSettings, labelsConflictSolver: chartAxisModel.labelsConflictSolver, leadingPadding: chartAxisModel.leadingPadding, trailingPadding: chartAxisModel.trailingPadding)
+            let layer = generator(p1: points.p1, p2: points.p2, firstModelValue: chartAxisModel.firstModelValue, lastModelValue: chartAxisModel.lastModelValue, axisValuesGenerator: chartAxisModel.axisValuesGenerator, labelsGenerator: chartAxisModel.labelsGenerator, axisTitleLabels: chartAxisModel.axisTitleLabels, settings: axisSettings, labelsConflictSolver: chartAxisModel.labelsConflictSolver, leadingPadding: chartAxisModel.leadingPadding, trailingPadding: chartAxisModel.trailingPadding, labelSpaceReservationMode: chartAxisModel.labelSpaceReservationMode)
             return (
                 axes: layers + [layer],
                 x: x + nextLayerOffset(layer)

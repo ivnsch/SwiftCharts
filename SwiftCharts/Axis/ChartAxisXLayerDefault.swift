@@ -11,6 +11,9 @@ import UIKit
 /// A ChartAxisLayer for X axes
 class ChartAxisXLayerDefault: ChartAxisLayerDefault {
 
+    private var minTotalCalculatedRowHeights: CGFloat?
+    private var maxTotalCalculatedRowHeights: CGFloat?
+    
     override var origin: CGPoint {
         return CGPointMake(axis.firstScreen, offset)
     }
@@ -24,9 +27,27 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     }
     
     var labelsTotalHeight: CGFloat {
-        return self.rowHeights.reduce(0) {sum, height in
-            sum + height + self.settings.labelsSpacing
+        
+        let currentTotalHeight = rowHeights.reduce(0) {sum, height in
+            sum + height + settings.labelsSpacing
         }
+
+        let height: CGFloat = {
+            switch labelSpaceReservationMode {
+            case .MinPresentedSize: return minTotalCalculatedRowHeights.maxOpt(currentTotalHeight)
+            case .MaxPresentedSize: return maxTotalCalculatedRowHeights.maxOpt(currentTotalHeight)
+            case .Fixed(let value): return value
+            case .Current: return currentTotalHeight
+            }
+        }()
+        
+        if !rowHeights.isEmpty {
+            let (min, max): (CGFloat, CGFloat) = (minTotalCalculatedRowHeights.minOpt(currentTotalHeight), maxTotalCalculatedRowHeights.maxOpt(currentTotalHeight))
+            minTotalCalculatedRowHeights = min
+            maxTotalCalculatedRowHeights = max
+        }
+
+        return height
     }
     
     var rowHeights: [CGFloat] {

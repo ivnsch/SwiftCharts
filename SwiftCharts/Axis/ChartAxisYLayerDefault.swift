@@ -11,6 +11,9 @@ import UIKit
 /// A ChartAxisLayer for Y axes
 class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
+    private var minCalculatedLabelWidth: CGFloat?
+    private var maxCalculatedLabelWidth: CGFloat?
+    
     override var origin: CGPoint {
         return CGPointMake(offset, axis.firstScreen)
     }
@@ -24,15 +27,34 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     }
     
     var labelsMaxWidth: CGFloat {
-        if self.labelDrawers.isEmpty {
-            return self.maxLabelWidth(self.currentAxisValues)
-        } else {
-            return self.labelDrawers.reduce(0) {maxWidth, labelDrawer in
-                return max(maxWidth, labelDrawer.drawers.reduce(0) {maxWidth, drawer in
-                    max(maxWidth, drawer.size.width)
-                })
+        let currentWidth: CGFloat = {
+            if self.labelDrawers.isEmpty {
+                return self.maxLabelWidth(self.currentAxisValues)
+            } else {
+                return self.labelDrawers.reduce(0) {maxWidth, labelDrawer in
+                    return max(maxWidth, labelDrawer.drawers.reduce(0) {maxWidth, drawer in
+                        max(maxWidth, drawer.size.width)
+                    })
+                }
+            }}()
+        
+        
+        let width: CGFloat = {
+            switch labelSpaceReservationMode {
+            case .MinPresentedSize: return minCalculatedLabelWidth.maxOpt(currentWidth)
+            case .MaxPresentedSize: return maxCalculatedLabelWidth.maxOpt(currentWidth)
+            case .Fixed(let value): return value
+            case .Current: return currentWidth
             }
+        }()
+        
+        if !currentAxisValues.isEmpty {
+            let (min, max): (CGFloat, CGFloat) = (minCalculatedLabelWidth.minOpt(currentWidth), maxCalculatedLabelWidth.maxOpt(currentWidth))
+            minCalculatedLabelWidth = min
+            maxCalculatedLabelWidth = max
         }
+        
+        return width
     }
     
     override var width: CGFloat {

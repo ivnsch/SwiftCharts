@@ -212,6 +212,7 @@
 		EB9C88A31D1F365D003C19D1 /* ChartAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C88A21D1F365D003C19D1 /* ChartAxis.swift */; };
 		EB9C88A51D2061F0003C19D1 /* ChartAxisX.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C88A41D2061F0003C19D1 /* ChartAxisX.swift */; };
 		EB9C88A71D2061FA003C19D1 /* ChartAxisY.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C88A61D2061FA003C19D1 /* ChartAxisY.swift */; };
+		EBA012CA1D56797D0064175C /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA012C91D56797D0064175C /* Optional.swift */; };
 		EBB5F2A51D3ACFB7001BD19E /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB5F2A41D3ACFB7001BD19E /* Operators.swift */; };
 /* End PBXBuildFile section */
 
@@ -378,6 +379,7 @@
 		EB9C88A21D1F365D003C19D1 /* ChartAxis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxis.swift; sourceTree = "<group>"; };
 		EB9C88A41D2061F0003C19D1 /* ChartAxisX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisX.swift; sourceTree = "<group>"; };
 		EB9C88A61D2061FA003C19D1 /* ChartAxisY.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisY.swift; sourceTree = "<group>"; };
+		EBA012C91D56797D0064175C /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
 		EBB5F2A41D3ACFB7001BD19E /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -724,6 +726,7 @@
 				EB10199D1D4762770009C574 /* ChartAxisValueArray.swift */,
 				EB1019A91D4D465E0009C574 /* CGPoint.swift */,
 				EB66F7CD1D5498EE00168EE0 /* NSDate.swift */,
+				EBA012C91D56797D0064175C /* Optional.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -1005,6 +1008,7 @@
 				EB1019AA1D4D465E0009C574 /* CGPoint.swift in Sources */,
 				EB66F7CA1D53766D00168EE0 /* ChartAxisValuesGeneratorNice.swift in Sources */,
 				06405E321B8AA81D00A689FF /* ChartGroupedBarsLayer.swift in Sources */,
+				EBA012CA1D56797D0064175C /* Optional.swift in Sources */,
 				06405E301B8AA81D00A689FF /* ChartCoordsSpaceLayer.swift in Sources */,
 				EB13511D1D40B74C00B1C1C2 /* ChartAxisValuesGeneratorFixedNonOverlapping.swift in Sources */,
 				EB1351211D40BC5400B1C1C2 /* ChartAxisValuesGeneratorYFixedNonOverlapping.swift in Sources */,

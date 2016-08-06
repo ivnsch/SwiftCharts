@@ -74,6 +74,13 @@ extension Optional where Wrapped: ChartAxisLayerWithFrameDelta {
     }
 }
 
+public enum AxisLabelsSpaceReservationMode {
+    case MinPresentedSize /// Doesn't reserve less space than the min presented label width/height so far
+    case MaxPresentedSize /// Doesn't reserve less space than the max presented label width/height so far
+    case Fixed(CGFloat) /// Fixed value, ignores labels width/height
+    case Current /// Reserves space for currently visible labels
+}
+
 
 /// A default implementation of ChartAxisLayer, which delegates drawing of the axis line and labels to the appropriate Drawers
 class ChartAxisLayerDefault: ChartAxisLayer {
@@ -115,6 +122,8 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     let labelsConflictSolver: ChartAxisLabelsConflictSolver?
     
     weak var chart: Chart?
+    
+    let labelSpaceReservationMode: AxisLabelsSpaceReservationMode
 
     var widthWithoutLabels: CGFloat {
         return width
@@ -185,7 +194,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
     var lastFrame: CGRect = CGRectZero
     
     // NOTE: Assumes axis values sorted by scalar (can be increasing or decreasing)
-    required init(axis: ChartAxis, offset: CGFloat, valuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil)  {
+    required init(axis: ChartAxis, offset: CGFloat, valuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, labelSpaceReservationMode: AxisLabelsSpaceReservationMode)  {
         self.axis = axis
         self.offset = offset
         self.valuesGenerator = valuesGenerator
@@ -193,6 +202,7 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         self.axisTitleLabels = axisTitleLabels
         self.settings = settings
         self.labelsConflictSolver = labelsConflictSolver
+        self.labelSpaceReservationMode = labelSpaceReservationMode
         self.lastFrame = frame
         
         valuesGenerator.axisInitialized(self.axis)
