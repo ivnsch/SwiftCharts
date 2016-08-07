@@ -110,7 +110,7 @@ public class ChartCoordsSpace {
             model.axisValuesGenerator.axisInitialized(tmpAxis)
             let tmpAxis2 = ChartAxisY(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
             let (firstPadding, lastPadding) = calculatePaddingValues(tmpAxis2, model: model, dimensionExtractor: {$0.height})
-            let axis = ChartAxisY(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
+            let axis = ChartAxisY(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
             return ChartAxisYLowLayerDefault(axis: axis, offset: model.p1.x, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver, labelSpaceReservationMode: model.labelSpaceReservationMode)
         }
         let yHighGenerator: ChartAxisLayerGenerator = {model in
@@ -118,7 +118,7 @@ public class ChartCoordsSpace {
             model.axisValuesGenerator.axisInitialized(tmpAxis)
             let tmpAxis2 = ChartAxisY(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
             let (firstPadding, lastPadding) = calculatePaddingValues(tmpAxis2, model: model, dimensionExtractor: {$0.height})
-            let axis = ChartAxisY(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
+            let axis = ChartAxisY(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
             return ChartAxisYHighLayerDefault(axis: axis, offset: model.p1.x, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver, labelSpaceReservationMode: model.labelSpaceReservationMode)
         }
         let xLowGenerator: ChartAxisLayerGenerator = {model in
@@ -134,7 +134,7 @@ public class ChartCoordsSpace {
             model.axisValuesGenerator.axisInitialized(tmpAxis)
             let tmpAxis2 = ChartAxisX(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
             let (firstPadding, lastPadding) = calculatePaddingValues(tmpAxis2, model: model, dimensionExtractor: {$0.width})
-            let axis = ChartAxisX(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
+            let axis = ChartAxisX(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
             return ChartAxisXHighLayerDefault(axis: axis, offset: model.p1.y, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver, labelSpaceReservationMode: model.labelSpaceReservationMode)
         }
         
