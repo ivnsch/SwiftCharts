@@ -205,7 +205,6 @@ class ChartAxisLayerDefault: ChartAxisLayer {
         self.labelSpaceReservationMode = labelSpaceReservationMode
         self.lastFrame = frame
         
-        valuesGenerator.axisInitialized(self.axis)
         self.currentAxisValues = valuesGenerator.generate(axis)
     }
 
