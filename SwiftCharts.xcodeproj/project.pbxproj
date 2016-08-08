@@ -213,6 +213,7 @@
 		EB9C88A51D2061F0003C19D1 /* ChartAxisX.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C88A41D2061F0003C19D1 /* ChartAxisX.swift */; };
 		EB9C88A71D2061FA003C19D1 /* ChartAxisY.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9C88A61D2061FA003C19D1 /* ChartAxisY.swift */; };
 		EBA012CA1D56797D0064175C /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA012C91D56797D0064175C /* Optional.swift */; };
+		EBA012CE1D57FF340064175C /* ChartNiceNumberCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA012CD1D57FF340064175C /* ChartNiceNumberCalculator.swift */; };
 		EBB5F2A51D3ACFB7001BD19E /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB5F2A41D3ACFB7001BD19E /* Operators.swift */; };
 /* End PBXBuildFile section */
 
@@ -380,6 +381,7 @@
 		EB9C88A41D2061F0003C19D1 /* ChartAxisX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisX.swift; sourceTree = "<group>"; };
 		EB9C88A61D2061FA003C19D1 /* ChartAxisY.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisY.swift; sourceTree = "<group>"; };
 		EBA012C91D56797D0064175C /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
+		EBA012CD1D57FF340064175C /* ChartNiceNumberCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartNiceNumberCalculator.swift; sourceTree = "<group>"; };
 		EBB5F2A41D3ACFB7001BD19E /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -636,6 +638,7 @@
 			children = (
 				06405DFD1B8AA81D00A689FF /* Trendlines */,
 				EBB5F2A41D3ACFB7001BD19E /* Operators.swift */,
+				EBA012CD1D57FF340064175C /* ChartNiceNumberCalculator.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -994,6 +997,7 @@
 				06405E1B1B8AA81D00A689FF /* ChartAxisValueFloat.swift in Sources */,
 				EB66F7CE1D5498EE00168EE0 /* NSDate.swift in Sources */,
 				06405E461B8AA81D00A689FF /* ChartPointEllipseView.swift in Sources */,
+				EBA012CE1D57FF340064175C /* ChartNiceNumberCalculator.swift in Sources */,
 				06405E211B8AA81D00A689FF /* ChartLineModel.swift in Sources */,
 				06405E3E1B8AA81D00A689FF /* ChartPointsTrackerLayer.swift in Sources */,
 				06405E441B8AA81D00A689FF /* ChartCandleStickView.swift in Sources */,

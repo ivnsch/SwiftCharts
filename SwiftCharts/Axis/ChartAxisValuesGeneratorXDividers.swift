@@ -26,7 +26,7 @@ public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
     
     private let maxTextSize: CGFloat
     
-    public init(minValue: Double, maxValue: Double, preferredDividers: Int, nice: Bool, formatter: NSNumberFormatter, font: UIFont, minSpace: CGFloat = 10) {
+    public init(minValue: Double, maxValue: Double, preferredDividers: Int, nice: Bool, formatter: NSNumberFormatter, font: UIFont, minSpace: CGFloat = 10, multiplierUpdateMode: ChartAxisGeneratorMultiplierUpdateMode = .Halve) {
         
         self.minValue = minValue
         self.maxValue = maxValue
@@ -37,7 +37,7 @@ public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
         
         self.maxTextSize = ChartAxisValuesGeneratorXDividers.largestSize(minValue, maxValue: maxValue, formatter: formatter, font: font)
         
-        super.init(DBL_MAX)
+        super.init(DBL_MAX, multiplierUpdateMode: multiplierUpdateMode)
     }
     
     private static func largestSize(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {

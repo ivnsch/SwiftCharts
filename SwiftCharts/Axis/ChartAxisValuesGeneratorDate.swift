@@ -16,12 +16,12 @@ public class ChartAxisValuesGeneratorDate: ChartAxisGeneratorMultiplier {
     private let preferredDividers: Int
     private let maxTextSize: CGFloat
     
-    public init(unit: NSCalendarUnit, preferredDividers: Int, minSpace: CGFloat, maxTextSize: CGFloat) {
+    public init(unit: NSCalendarUnit, preferredDividers: Int, minSpace: CGFloat, maxTextSize: CGFloat, multiplierUpdateMode: ChartAxisGeneratorMultiplierUpdateMode = .Halve) {
         self.unit = unit
         self.preferredDividers = preferredDividers
         self.minSpace = minSpace
         self.maxTextSize = maxTextSize
-        super.init(0)
+        super.init(0, multiplierUpdateMode: multiplierUpdateMode)
     }
     
     override func calculateModelStart(axis: ChartAxis, multiplier: Double) -> Double {
