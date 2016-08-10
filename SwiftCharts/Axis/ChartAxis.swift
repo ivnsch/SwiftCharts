@@ -71,7 +71,7 @@ public class ChartAxis: CustomStringConvertible {
     var firstScreenInit: CGFloat
     var lastScreenInit: CGFloat
     
-    public init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat, paddingFirstScreen: CGFloat, paddingLastScreen: CGFloat) {
+    public required init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat, paddingFirstScreen: CGFloat, paddingLastScreen: CGFloat) {
         self.first = first
         self.last = last
         self.firstInit = first
@@ -153,5 +153,16 @@ public class ChartAxis: CustomStringConvertible {
     
     public var description: String {
         return "{\(self.dynamicType), first: \(first), last: \(last), firstInit: \(firstInit), lastInit: \(lastInit), zoomFactor: \(zoomFactor), firstScreen: \(firstScreen), lastScreen: \(lastScreen), firstVisible: \(firstVisible), lastVisible: \(lastVisible), firstVisibleScreen: \(firstVisibleScreen), lastVisibleScreen: \(lastVisibleScreen), paddingFirstScreen: \(paddingFirstScreen), paddingLastScreen: \(paddingLastScreen))}"
+    }
+    
+    public func copy(first: Double? = nil, last: Double? = nil, firstScreen: CGFloat? = nil, lastScreen: CGFloat? = nil, paddingFirstScreen: CGFloat? = nil, paddingLastScreen: CGFloat? = nil) -> ChartAxis {
+        return self.dynamicType.init(
+            first: first ?? self.first,
+            last: last ?? self.last,
+            firstScreen: firstScreen ?? self.firstScreen,
+            lastScreen: lastScreen ?? self.lastScreen,
+            paddingFirstScreen: paddingFirstScreen ?? self.paddingFirstScreen,
+            paddingLastScreen: paddingLastScreen ?? self.paddingLastScreen
+        )
     }
 }
