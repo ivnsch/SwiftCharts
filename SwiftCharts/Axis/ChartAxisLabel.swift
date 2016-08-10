@@ -17,7 +17,7 @@ public class ChartAxisLabel {
     var hidden: Bool = false
 
     /// The size of the bounding rectangle for the axis label, taking into account the font and rotation it will be drawn with
-    lazy var textSize: CGSize = {
+    public lazy var textSize: CGSize = {
         let size = ChartUtils.textSize(self.text, font: self.settings.font)
         if self.settings.rotation =~ 0 {
             return size
