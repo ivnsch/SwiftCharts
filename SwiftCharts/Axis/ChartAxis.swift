@@ -36,7 +36,7 @@ public class ChartAxis: CustomStringConvertible {
         return scalarForScreenLoc(lastVisibleScreen)
     }
     
-    var zoomFactor: Double {
+    public var zoomFactor: Double {
         return abs(length / visibleLength)
     }
     
