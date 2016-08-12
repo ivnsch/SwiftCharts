@@ -54,7 +54,16 @@ public class ChartSettings {
     
     public var maxZoomY: CGFloat?
     
+    public var zoomPanGestureMode: ChartZoomPanGestureMode = .Max
+    
     public init() {}
+}
+
+public enum ChartZoomPanGestureMode {
+    case OnlyX // Only X axis is zoomed/panned
+    case OnlyY // Only Y axis is zoomed/panned
+    case Max // Only axis corresponding to dimension with max zoom/pan delta is zoomed/panned
+    case Both // Both axes are zoomed/panned
 }
 
 public protocol ChartDelegate {
@@ -336,6 +345,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
     weak var chart: Chart?
     
     private var lastPanTranslation: CGPoint?
+    private var isPanningX: Bool? // true: x, false: y
     
     private var pinchRecognizer: UIPinchGestureRecognizer?
     private var panRecognizer: UIPanGestureRecognizer?
@@ -383,16 +393,25 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
     @objc func onPinch(sender: UIPinchGestureRecognizer) {
         
         guard sender.numberOfTouches() > 1 else {return}
+        guard let chartSettings = chart?.settings else {return}
         
         let center = sender.locationInView(self)
         
         let x = abs(sender.locationInView(self).x - sender.locationOfTouch(1, inView: self).x)
         let y = abs(sender.locationInView(self).y - sender.locationOfTouch(1, inView: self).y)
         
-        // calculate scale x and scale y
-        let (absMax, absMin) = x > y ? (abs(x), abs(y)) : (abs(y), abs(x))
-        let minScale = (absMin * (sender.scale - 1) / absMax) + 1
-        let (deltaX, deltaY) = x > y ? (sender.scale, minScale) : (minScale, sender.scale)
+        let (deltaX, deltaY): (CGFloat, CGFloat) = {
+            switch chartSettings.zoomPanGestureMode {
+            case .OnlyX: return (sender.scale, 1)
+            case .OnlyY: return (1, sender.scale)
+            case .Max: return x > y ? (sender.scale, 1) : (1, sender.scale)
+            case .Both:
+                // calculate scale x and scale y
+                let (absMax, absMin) = x > y ? (abs(x), abs(y)) : (abs(y), abs(x))
+                let minScale = (absMin * (sender.scale - 1) / absMax) + 1
+                return x > y ? (sender.scale, minScale) : (minScale, sender.scale)
+            }
+        }()
         
         chart?.zoom(deltaX: deltaX, deltaY: deltaY, centerX: center.x, centerY: center.y, isGesture: true)
         
@@ -401,10 +420,26 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
     
     @objc func onPan(sender: UIPanGestureRecognizer) {
         
+        guard let chartSettings = chart?.settings else {return}
+        
+        func finalPanDelta(deltaX deltaX: CGFloat, deltaY: CGFloat) -> (deltaX: CGFloat, deltaY: CGFloat) {
+            switch chartSettings.zoomPanGestureMode {
+            case .OnlyX: return (deltaX, 0)
+            case .OnlyY: return (0, deltaY)
+            case .Max:
+                if isPanningX == nil {
+                    isPanningX = abs(deltaX) > abs(deltaY)
+                }
+                return isPanningX! ? (deltaX, 0) : (0, deltaY)
+            case .Both: return (deltaX, deltaY)
+            }
+        }
+        
         switch sender.state {
             
         case .Began:
             lastPanTranslation = nil
+            isPanningX = nil
             
         case .Changed:
             
@@ -413,9 +448,11 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             let deltaX = lastPanTranslation.map{trans.x - $0.x} ?? trans.x
             let deltaY = lastPanTranslation.map{trans.y - $0.y} ?? trans.y
             
+            let (finalDeltaX, finalDeltaY) = finalPanDelta(deltaX: deltaX, deltaY: deltaY)
+            
             lastPanTranslation = trans
             
-            chart?.pan(deltaX: deltaX, deltaY: deltaY, isGesture: true, isDeceleration: false)
+            chart?.pan(deltaX: finalDeltaX, deltaY: finalDeltaY, isGesture: true, isDeceleration: false)
             
         case .Ended:
             
@@ -424,6 +461,8 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             let velocityX = sender.velocityInView(sender.view).x
             let velocityY = sender.velocityInView(sender.view).y
             
+            let (finalDeltaX, finalDeltaY) = finalPanDelta(deltaX: velocityX, deltaY: velocityY)
+
             func next(index: Int, velocityX: CGFloat, velocityY: CGFloat) {
                 dispatch_async(dispatch_get_main_queue()) {
                     
@@ -436,7 +475,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
                 }
             }
             let initFriction: CGFloat = 50
-            next(0, velocityX: velocityX / initFriction, velocityY: velocityY / initFriction)
+            next(0, velocityX: finalDeltaX / initFriction, velocityY: finalDeltaY / initFriction)
             
         case .Cancelled: break;
         case .Failed: break;
