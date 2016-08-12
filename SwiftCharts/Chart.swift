@@ -300,21 +300,21 @@ public class Chart: Pannable, Zoomable {
      - parameter rect: The rect that needs to be drawn
      */
     private func drawRect(rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
+        guard let context = UIGraphicsGetCurrentContext() else {return}
         for layer in self.layers {
-            layer.chartViewDrawing(context: context!, chart: self)
+            layer.chartViewDrawing(context: context, chart: self)
         }
     }
     
     private func drawContentViewRect(rect: CGRect, sender: ChartContentView) {
-        let context = UIGraphicsGetCurrentContext()
+        guard let context = UIGraphicsGetCurrentContext() else {return}
         if sender == drawersContentView {
             for layer in layers {
-                layer.chartDrawersContentViewDrawing(context: context!, chart: self, view: sender)
+                layer.chartDrawersContentViewDrawing(context: context, chart: self, view: sender)
             }
         } else if sender == contentView {
             for layer in layers {
-                layer.chartContentViewDrawing(context: context!, chart: self)
+                layer.chartContentViewDrawing(context: context, chart: self)
             }
             self.drawersContentView.setNeedsDisplay()
         }
