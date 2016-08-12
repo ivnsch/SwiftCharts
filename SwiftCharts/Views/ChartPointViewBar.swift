@@ -10,8 +10,8 @@ import UIKit
 
 public class ChartPointViewBar: UIView {
     
-    private let targetFrame: CGRect
-    private let animDuration: Float
+    let targetFrame: CGRect
+    let animDuration: Float
     
     public init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor? = nil, animDuration: Float = 0.5) {
         
@@ -44,6 +44,7 @@ public class ChartPointViewBar: UIView {
         
         func targetState() {
             frame = targetFrame
+            layoutIfNeeded()
         }
         
         if animDuration =~ 0 {
