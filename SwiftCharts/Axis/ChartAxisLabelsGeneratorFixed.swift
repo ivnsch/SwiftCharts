@@ -11,7 +11,7 @@ import Foundation
 /// Generates labels for a fixed axis values array. The main usage of this is backwards compatibility, in order to convert ChartAxisValues to generators.
 public class ChartAxisLabelsGeneratorFixed: ChartAxisLabelsGenerator {
     
-    let dict: [Double: [ChartAxisLabel]]
+    public let dict: [Double: [ChartAxisLabel]]
     
     public convenience init(axisValues: [ChartAxisValue]) {
         var dict = [Double: [ChartAxisLabel]]()

@@ -19,7 +19,7 @@ public class ChartAxisValuesGeneratorFixed: ChartAxisValuesGenerator {
         return values.last
     }
     
-    var values: [Double]
+    public internal(set) var values: [Double]
     
     public convenience init(values: [ChartAxisValue]) {
         self.init(values: values.map{$0.scalar})
