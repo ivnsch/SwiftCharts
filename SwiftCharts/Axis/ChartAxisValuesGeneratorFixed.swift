@@ -32,6 +32,7 @@ public class ChartAxisValuesGeneratorFixed: ChartAxisValuesGenerator {
     public func axisInitialized(axis: ChartAxis) {}
     
     public func generate(axis: ChartAxis) -> [Double] {
-        return values.filter{$0 >= axis.firstVisible && $0 <= axis.lastVisible}
+        let (first, last) = axis.firstVisible > axis.lastVisible ? (axis.lastVisible, axis.firstVisible) : (axis.firstVisible, axis.lastVisible)
+        return values.filter{$0 >= first && $0 <= last}
     }
 }
