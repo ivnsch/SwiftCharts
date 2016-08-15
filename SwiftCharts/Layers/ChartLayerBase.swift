@@ -33,7 +33,5 @@ public class ChartLayerBase: NSObject, ChartLayer {
     
     public func pan(deltaX: CGFloat, deltaY: CGFloat) {}
 
-    public func handleGlobalTap(location: CGPoint) {}
-
     public override init() {}
 }

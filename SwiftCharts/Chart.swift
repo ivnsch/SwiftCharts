@@ -71,6 +71,8 @@ public protocol ChartDelegate {
     func onZoom(scaleX scaleX: CGFloat, scaleY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool)
     
     func onPan(transX transX: CGFloat, transY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool)
+    
+    func onTap(models: [TappedChartPointLayerModels<ChartPoint>])
 }
 
 /// A Chart object is the highest level access to your chart. It has the view where all of the chart layers are drawn, which you can provide (useful if you want to position it as part of a storyboard or XIB), or it can be created for you.
@@ -289,9 +291,15 @@ public class Chart: Pannable, Zoomable {
     }
 
     func onTap(location: CGPoint) {
+        var models = [TappedChartPointLayerModels<ChartPoint>]()
         for layer in layers {
-            layer.handleGlobalTap(location)
+            if let chartPointsLayer = layer as? ChartPointsLayer {
+                if let tappedModels = chartPointsLayer.handleGlobalTap(location) {
+                    models.append(tappedModels)
+                }
+            }
         }
+        delegate?.onTap(models)
     }
     
     /**

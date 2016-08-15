@@ -49,17 +49,13 @@ public struct TappedChartPointLayerModels<T: ChartPoint> {
     }
 }
 
-public struct ChartPointsTapHandler<T: ChartPoint> {
+public struct ChartPointsTapSettings<T: ChartPoint> {
     public let radius: CGFloat
-    let handler: TappedChartPointLayerModels<T> -> Void
+    let handler: (TappedChartPointLayerModels<T> -> Void)?
     
-    public init(radius: CGFloat = 30, handler: TappedChartPointLayerModels<T> -> Void) {
+    public init(radius: CGFloat = 30, handler: (TappedChartPointLayerModels<T> -> Void)? = nil) {
         self.radius = radius
         self.handler = handler
-    }
-    
-    func handle(models: TappedChartPointLayerModels<T>) {
-        handler(models)
     }
 }
 
@@ -75,27 +71,32 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     
     private let chartPoints: [T]
 
-    private let tapHandler: ChartPointsTapHandler<T>?
+    private let tapSettings: ChartPointsTapSettings<T>?
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, tapHandler: ChartPointsTapHandler<T>? = nil) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], displayDelay: Float = 0, tapSettings: ChartPointsTapSettings<T>? = nil) {
         self.chartPoints = chartPoints
         self.displayDelay = displayDelay
-        self.tapHandler = tapHandler
+        self.tapSettings = tapSettings
         
         super.init(xAxis: xAxis, yAxis: yAxis)
     }
 
-    public override func handleGlobalTap(location: CGPoint) {
-        guard let tapHandler = tapHandler, localCenter = toLocalCoordinates(location) else {return}
+    public func handleGlobalTap(location: CGPoint) -> TappedChartPointLayerModels<T>? {
+        guard let tapSettings = tapSettings, localCenter = toLocalCoordinates(location) else {return nil}
         var models: [TappedChartPointLayerModel<T>] = []
         for chartPointModel in chartPointsModels {
             let transformedScreenLoc = modelLocToScreenLoc(x: chartPointModel.chartPoint.x.scalar, y: chartPointModel.chartPoint.y.scalar)
             let distance = transformedScreenLoc.distance(localCenter)
-            if distance < tapHandler.radius {
+            if distance < tapSettings.radius {
                 models.append(TappedChartPointLayerModel(model: chartPointModel.copy(screenLoc: containerToGlobalScreenLoc(chartPointModel.chartPoint)), distance: distance))
             }
         }
-        tapHandler.handle(TappedChartPointLayerModels(models: models, layer: self))
+        
+        let tappedModels = TappedChartPointLayerModels(models: models, layer: self)
+        
+        tapSettings.handler?(tappedModels)
+        
+        return tappedModels
     }
     
     func toLocalCoordinates(globalPoint: CGPoint) -> CGPoint? {

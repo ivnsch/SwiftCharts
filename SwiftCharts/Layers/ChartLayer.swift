@@ -36,6 +36,4 @@ public protocol ChartLayer {
     func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat)
 
     func pan(deltaX: CGFloat, deltaY: CGFloat)
-
-    func handleGlobalTap(location: CGPoint)
 }
