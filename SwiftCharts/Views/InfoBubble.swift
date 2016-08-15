@@ -21,6 +21,8 @@ public class InfoBubble: UIView {
 
     public let point: CGPoint
     
+    public var closeHandler: (() -> Void)?
+
     private var inverted: Bool {
         return point.y < bounds.size.height
     }
@@ -60,6 +62,7 @@ public class InfoBubble: UIView {
     }
     
     public func close() {
+        closeHandler?()
         removeFromSuperview()
     }
     
