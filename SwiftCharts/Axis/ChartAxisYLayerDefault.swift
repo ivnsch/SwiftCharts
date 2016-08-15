@@ -15,11 +15,11 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     private var maxCalculatedLabelWidth: CGFloat?
     
     override var origin: CGPoint {
-        return CGPointMake(offset, axis.firstScreen)
+        return CGPointMake(offset, axis.lastScreen)
     }
     
     override var end: CGPoint {
-        return CGPointMake(offset, axis.lastScreen)
+        return CGPointMake(offset, axis.firstScreen)
     }
     
     override var height: CGFloat {
