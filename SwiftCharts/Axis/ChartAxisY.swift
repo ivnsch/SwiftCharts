@@ -17,6 +17,10 @@ public class ChartAxisY: ChartAxis {
     public override var screenLength: CGFloat {
         return firstScreen - lastScreen
     }
+
+    public override var screenLengthInit: CGFloat {
+        return firstScreenInit - lastScreenInit
+    }
     
     public override var visibleLength: Double {
         return lastVisible - firstVisible
@@ -123,13 +127,13 @@ public class ChartAxisY: ChartAxis {
         lastScreen = newEndY
     }
     
+    override func toModelInner(screenLoc: CGFloat) -> Double {
+        let modelInner = Double(screenLoc - lastScreenInit - paddingLastScreen) * innerRatio + firstInit
+        return lastInit - modelInner + firstInit // invert
+    }
+    
     override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         zoom(scaleX, y: scaleY / CGFloat(zoomFactor), centerX: centerX, centerY: centerY)
     }
     
-    public required init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat, paddingFirstScreen: CGFloat = 0, paddingLastScreen: CGFloat = 0) {
-        super.init(first: first, last: last, firstScreen: firstScreen, lastScreen: lastScreen, paddingFirstScreen: paddingFirstScreen, paddingLastScreen: paddingLastScreen)
-        self.first = firstInit - screenToModelLength(paddingFirstScreen)
-        self.last = lastInit + screenToModelLength(paddingLastScreen)
-    }
 }

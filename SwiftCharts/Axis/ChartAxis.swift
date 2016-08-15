@@ -50,6 +50,10 @@ public class ChartAxis: CustomStringConvertible {
         fatalError("override")
     }
     
+    public var screenLengthInit: CGFloat {
+        fatalError("override")
+    }
+    
     public var visibleLength: Double {
         fatalError("override")
     }
@@ -71,7 +75,7 @@ public class ChartAxis: CustomStringConvertible {
     var firstScreenInit: CGFloat
     var lastScreenInit: CGFloat
     
-    public required init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat, paddingFirstScreen: CGFloat, paddingLastScreen: CGFloat) {
+    public required init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat, paddingFirstScreen: CGFloat = 0, paddingLastScreen: CGFloat = 0) {
         self.first = first
         self.last = last
         self.firstInit = first
@@ -84,6 +88,8 @@ public class ChartAxis: CustomStringConvertible {
         self.paddingLastScreen = paddingLastScreen
         self.firstVisibleScreen = firstScreen
         self.lastVisibleScreen = lastScreen
+        
+        adjustModelBoundariesForPadding()
     }
     
     /// Calculates screen location (relative to chart view's frame) of model value. It's not required that scalar is between first and last model values.
@@ -127,12 +133,16 @@ public class ChartAxis: CustomStringConvertible {
         firstScreen += offset
         firstScreenInit += offset
         firstVisibleScreen += offset
+        
+        adjustModelBoundariesForPadding()
     }
 
     func offsetLastScreen(offset: CGFloat) {
         lastScreen += offset
         lastScreenInit += offset
         lastVisibleScreen += offset
+        
+        adjustModelBoundariesForPadding()
     }
     
     public func screenToModelLength(screenLength: CGFloat) -> Double {
@@ -152,7 +162,23 @@ public class ChartAxis: CustomStringConvertible {
     }
     
     public var description: String {
-        return "{\(self.dynamicType), first: \(first), last: \(last), firstInit: \(firstInit), lastInit: \(lastInit), zoomFactor: \(zoomFactor), firstScreen: \(firstScreen), lastScreen: \(lastScreen), firstVisible: \(firstVisible), lastVisible: \(lastVisible), firstVisibleScreen: \(firstVisibleScreen), lastVisibleScreen: \(lastVisibleScreen), paddingFirstScreen: \(paddingFirstScreen), paddingLastScreen: \(paddingLastScreen))}"
+        return "{\(self.dynamicType), first: \(first), last: \(last), firstInit: \(firstInit), lastInit: \(lastInit), zoomFactor: \(zoomFactor), firstScreen: \(firstScreen), lastScreen: \(lastScreen), firstVisible: \(firstVisible), lastVisible: \(lastVisible), firstVisibleScreen: \(firstVisibleScreen), lastVisibleScreen: \(lastVisibleScreen), paddingFirstScreen: \(paddingFirstScreen), paddingLastScreen: \(paddingLastScreen), length: \(length), screenLength: \(screenLength), firstModelValueInBounds: \(firstModelValueInBounds), lastModelValueInBounds: \(lastModelValueInBounds))}"
+    }
+    
+    var innerRatio: Double {
+        return (lastInit - firstInit) / Double(screenLengthInit - paddingFirstScreen - paddingLastScreen)
+    }
+    
+    func toModelInner(screenLoc: CGFloat) -> Double {
+        fatalError("Override")
+    }
+    
+    /// NOTE: this changes the model domain, which means that after this, view based chart points should be (re)generated using the updated ratio. For rendering layers this is not an issue since they request the position from the axis on each update. View based layers / content view children only update according to the transform of the parent, which is derived directly from the gestures and doesn't take into account the axes. This means in praxis that currently it's not possible to use view based layers together with padding and inner frame with varying size. Either the inner frame size has to be fixed, by setting fixed label size for all axes, or it must not have padding, or use a rendering based layer. TODO re-regenerate views on model domain update? This can lead though to stuterring when panning between labels of different sizes. Doing this at the end of the gesture would mean that during the gesture the chart points and axes can be not aligned correctly. Don't resize inner frame during the gesture (at least for view based layers)? In this case long labels would have to be cut during the gesture, and resize the frame / re-generate the chart points when the gesture ends.
+    private func adjustModelBoundariesForPadding() {
+        if paddingFirstScreen != 0 || paddingLastScreen != 0 {
+            self.first = toModelInner(firstScreenInit)
+            self.last = toModelInner(lastScreenInit)
+        }
     }
     
     public func copy(first: Double? = nil, last: Double? = nil, firstScreen: CGFloat? = nil, lastScreen: CGFloat? = nil, paddingFirstScreen: CGFloat? = nil, paddingLastScreen: CGFloat? = nil) -> ChartAxis {
