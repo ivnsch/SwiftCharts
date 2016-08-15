@@ -15,10 +15,14 @@ extension CGPoint {
     }
     
     func add(point: CGPoint) -> CGPoint {
-        return CGPointMake(x + point.x, y + point.y)
+        return offset(x: point.x, y: point.y)
     }
     
     func substract(point: CGPoint) -> CGPoint {
-        return CGPointMake(x - point.x, y - point.y)
+        return offset(x: -point.x, y: -point.y)
+    }
+    
+    func offset(x x: CGFloat = 0, y: CGFloat = 0) -> CGPoint {
+        return CGPointMake(self.x + x, self.y + y)
     }
 }

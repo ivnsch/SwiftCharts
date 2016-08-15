@@ -18,6 +18,11 @@ extension CGRect {
             height - dh - dy
         )
     }
+    
+    var center: CGPoint {
+        return CGPointMake(width / 2, height / 2)
+    }
+    
 
     /**
      Calculates the bounding rectangle of a rectangle after it's rotated.
