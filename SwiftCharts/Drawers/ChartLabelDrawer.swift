@@ -62,7 +62,7 @@ public class ChartLabelDrawer: ChartContextDrawer {
     private var transform: CGAffineTransform?
     
     var size: CGSize {
-        return ChartUtils.textSize(self.text, font: self.settings.font)
+        return self.text.size(self.settings.font)
     }
     
     var frame: CGRect {

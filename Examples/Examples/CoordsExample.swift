@@ -41,8 +41,7 @@ class CoordsExample: UIViewController {
             
             let text = "(\(chartPoint.x), \(chartPoint.y))"
             let font = ExamplesDefaults.labelFont
-            let textSize = ChartUtils.textSize(text, font: font)
-            let x = min(screenLoc.x + 5, chart.bounds.width - textSize.width - 5)
+            let x = min(screenLoc.x + 5, chart.bounds.width - text.width(font) - 5)
             let view = UIView(frame: CGRectMake(x, screenLoc.y - h, w, h))
             let label = UILabel(frame: view.bounds)
             label.text = "(\(chartPoint.x), \(chartPoint.y))"

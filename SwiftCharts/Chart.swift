@@ -250,7 +250,7 @@ public class Chart: Pannable, Zoomable {
         let previousContentFrame = contentView.frame
         
         // Resize container view
-        containerView.frame = ChartUtils.insetBy(containerView.frame, dx: yLow.deltaDefault0, dy: xHigh.deltaDefault0, dw: yHigh.deltaDefault0, dh: xLow.deltaDefault0)
+        containerView.frame = containerView.frame.insetBy(dx: yLow.deltaDefault0, dy: xHigh.deltaDefault0, dw: yHigh.deltaDefault0, dh: xLow.deltaDefault0)
         // Change dimensions of content view by total delta of container view
         contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.width - (yLow.deltaDefault0 + yHigh.deltaDefault0), contentView.frame.height - (xLow.deltaDefault0 + xHigh.deltaDefault0))
 

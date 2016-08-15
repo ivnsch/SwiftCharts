@@ -18,11 +18,11 @@ public class ChartAxisLabel {
 
     /// The size of the bounding rectangle for the axis label, taking into account the font and rotation it will be drawn with
     public lazy var textSize: CGSize = {
-        let size = ChartUtils.textSize(self.text, font: self.settings.font)
+        let size = self.text.size(self.settings.font)
         if self.settings.rotation =~ 0 {
             return size
         } else {
-            return ChartUtils.boundingRectAfterRotatingRect(CGRectMake(0, 0, size.width, size.height), radians: self.settings.rotation * CGFloat(M_PI) / 180.0).size
+            return CGRectMake(0, 0, size.width, size.height).boundingRectAfterRotating(radians: self.settings.rotation * CGFloat(M_PI) / 180.0).size
         }
     }()
     

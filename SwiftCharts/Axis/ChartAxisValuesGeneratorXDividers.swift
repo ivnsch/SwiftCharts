@@ -42,15 +42,15 @@ public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
     
     private static func largestSize(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
         
-        let minNumberTextSize = ChartUtils.textSize(formatter.stringFromNumber(minValue)!, font: font).width
-        let maxNumberTextSize = ChartUtils.textSize(formatter.stringFromNumber(maxValue)!, font: font).width
+        let minNumberTextSize = formatter.stringFromNumber(minValue)!.width(font)
+        let maxNumberTextSize = formatter.stringFromNumber(maxValue)!.width(font)
         
         let minDigits = formatter.minimumFractionDigits
         let maxDigits = formatter.maximumFractionDigits
         
         let remainingWidth: CGFloat = {
             if minDigits < maxDigits {
-                return (minDigits..<maxDigits).reduce(0) {total, _ in total + ChartUtils.textSize("0", font: font).width}
+                return (minDigits..<maxDigits).reduce(0) {total, _ in total + "0".width(font)}
             } else {
                 return 0
             }

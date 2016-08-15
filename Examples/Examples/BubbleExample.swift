@@ -199,7 +199,7 @@ class BubbleExample: UIViewController {
                 self.addSubview(divider)
                 
                 let text = "\(numberFormatter.stringFromNumber(x / gradient.frame.size.width)!)"
-                let labelWidth = ChartUtils.textSize(text, font: ExamplesDefaults.labelFont).width
+                let labelWidth = text.width(ExamplesDefaults.labelFont)
                 let label = UILabel()
                 label.center = CGPointMake(x - labelWidth / 2, 30)
                 label.font = ExamplesDefaults.labelFont

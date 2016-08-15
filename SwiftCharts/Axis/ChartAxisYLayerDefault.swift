@@ -92,7 +92,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
                 print("WARNING: No support for multiple definition labels on vertical axis. Using only first one.")
             }
             let axisLabel = firstTitleLabel
-            let labelSize = ChartUtils.textSize(axisLabel.text, font: axisLabel.settings.font)
+            let labelSize = axisLabel.text.size(axisLabel.settings.font)
             let settings = axisLabel.settings
             let newSettings = ChartLabelSettings(font: settings.font, fontColor: settings.fontColor, rotation: settings.rotation, rotationKeep: settings.rotationKeep)
             let axisLabelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(
@@ -116,7 +116,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             let labels = self.labelsGenerator.generate(scalar)
             let y = self.axis.screenLocForScalar(scalar)
             if let axisLabel = labels.first { // for now y axis supports only one label x value
-                let labelSize = ChartUtils.textSize(axisLabel.text, font: axisLabel.settings.font)
+                let labelSize = axisLabel.text.size(axisLabel.settings.font)
                 let labelY = y - (labelSize.height / 2)
                 let labelX = self.labelsX(offset: offset, labelWidth: labelSize.width, textAlignment: axisLabel.settings.textAlignment)
                 let labelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(labelX, labelY), settings: axisLabel.settings)
@@ -134,7 +134,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
     private func maxLabelWidth(axisLabels: [ChartAxisLabel]) -> CGFloat {
         return axisLabels.reduce(CGFloat(0)) {maxWidth, label in
-            return max(maxWidth, ChartUtils.textSize(label.text, font: label.settings.font).width)
+            return max(maxWidth, label.text.width(label.settings.font))
         }
     }
     private func maxLabelWidth(axisValues: [Double]) -> CGFloat {
