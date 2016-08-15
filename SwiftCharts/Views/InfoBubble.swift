@@ -10,16 +10,16 @@ import UIKit
 
 public class InfoBubble: UIView {
 
-    private let arrowWidth: CGFloat
-    private let arrowHeight: CGFloat
-    private let bgColor: UIColor
-    private let arrowX: CGFloat
+    public let arrowWidth: CGFloat
+    public let arrowHeight: CGFloat
+    public let bgColor: UIColor
+    public let arrowX: CGFloat
     
-    let contentView: UIView?
+    private let contentView: UIView?
     
-    private let minSuperviewPadding: CGFloat = 2
+    public let minSuperviewPadding: CGFloat = 2
 
-    private let point: CGPoint
+    public let point: CGPoint
     
     private var inverted: Bool {
         return point.y < bounds.size.height
@@ -59,7 +59,7 @@ public class InfoBubble: UIView {
         close()
     }
     
-    func close() {
+    public func close() {
         removeFromSuperview()
     }
     

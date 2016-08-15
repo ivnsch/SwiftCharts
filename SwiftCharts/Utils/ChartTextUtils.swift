@@ -8,9 +8,9 @@
 
 import UIKit
 
-struct ChartTextUtils {
+public struct ChartTextUtils {
     
-    static func maxTextWidth(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
+    public static func maxTextWidth(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
         
         let noDecimalsFormatter = NSNumberFormatter()
         noDecimalsFormatter.maximumFractionDigits = 0
@@ -32,7 +32,7 @@ struct ChartTextUtils {
         return maxNoDecimalsLength + maxDecimalsWidth + widthForDecimalSign
     }
     
-    static func maxTextHeight(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
+    public static func maxTextHeight(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
         return "H".height(font)
     }
 }
