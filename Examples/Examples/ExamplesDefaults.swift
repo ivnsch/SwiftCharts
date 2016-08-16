@@ -59,15 +59,15 @@ struct ExamplesDefaults {
 
     private static var iPadChartSettingsWithPanZoom: ChartSettings {
         let chartSettings = iPadChartSettings
-        chartSettings.panEnabled = true
-        chartSettings.zoomEnabled = true
+        chartSettings.zoomPan.panEnabled = true
+        chartSettings.zoomPan.zoomEnabled = true
         return chartSettings
     }
 
     private static var iPhoneChartSettingsWithPanZoom: ChartSettings {
         let chartSettings = iPhoneChartSettings
-        chartSettings.panEnabled = true
-        chartSettings.zoomEnabled = true
+        chartSettings.zoomPan.panEnabled = true
+        chartSettings.zoomPan.zoomEnabled = true
         return chartSettings
     }
     

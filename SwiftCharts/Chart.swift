@@ -42,6 +42,12 @@ public class ChartSettings {
     /// The stroke width in points of the axis lines
     public var axisStrokeWidth: CGFloat = 1.0
     
+    public var zoomPan = ChartSettingsZoomPan()
+    
+    public init() {}
+}
+
+public class ChartSettingsZoomPan {
     public var panEnabled = false
     
     public var zoomEnabled = false
@@ -54,9 +60,8 @@ public class ChartSettings {
     
     public var maxZoomY: CGFloat?
     
-    public var zoomPanGestureMode: ChartZoomPanGestureMode = .Max
+    public var gestureMode: ChartZoomPanGestureMode = .Max
     
-    public init() {}
 }
 
 public enum ChartZoomPanGestureMode {
@@ -107,22 +112,31 @@ public class Chart: Pannable, Zoomable {
     }
  
     public var maxScaleX: CGFloat? {
-        return settings?.maxZoomX
+        return settings.zoomPan.maxZoomX
     }
     
     public var minScaleX: CGFloat? {
-        return settings?.minZoomX
+        return settings.zoomPan.minZoomX
     }
     
     public var maxScaleY: CGFloat? {
-        return settings?.maxZoomY
+        return settings.zoomPan.maxZoomY
     }
     
     public var minScaleY: CGFloat? {
-        return settings?.minZoomY
+        return settings.zoomPan.minZoomY
     }
-
-    let settings: ChartSettings?
+    
+    private let settings: ChartSettings
+    
+    public var zoomPanSettings: ChartSettingsZoomPan {
+        set {
+            settings.zoomPan = zoomPanSettings
+            configZoomPan(zoomPanSettings)
+        } get {
+            return settings.zoomPan
+        }
+    }
     
     /**
      Create a new Chart with a frame and layers. A new ChartBaseView will be created for you.
@@ -134,7 +148,7 @@ public class Chart: Pannable, Zoomable {
 
      - returns: The new Chart
      */
-    convenience public init(frame: CGRect, innerFrame: CGRect? = nil, settings: ChartSettings? = nil, layers: [ChartLayer]) {
+    convenience public init(frame: CGRect, innerFrame: CGRect? = nil, settings: ChartSettings, layers: [ChartLayer]) {
         self.init(view: ChartBaseView(frame: frame), innerFrame: innerFrame, settings: settings, layers: layers)
     }
 
@@ -149,7 +163,7 @@ public class Chart: Pannable, Zoomable {
 
      - returns: The new Chart
      */
-    public init(view: ChartView, innerFrame: CGRect? = nil, settings: ChartSettings? = nil, layers: [ChartLayer]) {
+    public init(view: ChartView, innerFrame: CGRect? = nil, settings: ChartSettings, layers: [ChartLayer]) {
         
         self.layers = layers
         
@@ -176,10 +190,6 @@ public class Chart: Pannable, Zoomable {
         contentView.chart = self
         drawersContentView.chart = self
         
-        if let settings = settings {
-            self.view.configure(settings)
-        }
-        
         self.view.chart = self
         
         for layer in self.layers {
@@ -188,10 +198,12 @@ public class Chart: Pannable, Zoomable {
         
         self.view.setNeedsDisplay()
         
-        if let settings = settings {
-            if settings.minZoomX != nil || settings.minZoomY != nil {
-                zoom(scaleX: settings.minZoomX ?? 1, scaleY: settings.minZoomY ?? 1, anchorX: 0, anchorY: 0)
-            }
+        configZoomPan(settings.zoomPan)
+    }
+    
+    private func configZoomPan(settings: ChartSettingsZoomPan) {
+        if settings.minZoomX != nil || settings.minZoomY != nil {
+            zoom(scaleX: settings.minZoomX ?? 1, scaleY: settings.minZoomY ?? 1, anchorX: 0, anchorY: 0)
         }
     }
     
@@ -368,21 +380,18 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
         super.init(coder: aDecoder)
         self.sharedInit()
     }
-   
-    func configure(settings: ChartSettings) {
-        if settings.zoomEnabled {
-            let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(ChartView.onPinch(_:)))
-            pinchRecognizer.delegate = self
-            addGestureRecognizer(pinchRecognizer)
-            self.pinchRecognizer = pinchRecognizer
-        }
+    
+    func initRecognizers() {
+        let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(ChartView.onPinch(_:)))
+        pinchRecognizer.delegate = self
+        addGestureRecognizer(pinchRecognizer)
+        self.pinchRecognizer = pinchRecognizer
+    
         
-        if settings.panEnabled {
-            let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(ChartView.onPan(_:)))
-            panRecognizer.delegate = self
-            addGestureRecognizer(panRecognizer)
-            self.panRecognizer = panRecognizer
-        }
+        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(ChartView.onPan(_:)))
+        panRecognizer.delegate = self
+        addGestureRecognizer(panRecognizer)
+        self.panRecognizer = panRecognizer
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ChartView.onTap(_:)))
         tapRecognizer.delegate = self
@@ -396,12 +405,13 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
      */
     func sharedInit() {
         self.backgroundColor = UIColor.clearColor()
+        initRecognizers()
     }
     
     @objc func onPinch(sender: UIPinchGestureRecognizer) {
         
+        guard let chartSettings = chart?.settings where chartSettings.zoomPan.zoomEnabled else {return}
         guard sender.numberOfTouches() > 1 else {return}
-        guard let chartSettings = chart?.settings else {return}
         
         let center = sender.locationInView(self)
         
@@ -409,7 +419,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
         let y = abs(sender.locationInView(self).y - sender.locationOfTouch(1, inView: self).y)
         
         let (deltaX, deltaY): (CGFloat, CGFloat) = {
-            switch chartSettings.zoomPanGestureMode {
+            switch chartSettings.zoomPan.gestureMode {
             case .OnlyX: return (sender.scale, 1)
             case .OnlyY: return (1, sender.scale)
             case .Max: return x > y ? (sender.scale, 1) : (1, sender.scale)
@@ -428,10 +438,10 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
     
     @objc func onPan(sender: UIPanGestureRecognizer) {
         
-        guard let chartSettings = chart?.settings else {return}
+        guard let chartSettings = chart?.settings where chartSettings.zoomPan.panEnabled else {return}
         
         func finalPanDelta(deltaX deltaX: CGFloat, deltaY: CGFloat) -> (deltaX: CGFloat, deltaY: CGFloat) {
-            switch chartSettings.zoomPanGestureMode {
+            switch chartSettings.zoomPan.gestureMode {
             case .OnlyX: return (deltaX, 0)
             case .OnlyY: return (0, deltaY)
             case .Max:
