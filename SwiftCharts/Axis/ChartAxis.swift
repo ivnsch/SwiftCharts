@@ -28,6 +28,10 @@ public class ChartAxis: CustomStringConvertible {
     public let paddingFirstScreen: CGFloat
     public let paddingLastScreen: CGFloat
     
+    /// Optional fixed padding value which overwrites paddingFirstScreen/paddingLastScreen when determining if model values are in bounds. This is useful e.g. when setting an initial zoom level, and scaling the padding proportionally such that it appears constant for different zoom levels. In this case it may be necessary to store the un-scaled padding in these variables to keep the bounds constant.
+    public var fixedPaddingFirstScreen: CGFloat?
+    public var fixedPaddingLastScreen: CGFloat?
+    
     var firstVisible: Double {
         return scalarForScreenLoc(firstVisibleScreen)
     }
@@ -75,7 +79,7 @@ public class ChartAxis: CustomStringConvertible {
     var firstScreenInit: CGFloat
     var lastScreenInit: CGFloat
     
-    public required init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat, paddingFirstScreen: CGFloat = 0, paddingLastScreen: CGFloat = 0) {
+    public required init(first: Double, last: Double, firstScreen: CGFloat, lastScreen: CGFloat, paddingFirstScreen: CGFloat = 0, paddingLastScreen: CGFloat = 0, fixedPaddingFirstScreen: CGFloat? = nil, fixedPaddingLastScreen: CGFloat? = nil) {
         self.first = first
         self.last = last
         self.firstInit = first
@@ -86,6 +90,8 @@ public class ChartAxis: CustomStringConvertible {
         self.lastScreenInit = lastScreen
         self.paddingFirstScreen = paddingFirstScreen
         self.paddingLastScreen = paddingLastScreen
+        self.fixedPaddingFirstScreen = fixedPaddingFirstScreen
+        self.fixedPaddingLastScreen = fixedPaddingLastScreen
         self.firstVisibleScreen = firstScreen
         self.lastVisibleScreen = lastScreen
         
@@ -181,14 +187,16 @@ public class ChartAxis: CustomStringConvertible {
         }
     }
     
-    public func copy(first: Double? = nil, last: Double? = nil, firstScreen: CGFloat? = nil, lastScreen: CGFloat? = nil, paddingFirstScreen: CGFloat? = nil, paddingLastScreen: CGFloat? = nil) -> ChartAxis {
+    public func copy(first: Double? = nil, last: Double? = nil, firstScreen: CGFloat? = nil, lastScreen: CGFloat? = nil, paddingFirstScreen: CGFloat? = nil, paddingLastScreen: CGFloat? = nil, fixedPaddingFirstScreen: CGFloat? = nil, fixedPaddingLastScreen: CGFloat? = nil) -> ChartAxis {
         return self.dynamicType.init(
             first: first ?? self.first,
             last: last ?? self.last,
             firstScreen: firstScreen ?? self.firstScreen,
             lastScreen: lastScreen ?? self.lastScreen,
             paddingFirstScreen: paddingFirstScreen ?? self.paddingFirstScreen,
-            paddingLastScreen: paddingLastScreen ?? self.paddingLastScreen
+            paddingLastScreen: paddingLastScreen ?? self.paddingLastScreen,
+            fixedPaddingFirstScreen:  fixedPaddingFirstScreen ?? self.fixedPaddingFirstScreen,
+            fixedPaddingLastScreen:  fixedPaddingLastScreen ?? self.fixedPaddingLastScreen
         )
     }
 }

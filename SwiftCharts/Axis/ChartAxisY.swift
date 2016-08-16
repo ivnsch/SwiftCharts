@@ -55,11 +55,11 @@ public class ChartAxisY: ChartAxis {
     }
     
     public override var firstModelValueInBounds: Double {
-        return firstVisible - screenToModelLength(paddingFirstScreen)
+        return firstVisible + screenToModelLength(fixedPaddingFirstScreen ?? paddingFirstScreen)
     }
     
     public override var lastModelValueInBounds: Double {
-        return lastVisible + screenToModelLength(paddingLastScreen)
+        return lastVisible - screenToModelLength(fixedPaddingLastScreen ?? paddingLastScreen)
     }
     
     override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
