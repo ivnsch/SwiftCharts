@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ChartAxisLabelsGeneratorDate: ChartAxisLabelsGenerator {
+public class ChartAxisLabelsGeneratorDate: ChartAxisLabelsGeneratorBase {
     
     let labelSettings: ChartLabelSettings
     
@@ -19,7 +19,7 @@ public class ChartAxisLabelsGeneratorDate: ChartAxisLabelsGenerator {
         self.formatter = formatter
     }
     
-    public func generate(scalar: Double) -> [ChartAxisLabel] {
+    public override func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
         let text = self.formatter.stringFromDate(NSDate(timeIntervalSince1970: scalar))
         return [ChartAxisLabel(text: text, settings: labelSettings)]
     }

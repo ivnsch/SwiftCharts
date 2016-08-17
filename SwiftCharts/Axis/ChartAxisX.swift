@@ -126,4 +126,9 @@ public class ChartAxisX: ChartAxis {
     override func toModelInner(screenLoc: CGFloat) -> Double {
         return Double(screenLoc - firstScreenInit - paddingFirstScreen) * innerRatio + firstInit
     }
+    
+    override func isInBoundaries(screenCenter: CGFloat, screenSize: CGSize) -> Bool {
+        return screenCenter - screenSize.width / 2 >= firstVisibleScreen && screenCenter + screenSize.width / 2 <= lastVisibleScreen
+    }
+    
 }

@@ -35,7 +35,7 @@ public enum ChartAxisLabelNumberSuffixUnit {
     }
 }
 
-public class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGenerator {
+public class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGeneratorBase {
     
     public let labelSettings: ChartLabelSettings
     
@@ -50,7 +50,7 @@ public class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGenerator {
     }
 
     // src: http://stackoverflow.com/a/23290016/930450
-    public func generate(scalar: Double) -> [ChartAxisLabel] {
+    public override func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
         let sign = scalar < 0 ? "-" : ""
         
         let absScalar = fabs(scalar)

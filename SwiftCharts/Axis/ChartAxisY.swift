@@ -136,4 +136,7 @@ public class ChartAxisY: ChartAxis {
         zoom(scaleX, y: scaleY / CGFloat(zoomFactor), centerX: centerX, centerY: centerY)
     }
     
+    override func isInBoundaries(screenCenter: CGFloat, screenSize: CGSize) -> Bool {
+        return screenCenter - screenSize.height / 2 >= lastVisibleScreen && screenCenter + screenSize.height / 2 <= firstVisibleScreen
+    }
 }

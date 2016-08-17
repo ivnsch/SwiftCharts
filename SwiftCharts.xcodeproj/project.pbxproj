@@ -220,6 +220,7 @@
 		EBA012DC1D5F77360064175C /* ChartTextUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA012DB1D5F77360064175C /* ChartTextUtils.swift */; };
 		EBA012DF1D60AD8C0064175C /* HorizontalGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA012DE1D60AD8C0064175C /* HorizontalGuide.swift */; };
 		EBA012E11D60AE040064175C /* VerticalGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA012E01D60AE040064175C /* VerticalGuide.swift */; };
+		EBB1450E1D64742B007C40FB /* ChartAxisLabelsGeneratorBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB1450D1D64742B007C40FB /* ChartAxisLabelsGeneratorBase.swift */; };
 		EBB5F2A51D3ACFB7001BD19E /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB5F2A41D3ACFB7001BD19E /* Operators.swift */; };
 /* End PBXBuildFile section */
 
@@ -395,6 +396,7 @@
 		EBA012DB1D5F77360064175C /* ChartTextUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartTextUtils.swift; sourceTree = "<group>"; };
 		EBA012DE1D60AD8C0064175C /* HorizontalGuide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalGuide.swift; sourceTree = "<group>"; };
 		EBA012E01D60AE040064175C /* VerticalGuide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalGuide.swift; sourceTree = "<group>"; };
+		EBB1450D1D64742B007C40FB /* ChartAxisLabelsGeneratorBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLabelsGeneratorBase.swift; sourceTree = "<group>"; };
 		EBB5F2A41D3ACFB7001BD19E /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -732,6 +734,7 @@
 				EB093E711D2288FB001157BD /* ChartAxisLabelsGeneratorFunc.swift */,
 				EB1351221D40C80600B1C1C2 /* ChartAxisLabelsGeneratorNumberSuffix.swift */,
 				EB66F7CF1D54B17C00168EE0 /* ChartAxisLabelGeneratorDate.swift */,
+				EBB1450D1D64742B007C40FB /* ChartAxisLabelsGeneratorBase.swift */,
 			);
 			name = AxisLabel;
 			sourceTree = "<group>";
@@ -992,6 +995,7 @@
 				06405E3B1B8AA81D00A689FF /* ChartPointsLineTrackerLayer.swift in Sources */,
 				EB9C88A31D1F365D003C19D1 /* ChartAxis.swift in Sources */,
 				06405E221B8AA81D00A689FF /* ChartPoint.swift in Sources */,
+				EBB1450E1D64742B007C40FB /* ChartAxisLabelsGeneratorBase.swift in Sources */,
 				06405E101B8AA81D00A689FF /* ChartAxisLayerDefault.swift in Sources */,
 				EB1019981D46A5720009C574 /* ChartAxisValuesGeneratorXDividers.swift in Sources */,
 				06405E341B8AA81D00A689FF /* ChartLayer.swift in Sources */,

@@ -77,7 +77,7 @@ public class ChartCoordsSpace {
         func calculatePaddingValues(axis: ChartAxis, model: ChartAxisLayerModel, dimensionExtractor: CGSize -> CGFloat) -> (CGFloat, CGFloat) {
 
             func paddingForAxisValue(axisValueMaybe: Double?) -> CGFloat {
-                return axisValueMaybe.map{model.labelsGenerator.generate($0)}?.first.map{dimensionExtractor($0.textSize) / 2} ?? 0
+                return axisValueMaybe.map{model.labelsGenerator.generate($0, axis: axis)}?.first.map{dimensionExtractor($0.textSize) / 2} ?? 0
             }
             
             func calculatePadding(padding: ChartAxisPadding, axisValueMaybe: Double?) -> CGFloat {

@@ -9,7 +9,7 @@
 import Foundation
 
 /// Label generator that delegates to a closure, for greater flexibility
-public class ChartAxisLabelsGeneratorFunc: ChartAxisLabelsGenerator {
+public class ChartAxisLabelsGeneratorFunc: ChartAxisLabelsGeneratorBase {
 
     let f: Double -> [ChartAxisLabel]
 
@@ -24,7 +24,7 @@ public class ChartAxisLabelsGeneratorFunc: ChartAxisLabelsGenerator {
         self.f = f
     }
     
-    public func generate(scalar: Double) -> [ChartAxisLabel] {
+    public override func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
         return f(scalar)
     }
 }

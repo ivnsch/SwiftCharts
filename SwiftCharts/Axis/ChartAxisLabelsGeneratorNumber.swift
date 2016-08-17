@@ -9,7 +9,7 @@
 import Foundation
 
 /// Generates a single formatted number for scalar
-public class ChartAxisLabelsGeneratorNumber: ChartAxisLabelsGenerator {
+public class ChartAxisLabelsGeneratorNumber: ChartAxisLabelsGeneratorBase {
     
     let labelSettings: ChartLabelSettings
     
@@ -20,8 +20,8 @@ public class ChartAxisLabelsGeneratorNumber: ChartAxisLabelsGenerator {
         self.formatter = formatter
     }
     
-    public func generate(scalar: Double) -> [ChartAxisLabel] {
-        let text = self.formatter.stringFromNumber(scalar)!
+    public override func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
+        let text = formatter.stringFromNumber(scalar)!
         return [ChartAxisLabel(text: text, settings: labelSettings)]
     }
     

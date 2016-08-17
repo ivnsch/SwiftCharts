@@ -9,7 +9,7 @@
 import Foundation
 
 /// Generates labels for a fixed axis values array. The main usage of this is backwards compatibility, in order to convert ChartAxisValues to generators.
-public class ChartAxisLabelsGeneratorFixed: ChartAxisLabelsGenerator {
+public class ChartAxisLabelsGeneratorFixed: ChartAxisLabelsGeneratorBase {
     
     public let dict: [Double: [ChartAxisLabel]]
     
@@ -28,7 +28,7 @@ public class ChartAxisLabelsGeneratorFixed: ChartAxisLabelsGenerator {
         self.dict = dict
     }
     
-    public func generate(scalar: Double) -> [ChartAxisLabel] {
+    public override func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
         return dict[scalar] ?? []
     }
 }
