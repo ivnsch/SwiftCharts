@@ -117,7 +117,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         let scalars = self.valuesGenerator.generate(self.axis)
         currentAxisValues = scalars
         for scalar in scalars {
-            let labels = self.labelsGenerator.generateInBounds(scalar, axis: axis)
+            let labels = self.labelsGenerator.generate(scalar, axis: axis)
             let y = self.axis.screenLocForScalar(scalar)
             if let axisLabel = labels.first { // for now y axis supports only one label x value
                 let labelSize = axisLabel.text.size(axisLabel.settings.font)
@@ -143,7 +143,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     }
     private func maxLabelWidth(axisValues: [Double]) -> CGFloat {
         return axisValues.reduce(CGFloat(0)) {maxWidth, value in
-            let labels = self.labelsGenerator.generateInBounds(value, axis: axis)
+            let labels = self.labelsGenerator.generate(value, axis: axis)
             return max(maxWidth, maxLabelWidth(labels))
         }
     }

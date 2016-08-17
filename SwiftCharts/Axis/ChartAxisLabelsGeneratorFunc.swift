@@ -24,7 +24,7 @@ public class ChartAxisLabelsGeneratorFunc: ChartAxisLabelsGeneratorBase {
         self.f = f
     }
     
-    public override func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
+    public override func generate(scalar: Double) -> [ChartAxisLabel] {
         return f(scalar)
     }
 }

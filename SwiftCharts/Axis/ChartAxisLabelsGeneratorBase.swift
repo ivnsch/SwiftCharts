@@ -12,7 +12,7 @@ public class ChartAxisLabelsGeneratorBase: ChartAxisLabelsGenerator {
 
     public var onlyShowCompleteLabels: Bool = false
     
-    public func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
+    public func generate(scalar: Double) -> [ChartAxisLabel] {
         fatalError("Override")
     }
 }

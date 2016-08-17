@@ -28,7 +28,7 @@ public class ChartAxisLabelsGeneratorFixed: ChartAxisLabelsGeneratorBase {
         self.dict = dict
     }
     
-    public override func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
+    public override func generate(scalar: Double) -> [ChartAxisLabel] {
         return dict[scalar] ?? []
     }
 }

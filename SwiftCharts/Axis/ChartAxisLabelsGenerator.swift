@@ -14,11 +14,10 @@ public protocol ChartAxisLabelsGenerator {
     /// If the complete label should disappear as soon as a part of it is outside of the axis edges
     var onlyShowCompleteLabels: Bool {get}
     
-    /// Generates label for scalar without boundary checks
-    func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel]
+    func generate(scalar: Double) -> [ChartAxisLabel]
     
-    /// Generates label for scalar with possible boundary checks
-    func generateInBounds(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel]
+    /// Generates label for scalar taking into account axis state
+    func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel]
 }
 
 extension ChartAxisLabelsGenerator {
@@ -27,8 +26,8 @@ extension ChartAxisLabelsGenerator {
         return true
     }
 
-    public func generateInBounds(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
-        let labels = generate(scalar, axis: axis)
+    public func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
+        let labels = generate(scalar)
         if onlyShowCompleteLabels {
             return labels.first.map {label in
                 if axis.isInBoundaries(axis.screenLocForScalar(scalar), screenSize: label.textSize) {

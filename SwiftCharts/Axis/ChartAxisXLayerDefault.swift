@@ -119,7 +119,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         guard !currentAxisValues.isEmpty else {return []}
 
         let axisValuesWithLabels: [(axisValue: Double, labels: [ChartAxisLabel])] = self.currentAxisValues.map {
-            ($0, labelsGenerator.generateInBounds($0, axis: axis))
+            ($0, labelsGenerator.generate($0, axis: axis))
         }
         
         // organize labels in rows
@@ -148,7 +148,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         currentAxisValues = scalars
         return scalars.flatMap {scalar in
             
-            let labels = self.labelsGenerator.generateInBounds(scalar, axis: axis)
+            let labels = self.labelsGenerator.generate(scalar, axis: axis)
 
             let labelDrawers: [ChartLabelDrawer] = labels.enumerate().map {index, label in
                 let rowY = self.calculateRowY(rowHeights: rowHeights, rowIndex: index, spacing: spacingLabelBetweenAxis)

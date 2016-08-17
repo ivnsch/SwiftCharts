@@ -20,7 +20,7 @@ public class ChartAxisLabelsGeneratorNumber: ChartAxisLabelsGeneratorBase {
         self.formatter = formatter
     }
     
-    public override func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
+    public override func generate(scalar: Double) -> [ChartAxisLabel] {
         let text = formatter.stringFromNumber(scalar)!
         return [ChartAxisLabel(text: text, settings: labelSettings)]
     }

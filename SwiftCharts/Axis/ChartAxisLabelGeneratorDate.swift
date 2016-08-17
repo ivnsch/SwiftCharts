@@ -19,7 +19,7 @@ public class ChartAxisLabelsGeneratorDate: ChartAxisLabelsGeneratorBase {
         self.formatter = formatter
     }
     
-    public override func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
+    public override func generate(scalar: Double) -> [ChartAxisLabel] {
         let text = self.formatter.stringFromDate(NSDate(timeIntervalSince1970: scalar))
         return [ChartAxisLabel(text: text, settings: labelSettings)]
     }

@@ -17,7 +17,7 @@ public class ChartAxisLabelsGeneratorBasic: ChartAxisLabelsGeneratorBase {
         self.labelSettings = labelSettings
     }
     
-    public override func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
+    public override func generate(scalar: Double) -> [ChartAxisLabel] {
         return [ChartAxisLabel(text: "\(scalar)", settings: labelSettings)]
     }
 }
