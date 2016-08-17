@@ -103,6 +103,10 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         return CGRectMake(origin.x, origin.y, widthWithoutLabels, heightWithoutLabels)
     }
     
+    public var visibleFrame: CGRect {
+        fatalError("Override")
+    }
+    
     /// Constant dimension between origin and end
     var offset: CGFloat
     
@@ -125,6 +129,8 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
     
     let labelSpaceReservationMode: AxisLabelsSpaceReservationMode
 
+    let clipContents: Bool
+    
     var widthWithoutLabels: CGFloat {
         return width
     }
@@ -194,7 +200,7 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
     var lastFrame: CGRect = CGRectZero
     
     // NOTE: Assumes axis values sorted by scalar (can be increasing or decreasing)
-    public required init(axis: ChartAxis, offset: CGFloat, valuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, labelSpaceReservationMode: AxisLabelsSpaceReservationMode)  {
+    public required init(axis: ChartAxis, offset: CGFloat, valuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, labelSpaceReservationMode: AxisLabelsSpaceReservationMode, clipContents: Bool)  {
         self.axis = axis
         self.offset = offset
         self.valuesGenerator = valuesGenerator
@@ -203,6 +209,7 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         self.settings = settings
         self.labelsConflictSolver = labelsConflictSolver
         self.labelSpaceReservationMode = labelSpaceReservationMode
+        self.clipContents = clipContents
         self.lastFrame = frame
         
         self.currentAxisValues = valuesGenerator.generate(axis)
@@ -248,20 +255,32 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
      - parameter chart:   The chart that this axis belongs to
      */
     public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
-        if self.settings.isAxisLineVisible {
-            if let lineDrawer = self.lineDrawer {
-                CGContextSetLineWidth(context, CGFloat(self.settings.axisStrokeWidth))
-                lineDrawer.triggerDraw(context: context, chart: chart)
+        func draw() {
+            if self.settings.isAxisLineVisible {
+                if let lineDrawer = self.lineDrawer {
+                    CGContextSetLineWidth(context, CGFloat(self.settings.axisStrokeWidth))
+                    lineDrawer.triggerDraw(context: context, chart: chart)
+                }
+            }
+            
+            for (_, labelDrawers) in self.labelDrawers {
+                for labelDrawer in labelDrawers {
+                    labelDrawer.triggerDraw(context: context, chart: chart)
+                }
+            }
+            for axisTitleLabelDrawer in self.axisTitleLabelDrawers {
+                axisTitleLabelDrawer.triggerDraw(context: context, chart: chart)
             }
         }
         
-        for (_, labelDrawers) in self.labelDrawers {
-            for labelDrawer in labelDrawers {
-                labelDrawer.triggerDraw(context: context, chart: chart)
-            }
-        }
-        for axisTitleLabelDrawer in self.axisTitleLabelDrawers {
-            axisTitleLabelDrawer.triggerDraw(context: context, chart: chart)
+        if clipContents {
+            CGContextSaveGState(context)
+            CGContextAddRect(context, visibleFrame)
+            CGContextClip(context)
+            draw()
+            CGContextRestoreGState(context)
+        } else {
+            draw()
         }
     }
     
@@ -306,7 +325,7 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
     
-    public func copy(axis: ChartAxis? = nil, offset: CGFloat? = nil, valuesGenerator: ChartAxisValuesGenerator? = nil, labelsGenerator: ChartAxisLabelsGenerator? = nil, axisTitleLabels: [ChartAxisLabel]? = nil, settings: ChartAxisSettings? = nil, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, labelSpaceReservationMode: AxisLabelsSpaceReservationMode? = nil) -> ChartAxisLayerDefault {
+    public func copy(axis: ChartAxis? = nil, offset: CGFloat? = nil, valuesGenerator: ChartAxisValuesGenerator? = nil, labelsGenerator: ChartAxisLabelsGenerator? = nil, axisTitleLabels: [ChartAxisLabel]? = nil, settings: ChartAxisSettings? = nil, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, labelSpaceReservationMode: AxisLabelsSpaceReservationMode? = nil, clipContents: Bool? = nil) -> ChartAxisLayerDefault {
         return self.dynamicType.init(
             axis: axis ?? self.axis,
             offset: offset ?? self.offset,
@@ -315,7 +334,8 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
             axisTitleLabels: axisTitleLabels ?? self.axisTitleLabels,
             settings: settings ?? self.settings,
             labelsConflictSolver: labelsConflictSolver ?? self.labelsConflictSolver,
-            labelSpaceReservationMode: labelSpaceReservationMode ?? self.labelSpaceReservationMode
+            labelSpaceReservationMode: labelSpaceReservationMode ?? self.labelSpaceReservationMode,
+            clipContents: clipContents ?? self.clipContents
         )
     }
 }

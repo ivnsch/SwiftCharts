@@ -26,6 +26,10 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         return axis.screenLength
     }
     
+    override var visibleFrame: CGRect {
+        return CGRectMake(axis.firstVisibleScreen, offset, axis.visibleScreenLength, height)
+    }
+    
     var labelsTotalHeight: CGFloat {
         
         let currentTotalHeight = rowHeights.reduce(0) {sum, height in

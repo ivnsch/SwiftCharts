@@ -15,10 +15,8 @@ public protocol ChartLayer {
     // Execute actions after chart initialisation, e.g. add subviews
      func chartInitialized(chart chart: Chart)
     
-    // Use this to draw directly in chart's context.
-    // Don't do anything processor intensive here - this is executed as part of draw(rect) thus has to be quick.
-    // Note that everything drawn here will appear behind subviews added by any layer (regardless of position in layers array)
-    // Everything done here can also be done adding a subview in chartInialized and drawing on that. The reason this method exists is only performance - as long as we know the layers will appear always behind (e.g. axis lines, guidelines) there's no reason to create new views.
+    // Draw directly in chart's context
+    // Everything drawn here will appear behind subviews added by any layer (regardless of position in layers array)
     func chartViewDrawing(context context: CGContextRef, chart: Chart)
     
     func chartContentViewDrawing(context context: CGContextRef, chart: Chart)

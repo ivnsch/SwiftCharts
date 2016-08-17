@@ -26,6 +26,10 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         return axis.screenLength
     }
     
+    override var visibleFrame: CGRect {
+        return CGRectMake(offset, axis.lastVisibleScreen, width, axis.visibleScreenLength)
+    }
+    
     var labelsMaxWidth: CGFloat {
         let currentWidth: CGFloat = {
             if self.labelDrawers.isEmpty {
