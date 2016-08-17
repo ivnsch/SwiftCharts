@@ -61,14 +61,14 @@ public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
         var values = [Double]()
         var scalar = modelStart
         while scalar <= axis.lastVisible {
-            if ((scalar =~ axis.firstInit && axis.zoomFactor =~ 1) || scalar >= axis.firstModelValueInBounds) && ((scalar =~ axis.lastInit && axis.zoomFactor =~ 1) || scalar <= axis.lastModelValueInBounds) {
+            if ((scalar =~ axis.firstInit && axis.zoomFactor =~ 1) || scalar >= axis.firstVisible) && ((scalar =~ axis.lastInit && axis.zoomFactor =~ 1) || scalar <= axis.lastVisible) {
                 values.append(scalar)
             }
             let newScalar = incrementScalar(scalar, multiplier: multiplier)
             
             if newScalar =~ scalar {
                 return lastValidMultiplier.map{lastMultiplier in
-                    generate(axis, multiplier: lastMultiplier).filter{$0 >= axis.firstModelValueInBounds && $0 <= axis.lastModelValueInBounds}
+                    generate(axis, multiplier: lastMultiplier).filter{$0 >= axis.firstVisible && $0 <= axis.lastVisible}
                 } ?? []
                 
             } else {
