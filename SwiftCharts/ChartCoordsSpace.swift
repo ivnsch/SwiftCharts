@@ -83,6 +83,7 @@ public class ChartCoordsSpace {
             func calculatePadding(padding: ChartAxisPadding, axisValueMaybe: Double?) -> CGFloat {
                 switch padding {
                 case .Label: return paddingForAxisValue(axisValueMaybe)
+                case .LabelPlus(let plus): return paddingForAxisValue(axisValueMaybe) + plus
                 case .MaxLabelFixed(let length): return max(paddingForAxisValue(axisValueMaybe), length)
                 case .Fixed(let length): return length
                 case .None: return 0
@@ -93,6 +94,8 @@ public class ChartCoordsSpace {
                 switch (model.leadingPadding, model.trailingPadding) {
                 case (.Label, _): fallthrough
                 case (_, .Label): fallthrough
+                case (.LabelPlus, _): fallthrough
+                case (_, .LabelPlus): fallthrough
                 case (.MaxLabelFixed(_), _): fallthrough
                 case (_, .MaxLabelFixed(_)): return model.axisValuesGenerator.generate(axis)
                 default: return []

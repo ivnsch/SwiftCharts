@@ -9,10 +9,11 @@
 import UIKit
 
 public enum ChartAxisPadding {
-    case Label
+    case Label /// Add padding corresponding to half of leading / trailing label sizes
     case None
-    case Fixed(CGFloat)
-    case MaxLabelFixed(CGFloat)
+    case Fixed(CGFloat) /// Set a fixed padding value
+    case MaxLabelFixed(CGFloat) /// Use max of padding value corresponding to .Label and a fixed value
+    case LabelPlus(CGFloat) /// Use .Label padding + a fixed value
 }
 
 public func ==(a: ChartAxisPadding, b: ChartAxisPadding) -> Bool {
@@ -20,6 +21,7 @@ public func ==(a: ChartAxisPadding, b: ChartAxisPadding) -> Bool {
     case (.Label, .Label): return true
     case (.Fixed(let a), .Fixed(let b)) where a == b: return true
     case (.MaxLabelFixed(let a), .MaxLabelFixed(let b)) where a == b: return true
+    case (.LabelPlus(let a), .LabelPlus(let b)) where a == b: return true
     case (.None, .None): return true
     default: return false
     }
