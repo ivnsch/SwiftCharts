@@ -12,24 +12,44 @@ import Foundation
 public protocol ChartAxisLabelsGenerator {
 
     /// If the complete label should disappear as soon as a part of it is outside of the axis edges
-    var onlyShowCompleteLabels: Bool {get}
+    var onlyShowCompleteLabels: Bool {get set}
+    
+    var maxStringPTWidth: CGFloat? {get set}
     
     func generate(scalar: Double) -> [ChartAxisLabel]
     
     /// Generates label for scalar taking into account axis state
     func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel]
+    
+    func fonts(scalar: Double) -> [UIFont]
 }
+
 
 extension ChartAxisLabelsGenerator {
     
     public var onlyShowCompleteLabels: Bool {
         return true
     }
-
+    
+    public var maxStringPTWidth: CGFloat? {
+        return nil
+    }
+    
+    private func truncate(labels: [ChartAxisLabel], scalar: Double, maxStringPTWidth: CGFloat) -> [ChartAxisLabel] {
+        guard let font = fonts(scalar).first else {return []}
+        return labels.map {label in
+            label.copy(label.text.truncate(maxStringPTWidth, font: font))
+        }
+    }
+    
     public func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
+        
         let labels = generate(scalar)
+ 
+        let truncatedLabels: [ChartAxisLabel] = maxStringPTWidth.map{truncate(labels, scalar: scalar, maxStringPTWidth: $0)} ?? labels
+
         if onlyShowCompleteLabels {
-            return labels.first.map {label in
+            return truncatedLabels.first.map {label in
                 if axis.isInBoundaries(axis.screenLocForScalar(scalar), screenSize: label.textSize) {
                     return [label]
                 } else {
@@ -37,7 +57,7 @@ extension ChartAxisLabelsGenerator {
                 }
             } ?? []
         } else {
-            return labels
+            return truncatedLabels
         }
     }
 }

@@ -75,4 +75,8 @@ public class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGeneratorBase 
         formatter.maximumFractionDigits = 2
         return formatter
     }()
+    
+    public override func fonts(scalar: Double) -> [UIFont] {
+        return [labelSettings.font]
+    }
 }

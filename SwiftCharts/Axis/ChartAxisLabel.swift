@@ -30,4 +30,13 @@ public class ChartAxisLabel {
         self.text = text
         self.settings = settings
     }
+    
+    func copy(text: String? = nil, settings: ChartLabelSettings? = nil, hidden: Bool? = nil) -> ChartAxisLabel {
+        let label = ChartAxisLabel(
+            text: text ?? self.text,
+            settings: settings ?? self.settings
+        )
+        self.hidden = hidden ?? self.hidden
+        return label
+    }
 }

@@ -31,4 +31,8 @@ public class ChartAxisLabelsGeneratorFixed: ChartAxisLabelsGeneratorBase {
     public override func generate(scalar: Double) -> [ChartAxisLabel] {
         return dict[scalar] ?? []
     }
+    
+    public override func fonts(scalar: Double) -> [UIFont] {
+        return dict[scalar].map {labels in labels.map{$0.settings.font}} ?? []
+    }
 }

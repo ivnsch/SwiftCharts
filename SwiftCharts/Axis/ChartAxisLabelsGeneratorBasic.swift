@@ -11,7 +11,7 @@ import Foundation
 /// Generates a single unformatted label for scalar
 public class ChartAxisLabelsGeneratorBasic: ChartAxisLabelsGeneratorBase {
 
-    let labelSettings: ChartLabelSettings
+    public let labelSettings: ChartLabelSettings
     
     public init(labelSettings: ChartLabelSettings) {
         self.labelSettings = labelSettings
@@ -19,5 +19,9 @@ public class ChartAxisLabelsGeneratorBasic: ChartAxisLabelsGeneratorBase {
     
     public override func generate(scalar: Double) -> [ChartAxisLabel] {
         return [ChartAxisLabel(text: "\(scalar)", settings: labelSettings)]
+    }
+    
+    public override func fonts(scalar: Double) -> [UIFont] {
+        return [labelSettings.font]
     }
 }

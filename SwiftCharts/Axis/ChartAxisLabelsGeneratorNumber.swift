@@ -11,7 +11,7 @@ import Foundation
 /// Generates a single formatted number for scalar
 public class ChartAxisLabelsGeneratorNumber: ChartAxisLabelsGeneratorBase {
     
-    let labelSettings: ChartLabelSettings
+    public let labelSettings: ChartLabelSettings
     
     public let formatter: NSNumberFormatter
     
@@ -30,4 +30,8 @@ public class ChartAxisLabelsGeneratorNumber: ChartAxisLabelsGeneratorBase {
         formatter.maximumFractionDigits = 2
         return formatter
     }()
+    
+    public override func fonts(scalar: Double) -> [UIFont] {
+        return [labelSettings.font]
+    }
 }

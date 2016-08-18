@@ -27,4 +27,8 @@ public class ChartAxisLabelsGeneratorFunc: ChartAxisLabelsGeneratorBase {
     public override func generate(scalar: Double) -> [ChartAxisLabel] {
         return f(scalar)
     }
+    
+    public override func fonts(scalar: Double) -> [UIFont] {
+        return f(scalar).map {$0.settings.font} ?? []
+    }
 }

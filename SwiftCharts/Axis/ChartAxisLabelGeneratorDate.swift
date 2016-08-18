@@ -10,7 +10,7 @@ import UIKit
 
 public class ChartAxisLabelsGeneratorDate: ChartAxisLabelsGeneratorBase {
     
-    let labelSettings: ChartLabelSettings
+    public let labelSettings: ChartLabelSettings
     
     public let formatter: NSDateFormatter
     
@@ -29,4 +29,8 @@ public class ChartAxisLabelsGeneratorDate: ChartAxisLabelsGeneratorBase {
         formatter.dateFormat = "dd.MM.yyyy"
         return formatter
     }()
+    
+    public override func fonts(scalar: Double) -> [UIFont] {
+        return [labelSettings.font]
+    }
 }
