@@ -54,29 +54,27 @@ public enum ChartLabelDrawerRotationKeep {
 
 public class ChartLabelDrawer: ChartContextDrawer {
     
-    private let text: String
-    
-    private let settings: ChartLabelSettings
     var screenLoc: CGPoint
     
     private var transform: CGAffineTransform?
     
+    public let label: ChartAxisLabel
+    
     var size: CGSize {
-        return self.text.size(self.settings.font)
+        return label.text.size(label.settings.font)
     }
     
     var frame: CGRect {
         return CGRectMake(screenLoc.x, screenLoc.y, size.width, size.height)
     }
     
-    init(text: String, screenLoc: CGPoint, settings: ChartLabelSettings) {
-        self.text = text
+    init(label: ChartAxisLabel, screenLoc: CGPoint) {
+        self.label = label
         self.screenLoc = screenLoc
-        self.settings = settings
         
         super.init()
         
-        self.transform = self.transform(screenLoc, settings: settings)
+        self.transform = self.transform(screenLoc, settings: label.settings)
     }
 
     override func draw(context context: CGContextRef, chart: Chart) {
@@ -86,7 +84,7 @@ public class ChartLabelDrawer: ChartContextDrawer {
         let labelY = self.screenLoc.y
         
         func drawLabel() {
-            self.drawLabel(x: labelX, y: labelY, text: self.text)
+            self.drawLabel(x: labelX, y: labelY, text: label.text)
         }
         
         if let transform = self.transform {
@@ -162,7 +160,7 @@ public class ChartLabelDrawer: ChartContextDrawer {
 
     
     private func drawLabel(x x: CGFloat, y: CGFloat, text: String) {
-        let attributes = [NSFontAttributeName: self.settings.font, NSForegroundColorAttributeName: self.settings.fontColor]
+        let attributes = [NSFontAttributeName: label.settings.font, NSForegroundColorAttributeName: label.settings.fontColor]
         let attrStr = NSAttributedString(string: text, attributes: attributes)
         attrStr.drawAtPoint(CGPointMake(x, y))
     }

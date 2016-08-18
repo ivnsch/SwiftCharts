@@ -97,11 +97,9 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             }
             let axisLabel = firstTitleLabel
             let labelSize = axisLabel.text.size(axisLabel.settings.font)
-            let settings = axisLabel.settings
-            let newSettings = ChartLabelSettings(font: settings.font, fontColor: settings.fontColor, rotation: settings.rotation, rotationKeep: settings.rotationKeep)
-            let axisLabelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(
+            let axisLabelDrawer = ChartLabelDrawer(label: axisLabel, screenLoc: CGPointMake(
                 self.offset + offset,
-                axis.lastScreenInit + ((axis.firstScreenInit - axis.lastScreenInit) / 2) - (labelSize.height / 2)), settings: newSettings)
+                axis.lastScreenInit + ((axis.firstScreenInit - axis.lastScreenInit) / 2) - (labelSize.height / 2)))
             
             return [axisLabelDrawer]
             
@@ -123,7 +121,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
                 let labelSize = axisLabel.text.size(axisLabel.settings.font)
                 let labelY = y - (labelSize.height / 2)
                 let labelX = self.labelsX(offset: offset, labelWidth: labelSize.width, textAlignment: axisLabel.settings.textAlignment)
-                let labelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(labelX, labelY), settings: axisLabel.settings)
+                let labelDrawer = ChartLabelDrawer(label: axisLabel, screenLoc: CGPointMake(labelX, labelY))
 
                 let labelDrawers = ChartAxisValueLabelDrawers(scalar, [labelDrawer])
                 drawers.append(labelDrawers)

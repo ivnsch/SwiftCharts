@@ -107,7 +107,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
             let x = (axis.lastScreenInit - axis.firstScreenInit) / 2 + axis.firstScreenInit - labelWidth / 2
             let y = self.offset + offset + rowY
             
-            let drawer = ChartLabelDrawer(text: label.text, screenLoc: CGPointMake(x, y), settings: label.settings)
+            let drawer = ChartLabelDrawer(label: label, screenLoc: CGPointMake(x, y))
             drawer.hidden = label.hidden
             return drawer
         }
@@ -159,7 +159,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
                 let labelSize = label.text.size(label.settings.font)
                 let labelX = x - (labelSize.width / 2)
                 
-                let labelDrawer = ChartLabelDrawer(text: label.text, screenLoc: CGPointMake(labelX, y), settings: label.settings)
+                let labelDrawer = ChartLabelDrawer(label: label, screenLoc: CGPointMake(labelX, y))
                 labelDrawer.hidden = label.hidden
                 return labelDrawer
             }

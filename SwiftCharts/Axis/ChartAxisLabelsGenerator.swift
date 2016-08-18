@@ -42,7 +42,7 @@ extension ChartAxisLabelsGenerator {
     private func truncate(labels: [ChartAxisLabel], scalar: Double, maxStringPTWidth: CGFloat) -> [ChartAxisLabel] {
         guard let font = fonts(scalar).first else {return []}
         return labels.map {label in
-            label.copy(label.text.truncate(maxStringPTWidth, font: font))
+            label.copy(text: label.text.truncate(maxStringPTWidth, font: font))
         }
     }
     
