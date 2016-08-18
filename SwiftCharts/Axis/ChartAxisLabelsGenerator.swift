@@ -22,6 +22,10 @@ public protocol ChartAxisLabelsGenerator {
     func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel]
     
     func fonts(scalar: Double) -> [UIFont]
+    
+    func cache(scalar: Double, labels: [ChartAxisLabel])
+    
+    func cachedLabels(scalar: Double) -> [ChartAxisLabel]?
 }
 
 
@@ -43,21 +47,25 @@ extension ChartAxisLabelsGenerator {
     }
     
     public func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
+    
+        return cachedLabels(scalar) ?? {
         
-        let labels = generate(scalar)
- 
-        let truncatedLabels: [ChartAxisLabel] = maxStringPTWidth.map{truncate(labels, scalar: scalar, maxStringPTWidth: $0)} ?? labels
-
-        if onlyShowCompleteLabels {
-            return truncatedLabels.first.map {label in
-                if axis.isInBoundaries(axis.screenLocForScalar(scalar), screenSize: label.textSize) {
-                    return [label]
-                } else {
-                    return []
-                }
-            } ?? []
-        } else {
-            return truncatedLabels
-        }
+            let labels = generate(scalar)
+            
+            let truncatedLabels: [ChartAxisLabel] = maxStringPTWidth.map{truncate(labels, scalar: scalar, maxStringPTWidth: $0)} ?? labels
+            cache(scalar, labels: truncatedLabels)
+            
+            if onlyShowCompleteLabels {
+                return truncatedLabels.first.map {label in
+                    if axis.isInBoundaries(axis.screenLocForScalar(scalar), screenSize: label.textSize) {
+                        return [label]
+                    } else {
+                        return []
+                    }
+                    } ?? []
+            } else {
+                return truncatedLabels
+            }
+        }()
     }
 }

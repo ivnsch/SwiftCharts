@@ -15,11 +15,21 @@ public class ChartAxisLabelsGeneratorBase: ChartAxisLabelsGenerator {
     
     public var maxStringPTWidth: CGFloat? = nil
     
+    var cache = [Double: [ChartAxisLabel]]()
+    
     public func generate(scalar: Double) -> [ChartAxisLabel] {
         fatalError("Override")
     }
     
     public func fonts(scalar: Double) -> [UIFont] {
         fatalError("Override")
+    }
+    
+    public func cache(scalar: Double, labels: [ChartAxisLabel]) {
+        cache[scalar] = labels
+    }
+    
+    public func cachedLabels(scalar: Double) -> [ChartAxisLabel]? {
+        return cache[scalar]
     }
 }
