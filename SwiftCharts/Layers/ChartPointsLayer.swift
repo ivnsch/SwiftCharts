@@ -81,7 +81,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         super.init(xAxis: xAxis, yAxis: yAxis)
     }
 
-    public func handleGlobalTap(location: CGPoint) -> TappedChartPointLayerModels<T>? {
+    public override func handleGlobalTap(location: CGPoint) -> Any? {
         guard let tapSettings = tapSettings, localCenter = toLocalCoordinates(location) else {return nil}
         var models: [TappedChartPointLayerModel<T>] = []
         for chartPointModel in chartPointsModels {

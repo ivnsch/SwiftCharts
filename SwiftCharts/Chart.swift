@@ -306,9 +306,11 @@ public class Chart: Pannable, Zoomable {
         var models = [TappedChartPointLayerModels<ChartPoint>]()
         for layer in layers {
             if let chartPointsLayer = layer as? ChartPointsLayer {
-                if let tappedModels = chartPointsLayer.handleGlobalTap(location) {
+                if let tappedModels = chartPointsLayer.handleGlobalTap(location) as? TappedChartPointLayerModels<ChartPoint> {
                     models.append(tappedModels)
                 }
+            } else {
+                layer.handleGlobalTap(location)
             }
         }
         delegate?.onTap(models)

@@ -60,11 +60,15 @@ public class ChartLabelDrawer: ChartContextDrawer {
     
     public let label: ChartAxisLabel
     
-    var size: CGSize {
+    public var center: CGPoint {
+        return CGPointMake(screenLoc.x + size.width / 2, screenLoc.y + size.height / 2)
+    }
+    
+    public var size: CGSize {
         return label.text.size(label.settings.font)
     }
     
-    var frame: CGRect {
+    public var frame: CGRect {
         return CGRectMake(screenLoc.x, screenLoc.y, size.width, size.height)
     }
     

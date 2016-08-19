@@ -82,6 +82,17 @@ public enum AxisLabelsSpaceReservationMode {
 }
 
 
+public struct ChartAxisLayerTapSettings {
+    public let expandArea: CGSize
+    let handler: (ChartAxisValueLabelDrawers -> Void)?
+    
+    public init(expandArea: CGSize = CGSizeMake(10, 10), handler: (ChartAxisValueLabelDrawers -> Void)? = nil) {
+        self.expandArea = expandArea
+        self.handler = handler
+    }
+}
+
+
 /// A default implementation of ChartAxisLayer, which delegates drawing of the axis line and labels to the appropriate Drawers
 public class ChartAxisLayerDefault: ChartAxisLayer {
     
@@ -130,6 +141,8 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
     let labelSpaceReservationMode: AxisLabelsSpaceReservationMode
 
     let clipContents: Bool
+    
+    public var tapSettings: (ChartAxisLayerTapSettings)?
     
     var widthWithoutLabels: CGFloat {
         return width
@@ -337,5 +350,20 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
             labelSpaceReservationMode: labelSpaceReservationMode ?? self.labelSpaceReservationMode,
             clipContents: clipContents ?? self.clipContents
         )
+    }
+    
+    public func handleGlobalTap(location: CGPoint) -> Any? {
+        guard let tapSettings = tapSettings else {return nil}
+        
+        if visibleFrame.contains(location) {
+            if let tappedLabelDrawers = (labelDrawers.filter{$0.drawers.contains{drawer in CGRectInset(drawer.frame, -tapSettings.expandArea.width, -tapSettings.expandArea.height).contains(location)}}).first {
+                tapSettings.handler?(tappedLabelDrawers)
+                return tappedLabelDrawers
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
     }
 }
