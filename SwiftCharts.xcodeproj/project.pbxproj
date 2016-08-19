@@ -221,6 +221,7 @@
 		EBA012DF1D60AD8C0064175C /* HorizontalGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA012DE1D60AD8C0064175C /* HorizontalGuide.swift */; };
 		EBA012E11D60AE040064175C /* VerticalGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA012E01D60AE040064175C /* VerticalGuide.swift */; };
 		EBB1450E1D64742B007C40FB /* ChartAxisLabelsGeneratorBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB1450D1D64742B007C40FB /* ChartAxisLabelsGeneratorBase.swift */; };
+		EBB145141D671EBB007C40FB /* PointGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB145131D671EBB007C40FB /* PointGuide.swift */; };
 		EBB5F2A51D3ACFB7001BD19E /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB5F2A41D3ACFB7001BD19E /* Operators.swift */; };
 /* End PBXBuildFile section */
 
@@ -397,6 +398,7 @@
 		EBA012DE1D60AD8C0064175C /* HorizontalGuide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalGuide.swift; sourceTree = "<group>"; };
 		EBA012E01D60AE040064175C /* VerticalGuide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalGuide.swift; sourceTree = "<group>"; };
 		EBB1450D1D64742B007C40FB /* ChartAxisLabelsGeneratorBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisLabelsGeneratorBase.swift; sourceTree = "<group>"; };
+		EBB145131D671EBB007C40FB /* PointGuide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointGuide.swift; sourceTree = "<group>"; };
 		EBB5F2A41D3ACFB7001BD19E /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -777,6 +779,7 @@
 			children = (
 				EBA012DE1D60AD8C0064175C /* HorizontalGuide.swift */,
 				EBA012E01D60AE040064175C /* VerticalGuide.swift */,
+				EBB145131D671EBB007C40FB /* PointGuide.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -939,6 +942,7 @@
 				EBA012E11D60AE040064175C /* VerticalGuide.swift in Sources */,
 				062D239F1B8AAE5D0017ABB8 /* HelloWorld.swift in Sources */,
 				062D23901B8AAE5D0017ABB8 /* BarsPlusMinusAndLinesExample.swift in Sources */,
+				EBB145141D671EBB007C40FB /* PointGuide.swift in Sources */,
 				062D23A41B8AAE5D0017ABB8 /* NotNumericExample.swift in Sources */,
 				062D23A01B8AAE5D0017ABB8 /* MultipleAxesExample.swift in Sources */,
 				062D239D1B8AAE5D0017ABB8 /* GroupedAndStackedBarsExample.swift in Sources */,
