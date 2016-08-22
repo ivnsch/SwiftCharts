@@ -81,12 +81,12 @@ public enum AxisLabelsSpaceReservationMode {
     case Current /// Reserves space for currently visible labels
 }
 
-
+public typealias ChartAxisValueLabelDrawersWithAxisLayer = (valueLabelDrawers: ChartAxisValueLabelDrawers, layer: ChartAxisLayer)
 public struct ChartAxisLayerTapSettings {
     public let expandArea: CGSize
-    let handler: (ChartAxisValueLabelDrawers -> Void)?
+    let handler: (ChartAxisValueLabelDrawersWithAxisLayer -> Void)?
     
-    public init(expandArea: CGSize = CGSizeMake(10, 10), handler: (ChartAxisValueLabelDrawers -> Void)? = nil) {
+    public init(expandArea: CGSize = CGSizeMake(10, 10), handler: (ChartAxisValueLabelDrawersWithAxisLayer -> Void)? = nil) {
         self.expandArea = expandArea
         self.handler = handler
     }
@@ -142,7 +142,7 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
 
     let clipContents: Bool
     
-    public var tapSettings: (ChartAxisLayerTapSettings)?
+    public var tapSettings: ChartAxisLayerTapSettings?
     
     var widthWithoutLabels: CGFloat {
         return width
@@ -357,7 +357,7 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         
         if visibleFrame.contains(location) {
             if let tappedLabelDrawers = (labelDrawers.filter{$0.drawers.contains{drawer in CGRectInset(drawer.frame, -tapSettings.expandArea.width, -tapSettings.expandArea.height).contains(location)}}).first {
-                tapSettings.handler?(tappedLabelDrawers)
+                tapSettings.handler?((valueLabelDrawers: tappedLabelDrawers, layer: self))
                 return tappedLabelDrawers
             } else {
                 return nil
