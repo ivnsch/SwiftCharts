@@ -26,9 +26,9 @@ public class InfoBubble: UIView {
     private var inverted: Bool {
         return point.y < bounds.size.height
     }
-
-    public convenience init(point: CGPoint, size: CGSize, superview: UIView, arrowHeight: CGFloat = 15, contentView: UIView, bgColor: UIColor = UIColor.grayColor(), minSuperviewPadding: CGFloat = 2) {
     
+    public convenience init(point: CGPoint, size: CGSize, superview: UIView, arrowHeight: CGFloat = 15, contentView: UIView, bgColor: UIColor = UIColor.grayColor(), minSuperviewPadding: CGFloat = 2) {
+        
         let w: CGFloat = size.width
         let h: CGFloat = size.height
         
@@ -119,12 +119,14 @@ public class InfoBubble: UIView {
 
 extension InfoBubble {
     
-    public convenience init(point: CGPoint, size: CGSize, superview: UIView, arrowHeight: CGFloat = 15, text: String, font: UIFont, textColor: UIColor, bgColor: UIColor = UIColor.grayColor(), minSuperviewPadding: CGFloat = 2) {
+    public convenience init(point: CGPoint, preferredSize: CGSize, superview: UIView, arrowHeight: CGFloat = 15, text: String, font: UIFont, textColor: UIColor, bgColor: UIColor = UIColor.grayColor(), minSuperviewPadding: CGFloat = 2, innerPadding: CGFloat = 4) {
         let label = UILabel()
         label.text = text
         label.font = font
         label.textColor = textColor
         label.sizeToFit()
+        
+        let size = CGSizeMake(max(preferredSize.width, label.frame.width + innerPadding * 2), max(preferredSize.height, label.frame.height + innerPadding * 2))
         
         self.init(point: point, size: size, superview: superview, arrowHeight: arrowHeight, contentView: label, bgColor: bgColor)
     }
