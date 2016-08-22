@@ -37,12 +37,12 @@ public class ChartAxisLabel {
     }
     
     func copy(text text: String? = nil, settings: ChartLabelSettings? = nil, originalText: String? = nil, hidden: Bool? = nil) -> ChartAxisLabel {
-        let label = ChartAxisLabel(
+        var label = ChartAxisLabel(
             text: text ?? self.text,
             settings: settings ?? self.settings
         )
-        self.originalText = originalText ?? self.originalText
-        self.hidden = hidden ?? self.hidden
+        label.originalText = originalText ?? self.originalText
+        label.hidden = hidden ?? self.hidden
         return label
     }
 }
