@@ -25,4 +25,8 @@ extension CGPoint {
     func offset(x x: CGFloat = 0, y: CGFloat = 0) -> CGPoint {
         return CGPointMake(self.x + x, self.y + y)
     }
+    
+    func surroundingRect(size: CGFloat) -> CGRect {
+        return CGRectMake(x - size / 2, y - size / 2, size, size)
+    }
 }

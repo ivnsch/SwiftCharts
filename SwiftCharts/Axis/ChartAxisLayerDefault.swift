@@ -338,6 +338,14 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
     
+    public func handlePanStart(location: CGPoint) {}
+    
+    public func handlePanStart() {}
+    
+    public func handlePanEnd() {}
+    
+    public func handleZoomEnd() {}
+    
     public func copy(axis: ChartAxis? = nil, offset: CGFloat? = nil, valuesGenerator: ChartAxisValuesGenerator? = nil, labelsGenerator: ChartAxisLabelsGenerator? = nil, axisTitleLabels: [ChartAxisLabel]? = nil, settings: ChartAxisSettings? = nil, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, labelSpaceReservationMode: AxisLabelsSpaceReservationMode? = nil, clipContents: Bool? = nil) -> ChartAxisLayerDefault {
         return self.dynamicType.init(
             axis: axis ?? self.axis,
@@ -365,5 +373,13 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         } else {
             return nil
         }
+    }
+    
+    public func processZoom(deltaX deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool {
+        return false
+    }
+    
+    public func processPan(location location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool {
+        return false
     }
 }

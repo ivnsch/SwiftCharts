@@ -19,6 +19,14 @@ extension CGRect {
         )
     }
     
+    func asLinesArray() -> [(p1: CGPoint, p2: CGPoint)] {
+        return [
+            (p1: CGPointMake(minX, minY), p2: CGPointMake(maxX, minY)),
+            (p1: CGPointMake(maxX, minY), p2: CGPointMake(maxX, maxY)),
+            (p1: CGPointMake(maxX, maxY), p2: CGPointMake(minX, maxY)),
+            (p1: CGPointMake(minX, maxY), p2: CGPointMake(minX, minY))
+        ]
+    }
     var center: CGPoint {
         return CGPointMake(width / 2, height / 2)
     }

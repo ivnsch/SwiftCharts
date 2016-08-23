@@ -8,7 +8,7 @@
 
 import UIKit
 
-public struct ChartPointLayerModel<T: ChartPoint> {
+public struct ChartPointLayerModel<T: ChartPoint>: CustomDebugStringConvertible {
     public let chartPoint: T
     public let index: Int
     public var screenLoc: CGPoint
@@ -25,6 +25,10 @@ public struct ChartPointLayerModel<T: ChartPoint> {
             index: index ?? self.index,
             screenLoc: screenLoc ?? self.screenLoc
         )
+    }
+    
+    public var debugDescription: String {
+        return "chartPoint: \(chartPoint), index: \(index), screenLoc: \(screenLoc)"
     }
 }
 
@@ -123,10 +127,9 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     
     public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
-    
-        self.chartPointsModels = chartPointsModels.enumerate().map {index, chartPointModel in
-            let screenLoc = modelLocToScreenLoc(x: chartPointModel.chartPoint.x.scalar, y: chartPointModel.chartPoint.y.scalar)
-            return ChartPointLayerModel(chartPoint: chartPointModel.chartPoint, index: index, screenLoc: screenLoc)
+
+        chartPointsModels = chartPoints.enumerate().map {index, chartPoint in
+            return ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar))
         }
     }
     

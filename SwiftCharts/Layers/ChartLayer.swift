@@ -35,5 +35,17 @@ public protocol ChartLayer {
 
     func pan(deltaX: CGFloat, deltaY: CGFloat)
     
+    func handlePanStart(location: CGPoint)
+    
+    func handlePanEnd()
+    
+    func handleZoomEnd()
+    
     func handleGlobalTap(location: CGPoint) -> Any?
+    
+    /// Return true to disable chart panning
+    func processPan(location location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool
+    
+    /// Return true to disable chart zooming
+    func processZoom(deltaX deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool
 }

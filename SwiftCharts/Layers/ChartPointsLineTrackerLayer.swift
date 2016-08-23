@@ -8,27 +8,23 @@
 
 import UIKit
 
-public struct ChartPointsLineTrackerLayerSettings {
+public struct ChartPointsLineTrackerLayerThumbSettings {
     let thumbSize: CGFloat
-    let thumbCornerRadius: CGFloat
     let thumbBorderWidth: CGFloat
-    let thumbBGColor: UIColor
     let thumbBorderColor: UIColor
-    let infoViewFont: UIFont
-    let infoViewFontColor: UIColor
-    let infoViewSize: CGSize
-    let infoViewCornerRadius: CGFloat
     
-    public init(thumbSize: CGFloat, thumbCornerRadius: CGFloat = 16, thumbBorderWidth: CGFloat = 4, thumbBorderColor: UIColor = UIColor.blackColor(), thumbBGColor: UIColor = UIColor.whiteColor(), infoViewFont: UIFont, infoViewFontColor: UIColor = UIColor.blackColor(), infoViewSize: CGSize, infoViewCornerRadius: CGFloat) {
+    public init(thumbSize: CGFloat, thumbBorderWidth: CGFloat = 4, thumbBorderColor: UIColor = UIColor.blackColor()) {
         self.thumbSize = thumbSize
-        self.thumbCornerRadius = thumbCornerRadius
         self.thumbBorderWidth = thumbBorderWidth
-        self.thumbBGColor = thumbBGColor
         self.thumbBorderColor = thumbBorderColor
-        self.infoViewFont = infoViewFont
-        self.infoViewFontColor = infoViewFontColor
-        self.infoViewSize = infoViewSize
-        self.infoViewCornerRadius = infoViewCornerRadius
+    }
+}
+
+public struct ChartPointsLineTrackerLayerSettings {
+    let thumbSettings: ChartPointsLineTrackerLayerThumbSettings? // nil -> no thumb
+    
+    public init(thumbSettings: ChartPointsLineTrackerLayerThumbSettings? = nil) {
+        self.thumbSettings = thumbSettings
     }
 }
 
@@ -39,33 +35,17 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
     private let animDelay: Float
     
     private let settings: ChartPointsLineTrackerLayerSettings
-    
-    private lazy var currentPositionLineOverlay: UIView = {
-        let currentPositionLineOverlay = UIView()
-        currentPositionLineOverlay.backgroundColor = UIColor.grayColor()
-        currentPositionLineOverlay.alpha = 0
-        return currentPositionLineOverlay
-    }()
 
-    private lazy var thumb: UIView = {
-        let thumb = UIView()
-        thumb.layer.cornerRadius = self.settings.thumbCornerRadius
-        thumb.layer.borderWidth = self.settings.thumbBorderWidth
-        thumb.layer.backgroundColor = UIColor.clearColor().CGColor
-        thumb.layer.borderColor = self.settings.thumbBorderColor.CGColor
-        thumb.alpha = 0
-        return thumb
-    }()
+    private var isTracking: Bool = false
 
-    private var currentPositionInfoOverlay: UILabel?
+    public var positionUpdateHandler: (ChartPoint -> Void)?
     
-    private var view: TrackerView?
-    
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], lineColor: UIColor, animDuration: Float, animDelay: Float, settings: ChartPointsLineTrackerLayerSettings) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], lineColor: UIColor, animDuration: Float, animDelay: Float, settings: ChartPointsLineTrackerLayerSettings, positionUpdateHandler: (ChartPoint -> Void)? = nil) {
         self.lineColor = lineColor
         self.animDuration = animDuration
         self.animDelay = animDelay
         self.settings = settings
+        self.positionUpdateHandler = positionUpdateHandler
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
     }
 
@@ -110,40 +90,51 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         let i_y = p0y + (t * s10y)
         return CGPoint(x: i_x, y: i_y)
     }
-  
-    private func createCurrentPositionInfoOverlay(view view: UIView) -> UILabel {
-        let currentPosW: CGFloat = self.settings.infoViewSize.width
-        let currentPosH: CGFloat = self.settings.infoViewSize.height
-        let currentPosX: CGFloat = (view.frame.size.width - currentPosW) / CGFloat(2)
-        let currentPosY: CGFloat = 100
-        let currentPositionInfoOverlay = UILabel(frame: CGRectMake(currentPosX, currentPosY, currentPosW, currentPosH))
-        currentPositionInfoOverlay.textColor = self.settings.infoViewFontColor
-        currentPositionInfoOverlay.font = self.settings.infoViewFont
-        currentPositionInfoOverlay.layer.cornerRadius = self.settings.infoViewCornerRadius
-        currentPositionInfoOverlay.layer.borderWidth = 1
-        currentPositionInfoOverlay.textAlignment = NSTextAlignment.Center
-        currentPositionInfoOverlay.layer.backgroundColor = UIColor.whiteColor().CGColor
-        currentPositionInfoOverlay.layer.borderColor = UIColor.grayColor().CGColor
-        currentPositionInfoOverlay.alpha = 0
-        return currentPositionInfoOverlay
+    
+    private func intersect(rect: CGRect) -> Bool {
+
+        let rectLines = rect.asLinesArray()
+        
+        for i in 0..<(chartPointsModels.count - 1) {
+            let m1 = chartPointsModels[i]
+            let m2 = chartPointsModels[i + 1]
+            
+            for rectLine in rectLines {
+                if linesIntersection(line1P1: rectLine.p1, line1P2: rectLine.p2, line2P1: m1.screenLoc, line2P2: m2.screenLoc) != nil {
+                    return true
+                }
+            }
+        }
+        
+        return false
     }
-    
-    
-    private func currentPositionInfoOverlay(view view: UIView) -> UILabel {
-        return self.currentPositionInfoOverlay ?? {
-            let currentPositionInfoOverlay = self.createCurrentPositionInfoOverlay(view: view)
-            self.currentPositionInfoOverlay = currentPositionInfoOverlay
-            return currentPositionInfoOverlay
-        }()
+
+    private func intersectLine(rect: CGRect) -> Bool {
+        
+        guard let currentIntersection = currentIntersection else {return false}
+        
+        let rectLines = rect.asLinesArray()
+        
+        let line = toLine(currentIntersection)
+        
+        for rectLine in rectLines {
+            if linesIntersection(line1P1: rectLine.p1, line1P2: rectLine.p2, line2P1: line.p1, line2P2: line.p2) != nil {
+                return true
+            }
+        }
+        
+        return false
     }
    
     private func updateTrackerLineOnValidState(updateFunc updateFunc: (view: UIView) -> ()) {
         if !self.chartPointsModels.isEmpty {
-            if let view = self.view {
+            if let view = chart?.contentView {
                 updateFunc(view: view)
             }
         }
     }
+    
+    private var currentIntersection: CGPoint?
     
     private func updateTrackerLine(touchPoint touchPoint: CGPoint) {
         
@@ -175,76 +166,126 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
             }()
             
             if let intersection = intersectionMaybe {
-                
-                if self.currentPositionInfoOverlay?.superview == nil {
-                    view.addSubview(self.currentPositionLineOverlay)
-                    view.addSubview(self.currentPositionInfoOverlay(view: view))
-                    view.addSubview(self.thumb)
-                }
-                
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    self.currentPositionLineOverlay.alpha = 1
-                    self.currentPositionInfoOverlay(view: view).alpha = 1
-                    self.thumb.alpha = 1
-                    }, completion: { (Bool) -> Void in
-                })
-                
-                let w: CGFloat = self.settings.thumbSize
-                let h: CGFloat = self.settings.thumbSize
-                self.currentPositionLineOverlay.frame = CGRectMake(intersection.x, 0, 1, view.frame.size.height)
-                self.thumb.frame = CGRectMake(intersection.x - w/2, intersection.y - h/2, w, h)
-                
+                self.currentIntersection = intersection
+                self.isTracking = true
+
                 if self.chartPointsModels.count > 1 {
+                    // the charpoints as well as the touch (-> intersection) use global coordinates, to draw in drawer container we have to translate to its coordinates
+                    let trans = self.globalToDrawersContainerCoordinates(intersection)!
                     
-                    let xScalar = self.scalarForScreenLoc(x: intersection.x)
-                    let yScalar = self.scalarForScreenLoc(y: intersection.y)
+                    let zoomedAxisX = self.xAxis.firstVisibleScreen - self.xAxis.firstScreen + trans.x
+                    let zoomedAxisY = self.yAxis.lastVisibleScreen - self.yAxis.lastScreen + trans.y
+                    
+                    let xScalar = self.xAxis.innerScalarForScreenLoc(zoomedAxisX)
+                    let yScalar = self.yAxis.innerScalarForScreenLoc(zoomedAxisY)
                     
                     let dummyModel = self.chartPointsModels[0]
                     let x = dummyModel.chartPoint.x.copy(xScalar)
                     let y = dummyModel.chartPoint.y.copy(yScalar)
                     let chartPoint = T(x: x, y: y)
                     
-                    self.currentPositionInfoOverlay(view: view).text = "Pos: \(chartPoint)"
+                    self.positionUpdateHandler?(chartPoint)
+                    
                 }
+            } else {
+                self.currentIntersection = nil
             }
         }
     }
-    
-    override func display(chart chart: Chart) {
-        let view = TrackerView(frame: chart.contentView.bounds, updateFunc: {[weak self] location in
-            self?.updateTrackerLine(touchPoint: location)
-        })
-        view.userInteractionEnabled = true
-        chart.contentView.addSubview(view)
-        self.view = view
-    }
-}
 
-private class TrackerView: UIView {
-    
-    let updateFunc: ((CGPoint) -> ())?
-    
-    init(frame: CGRect, updateFunc: (CGPoint) -> ()) {
-        self.updateFunc = updateFunc
-        
-        super.init(frame: frame)
+    private func toLine(intersection: CGPoint) -> (p1: CGPoint, p2: CGPoint) {
+        return (p1: CGPointMake(intersection.x, 0), p2: CGPointMake(intersection.x, 10000000))
     }
+    
+    override public func chartDrawersContentViewDrawing(context context: CGContextRef, chart: Chart, view: UIView) {
+        
+        guard let intersection = currentIntersection else {return}
 
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        CGContextSetStrokeColorWithColor(context, UIColor.blackColor().CGColor)
+        CGContextSetLineWidth(context, 2)
+
+        let coords = globalToDrawersContainerCoordinates(intersection)!
+        let line = toLine(coords)
+        
+        CGContextMoveToPoint(context, line.p1.x, line.p1.y)
+        CGContextAddLineToPoint(context, line.p2.x, line.p2.y)
+
+        CGContextStrokePath(context)
+        
+        if let thumbSettings = settings.thumbSettings {
+            CGContextSetStrokeColorWithColor(context, UIColor.blackColor().CGColor)
+            CGContextStrokeEllipseInRect(context, CGRectMake(coords.x - thumbSettings.thumbSize / 2, coords.y - thumbSettings.thumbSize / 2, thumbSettings.thumbSize, thumbSettings.thumbSize))
+        }
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touch = touches.first!
-        let location = touch.locationInView(self)
+    public override func handlePanStart(location: CGPoint) {
+        guard let localLocation = toLocalCoordinates(location) else {return}
         
-        self.updateFunc?(location)
+        updateChartPointsScreenLocations()
+        
+        let surroundingRect = localLocation.surroundingRect(30)
+        
+        if intersect(surroundingRect) || intersectLine(surroundingRect) {
+            isTracking = true
+        } else {
+            currentIntersection = nil
+        }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touch = touches.first!
-        let location = touch.locationInView(self)
+    public override func processPan(location location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool {
+        guard let localLocation = toLocalCoordinates(location) else {return false}
         
-        self.updateFunc?(location)
+        if isTracking {
+            updateTrackerLine(touchPoint: localLocation)
+            chart?.drawersContentView.setNeedsDisplay()
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    public override func handleGlobalTap(location: CGPoint) -> Any? {
+        guard let localLocation = toLocalCoordinates(location) else {return nil}
+        
+        updateChartPointsScreenLocations()
+        
+        updateTrackerLine(touchPoint: localLocation)
+        chart?.drawersContentView.setNeedsDisplay()
+
+        return nil
+    }
+    
+    public override func handlePanEnd() {
+        isTracking = false
+    }
+    
+    public override func handleZoomEnd() {
+        super.handleZoomEnd()
+//        updateChartPointsScreenLocations()
+    }
+    
+    public override func modelLocToScreenLoc(x x: Double) -> CGFloat {
+        return xAxis.screenLocForScalar(x) - (chart?.containerFrame.origin.x ?? 0)
+    }
+    
+    public override func modelLocToScreenLoc(y y: Double) -> CGFloat {
+        return yAxis.screenLocForScalar(y) - (chart?.containerFrame.origin.y ?? 0)
+    }
+    
+    public override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        chart?.drawersContentView.setNeedsDisplay()
+        
+        currentIntersection = nil
+    }
+    
+    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
+        currentIntersection = nil
+        chart?.drawersContentView.setNeedsDisplay()
+    }
+    
+    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+        super.pan(deltaX, deltaY: deltaY)
+        chart?.drawersContentView.setNeedsDisplay()
     }
 }

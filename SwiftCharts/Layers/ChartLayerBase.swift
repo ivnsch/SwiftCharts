@@ -8,7 +8,7 @@
 
 import UIKit
 
-// Convenience class to make protocol's methods optional
+/// Convenience class to store common properties and make protocol's methods optional
 public class ChartLayerBase: NSObject, ChartLayer {
 
     public weak var chart: Chart?
@@ -33,6 +33,20 @@ public class ChartLayerBase: NSObject, ChartLayer {
     
     public func pan(deltaX: CGFloat, deltaY: CGFloat) {}
 
+    public func processPan(location location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool {
+        return false
+    }
+    
+    public func handlePanStart(location: CGPoint) {}
+    
+    public func handlePanEnd() {}
+    
+    public func handleZoomEnd() {}
+    
+    public func processZoom(deltaX deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool {
+        return false
+    }
+    
     public func handleGlobalTap(location: CGPoint) -> Any? {
         return nil
     }
