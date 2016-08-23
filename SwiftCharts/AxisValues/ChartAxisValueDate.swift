@@ -38,5 +38,9 @@ public class ChartAxisValueDate: ChartAxisValue {
     override public var description: String {
         return self.formatter(self.date)
     }
+    
+    public override func copy(scalar: Double) -> ChartAxisValue {
+        return ChartAxisValueDate(date: ChartAxisValueDate.dateFromScalar(scalar), formatter: formatter, labelSettings: labelSettings)
+    }
 }
 
