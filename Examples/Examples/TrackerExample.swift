@@ -20,6 +20,8 @@ class TrackerExample: UIViewController {
 
         let chartPoints = [(2, 2), (4, 4), (7, 1), (8, 11), (12, 3)].map{ChartPoint(x: ChartAxisValueDouble($0.0, labelSettings: labelSettings), y: ChartAxisValueDouble($0.1))}
         
+        let chartPoints2 = [(2, 3), (3, 1), (5, 6), (7, 2), (8, 14), (12, 6)].map{ChartPoint(x: ChartAxisValueDouble($0.0, labelSettings: labelSettings), y: ChartAxisValueDouble($0.1))}
+        
         let xValues = chartPoints.map{$0.x}
         
         let yValues = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: labelSettings)}, addPaddingSegmentIfEdge: false)
@@ -34,16 +36,31 @@ class TrackerExample: UIViewController {
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
         let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.redColor(), animDuration: 1, animDelay: 0)
-        let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel], useView: false)
+        let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: UIColor.blueColor(), animDuration: 1, animDelay: 0)
+        let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel, lineModel2], useView: false)
         
-        let thumbSettings = ChartPointsLineTrackerLayerThumbSettings(thumbSize: Env.iPad ? 30 : 20, thumbBorderWidth: Env.iPad ? 4 : 2)
+        let thumbSettings = ChartPointsLineTrackerLayerThumbSettings(thumbSize: Env.iPad ? 20 : 10, thumbBorderWidth: Env.iPad ? 4 : 2)
         let trackerLayerSettings = ChartPointsLineTrackerLayerSettings(thumbSettings: thumbSettings)
         
-        let positionLabel = UILabel(frame: CGRectMake(10, 80, 100, 40))
+        var currentPositionLabels: [UILabel] = []
         
-        let chartPointsTrackerLayer = ChartPointsLineTrackerLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints, lineColor: UIColor.blackColor(), animDuration: 1, animDelay: 2, settings: trackerLayerSettings) {chartPoint in
-            positionLabel.text = chartPoint.description
-            positionLabel.sizeToFit()
+        let chartPointsTrackerLayer = ChartPointsLineTrackerLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lines: [chartPoints, chartPoints2], lineColor: UIColor.blackColor(), animDuration: 1, animDelay: 2, settings: trackerLayerSettings) {chartPointsWithScreenLoc in
+
+            currentPositionLabels.forEach{$0.removeFromSuperview()}
+            
+            for (index, chartPointWithScreenLoc) in chartPointsWithScreenLoc.enumerate() {
+                
+                let label = UILabel()
+                label.center = chartPointWithScreenLoc.screenLoc
+                label.text = chartPointWithScreenLoc.chartPoint.description
+                label.sizeToFit()
+                
+                label.backgroundColor = index == 0 ? UIColor.redColor() : UIColor.blueColor()
+                label.textColor = UIColor.whiteColor()
+                
+                currentPositionLabels.append(label)
+                self.view.addSubview(label)
+            }
         }
         
         let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
@@ -64,8 +81,6 @@ class TrackerExample: UIViewController {
         
         self.view.addSubview(chart.view)
         self.chart = chart
-        
-        view.addSubview(positionLabel)
     }
 
 }

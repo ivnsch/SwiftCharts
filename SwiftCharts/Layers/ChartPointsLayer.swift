@@ -65,7 +65,7 @@ public struct ChartPointsTapSettings<T: ChartPoint> {
 
 public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
 
-    public private(set) var chartPointsModels: [ChartPointLayerModel<T>] = []
+    public internal(set) var chartPointsModels: [ChartPointLayerModel<T>] = []
     
     private let displayDelay: Float
     
@@ -110,9 +110,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     override public func chartInitialized(chart chart: Chart) {
         super.chartInitialized(chart: chart)
         
-        chartPointsModels = chartPoints.enumerate().map {index, chartPoint in
-            return ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar))
-        }
+        initChartPointModels()
         
         if self.isTransform || self.displayDelay == 0 {
             self.display(chart: chart)
@@ -120,6 +118,16 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
             dispatch_after(ChartTimeUtils.toDispatchTime(self.displayDelay), dispatch_get_main_queue()) {() -> Void in
                 self.display(chart: chart)
             }
+        }
+    }
+    
+    func initChartPointModels() {
+        chartPointsModels = generateChartPointModels(chartPoints)
+    }
+    
+    func generateChartPointModels(chartPoints: [T]) -> [ChartPointLayerModel<T>] {
+        return chartPoints.enumerate().map {index, chartPoint in
+            ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar))
         }
     }
     
@@ -180,9 +188,15 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }
     
     func updateChartPointsScreenLocations() {
-        for i in 0..<chartPointsModels.count {
-            let chartPointModel = chartPointsModels[i]
-            chartPointsModels[i].screenLoc = CGPointMake(xAxis.screenLocForScalar(chartPointModel.chartPoint.x.scalar), yAxis.screenLocForScalar(chartPointModel.chartPoint.y.scalar))
+        chartPointsModels = updateChartPointsScreenLocations(chartPointsModels)
+    }
+    
+    func updateChartPointsScreenLocations(chartPointsModels: [ChartPointLayerModel<T>]) -> [ChartPointLayerModel<T>] {
+        var chartPointsModelsVar = chartPointsModels
+        for i in 0..<chartPointsModelsVar.count {
+            let chartPointModel = chartPointsModelsVar[i]
+            chartPointsModelsVar[i].screenLoc = CGPointMake(xAxis.screenLocForScalar(chartPointModel.chartPoint.x.scalar), yAxis.screenLocForScalar(chartPointModel.chartPoint.y.scalar))
         }
+        return chartPointsModelsVar
     }
 }

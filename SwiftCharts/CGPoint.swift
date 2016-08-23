@@ -29,4 +29,15 @@ extension CGPoint {
     func surroundingRect(size: CGFloat) -> CGRect {
         return CGRectMake(x - size / 2, y - size / 2, size, size)
     }
+    
+    func nearest(intersections: [CGPoint]) -> (distance: CGFloat, point: CGPoint)? {
+        var minDistancePoint: (distance: CGFloat, point: CGPoint)? = nil
+        for intersection in intersections {
+            let dist = distance(intersection)
+            if (minDistancePoint.map{dist < $0.0}) ?? true {
+                minDistancePoint = (dist, intersection)
+            }
+        }
+        return minDistancePoint
+    }
 }

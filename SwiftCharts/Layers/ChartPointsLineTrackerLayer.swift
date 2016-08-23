@@ -22,9 +22,32 @@ public struct ChartPointsLineTrackerLayerThumbSettings {
 
 public struct ChartPointsLineTrackerLayerSettings {
     let thumbSettings: ChartPointsLineTrackerLayerThumbSettings? // nil -> no thumb
+    let selectNearest: Bool
     
-    public init(thumbSettings: ChartPointsLineTrackerLayerThumbSettings? = nil) {
+    public init(thumbSettings: ChartPointsLineTrackerLayerThumbSettings? = nil, selectNearest: Bool = false) {
         self.thumbSettings = thumbSettings
+        self.selectNearest = selectNearest
+    }
+}
+
+public struct ChartPointWithScreenLoc<T: ChartPoint>: CustomDebugStringConvertible {
+    public let chartPoint: T
+    public var screenLoc: CGPoint
+    
+    init(chartPoint: T, screenLoc: CGPoint) {
+        self.chartPoint = chartPoint
+        self.screenLoc = screenLoc
+    }
+    
+    func copy(chartPoint: T? = nil, screenLoc: CGPoint? = nil) -> ChartPointWithScreenLoc<T> {
+        return ChartPointWithScreenLoc(
+            chartPoint: chartPoint ?? self.chartPoint,
+            screenLoc: screenLoc ?? self.screenLoc
+        )
+    }
+    
+    public var debugDescription: String {
+        return "chartPoint: \(chartPoint), screenLoc: \(screenLoc)"
     }
 }
 
@@ -38,19 +61,38 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
 
     private var isTracking: Bool = false
 
-    public var positionUpdateHandler: (ChartPoint -> Void)?
+    public var positionUpdateHandler: ([ChartPointWithScreenLoc<T>] -> Void)?
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], lineColor: UIColor, animDuration: Float, animDelay: Float, settings: ChartPointsLineTrackerLayerSettings, positionUpdateHandler: (ChartPoint -> Void)? = nil) {
+    public let lines: [[T]]
+    public var lineModels: [[ChartPointLayerModel<T>]] = []
+    
+    private var currentIntersections: [CGPoint] = []
+    
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, lines: [[T]], lineColor: UIColor, animDuration: Float, animDelay: Float, settings: ChartPointsLineTrackerLayerSettings, positionUpdateHandler: ([ChartPointWithScreenLoc<T>] -> Void)? = nil) {
         self.lineColor = lineColor
         self.animDuration = animDuration
         self.animDelay = animDelay
         self.settings = settings
         self.positionUpdateHandler = positionUpdateHandler
-        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
+        self.lines = lines
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: Array(lines.flatten()))
     }
 
     private func linesIntersection(line1P1 line1P1: CGPoint, line1P2: CGPoint, line2P1: CGPoint, line2P2: CGPoint) -> CGPoint? {
         return self.findLineIntersection(p0X: line1P1.x, p0y: line1P1.y, p1x: line1P2.x, p1y: line1P2.y, p2x: line2P1.x, p2y: line2P1.y, p3x: line2P2.x, p3y: line2P2.y)
+    }
+    
+    override func initChartPointModels() {
+        lineModels = lines.map{generateChartPointModels($0)}
+        chartPointsModels = Array(lineModels.flatten()) // consistency
+    }
+    
+    override func updateChartPointsScreenLocations() {
+        super.updateChartPointsScreenLocations()
+        for i in 0..<lineModels.count {
+            let updatedLineModel = updateChartPointsScreenLocations(lineModels[i])
+            lineModels[i] = updatedLineModel
+        }
     }
     
     // src: http://stackoverflow.com/a/14795484/930450 (modified)
@@ -91,27 +133,21 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         return CGPoint(x: i_x, y: i_y)
     }
     
-    private func intersect(rect: CGRect) -> Bool {
-
+    private func intersectsWithChartPointLines(rect: CGRect) -> Bool {
         let rectLines = rect.asLinesArray()
-        
-        for i in 0..<(chartPointsModels.count - 1) {
-            let m1 = chartPointsModels[i]
-            let m2 = chartPointsModels[i + 1]
-            
+        return iterateLineSegments({p1, p2 in
             for rectLine in rectLines {
-                if linesIntersection(line1P1: rectLine.p1, line1P2: rectLine.p2, line2P1: m1.screenLoc, line2P2: m2.screenLoc) != nil {
+                if self.linesIntersection(line1P1: rectLine.p1, line1P2: rectLine.p2, line2P1: p1.screenLoc, line2P2: p2.screenLoc) != nil {
                     return true
                 }
             }
-        }
-        
-        return false
+            return nil
+        }) ?? false
     }
 
-    private func intersectLine(rect: CGRect) -> Bool {
+    private func intersectsWithTrackerLine(rect: CGRect) -> Bool {
         
-        guard let currentIntersection = currentIntersection else {return false}
+        guard let currentIntersection = currentIntersections.first else {return false}
         
         let rectLines = rect.asLinesArray()
         
@@ -134,61 +170,73 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         }
     }
     
-    private var currentIntersection: CGPoint?
+    /// f: function to be applied to each segment in the lines defined by p1, p2. Returns an object of type U to exit, returning it from the outer function, or nil to continue
+    private func iterateLineSegments<U>(f: (p1: ChartPointLayerModel<T>, p2: ChartPointLayerModel<T>) -> U?) -> U? {
+        for line in lineModels {
+            for i in 0..<(line.count - 1) {
+                let m1 = line[i]
+                let m2 = line[i + 1]
+                
+                if let res = f(p1: m1, p2: m2) {
+                    return res
+                }
+            }
+        }
+        return nil
+    }
     
     private func updateTrackerLine(touchPoint touchPoint: CGPoint) {
         
         self.updateTrackerLineOnValidState{(view) in
             
-            let touchlineP1 = CGPointMake(touchPoint.x, 0)
-            let touchlineP2 = CGPointMake(touchPoint.x, view.frame.size.height)
+            let constantX = touchPoint.x
+            
+            let touchlineP1 = CGPointMake(constantX, 0)
+            let touchlineP2 = CGPointMake(constantX, view.frame.size.height)
             
             var intersections: [CGPoint] = []
-            for i in 0..<(self.chartPointsModels.count - 1) {
-                let m1 = self.chartPointsModels[i]
-                let m2 = self.chartPointsModels[i + 1]
-                if let intersection = self.linesIntersection(line1P1: touchlineP1, line1P2: touchlineP2, line2P1: m1.screenLoc, line2P2: m2.screenLoc) {
+            
+            
+            let _: Any? = self.iterateLineSegments({p1, p2 in
+                if let intersection = self.linesIntersection(line1P1: touchlineP1, line1P2: touchlineP2, line2P1: p1.screenLoc, line2P2: p2.screenLoc) {
                     intersections.append(intersection)
                 }
-            }
+                return nil
+            })
 
-            // Select point with smallest distance to touch point.
-            // If there's only one intersection, returns intersection. If there's no intersection returns nil.
-            let intersectionMaybe: CGPoint? = {
-                var minDistancePoint: (distance: Float, point: CGPoint?) = (MAXFLOAT, nil)
-                for intersection in intersections {
-                    let distance = hypotf(Float(intersection.x - touchPoint.x), Float(intersection.y - touchPoint.y))
-                    if distance < minDistancePoint.0 {
-                        minDistancePoint = (distance, intersection)
-                    }
-                }
-                return minDistancePoint.point
-            }()
             
-            if let intersection = intersectionMaybe {
-                self.currentIntersection = intersection
+            if !intersections.isEmpty {
+            
+                self.currentIntersections = self.settings.selectNearest ? touchPoint.nearest(intersections).map{[$0.point]} ?? [] : intersections
                 self.isTracking = true
-
+                
                 if self.chartPointsModels.count > 1 {
-                    // the charpoints as well as the touch (-> intersection) use global coordinates, to draw in drawer container we have to translate to its coordinates
-                    let trans = self.globalToDrawersContainerCoordinates(intersection)!
+                 
+                    let chartPoints: [ChartPointWithScreenLoc<T>] = intersections.map {intersection in
+                        
+                        // the charpoints as well as the touch (-> intersection) use global coordinates, to draw in drawer container we have to translate to its coordinates
+                        let trans = self.globalToDrawersContainerCoordinates(intersection)!
+                        
+                        let zoomedAxisX = self.xAxis.firstVisibleScreen - self.xAxis.firstScreen + trans.x
+                        let zoomedAxisY = self.yAxis.lastVisibleScreen - self.yAxis.lastScreen + trans.y
+                        
+                        let xScalar = self.xAxis.innerScalarForScreenLoc(zoomedAxisX)
+                        let yScalar = self.yAxis.innerScalarForScreenLoc(zoomedAxisY)
+                        
+                        let dummyModel = self.chartPointsModels[0]
+                        let x = dummyModel.chartPoint.x.copy(xScalar)
+                        let y = dummyModel.chartPoint.y.copy(yScalar)
+                        
+                        let chartPoint = T(x: x, y: y)
+             
+                        return ChartPointWithScreenLoc<T>(chartPoint: chartPoint, screenLoc: intersection)
+                    }
                     
-                    let zoomedAxisX = self.xAxis.firstVisibleScreen - self.xAxis.firstScreen + trans.x
-                    let zoomedAxisY = self.yAxis.lastVisibleScreen - self.yAxis.lastScreen + trans.y
-                    
-                    let xScalar = self.xAxis.innerScalarForScreenLoc(zoomedAxisX)
-                    let yScalar = self.yAxis.innerScalarForScreenLoc(zoomedAxisY)
-                    
-                    let dummyModel = self.chartPointsModels[0]
-                    let x = dummyModel.chartPoint.x.copy(xScalar)
-                    let y = dummyModel.chartPoint.y.copy(yScalar)
-                    let chartPoint = T(x: x, y: y)
-                    
-                    self.positionUpdateHandler?(chartPoint)
-                    
+                    self.positionUpdateHandler?(chartPoints)
                 }
+                
             } else {
-                self.currentIntersection = nil
+                self.clearIntersections()
             }
         }
     }
@@ -198,13 +246,14 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }
     
     override public func chartDrawersContentViewDrawing(context context: CGContextRef, chart: Chart, view: UIView) {
-        
-        guard let intersection = currentIntersection else {return}
 
+        guard let firstIntersection = currentIntersections.first else {return}
+
+        
         CGContextSetStrokeColorWithColor(context, UIColor.blackColor().CGColor)
         CGContextSetLineWidth(context, 2)
 
-        let coords = globalToDrawersContainerCoordinates(intersection)!
+        let coords = globalToDrawersContainerCoordinates(firstIntersection)!
         let line = toLine(coords)
         
         CGContextMoveToPoint(context, line.p1.x, line.p1.y)
@@ -213,8 +262,12 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         CGContextStrokePath(context)
         
         if let thumbSettings = settings.thumbSettings {
-            CGContextSetStrokeColorWithColor(context, UIColor.blackColor().CGColor)
-            CGContextStrokeEllipseInRect(context, CGRectMake(coords.x - thumbSettings.thumbSize / 2, coords.y - thumbSettings.thumbSize / 2, thumbSettings.thumbSize, thumbSettings.thumbSize))
+            
+            for intersection in currentIntersections {
+                let coords = globalToDrawersContainerCoordinates(intersection)!
+                CGContextSetStrokeColorWithColor(context, UIColor.blackColor().CGColor)
+                CGContextStrokeEllipseInRect(context, CGRectMake(coords.x - thumbSettings.thumbSize / 2, coords.y - thumbSettings.thumbSize / 2, thumbSettings.thumbSize, thumbSettings.thumbSize))
+            }
         }
     }
     
@@ -225,11 +278,16 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         
         let surroundingRect = localLocation.surroundingRect(30)
         
-        if intersect(surroundingRect) || intersectLine(surroundingRect) {
+        if intersectsWithChartPointLines(surroundingRect) || intersectsWithTrackerLine(surroundingRect) {
             isTracking = true
         } else {
-            currentIntersection = nil
+            clearIntersections()
         }
+    }
+    
+    private func clearIntersections() {
+        currentIntersections = []
+        positionUpdateHandler?([])
     }
     
     public override func processPan(location location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool {
@@ -275,12 +333,12 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
     public override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         chart?.drawersContentView.setNeedsDisplay()
         
-        currentIntersection = nil
+        clearIntersections()
     }
     
     public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        currentIntersection = nil
+        clearIntersections()
         chart?.drawersContentView.setNeedsDisplay()
     }
     
