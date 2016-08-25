@@ -50,6 +50,17 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
         guard let chart = chart else {return nil}
         return point.add(chart.containerView.frame.origin)
     }
+
+    public func contentToContainerCoordinates(point: CGPoint) -> CGPoint? {
+        guard let chart = chart else {return nil}
+        let containerX = (point.x * chart.contentView.transform.a) + chart.contentView.frame.minX
+        let containerY = (point.y * chart.contentView.transform.d) + chart.contentView.frame.minY
+        return CGPointMake(containerX, containerY)
+    }
+    
+    public func contentToGlobalCoordinates(point: CGPoint) -> CGPoint? {
+        return contentToContainerCoordinates(point).flatMap{containerToGlobalCoordinates($0)}
+    }
     
     public func containerToGlobalScreenLoc(chartPoint: ChartPoint) -> CGPoint? {
         let containerScreenLoc = CGPointMake(modelLocToScreenLoc(x: chartPoint.x.scalar), modelLocToScreenLoc(y: chartPoint.y.scalar))

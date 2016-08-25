@@ -69,7 +69,13 @@ class GroupedBarsExample: UIViewController {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
-        let groupsLayer = ChartGroupedPlainBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, groups: groups, horizontal: horizontal, barSpacing: 2, groupSpacing: 25, animDuration: 0.5)
+        let groupsLayer = ChartGroupedPlainBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, groups: groups, horizontal: horizontal, barSpacing: 2, groupSpacing: 25, animDuration: 0.5, selectionViewUpdater: ChartViewSelectorBrightness(selectedFactor: 0.5)) {tappedGroupBar in
+            let chartViewPoint = tappedGroupBar.layer.contentToGlobalCoordinates(CGPointMake(tappedGroupBar.tappedBar.view.frame.midX, tappedGroupBar.tappedBar.view.frame.minY))!
+            let viewPoint = CGPointMake(chartViewPoint.x, chartViewPoint.y + 70)
+            let infoBubble = InfoBubble(point: viewPoint, preferredSize: CGSizeMake(50, 40), superview: self.view, text: tappedGroupBar.tappedBar.model.axisValue2.description, font: ExamplesDefaults.labelFont, textColor: UIColor.whiteColor(), bgColor: UIColor.blackColor())
+
+            self.view.addSubview(infoBubble)
+        }
         
         let settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, axis: horizontal ? .X : .Y, settings: settings)

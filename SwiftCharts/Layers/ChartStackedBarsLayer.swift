@@ -33,7 +33,7 @@ public class ChartStackedBarModel: ChartBarModel {
 }
 
 
-class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGenerator<T> {
+class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGenerator<T, ChartPointViewBarStacked> {
     
     private typealias FrameBuilder = (barModel: ChartStackedBarModel, item: ChartStackedBarItemModel, currentTotalQuantity: Double) -> (frame: ChartPointViewBarStackedFrame, length: CGFloat)
     
@@ -41,7 +41,7 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
         super.init(horizontal: horizontal, layer: layer, barWidth: barWidth)
     }
     
-    override func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor? = nil, animDuration: Float, chart: Chart? = nil) -> ChartPointViewBar {
+    override func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor? = nil, animDuration: Float, chart: Chart? = nil) -> ChartPointViewBarStacked {
         
         let constantScreenLoc = constantScreenLocMaybe ?? self.constantScreenLoc(barModel)
         
@@ -91,6 +91,16 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
     
 }
 
+public struct ChartTappedBarStacked {
+    public let model: ChartStackedBarModel
+    public let barView: ChartPointViewBarStacked
+    public let stackedItemModel: ChartStackedBarItemModel
+    public let stackedItemView: UIView
+    public let stackedItemViewFrameRelativeToBarParent: CGRect
+    public let stackedItemIndex: Int
+    public let layer: ChartCoordsSpaceLayer
+}
+
 public class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
     private let barModels: [ChartStackedBarModel]
     private let horizontal: Bool
@@ -99,12 +109,19 @@ public class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
 
     private var barViews: [UIView] = []
 
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float) {
+    private let stackFrameSelectionViewUpdater: ChartViewSelector?
+    private let barSelectionViewUpdater: ChartViewSelector?
+    
+    private var tapHandler: (ChartTappedBarStacked -> Void)?
+    
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, barSelectionViewUpdater: ChartViewSelector? = nil, tapHandler: (ChartTappedBarStacked -> Void)? = nil) {
         self.barModels = barModels
         self.horizontal = horizontal
         self.barWidth = barWidth
         self.animDuration = animDuration
-        
+        self.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
+        self.barSelectionViewUpdater = barSelectionViewUpdater
+        self.tapHandler = tapHandler
         super.init(xAxis: xAxis, yAxis: yAxis)
     }
     
@@ -115,6 +132,14 @@ public class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
         
         for barModel in barModels {
             let barView = barsGenerator.generateView(barModel, animDuration: isTransform ? 0 : animDuration, chart: self.chart)
+            barView.selectionViewUpdater = barSelectionViewUpdater
+            barView.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
+            barView.stackedTapHandler = {[weak self] tappedStackedBar in guard let weakSelf = self else {return}
+                let stackFrameIndex = tappedStackedBar.stackFrame.index
+                let itemModel = barModel.items[stackFrameIndex]
+                let tappedStacked = ChartTappedBarStacked(model: barModel, barView: barView, stackedItemModel: itemModel, stackedItemView: tappedStackedBar.stackFrame.view, stackedItemViewFrameRelativeToBarParent: tappedStackedBar.stackFrame.viewFrameRelativeToBarSuperview,  stackedItemIndex: stackFrameIndex, layer: weakSelf)
+                weakSelf.tapHandler?(tappedStacked)
+            }
             barViews.append(barView)
             chart.addSubview(barView)
         }

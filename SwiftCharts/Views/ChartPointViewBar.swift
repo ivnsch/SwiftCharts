@@ -13,7 +13,19 @@ public class ChartPointViewBar: UIView {
     let targetFrame: CGRect
     let animDuration: Float
     
-    public init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor? = nil, animDuration: Float = 0.5) {
+    var isSelected: Bool = false
+    
+    var selectionViewUpdater: ChartViewSelector?
+    
+    var tapHandler: (ChartPointViewBar -> Void)? {
+        didSet {
+            if tapHandler != nil && gestureRecognizers?.isEmpty ?? true {
+                enableTap()
+            }
+        }
+    }
+    
+    public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor? = nil, animDuration: Float = 0.5, selectionViewUpdater: ChartViewSelector? = nil) {
         
         let (targetFrame, firstFrame): (CGRect, CGRect) = {
             if p1.y - p2.y =~ 0 { // horizontal
@@ -31,11 +43,28 @@ public class ChartPointViewBar: UIView {
         self.targetFrame =  targetFrame
         self.animDuration = animDuration
         
+        self.selectionViewUpdater = selectionViewUpdater
+        
         super.init(frame: firstFrame)
         
         self.backgroundColor = bgColor
     }
+
+    func enableTap() {
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTap))
+        self.addGestureRecognizer(tapRecognizer)
+    }
     
+    func onTap(sender: UITapGestureRecognizer) {
+        toggleSelection()
+        tapHandler?(self)
+    }
+    
+    func toggleSelection() {
+        isSelected = !isSelected
+        selectionViewUpdater?.displaySelected(self, selected: isSelected)
+    }
+
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

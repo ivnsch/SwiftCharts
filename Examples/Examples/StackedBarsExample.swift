@@ -18,10 +18,12 @@ class StackedBarsExample: UIViewController {
     private func chart(horizontal horizontal: Bool) -> Chart {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let color0 = UIColor.grayColor().colorWithAlphaComponent(0.6)
-        let color1 = UIColor.blueColor().colorWithAlphaComponent(0.6)
-        let color2 = UIColor.redColor().colorWithAlphaComponent(0.6)
-        let color3 = UIColor.greenColor().colorWithAlphaComponent(0.6)
+        let alpha: CGFloat = 0.6
+    
+        let color0 = UIColor.grayColor().colorWithAlphaComponent(alpha)
+        let color1 = UIColor.blueColor().colorWithAlphaComponent(alpha)
+        let color2 = UIColor.redColor().colorWithAlphaComponent(alpha)
+        let color3 = UIColor.greenColor().colorWithAlphaComponent(alpha)
         
         let zero = ChartAxisValueDouble(0)
         let barModels = [
@@ -68,7 +70,13 @@ class StackedBarsExample: UIViewController {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
-        let chartStackedBarsLayer = ChartStackedBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, barModels: barModels, horizontal: horizontal, barWidth: 40, animDuration: 0.5)
+        let chartStackedBarsLayer = ChartStackedBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, barModels: barModels, horizontal: horizontal, barWidth: 40, animDuration: 0.5, stackFrameSelectionViewUpdater: ChartViewSelectorAlpha(selectedAlpha: 1, deselectedAlpha: alpha)) {tappedBar in
+            let chartViewPoint = tappedBar.layer.contentToGlobalCoordinates(CGPointMake(tappedBar.barView.frame.midX, tappedBar.stackedItemViewFrameRelativeToBarParent.minY))!
+            let viewPoint = CGPointMake(chartViewPoint.x, chartViewPoint.y + 70)
+            let infoBubble = InfoBubble(point: viewPoint, preferredSize: CGSizeMake(50, 40), superview: self.view, text: "\(tappedBar.stackedItemModel.quantity)", font: ExamplesDefaults.labelFont, textColor: UIColor.whiteColor(), bgColor: UIColor.blackColor())
+            
+            self.view.addSubview(infoBubble)
+        }
         
         let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)

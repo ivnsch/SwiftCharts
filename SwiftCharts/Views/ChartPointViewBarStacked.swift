@@ -8,16 +8,46 @@
 
 import UIKit
 
+public struct TappedChartPointViewBarStacked {
+    public let barView: ChartPointViewBarStacked
+    public let stackFrame: (index: Int, view: UIView, viewFrameRelativeToBarSuperview: CGRect)
+}
+
+
+private class ChartBarStackFrameView: UIView {
+    
+    var isSelected: Bool = false
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 public typealias ChartPointViewBarStackedFrame = (rect: CGRect, color: UIColor)
 
 public class ChartPointViewBarStacked: ChartPointViewBar {
     
-    private var stackViews: [(view: UIView, targetFrame: CGRect)] = []
+    private var stackViews: [(index: Int, view: ChartBarStackFrameView, targetFrame: CGRect)] = []
     
-    init(p1: CGPoint, p2: CGPoint, width: CGFloat, stackFrames: [ChartPointViewBarStackedFrame], animDuration: Float = 0.5) {
-        super.init(p1: p1, p2: p2, width: width, bgColor: UIColor.clearColor(), animDuration: animDuration)
+    var stackFrameSelectionViewUpdater: ChartViewSelector?
+    
+    var stackedTapHandler: (TappedChartPointViewBarStacked -> Void)? {
+        didSet {
+            if stackedTapHandler != nil && gestureRecognizers?.isEmpty ?? true {
+                enableTap()
+            }
+        }
+    }
+    
+    public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, stackFrames: [ChartPointViewBarStackedFrame], animDuration: Float = 0.5, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, selectionViewUpdater: ChartViewSelector? = nil) {
+        self.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
         
-        for stackFrame in stackFrames {
+        super.init(p1: p1, p2: p2, width: width, bgColor: UIColor.clearColor(), animDuration: animDuration, selectionViewUpdater: selectionViewUpdater)
+        
+        for (index, stackFrame) in stackFrames.enumerate() {
             let (targetFrame, firstFrame): (CGRect, CGRect) = {
                 if p1.y - p2.y =~ 0 { // horizontal
                     let initFrame = CGRectMake(0, stackFrame.rect.origin.y, 0, stackFrame.rect.size.height)
@@ -29,17 +59,37 @@ public class ChartPointViewBarStacked: ChartPointViewBar {
                 }
             }()
             
-            let v = UIView(frame: firstFrame)
+            let v = ChartBarStackFrameView(frame: firstFrame)
             v.backgroundColor = stackFrame.color
             
-            stackViews.append((v, targetFrame))
+            stackViews.append((index, v, targetFrame))
             
             addSubview(v)
         }
     }
     
+    override func onTap(sender: UITapGestureRecognizer) {
+        let loc = sender.locationInView(self)
+        guard let tappedStackFrame = (stackViews.filter{$0.view.frame.contains(loc)}.first) else {
+            print("Warn: no stacked frame found in stacked bar")
+            return
+        }
+        
+        toggleSelection()
+        tappedStackFrame.view.isSelected = !tappedStackFrame.view.isSelected
+        
+        let f = tappedStackFrame.view.frame.offsetBy(dx: frame.origin.x, dy: frame.origin.y)
+        
+        stackFrameSelectionViewUpdater?.displaySelected(tappedStackFrame.view, selected: tappedStackFrame.view.isSelected)
+        stackedTapHandler?(TappedChartPointViewBarStacked(barView: self, stackFrame: (tappedStackFrame.index, tappedStackFrame.view, f)))
+    }
+    
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, animDuration: Float, selectionViewUpdater: ChartViewSelector? = nil) {
+        fatalError("init(p1:p2:width:bgColor:animDuration:selectionViewUpdater:) has not been implemented")
     }
     
     override public func didMoveToSuperview() {

@@ -28,7 +28,7 @@ public class ChartBarModel {
     }
 }
 
-class ChartBarsViewGenerator<T: ChartBarModel> {
+class ChartBarsViewGenerator<T: ChartBarModel, U: ChartPointViewBar> {
     let layer: ChartCoordsSpaceLayer
     let barWidth: CGFloat
     
@@ -60,16 +60,21 @@ class ChartBarsViewGenerator<T: ChartBarModel> {
     }
     
     // constantScreenLoc: (screen) coordinate that is equal in p1 and p2 - for vertical bar this is the x coordinate, for horizontal bar this is the y coordinate
-    func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor?, animDuration: Float, chart: Chart? = nil) -> ChartPointViewBar {
+    func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor?, animDuration: Float, chart: Chart? = nil) -> U {
         
         let constantScreenLoc = constantScreenLocMaybe ?? self.constantScreenLoc(barModel)
         
         let viewPoints = self.viewPoints(barModel, constantScreenLoc: constantScreenLoc)
-        return ChartPointViewBar(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: bgColor, animDuration: animDuration)
+        return U(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: bgColor, animDuration: animDuration)
     }
 }
 
 
+public struct ChartTappedBar {
+    public let model: ChartBarModel
+    public let view: ChartPointViewBar
+    public let layer: ChartCoordsSpaceLayer
+}
 
 public class ChartBarsLayer: ChartCoordsSpaceLayer {
     private let bars: [ChartBarModel]
@@ -79,12 +84,15 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
 
     private var barViews: [UIView] = []
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float) {
+    private var tapHandler: (ChartTappedBar -> Void)?
+    
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float, tapHandler: (ChartTappedBar -> Void)? = nil) {
         self.bars = bars
         self.horizontal = horizontal
         self.barWidth = barWidth
         self.animDuration = animDuration
-
+        self.tapHandler = tapHandler
+        
         super.init(xAxis: xAxis, yAxis: yAxis)
     }
     
@@ -95,6 +103,10 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
         
         for barModel in bars {
             let barView = barsGenerator.generateView(barModel, bgColor: barModel.bgColor, animDuration: isTransform ? 0 : animDuration, chart: chart)
+            barView.tapHandler = {[weak self] tappedBarView in guard let weakSelf = self else {return}
+                weakSelf.tapHandler?(ChartTappedBar(model: barModel, view: tappedBarView, layer: weakSelf))
+            }
+        
             barViews.append(barView)
             chart.addSubview(barView)
         }
