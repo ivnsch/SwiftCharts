@@ -25,6 +25,8 @@ public class ChartPointViewBar: UIView {
         }
     }
     
+    public let isHorizontal: Bool
+    
     public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor? = nil, animDuration: Float = 0.5, selectionViewUpdater: ChartViewSelector? = nil) {
         
         let (targetFrame, firstFrame): (CGRect, CGRect) = {
@@ -44,6 +46,8 @@ public class ChartPointViewBar: UIView {
         self.animDuration = animDuration
         
         self.selectionViewUpdater = selectionViewUpdater
+        
+        isHorizontal = p1.y == p2.y
         
         super.init(frame: firstFrame)
         
