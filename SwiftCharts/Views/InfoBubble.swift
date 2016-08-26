@@ -34,11 +34,11 @@ public class InfoBubble: UIView {
     
     public convenience init(point: CGPoint, size: CGSize, superview: UIView, arrowHeight: CGFloat = 15, contentView: UIView, bgColor: UIColor = UIColor.grayColor(), minSuperviewPadding: CGFloat = 2, space: CGFloat = 12, horizontal: Bool = false) {
         
-        let w: CGFloat = size.width
-        let h: CGFloat = size.height
+        let w: CGFloat = size.width + (horizontal ? arrowHeight : 0)
+        let h: CGFloat = size.height + (!horizontal ? arrowHeight : 0)
         
-        let x = horizontal ? point.x : min(max(superview.bounds.minX + minSuperviewPadding, point.x - w / 2), superview.bounds.maxX - w - minSuperviewPadding) // center and move rect to fit in available horizontal space
-        let y = horizontal ? min(max(0 + minSuperviewPadding, point.y - h / 2), superview.bounds.maxY - h - minSuperviewPadding) : point.y // center and move rect to fit in available vertical space
+        let x = horizontal ? point.x : min(max(superview.bounds.minX + minSuperviewPadding, point.x - w / 2), superview.bounds.maxX - w - minSuperviewPadding) // align with center and move rect to fit in available horizontal space
+        let y = horizontal ? min(max(0 + minSuperviewPadding, point.y - h / 2), superview.bounds.maxY - h - minSuperviewPadding) : point.y // align with center and move rect to fit in available vertical space
         
         let frame: CGRect = {
             if !horizontal {
