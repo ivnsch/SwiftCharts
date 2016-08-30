@@ -173,6 +173,8 @@ public class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
     /// f: function to be applied to each segment in the lines defined by p1, p2. Returns an object of type U to exit, returning it from the outer function, or nil to continue
     private func iterateLineSegments<U>(f: (p1: ChartPointLayerModel<T>, p2: ChartPointLayerModel<T>) -> U?) -> U? {
         for line in lineModels {
+            guard !line.isEmpty else {continue}
+            
             for i in 0..<(line.count - 1) {
                 let m1 = line[i]
                 let m2 = line[i + 1]
