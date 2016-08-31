@@ -44,7 +44,7 @@ class TrackerExample: UIViewController {
         
         var currentPositionLabels: [UILabel] = []
         
-        let chartPointsTrackerLayer = ChartPointsLineTrackerLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lines: [chartPoints, chartPoints2], lineColor: UIColor.blackColor(), animDuration: 1, animDelay: 2, settings: trackerLayerSettings) {chartPointsWithScreenLoc in
+        let chartPointsTrackerLayer = ChartPointsLineTrackerLayer<ChartPoint, Any>(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lines: [chartPoints, chartPoints2], lineColor: UIColor.blackColor(), animDuration: 1, animDelay: 2, settings: trackerLayerSettings) {chartPointsWithScreenLoc in
 
             currentPositionLabels.forEach{$0.removeFromSuperview()}
             
