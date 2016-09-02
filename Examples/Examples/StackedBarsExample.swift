@@ -74,7 +74,9 @@ class StackedBarsExample: UIViewController {
             let chartViewPoint = tappedBar.layer.contentToGlobalCoordinates(CGPointMake(tappedBar.barView.frame.midX, tappedBar.stackedItemViewFrameRelativeToBarParent.minY))!
             let viewPoint = CGPointMake(chartViewPoint.x, chartViewPoint.y + 70)
             let infoBubble = InfoBubble(point: viewPoint, preferredSize: CGSizeMake(50, 40), superview: self.view, text: "\(tappedBar.stackedItemModel.quantity)", font: ExamplesDefaults.labelFont, textColor: UIColor.whiteColor(), bgColor: UIColor.blackColor())
-            
+            infoBubble.tapHandler = {
+                infoBubble.removeFromSuperview()
+            }
             self.view.addSubview(infoBubble)
         }
         

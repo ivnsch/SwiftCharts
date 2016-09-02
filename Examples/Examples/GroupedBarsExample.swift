@@ -73,13 +73,32 @@ class GroupedBarsExample: UIViewController {
             
             let barPoint = horizontal ? CGPointMake(tappedGroupBar.tappedBar.view.frame.maxX, tappedGroupBar.tappedBar.view.frame.midY) : CGPointMake(tappedGroupBar.tappedBar.view.frame.midX, tappedGroupBar.tappedBar.view.frame.minY)
             
-            guard let chartViewPoint = tappedGroupBar.layer.contentToGlobalCoordinates(barPoint) else {return}
+            guard let chart = self.chart, chartViewPoint = tappedGroupBar.layer.contentToGlobalCoordinates(barPoint) else {return}
             
-            let viewPoint = CGPointMake(chartViewPoint.x, chartViewPoint.y + 70)
+            let viewPoint = CGPointMake(chartViewPoint.x, chartViewPoint.y)
             
-            let infoBubble = InfoBubble(point: viewPoint, preferredSize: CGSizeMake(50, 30), superview: self.view, text: tappedGroupBar.tappedBar.model.axisValue2.description, font: ExamplesDefaults.labelFont, textColor: UIColor.whiteColor(), bgColor: UIColor.blackColor(), horizontal: horizontal)
+            let infoBubble = InfoBubble(point: viewPoint, preferredSize: CGSizeMake(50, 40), superview: self.chart!.view, text: tappedGroupBar.tappedBar.model.axisValue2.description, font: ExamplesDefaults.labelFont, textColor: UIColor.whiteColor(), bgColor: UIColor.blackColor(), horizontal: horizontal)
 
-            self.view.addSubview(infoBubble)
+            let anchor: CGPoint = {
+                switch (horizontal, infoBubble.inverted(chart.view)) {
+                case (true, true): return CGPointMake(1, 0.5)
+                case (true, false): return CGPointMake(0, 0.5)
+                case (false, true): return CGPointMake(0.5, 0)
+                case (false, false): return CGPointMake(0.5, 1)
+                }
+            }()
+            
+            let animators = ChartViewAnimators(view: infoBubble, animators: ChartViewGrowAnimator(anchor: anchor), onFinishInverts: {
+                infoBubble.removeFromSuperview()
+            })
+            
+            chart.view.addSubview(infoBubble)
+            
+            infoBubble.tapHandler = {
+                animators.invert()
+            }
+            
+            animators.animate()
         }
         
         let settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
