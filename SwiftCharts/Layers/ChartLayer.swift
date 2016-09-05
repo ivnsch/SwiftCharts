@@ -48,4 +48,6 @@ public protocol ChartLayer {
     
     /// Return true to disable chart zooming
     func processZoom(deltaX deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool
+    
+    func keepInBoundaries()
 }

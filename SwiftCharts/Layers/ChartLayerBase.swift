@@ -51,5 +51,7 @@ public class ChartLayerBase: NSObject, ChartLayer {
         return nil
     }
     
+    public func keepInBoundaries() {}
+    
     public override init() {}
 }

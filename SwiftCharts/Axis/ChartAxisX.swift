@@ -54,15 +54,28 @@ public class ChartAxisX: ChartAxis {
         return lastVisible - screenToModelLength(fixedPaddingLastScreen ?? paddingLastScreen)
     }
 
-    override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat, elastic: Bool) {
         
         // Zoom around center of gesture. Uses center as anchor point dividing the line in 2 segments which are scaled proportionally.
         let segment1 = centerX - firstScreen
         let segment2 = lastScreen - centerX
         let deltaSegment1 = (segment1 * x) - segment1
         let deltaSegment2 = (segment2 * x) - segment2
-        var newOriginX = firstScreen - deltaSegment1
-        var newEndX = lastScreen + deltaSegment2
+        let newOriginX = firstScreen - deltaSegment1
+        let newEndX = lastScreen + deltaSegment2
+        
+        if elastic {
+            firstScreen = newOriginX
+            lastScreen = newEndX
+        } else {
+            keepInBoundaries(newOriginX, newEndX: newEndX)
+        }
+    }
+    
+    private func keepInBoundaries(newOriginX: CGFloat, newEndX: CGFloat) {
+        
+        var newOriginX = newOriginX
+        var newEndX = newEndX
         
         if newEndX < lastScreenInit {
             let delta = lastScreenInit - newEndX
@@ -93,20 +106,25 @@ public class ChartAxisX: ChartAxis {
         }
     }
     
+    override func keepInBoundaries() {
+        keepInBoundaries(firstScreen, newEndX: lastScreen)
+    }
     
-    override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+    override func pan(deltaX: CGFloat, deltaY: CGFloat, elastic: Bool) {
         
         let length = screenLength
         
         let (newOriginX, newEndX): (CGFloat, CGFloat) = {
             
             if deltaX < 0 { // scrolls left
-                let endX = max(lastScreenInit, lastScreen + deltaX)
+                let tryX = lastScreen + deltaX
+                let endX = elastic ? tryX : max(lastScreenInit, tryX)
                 let originX = endX - length
                 return (originX, endX)
                 
             } else if deltaX > 0 {  // scrolls right
-                let originX = min(firstScreen + deltaX, firstScreenInit)
+                let tryX = firstScreen + deltaX
+                let originX = elastic ? tryX : min(tryX, firstScreenInit)
                 let endX = originX + length
                 return (originX, endX)
                 
@@ -119,8 +137,8 @@ public class ChartAxisX: ChartAxis {
         lastScreen = newEndX
     }
     
-    override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        zoom(scaleX / CGFloat(zoomFactor), y: scaleY, centerX: centerX, centerY: centerY)
+    override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat, elastic: Bool) {
+        zoom(scaleX / CGFloat(zoomFactor), y: scaleY, centerX: centerX, centerY: centerY, elastic: elastic)
     }
  
     override func toModelInner(screenLoc: CGFloat) -> Double {

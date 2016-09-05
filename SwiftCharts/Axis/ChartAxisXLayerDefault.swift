@@ -185,19 +185,19 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     }
     
     override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        axis.zoom(x, y: y, centerX: centerX, centerY: centerY)
+        axis.zoom(x, y: y, centerX: centerX, centerY: centerY, elastic: chart?.zoomPanSettings.elastic ?? false)
         initDrawers()
         chart?.view.setNeedsDisplay()
     }
     
     override func pan(deltaX: CGFloat, deltaY: CGFloat) {
-        axis.pan(deltaX, deltaY: deltaY)
+        axis.pan(deltaX, deltaY: deltaY, elastic: chart?.zoomPanSettings.elastic ?? false)
         initDrawers()
         chart?.view.setNeedsDisplay()
     }
     
     override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        axis.zoom(scaleX, scaleY: scaleY, centerX: centerX, centerY: centerX)
+        axis.zoom(scaleX, scaleY: scaleY, centerX: centerX, centerY: centerX, elastic: chart?.zoomPanSettings.elastic ?? false)
         initDrawers()
         chart?.view.setNeedsDisplay()
     }

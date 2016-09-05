@@ -12,6 +12,8 @@ import UIKit
 
 public protocol Zoomable {
     
+    var zoomPanSettings: ChartSettingsZoomPan {get}
+    
     var containerView: UIView {get}
     
     var contentView: UIView {get}
@@ -74,11 +76,18 @@ public extension Zoomable {
     }
     
     public func zoom(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool) {
-
-        let finalMinDeltaX = minScaleX.map{max($0 / scaleX, deltaX)} ?? deltaX
-        let finalDeltaX = maxScaleX.map{min($0 / scaleX, finalMinDeltaX)} ?? finalMinDeltaX
-        let finalMinDeltaY = minScaleY.map{max($0 / scaleY, deltaY)} ?? deltaY
-        let finalDeltaY = maxScaleY.map{min($0 / scaleY, finalMinDeltaY)} ?? finalMinDeltaY
+        
+        var finalDeltaX: CGFloat
+        var finalDeltaY: CGFloat
+        if zoomPanSettings.elastic {
+            finalDeltaX = deltaX
+            finalDeltaY = deltaY
+        } else {
+            let finalMinDeltaX = minScaleX.map{max($0 / scaleX, deltaX)} ?? deltaX
+            finalDeltaX = maxScaleX.map{min($0 / scaleX, finalMinDeltaX)} ?? finalMinDeltaX
+            let finalMinDeltaY = minScaleY.map{max($0 / scaleY, deltaY)} ?? deltaY
+            finalDeltaY = maxScaleY.map{min($0 / scaleY, finalMinDeltaY)} ?? finalMinDeltaY
+        }
         
         onZoomStart(deltaX: finalDeltaX, deltaY: finalDeltaY, centerX: centerX, centerY: centerY)
         
@@ -89,14 +98,11 @@ public extension Zoomable {
     }
     
     private func zoomContentView(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        let containerFrame = containerView.frame
-        let contentFrame = contentView.frame
-        
         setContentViewAnchor(centerX, centerY: centerY)
         
-        let scaleX = max(containerFrame.width / contentFrame.width, deltaX)
-        let scaleY = max(containerFrame.height / contentFrame.height, deltaY)
-
+        let scaleX = zoomPanSettings.elastic ? deltaX : max(containerView.frame.width / contentView.frame.width, deltaX)
+        let scaleY = zoomPanSettings.elastic ? deltaY : max(containerView.frame.height / contentView.frame.height, deltaY)
+        
         setContentViewScale(scaleX: scaleX, scaleY: scaleY)
     }
     
@@ -124,10 +130,12 @@ public extension Zoomable {
 
     private func setContentViewScale(scaleX scaleX: CGFloat, scaleY: CGFloat) {
         contentView.transform = CGAffineTransformScale(contentView.transform, scaleX, scaleY)
-        keepInBoundaries()
+        if !zoomPanSettings.elastic {
+            keepInBoundaries()
+        }
     }
     
-    private func keepInBoundaries() {
+    func keepInBoundaries() {
         let containerFrame = containerView.frame
         
         if contentView.frame.origin.y > 0 {

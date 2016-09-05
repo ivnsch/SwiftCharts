@@ -188,7 +188,13 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
             sum + label.textSize.width
         }
     }()
-
+    
+    public func keepInBoundaries() {
+        axis.keepInBoundaries()
+        initDrawers()
+        chart?.view.setNeedsDisplay()
+    }
+    
     var width: CGFloat {
         fatalError("override")
     }

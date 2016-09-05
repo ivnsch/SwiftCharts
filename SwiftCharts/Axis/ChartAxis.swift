@@ -123,15 +123,15 @@ public class ChartAxis: CustomStringConvertible {
         fatalError("Override")
     }
     
-    func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat, elastic: Bool) {
         fatalError("Override")
     }
     
-    func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat, elastic: Bool) {
         fatalError("Override")
     }
 
-    func pan(deltaX: CGFloat, deltaY: CGFloat) {
+    func pan(deltaX: CGFloat, deltaY: CGFloat, elastic: Bool) {
         fatalError("Override")
     }
     
@@ -180,6 +180,10 @@ public class ChartAxis: CustomStringConvertible {
     }
     
     func isInBoundaries(screenCenter: CGFloat, screenSize: CGSize) -> Bool {
+        fatalError("Override")
+    }
+    
+    func keepInBoundaries() {
         fatalError("Override")
     }
     
