@@ -88,7 +88,8 @@ class GroupedBarsExample: UIViewController {
                 }
             }()
             
-            let animators = ChartViewAnimators(view: infoBubble, animators: ChartViewGrowAnimator(anchor: anchor), onFinishInverts: {
+            let animatorsSettings = ChartViewAnimatorsSettings(animInitSpringVelocity: 5)
+            let animators = ChartViewAnimators(view: infoBubble, settings: animatorsSettings, invertSettings: animatorsSettings.withoutDamping(), animators: ChartViewGrowAnimator(anchor: anchor), onFinishInverts: {
                 infoBubble.removeFromSuperview()
             })
             
