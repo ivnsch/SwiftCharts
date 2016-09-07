@@ -33,7 +33,9 @@ public class InfoBubble: UIView {
     }
     
     override public func drawRect(rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
         CGContextSetFillColorWithColor(context, self.bgColor.CGColor)
         CGContextSetStrokeColorWithColor(context, self.bgColor.CGColor)
         let rrect = CGRectInset(rect, 0, 20)

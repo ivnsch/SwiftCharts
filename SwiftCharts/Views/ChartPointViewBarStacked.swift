@@ -24,8 +24,9 @@ public class ChartPointViewBarStacked: ChartPointViewBar {
     }
     
     override public func drawRect(rect: CGRect) {
-        
-        let context = UIGraphicsGetCurrentContext()
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
         
         for stackFrame in self.stackFrames {
             CGContextSetFillColorWithColor(context, stackFrame.color.CGColor)
