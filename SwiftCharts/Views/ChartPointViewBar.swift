@@ -8,22 +8,22 @@
 
 import UIKit
 
-public class ChartPointViewBar: UIView {
+open class ChartPointViewBar: UIView {
     
-    private let targetFrame: CGRect
-    private let animDuration: Float
+    fileprivate let targetFrame: CGRect
+    fileprivate let animDuration: Float
     
     public init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor? = nil, animDuration: Float = 0.5) {
         
         let (targetFrame, firstFrame): (CGRect, CGRect) = {
             if p1.y - p2.y == 0 { // horizontal
-                let targetFrame = CGRectMake(p1.x, p1.y - width / 2, p2.x - p1.x, width)
-                let initFrame = CGRectMake(targetFrame.origin.x, targetFrame.origin.y, 0, targetFrame.size.height)
+                let targetFrame = CGRect(x: p1.x, y: p1.y - width / 2, width: p2.x - p1.x, height: width)
+                let initFrame = CGRect(x: targetFrame.origin.x, y: targetFrame.origin.y, width: 0, height: targetFrame.size.height)
                 return (targetFrame, initFrame)
                 
             } else { // vertical
-                let targetFrame = CGRectMake(p1.x - width / 2, p1.y, width, p2.y - p1.y)
-                let initFrame = CGRectMake(targetFrame.origin.x, targetFrame.origin.y, targetFrame.size.width, 0)
+                let targetFrame = CGRect(x: p1.x - width / 2, y: p1.y, width: width, height: p2.y - p1.y)
+                let initFrame = CGRect(x: targetFrame.origin.x, y: targetFrame.origin.y, width: targetFrame.size.width, height: 0)
                 return (targetFrame, initFrame)
             }
         }()
@@ -40,8 +40,8 @@ public class ChartPointViewBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func didMoveToSuperview() {
-        UIView.animateWithDuration(CFTimeInterval(self.animDuration), delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {() -> Void in
+    override open func didMoveToSuperview() {
+        UIView.animate(withDuration: CFTimeInterval(self.animDuration), delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {() -> Void in
             self.frame = self.targetFrame
         }, completion: nil)
     }

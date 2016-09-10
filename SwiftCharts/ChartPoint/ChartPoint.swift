@@ -8,17 +8,17 @@
 
 import UIKit
 
-public class ChartPoint: Equatable, CustomStringConvertible {
+open class ChartPoint: Equatable, CustomStringConvertible {
     
-    public let x: ChartAxisValue
-    public let y: ChartAxisValue
+    open let x: ChartAxisValue
+    open let y: ChartAxisValue
     
     required public init(x: ChartAxisValue, y: ChartAxisValue) {
         self.x = x
         self.y = y
     }
     
-    public var description: String {
+    open var description: String {
         return "\(self.x), \(self.y)"
     }
 }

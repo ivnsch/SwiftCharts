@@ -8,12 +8,12 @@
 
 import UIKit
 
-public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T> {
+open class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T> {
     
-    private var screenItems: [CandleStickScreenItem] = []
+    fileprivate var screenItems: [CandleStickScreenItem] = []
 
-    private let itemWidth: CGFloat
-    private let strokeWidth: CGFloat
+    fileprivate let itemWidth: CGFloat
+    fileprivate let strokeWidth: CGFloat
     
     public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], itemWidth: CGFloat = 10, strokeWidth: CGFloat = 1) {
         self.itemWidth = itemWidth
@@ -32,25 +32,25 @@ public class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T
             let openScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.open)).y
             let closeScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.close)).y
             
-            let (rectTop, rectBottom, fillColor) = closeScreenY < openScreenY ? (closeScreenY, openScreenY, UIColor.whiteColor()) : (openScreenY, closeScreenY, UIColor.blackColor())
+            let (rectTop, rectBottom, fillColor) = closeScreenY < openScreenY ? (closeScreenY, openScreenY, UIColor.white) : (openScreenY, closeScreenY, UIColor.black)
             return CandleStickScreenItem(x: x, lineTop: highScreenY, lineBottom: lowScreenY, rectTop: rectTop, rectBottom: rectBottom, width: self.itemWidth, fillColor: fillColor)
         }
     }
 
-    override public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
+    override open func chartViewDrawing(context: CGContext, chart: Chart) {
         
         for screenItem in self.screenItems {
             
-            CGContextSetLineWidth(context, self.strokeWidth)
-            CGContextSetStrokeColorWithColor(context, UIColor.blackColor().CGColor)
-            CGContextMoveToPoint(context, screenItem.x, screenItem.lineTop)
-            CGContextAddLineToPoint(context, screenItem.x, screenItem.lineBottom)
-            CGContextStrokePath(context)
+            context.setLineWidth(self.strokeWidth)
+            context.setStrokeColor(UIColor.black.cgColor)
+            context.move(to: CGPoint(x: screenItem.x, y: screenItem.lineTop))
+            context.addLine(to: CGPoint(x: screenItem.x, y: screenItem.lineBottom))
+            context.strokePath()
             
-            CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 0.0)
-            CGContextSetFillColorWithColor(context, screenItem.fillColor.CGColor)
-            CGContextFillRect(context, screenItem.rect)
-            CGContextStrokeRect(context, screenItem.rect)
+            context.setFillColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.0)
+            context.setFillColor(screenItem.fillColor.cgColor)
+            context.fill(screenItem.rect)
+            context.stroke(screenItem.rect)
         }
     }
 }
@@ -67,7 +67,7 @@ private struct CandleStickScreenItem {
         self.x = x
         self.lineTop = lineTop
         self.lineBottom = lineBottom
-        self.rect = CGRectMake(x - (width / 2), rectTop, width, rectBottom - rectTop)
+        self.rect = CGRect(x: x - (width / 2), y: rectTop, width: width, height: rectBottom - rectTop)
         self.fillColor = fillColor
     }
     

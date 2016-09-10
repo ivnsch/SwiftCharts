@@ -8,15 +8,15 @@
 
 import UIKit
 
-public class ChartContextDrawer {
+open class ChartContextDrawer {
     
     var hidden: Bool = false
     
-    final func triggerDraw(context context: CGContextRef, chart: Chart) {
+    final func triggerDraw(context: CGContext, chart: Chart) {
         if !hidden {
             self.draw(context: context, chart: chart)
         }
     }
     
-    func draw(context context: CGContextRef, chart: Chart) {}
+    func draw(context: CGContext, chart: Chart) {}
 }

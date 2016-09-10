@@ -11,34 +11,34 @@ import SwiftCharts
 
 class CustomUnitsExample: UIViewController {
 
-    private var chart: Chart? // arc
+    fileprivate var chart: Chart? // arc
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
 
-        var readFormatter = NSDateFormatter()
+        var readFormatter = DateFormatter()
         readFormatter.dateFormat = "dd.MM.yyyy"
         
-        var displayFormatter = NSDateFormatter()
+        var displayFormatter = DateFormatter()
         displayFormatter.dateFormat = "dd.MM.yyyy"
         
-        let date = {(str: String) -> NSDate in
-            return readFormatter.dateFromString(str)!
+        let date = {(str: String) -> Date in
+            return readFormatter.date(from: str)!
         }
         
-        let calendar = NSCalendar.currentCalendar()
+        let calendar = Calendar.current
         
-        let dateWithComponents = {(day: Int, month: Int, year: Int) -> NSDate in
-            let components = NSDateComponents()
+        let dateWithComponents = {(day: Int, month: Int, year: Int) -> Date in
+            var components = DateComponents()
             components.day = day
             components.month = month
             components.year = year
-            return calendar.dateFromComponents(components)!
+            return calendar.date(from: components)!
         }
         
-        func filler(date: NSDate) -> ChartAxisValueDate {
+        func filler(_ date: Date) -> ChartAxisValueDate {
             let filler = ChartAxisValueDate(date: date, formatter: displayFormatter)
             filler.hidden = true
             return filler
@@ -59,7 +59,7 @@ class CustomUnitsExample: UIViewController {
             createChartPoint(dateStr: "21.10.2015", percent: 100, readFormatter: readFormatter, displayFormatter: displayFormatter)
         ]
         
-        let yValues = 0.stride(through: 100, by: 10).map {ChartAxisValuePercent($0, labelSettings: labelSettings)}
+        let yValues = stride(from: 0, through: 100, by: 10).map {ChartAxisValuePercent($0, labelSettings: labelSettings)}
         yValues.first?.hidden = true
 
         let xValues = [
@@ -84,10 +84,10 @@ class CustomUnitsExample: UIViewController {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
         
-        let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.redColor(), animDuration: 1, animDelay: 0)
+        let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.red, animDuration: 1, animDelay: 0)
         let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
         
-        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
         
         let chart = Chart(
@@ -103,19 +103,19 @@ class CustomUnitsExample: UIViewController {
         self.chart = chart
     }
     
-    func createChartPoint(dateStr dateStr: String, percent: Double, readFormatter: NSDateFormatter, displayFormatter: NSDateFormatter) -> ChartPoint {
+    func createChartPoint(dateStr: String, percent: Double, readFormatter: DateFormatter, displayFormatter: DateFormatter) -> ChartPoint {
         return ChartPoint(x: self.createDateAxisValue(dateStr, readFormatter: readFormatter, displayFormatter: displayFormatter), y: ChartAxisValuePercent(percent))
     }
     
-    func createDateAxisValue(dateStr: String, readFormatter: NSDateFormatter, displayFormatter: NSDateFormatter) -> ChartAxisValue {
-        let date = readFormatter.dateFromString(dateStr)!
-        let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont, rotation: 45, rotationKeep: .Top)
+    func createDateAxisValue(_ dateStr: String, readFormatter: DateFormatter, displayFormatter: DateFormatter) -> ChartAxisValue {
+        let date = readFormatter.date(from: dateStr)!
+        let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont, rotation: 45, rotationKeep: .top)
         return ChartAxisValueDate(date: date, formatter: displayFormatter, labelSettings: labelSettings)
     }
     
     class ChartAxisValuePercent: ChartAxisValueDouble {
         override var description: String {
-            return "\(self.formatter.stringFromNumber(self.scalar)!)%"
+            return "\(self.formatter.string(from: NSNumber(value: self.scalar))!)%"
         }
     }
 }

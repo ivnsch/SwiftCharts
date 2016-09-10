@@ -10,28 +10,28 @@ import UIKit
 
 
 /// Displays a single view for a point in response to a pan gesture
-public class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPointsViewsLayer<T, U> {
-    public typealias ChartPointLayerModelForScreenLocFilter = (screenLoc: CGPoint, chartPointModels: [ChartPointLayerModel<T>]) -> ChartPointLayerModel<T>?
+open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPointsViewsLayer<T, U> {
+    public typealias ChartPointLayerModelForScreenLocFilter = (_ screenLoc: CGPoint, _ chartPointModels: [ChartPointLayerModel<T>]) -> ChartPointLayerModel<T>?
 
-    public private(set) var view: UIView?
+    open fileprivate(set) var view: UIView?
 
-    private let chartPointLayerModelForScreenLocFilter: ChartPointLayerModelForScreenLocFilter
+    fileprivate let chartPointLayerModelForScreenLocFilter: ChartPointLayerModelForScreenLocFilter
 
-    public let panGestureRecognizer: UIPanGestureRecognizer
+    open let panGestureRecognizer: UIPanGestureRecognizer
 
     /// The delay after touches end before the highlighted point fades out. Set to `nil` to keep the highlight until the next touch.
-    public var hideDelay: NSTimeInterval? = 1.0
+    open var hideDelay: TimeInterval? = 1.0
 
     weak var chart: Chart?
 
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], gestureRecognizer: UIPanGestureRecognizer? = nil, modelFilter: ChartPointLayerModelForScreenLocFilter, viewGenerator: ChartPointViewGenerator) {
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], gestureRecognizer: UIPanGestureRecognizer? = nil, modelFilter: @escaping ChartPointLayerModelForScreenLocFilter, viewGenerator: @escaping ChartPointViewGenerator) {
         chartPointLayerModelForScreenLocFilter = modelFilter
         panGestureRecognizer = gestureRecognizer ?? UIPanGestureRecognizer()
 
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
 
-    override func display(chart chart: Chart) {
+    override func display(chart: Chart) {
         let view = UIView(frame: chart.bounds)
         self.chart = chart
 
@@ -45,12 +45,12 @@ public class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoin
         self.view = view
     }
 
-    public var highlightedPoint: T? {
+    open var highlightedPoint: T? {
         get {
             return highlightedModel?.chartPoint
         }
         set {
-            if let index = chartPointsModels.indexOf({ $0.chartPoint == newValue }) {
+            if let index = chartPointsModels.index(where: { $0.chartPoint == newValue }) {
                 highlightedModel = chartPointsModels[index]
             } else {
                 highlightedModel = nil
@@ -60,32 +60,32 @@ public class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoin
 
     var highlightedModel: ChartPointLayerModel<T>? {
         didSet {
-            if highlightedModel?.index != oldValue?.index, let view = view, chart = chart {
+            if highlightedModel?.index != oldValue?.index, let view = view, let chart = chart {
                 for subview in view.subviews {
                     subview.removeFromSuperview()
                 }
 
-                if let model = highlightedModel, pointView = viewGenerator(chartPointModel: model, layer: self, chart: chart) {
+                if let model = highlightedModel, let pointView = viewGenerator(model, self, chart) {
                     view.addSubview(pointView)
                 }
             }
         }
     }
 
-    @objc func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
+    @objc func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
         switch gestureRecognizer.state {
-        case .Possible:
+        case .possible:
             // Follow your dreams!
             break
-        case .Began, .Changed:
+        case .began, .changed:
             if let view = view {
-                let point = gestureRecognizer.locationInView(view)
+                let point = gestureRecognizer.location(in: view)
 
-                highlightedModel = chartPointLayerModelForScreenLocFilter(screenLoc: point, chartPointModels: chartPointsModels)
+                highlightedModel = chartPointLayerModelForScreenLocFilter(point, chartPointsModels)
             }
-        case .Cancelled, .Failed, .Ended:
-            if let view = view, hideDelay = hideDelay {
-                UIView.animateWithDuration(0.5,
+        case .cancelled, .failed, .ended:
+            if let view = view, let hideDelay = hideDelay {
+                UIView.animate(withDuration: 0.5,
                     delay: hideDelay,
                     options: [],
                     animations: { () -> Void in

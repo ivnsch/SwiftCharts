@@ -13,7 +13,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
     @IBOutlet weak var detailDescriptionLabel: UILabel!
     
     lazy var chartFrame: CGRect! = {
-        CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height - 80)
+        CGRect(x: 0, y: 80, width: self.view.frame.size.width, height: self.view.frame.size.height - 80)
     }()
     
     var detailItem: Example? {
@@ -27,90 +27,90 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
         
         if let example: Example = self.detailItem  {
             switch example {
-            case .HelloWorld:
+            case .helloWorld:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(HelloWorld())
-            case .Bars:
+            case .bars:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(BarsExample())
-            case .StackedBars:
+            case .stackedBars:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(StackedBarsExample())
-            case .BarsPlusMinus:
+            case .barsPlusMinus:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(BarsPlusMinusWithGradientExample())
-            case .GroupedBars:
+            case .groupedBars:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(GroupedBarsExample())
-            case .BarsStackedGrouped:
+            case .barsStackedGrouped:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(GroupedAndStackedBarsExample())
-            case .Scatter:
+            case .scatter:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(ScatterExample())
-            case .Notifications:
+            case .notifications:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(NotificationsExample())
-            case .Target:
+            case .target:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(TargetExample())
-            case .Areas:
+            case .areas:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(AreasExample())
-            case .Bubble:
+            case .bubble:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(BubbleExample())
-            case .Combination:
+            case .combination:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(BarsPlusMinusAndLinesExample())
-            case .Scroll:
+            case .scroll:
                 self.setSplitSwipeEnabled(false)
                 self.automaticallyAdjustsScrollViewInsets = false
                 self.showExampleController(ScrollExample())
-            case .Coords:
+            case .coords:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(CoordsExample())
-            case .Tracker:
+            case .tracker:
                 self.setSplitSwipeEnabled(false)
                 self.showExampleController(TrackerExample())
-            case .MultiTracker:
+            case .multiTracker:
                 self.setSplitSwipeEnabled(false)
                 self.showExampleController(MultiTrackerExample())
-            case .EqualSpacing:
+            case .equalSpacing:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(EqualSpacingExample())
-            case .CustomUnits:
+            case .customUnits:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(CustomUnitsExample())
-            case .Multival:
+            case .multival:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(MultipleLabelsExample())
-            case .MultiAxis:
+            case .multiAxis:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(MultipleAxesExample())
-            case .MultiAxisInteractive:
+            case .multiAxisInteractive:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(MultipleAxesInteractiveExample())
-            case .CandleStick:
+            case .candleStick:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(CandleStickExample())
-            case .Cubiclines:
+            case .cubiclines:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(CubicLinesExample())
-            case .NotNumeric:
+            case .notNumeric:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(NotNumericExample())
-            case .CandleStickInteractive:
+            case .candleStickInteractive:
                 self.setSplitSwipeEnabled(false)
                 self.showExampleController(CandleStickInteractiveExample())
-            case .Trendline:
+            case .trendline:
                 self.setSplitSwipeEnabled(true)
                 self.showExampleController(TrendlineExample())
             }
         }
     }
     
-    private func showExampleController(controller: UIViewController) {
+    fileprivate func showExampleController(_ controller: UIViewController) {
         if let currentExampleController = self.currentExampleController {
             currentExampleController.removeFromParentViewController()
             currentExampleController.view.removeFromSuperview()
@@ -120,9 +120,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
         self.currentExampleController = controller
     }
     
-    private func setSplitSwipeEnabled(enabled: Bool) {
-        if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
-            let splitViewController = UIApplication.sharedApplication().delegate?.window!!.rootViewController as! UISplitViewController
+    fileprivate func setSplitSwipeEnabled(_ enabled: Bool) {
+        if UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad {
+            let splitViewController = UIApplication.shared.delegate?.window!!.rootViewController as! UISplitViewController
             splitViewController.presentsWithGesture = enabled
         }
     }

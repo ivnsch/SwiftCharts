@@ -15,12 +15,12 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
 
     /// The start point of the axis line.
     override var lineP1: CGPoint {
-        return CGPointMake(self.p1.x + self.lineOffset, self.p1.y)
+        return CGPoint(x: self.p1.x + self.lineOffset, y: self.p1.y)
     }
 
     /// The end point of the axis line.
     override var lineP2: CGPoint {
-        return CGPointMake(self.p2.x + self.lineOffset, self.p2.y)
+        return CGPoint(x: self.p2.x + self.lineOffset, y: self.p2.y)
     }
 
     /// The offset of the axis labels from the edge of the axis bounds
@@ -34,7 +34,7 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
     ///          ▼
     ///  Label
     /// ````
-    private lazy var labelsOffset: CGFloat = {
+    fileprivate lazy var labelsOffset: CGFloat = {
         return self.axisTitleLabelsWidth + self.settings.axisTitleLabelsToLabelsSpacing
     }()
 
@@ -52,7 +52,7 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
     ///          │
     /// ───────  ▼
     /// ````
-    private lazy var lineOffset: CGFloat = {
+    fileprivate lazy var lineOffset: CGFloat = {
         return self.labelsOffset + self.labelsMaxWidth + self.settings.labelsToAxisSpacingY + self.settings.axisStrokeWidth
     }()
     
@@ -62,20 +62,20 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
         self.lineDrawer = self.generateLineDrawer(offset: self.lineOffset)
     }
     
-    override func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {
+    override func generateLineDrawer(offset: CGFloat) -> ChartLineDrawer {
         let halfStrokeWidth = self.settings.axisStrokeWidth / 2 // we want that the stroke ends at the end of the frame, not be in the middle of it
-        let p1 = CGPointMake(self.p1.x + offset - halfStrokeWidth, self.p1.y)
-        let p2 = CGPointMake(self.p2.x + offset - halfStrokeWidth, self.p2.y)
+        let p1 = CGPoint(x: self.p1.x + offset - halfStrokeWidth, y: self.p1.y)
+        let p2 = CGPoint(x: self.p2.x + offset - halfStrokeWidth, y: self.p2.y)
         return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
     }
 
-    override func labelsX(offset offset: CGFloat, labelWidth: CGFloat, textAlignment: ChartLabelTextAlignment) -> CGFloat {
+    override func labelsX(offset: CGFloat, labelWidth: CGFloat, textAlignment: ChartLabelTextAlignment) -> CGFloat {
         let labelsXRight = self.p1.x + offset
         var labelsX: CGFloat
         switch textAlignment {
-        case .Right, .Default:
+        case .right, .default:
             labelsX = labelsXRight + self.labelsMaxWidth - labelWidth
-        case .Left:
+        case .left:
             labelsX = labelsXRight
         }
         return labelsX

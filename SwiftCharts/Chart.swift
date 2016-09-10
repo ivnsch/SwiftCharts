@@ -9,53 +9,53 @@
 import UIKit
 
 /// ChartSettings allows configuration of the visual layout of a chart
-public class ChartSettings {
+open class ChartSettings {
 
     /// Empty space in points added to the leading edge of the chart
-    public var leading: CGFloat = 0
+    open var leading: CGFloat = 0
 
     /// Empty space in points added to the top edge of the chart
-    public var top: CGFloat = 0
+    open var top: CGFloat = 0
 
     /// Empty space in points added to the trailing edge of the chart
-    public var trailing: CGFloat = 0
+    open var trailing: CGFloat = 0
 
     /// Empty space in points added to the bottom edge of the chart
-    public var bottom: CGFloat = 0
+    open var bottom: CGFloat = 0
 
     /// The spacing in points between axis labels when using multiple labels for each axis value. This is currently only supported with an X axis.
-    public var labelsSpacing: CGFloat = 5
+    open var labelsSpacing: CGFloat = 5
 
     /// The spacing in points between X axis labels and the X axis line
-    public var labelsToAxisSpacingX: CGFloat = 5
+    open var labelsToAxisSpacingX: CGFloat = 5
 
     /// The spacing in points between Y axis labels and the Y axis line
-    public var labelsToAxisSpacingY: CGFloat = 5
+    open var labelsToAxisSpacingY: CGFloat = 5
 
     /// The width of the Y-axis labels. If `nil`, it will be auto-calculated from the label text and font.
-    public var labelsWidthY: CGFloat?
+    open var labelsWidthY: CGFloat?
 
-    public var spacingBetweenAxesX: CGFloat = 15
+    open var spacingBetweenAxesX: CGFloat = 15
 
-    public var spacingBetweenAxesY: CGFloat = 15
+    open var spacingBetweenAxesY: CGFloat = 15
 
     /// The spacing in points between axis title labels and axis labels
-    public var axisTitleLabelsToLabelsSpacing: CGFloat = 5
+    open var axisTitleLabelsToLabelsSpacing: CGFloat = 5
 
     /// The stroke width in points of the axis lines
-    public var axisStrokeWidth: CGFloat = 1.0
+    open var axisStrokeWidth: CGFloat = 1.0
     
     public init() {}
 }
 
 /// A Chart object is the highest level access to your chart. It has the view where all of the chart layers are drawn, which you can provide (useful if you want to position it as part of a storyboard or XIB), or it can be created for you.
-public class Chart {
+open class Chart {
 
     /// The view that the chart is drawn in
-    public let view: ChartView
+    open let view: ChartView
     
     /// The layers of the chart that are drawn in the view
-    private let layers: [ChartLayer]
+    fileprivate let layers: [ChartLayer]
 
     /**
      Create a new Chart with a frame and layers. A new ChartBaseView will be created for you.
@@ -100,24 +100,24 @@ public class Chart {
 
      - parameter view: The subview to add to the chart's view
      */
-    public func addSubview(view: UIView) {
+    open func addSubview(_ view: UIView) {
         self.view.addSubview(view)
     }
 
     /// The frame of the chart's view
-    public var frame: CGRect {
+    open var frame: CGRect {
         return self.view.frame
     }
 
     /// The bounds of the chart's view
-    public var bounds: CGRect {
+    open var bounds: CGRect {
         return self.view.bounds
     }
 
     /**
      Removes the chart's view from its superview
      */
-    public func clearView() {
+    open func clearView() {
         self.view.removeFromSuperview()
     }
 
@@ -126,7 +126,7 @@ public class Chart {
 
      - parameter rect: The rect that needs to be drawn
      */
-    private func drawRect(rect: CGRect) {
+    fileprivate func drawRect(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
         for layer in self.layers {
             layer.chartViewDrawing(context: context!, chart: self)
@@ -135,14 +135,14 @@ public class Chart {
 }
 
 /// A UIView subclass for drawing charts
-public class ChartBaseView: ChartView {
+open class ChartBaseView: ChartView {
     
-    override public func drawRect(rect: CGRect) {
+    override open func draw(_ rect: CGRect) {
         self.chart?.drawRect(rect)
     }
 }
 
-public class ChartView: UIView {
+open class ChartView: UIView {
     
     /// The chart that will be drawn in this view
     weak var chart: Chart?
@@ -161,6 +161,6 @@ public class ChartView: UIView {
      Initialization code shared between all initializers
      */
     func sharedInit() {
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
     }
 }

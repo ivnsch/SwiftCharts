@@ -9,16 +9,16 @@
 import UIKit
 
 // Convenience view to handle events without subclassing
-public class HandlingView: UIView {
+open class HandlingView: UIView {
     
-    public var movedToSuperViewHandler: (() -> ())?
-    public var touchHandler: (() -> ())?
+    open var movedToSuperViewHandler: (() -> ())?
+    open var touchHandler: (() -> ())?
 
-    override public func didMoveToSuperview() {
+    override open func didMoveToSuperview() {
         self.movedToSuperViewHandler?()
     }
     
-    override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.touchHandler?()
     }
 }

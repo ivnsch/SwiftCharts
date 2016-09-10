@@ -10,7 +10,7 @@ import UIKit
 
 public typealias ChartStackedBarItemModel = (quantity: Double, bgColor: UIColor)
 
-public class ChartStackedBarModel: ChartBarModel {
+open class ChartStackedBarModel: ChartBarModel {
 
     let items: [ChartStackedBarItemModel]
     
@@ -35,19 +35,19 @@ public class ChartStackedBarModel: ChartBarModel {
 
 class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGenerator<T> {
     
-    private typealias FrameBuilder = (barModel: ChartStackedBarModel, item: ChartStackedBarItemModel, currentTotalQuantity: Double) -> (frame: ChartPointViewBarStackedFrame, length: CGFloat)
+    fileprivate typealias FrameBuilder = (_ barModel: ChartStackedBarModel, _ item: ChartStackedBarItemModel, _ currentTotalQuantity: Double) -> (frame: ChartPointViewBarStackedFrame, length: CGFloat)
     
     override init(horizontal: Bool, xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, barWidth barWidthMaybe: CGFloat?, barSpacing barSpacingMaybe: CGFloat?) {
         super.init(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: chartInnerFrame, barWidth: barWidthMaybe, barSpacing: barSpacingMaybe)
     }
     
-    override func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor? = nil, animDuration: Float) -> ChartPointViewBar {
+    override func generateView(_ barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor? = nil, animDuration: Float) -> ChartPointViewBar {
         
         let constantScreenLoc = constantScreenLocMaybe ?? self.constantScreenLoc(barModel)
         
         let frameBuilder: FrameBuilder = {
             switch self.direction {
-                case .LeftToRight:
+                case .leftToRight:
                     return {barModel, item, currentTotalQuantity in
                         let p0 = self.xAxis.screenLocForScalar(currentTotalQuantity)
                         let p1 = self.xAxis.screenLocForScalar(currentTotalQuantity + item.quantity)
@@ -55,13 +55,13 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
                         let barLeftScreenLoc = self.xAxis.screenLocForScalar(length > 0 ? barModel.axisValue1.scalar : barModel.axisValue2.scalar)
                         
                         return (frame: ChartPointViewBarStackedFrame(rect:
-                            CGRectMake(
-                                p0 - barLeftScreenLoc,
-                                0,
-                                length,
-                                self.barWidth), color: item.bgColor), length: length)
+                            CGRect(
+                                x: p0 - barLeftScreenLoc,
+                                y: 0,
+                                width: length,
+                                height: self.barWidth), color: item.bgColor), length: length)
                 }
-                case .BottomToTop:
+                case .bottomToTop:
                     return {barModel, item, currentTotalQuantity in
                         let p0 = self.yAxis.screenLocForScalar(currentTotalQuantity)
                         let p1 = self.yAxis.screenLocForScalar(currentTotalQuantity + item.quantity)
@@ -69,18 +69,18 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
                         let barTopScreenLoc = self.yAxis.screenLocForScalar(length > 0 ? barModel.axisValue1.scalar : barModel.axisValue2.scalar)
                         
                         return (frame: ChartPointViewBarStackedFrame(rect:
-                            CGRectMake(
-                                0,
-                                p0 - barTopScreenLoc,
-                                self.barWidth,
-                                length), color: item.bgColor), length: length)
+                            CGRect(
+                                x: 0,
+                                y: p0 - barTopScreenLoc,
+                                width: self.barWidth,
+                                height: length), color: item.bgColor), length: length)
                 }
             }
         }()
         
         
         let stackFrames = barModel.items.reduce((currentTotalQuantity: barModel.axisValue1.scalar, currentTotalLength: CGFloat(0), frames: Array<ChartPointViewBarStackedFrame>())) {tuple, item in
-            let frameWithLength = frameBuilder(barModel: barModel, item: item, currentTotalQuantity: tuple.currentTotalQuantity)
+            let frameWithLength = frameBuilder(barModel, item, tuple.currentTotalQuantity)
             return (currentTotalQuantity: tuple.currentTotalQuantity + item.quantity, currentTotalLength: tuple.currentTotalLength + frameWithLength.length, frames: tuple.frames + [frameWithLength.frame])
         }
         
@@ -91,15 +91,15 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
     
 }
 
-public class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
+open class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
     
-    private let barModels: [ChartStackedBarModel]
-    private let horizontal: Bool
+    fileprivate let barModels: [ChartStackedBarModel]
+    fileprivate let horizontal: Bool
     
-    private let barWidth: CGFloat?
-    private let barSpacing: CGFloat?
+    fileprivate let barWidth: CGFloat?
+    fileprivate let barSpacing: CGFloat?
     
-    private let animDuration: Float
+    fileprivate let animDuration: Float
     
     public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float) {
         self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, barModels: barModels, horizontal: horizontal, barWidth: barWidth, barSpacing: nil, animDuration: animDuration)
@@ -109,7 +109,7 @@ public class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
         self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, barModels: barModels, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, animDuration: animDuration)
     }
     
-    private init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barWidth: CGFloat? = nil, barSpacing: CGFloat?, animDuration: Float) {
+    fileprivate init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barWidth: CGFloat? = nil, barSpacing: CGFloat?, animDuration: Float) {
         self.barModels = barModels
         self.horizontal = horizontal
         self.barWidth = barWidth
@@ -119,7 +119,7 @@ public class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
     }
     
-    public override func chartInitialized(chart chart: Chart) {
+    open override func chartInitialized(chart: Chart) {
 
         let barsGenerator = ChartStackedBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: self.barWidth, barSpacing: self.barSpacing)
         

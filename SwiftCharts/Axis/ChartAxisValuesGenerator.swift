@@ -8,7 +8,7 @@
 
 import UIKit
 
-public typealias ChartAxisValueGenerator = Double -> ChartAxisValue
+public typealias ChartAxisValueGenerator = (Double) -> ChartAxisValue
 
 /// Dynamic axis values generation
 public struct ChartAxisValuesGenerator {
@@ -27,7 +27,7 @@ public struct ChartAxisValuesGenerator {
 
      - returns: An array of axis values.
      */
-    public static func generateXAxisValuesWithChartPoints(chartPoints: [ChartPoint], minSegmentCount: Double, maxSegmentCount: Double, multiple: Double = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
+    public static func generateXAxisValuesWithChartPoints(_ chartPoints: [ChartPoint], minSegmentCount: Double, maxSegmentCount: Double, multiple: Double = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
         return self.generateAxisValuesWithChartPoints(chartPoints, minSegmentCount: minSegmentCount, maxSegmentCount: maxSegmentCount, multiple: multiple, axisValueGenerator: axisValueGenerator, addPaddingSegmentIfEdge: addPaddingSegmentIfEdge, axisPicker: {$0.x})
     }
 
@@ -45,7 +45,7 @@ public struct ChartAxisValuesGenerator {
 
      - returns: An array of axis values.
      */
-    public static func generateYAxisValuesWithChartPoints(chartPoints: [ChartPoint], minSegmentCount: Double, maxSegmentCount: Double, multiple: Double = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
+    public static func generateYAxisValuesWithChartPoints(_ chartPoints: [ChartPoint], minSegmentCount: Double, maxSegmentCount: Double, multiple: Double = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
         return self.generateAxisValuesWithChartPoints(chartPoints, minSegmentCount: minSegmentCount, maxSegmentCount: maxSegmentCount, multiple: multiple, axisValueGenerator: axisValueGenerator, addPaddingSegmentIfEdge: addPaddingSegmentIfEdge, axisPicker: {$0.y})
     }
 
@@ -64,13 +64,13 @@ public struct ChartAxisValuesGenerator {
 
      - returns: An array of axis values.
      */
-    private static func generateAxisValuesWithChartPoints(chartPoints: [ChartPoint], minSegmentCount: Double, maxSegmentCount: Double, multiple: Double = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool, axisPicker: (ChartPoint) -> ChartAxisValue) -> [ChartAxisValue] {
+    fileprivate static func generateAxisValuesWithChartPoints(_ chartPoints: [ChartPoint], minSegmentCount: Double, maxSegmentCount: Double, multiple: Double = 10, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool, axisPicker: (ChartPoint) -> ChartAxisValue) -> [ChartAxisValue] {
         
-        let sortedChartPoints = chartPoints.sort {(obj1, obj2) in
+        let sortedChartPoints = chartPoints.sorted {(obj1, obj2) in
             return axisPicker(obj1).scalar < axisPicker(obj2).scalar
         }
         
-        if let first = sortedChartPoints.first, last = sortedChartPoints.last {
+        if let first = sortedChartPoints.first, let last = sortedChartPoints.last {
             return self.generateAxisValuesWithChartPoints(axisPicker(first).scalar, last: axisPicker(last).scalar, minSegmentCount: minSegmentCount, maxSegmentCount: maxSegmentCount, multiple: multiple, axisValueGenerator: axisValueGenerator, addPaddingSegmentIfEdge: addPaddingSegmentIfEdge)
             
         } else {
@@ -94,16 +94,16 @@ public struct ChartAxisValuesGenerator {
 
      - returns: An array of axis values
      */
-    private static func generateAxisValuesWithChartPoints(first: Double, last lastPar: Double, minSegmentCount: Double, maxSegmentCount: Double, multiple: Double, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
+    fileprivate static func generateAxisValuesWithChartPoints(_ first: Double, last lastPar: Double, minSegmentCount: Double, maxSegmentCount: Double, multiple: Double, axisValueGenerator: ChartAxisValueGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
         
         guard lastPar >= first else {fatalError("Invalid range generating axis values")}
         
         let last = lastPar == first ? lastPar + 1 : lastPar
 
         // The first axis value will be less than or equal to the first scalar value, aligned with the desired multiple
-        var firstValue = first - (first % multiple)
+        var firstValue = first - (first.truncatingRemainder(dividingBy: multiple))
         // The last axis value will be greater than or equal to the first scalar value, aligned with the desired multiple
-        var lastValue = last + (abs(multiple - last) % multiple)
+        var lastValue = last + (abs(multiple - last).truncatingRemainder(dividingBy: multiple))
         var segmentSize = multiple
 
         // If there should be a padding segment added when a scalar value falls on the first or last axis value, adjust the first and last axis values
