@@ -62,8 +62,9 @@ public extension Zoomable {
         
         onZoomStart(scaleX: finalScaleX, scaleY: finalScaleY, centerX: centerX, centerY: centerY)
         
-        setContentViewAnchor(centerX, centerY: centerY)
-
+        let contentViewCenter = toContentViewCenter(centerX, centerY: centerY)
+        setContentViewAnchor(contentViewCenter.x, centerY: contentViewCenter.y)
+        
         let newContentWidth = finalScaleX * containerView.frame.width
         let newScale = newContentWidth / contentView.frame.width
         let newContentHeight = finalScaleY * containerView.frame.height
@@ -81,7 +82,8 @@ public extension Zoomable {
         
         onZoomStart(deltaX: finalDeltaX, deltaY: finalDeltaY, centerX: centerX, centerY: centerY)
         
-        zoomContentView(deltaX: finalDeltaX, deltaY: finalDeltaY, centerX: centerX, centerY: centerY)
+        let contentViewCenter = toContentViewCenter(centerX, centerY: centerY)
+        zoomContentView(deltaX: finalDeltaX, deltaY: finalDeltaY, centerX: contentViewCenter.x, centerY: contentViewCenter.y)
         
         onZoomFinish(scaleX: contentView.frame.width / containerView.frame.width, scaleY: contentView.frame.height / containerView.frame.height, deltaX: finalDeltaX, deltaY: finalDeltaY, centerX: centerX, centerY: centerY, isGesture: isGesture)
     }
@@ -98,14 +100,20 @@ public extension Zoomable {
         setContentViewScale(scaleX: scaleX, scaleY: scaleY)
     }
     
-    private func setContentViewAnchor(centerX: CGFloat, centerY: CGFloat) {
+    private func toContentViewCenter(centerX: CGFloat, centerY: CGFloat) -> CGPoint {
         let containerFrame = containerView.frame
         let contentFrame = contentView.frame
         
         let transCenterX = centerX - contentFrame.minX - containerFrame.minX
         let transCenterY = centerY - contentFrame.minY - containerFrame.minY
-        let anchorX = transCenterX / contentFrame.width
-        let anchorY = transCenterY / contentFrame.height
+        return CGPointMake(transCenterX, transCenterY)
+    }
+    
+    private func setContentViewAnchor(centerX: CGFloat, centerY: CGFloat) {
+        let contentFrame = contentView.frame
+
+        let anchorX = centerX / contentFrame.width
+        let anchorY = centerY / contentFrame.height
         let previousAnchor = contentView.layer.anchorPoint
         contentView.layer.anchorPoint = CGPointMake(anchorX, anchorY)
         let offsetX = contentFrame.width * (previousAnchor.x - contentView.layer.anchorPoint.x)
