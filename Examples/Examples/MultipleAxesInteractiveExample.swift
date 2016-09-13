@@ -201,15 +201,15 @@ class MultipleAxesInteractiveExample: UIViewController {
         
         let lineLayers = self.createLineLayers(animDuration: lineAnimDuration)
         
-        func maybeGuides(_ guideLayer: ChartLayer) -> [ChartLayer] {
-            return (showGuides ? [guideLayer] : [])
+        func group(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, lineLayer: ChartLayer, guideLayer: ChartLayer) -> [ChartLayer] {
+            return [xAxis, yAxis, lineLayer] + (showGuides ? [guideLayer] : [])
         }
         
         let layers: [[ChartLayer]] = [
-            //[yLowAxes[1], xLowAxes[0], lineLayers[0]] + maybeGuides(guideLinesLayer0),
-            //[yLowAxes[0], xLowAxes[1], lineLayers[1]] + maybeGuides(guideLinesLayer1),
-            //[yHighAxes[0], xHighAxes[1], lineLayers[2]] + maybeGuides(guideLinesLayer2),
-            //[yHighAxes[1], xHighAxes[0], lineLayers[3]] + maybeGuides(guideLinesLayer3)
+            group(xAxis: xLowAxes[0], yAxis: yLowAxes[1], lineLayer: lineLayers[0], guideLayer: guideLinesLayer0),
+            group(xAxis: xLowAxes[1], yAxis: yLowAxes[0], lineLayer: lineLayers[1], guideLayer: guideLinesLayer1),
+            group(xAxis: xHighAxes[1], yAxis: yHighAxes[0], lineLayer: lineLayers[2], guideLayer: guideLinesLayer2),
+            group(xAxis: xHighAxes[0], yAxis: yHighAxes[1], lineLayer: lineLayers[3], guideLayer: guideLinesLayer3)
         ]
         
         return selectedLayersFlags.enumerated().reduce(Array<ChartLayer>()) {selectedLayers, inTuple in
