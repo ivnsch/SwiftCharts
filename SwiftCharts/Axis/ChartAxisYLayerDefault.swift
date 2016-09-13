@@ -35,7 +35,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         return p1.y - p2.y
     }
 
-    override func generateAxisTitleLabelsDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
+    override func generateAxisTitleLabelsDrawers(offset: CGFloat) -> [ChartLabelDrawer] {
         
         if let firstTitleLabel = self.axisTitleLabels.first {
             
@@ -46,9 +46,9 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             let labelSize = ChartUtils.textSize(axisLabel.text, font: axisLabel.settings.font)
             let settings = axisLabel.settings
             let newSettings = ChartLabelSettings(font: settings.font, fontColor: settings.fontColor, rotation: settings.rotation, rotationKeep: settings.rotationKeep)
-            let axisLabelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(
-                self.p1.x + offset,
-                self.p2.y + ((self.p1.y - self.p2.y) / 2) - (labelSize.height / 2)), settings: newSettings)
+            let axisLabelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPoint(
+                x: self.p1.x + offset,
+                y: self.p2.y + ((self.p1.y - self.p2.y) / 2) - (labelSize.height / 2)), settings: newSettings)
             
             return [axisLabelDrawer]
             
@@ -58,12 +58,12 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     }
 
     
-    override func screenLocForScalar(scalar: Double, firstAxisScalar: Double) -> CGFloat {
+    override func screenLocForScalar(_ scalar: Double, firstAxisScalar: Double) -> CGFloat {
         return self.p1.y - self.innerScreenLocForScalar(scalar, firstAxisScalar: firstAxisScalar)
     }
     
     
-    override func generateLabelDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
+    override func generateLabelDrawers(offset: CGFloat) -> [ChartLabelDrawer] {
 
         var drawers: [ChartLabelDrawer] = []
         
@@ -77,18 +77,18 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
                 let labelSize = ChartUtils.textSize(axisLabel.text, font: axisLabel.settings.font)
                 let labelY = y - (labelSize.height / 2)
                 let labelX = self.labelsX(offset: offset, labelWidth: labelSize.width, textAlignment: axisLabel.settings.textAlignment)
-                let labelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPointMake(labelX, labelY), settings: axisLabel.settings)
+                let labelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPoint(x: labelX, y: labelY), settings: axisLabel.settings)
                 labelDrawer.hidden = axisValue.hidden
 
-                let rect = CGRectMake(labelX, labelY, labelSize.width, labelSize.height)
+                let rect = CGRect(x: labelX, y: labelY, width: labelSize.width, height: labelSize.height)
                 drawers.append(labelDrawer)
                 
                 // move overlapping labels. This is for now a very simple algorithm and doesn't take into account possible overlappings resulting of moving the labels
                 if let (lastDrawer, lastRect) = lastDrawerWithRect {
-                    let intersection = rect.intersect(lastRect)
-                    if intersection != CGRectNull {
-                        labelDrawer.screenLoc = CGPointMake(labelDrawer.screenLoc.x, labelDrawer.screenLoc.y - intersection.height / 2)
-                        lastDrawer.screenLoc = CGPointMake(lastDrawer.screenLoc.x, lastDrawer.screenLoc.y + intersection.height / 2)
+                    let intersection = rect.intersection(lastRect)
+                    if intersection != CGRect.null {
+                        labelDrawer.screenLoc = CGPoint(x: labelDrawer.screenLoc.x, y: labelDrawer.screenLoc.y - intersection.height / 2)
+                        lastDrawer.screenLoc = CGPoint(x: lastDrawer.screenLoc.x, y: lastDrawer.screenLoc.y + intersection.height / 2)
                     }
                 }
                 
@@ -98,17 +98,17 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         return drawers
     }
     
-    func labelsX(offset offset: CGFloat, labelWidth: CGFloat, textAlignment: ChartLabelTextAlignment) -> CGFloat {
+    func labelsX(offset: CGFloat, labelWidth: CGFloat, textAlignment: ChartLabelTextAlignment) -> CGFloat {
         fatalError("override")
     }
     
-    private func maxLabelWidth(axisLabels: [ChartAxisLabel]) -> CGFloat {
+    fileprivate func maxLabelWidth(_ axisLabels: [ChartAxisLabel]) -> CGFloat {
         return axisLabels.reduce(CGFloat(0)) {maxWidth, label in
             return max(maxWidth, ChartUtils.textSize(label.text, font: label.settings.font).width)
         }
     }
     
-    private func maxLabelWidth(axisValues: [ChartAxisValue]) -> CGFloat {
+    fileprivate func maxLabelWidth(_ axisValues: [ChartAxisValue]) -> CGFloat {
         return axisValues.reduce(CGFloat(0)) {maxWidth, axisValue in
             return max(maxWidth, self.maxLabelWidth(axisValue.labels))
         }

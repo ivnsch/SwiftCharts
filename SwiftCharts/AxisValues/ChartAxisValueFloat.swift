@@ -8,33 +8,33 @@
 
 import UIKit
 
-@available(*, deprecated=0.2.5, message="use ChartAxisValueDouble instead")
-public class ChartAxisValueFloat: ChartAxisValue {
+@available(*, deprecated: 0.2.5, message: "use ChartAxisValueDouble instead")
+open class ChartAxisValueFloat: ChartAxisValue {
     
-    public let formatter: NSNumberFormatter
+    open let formatter: NumberFormatter
 
-    public var float: CGFloat {
+    open var float: CGFloat {
         return CGFloat(self.scalar)
     }
 
-    public init(_ float: CGFloat, formatter: NSNumberFormatter = ChartAxisValueFloat.defaultFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
+    public init(_ float: CGFloat, formatter: NumberFormatter = ChartAxisValueFloat.defaultFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.formatter = formatter
         super.init(scalar: Double(float), labelSettings: labelSettings)
     }
    
-    override public func copy(scalar: Double) -> ChartAxisValueFloat {
+    override open func copy(_ scalar: Double) -> ChartAxisValueFloat {
         return ChartAxisValueFloat(CGFloat(scalar), formatter: self.formatter, labelSettings: self.labelSettings)
     }
     
-    static var defaultFormatter: NSNumberFormatter = {
-        let formatter = NSNumberFormatter()
+    static var defaultFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 2
         return formatter
     }()
 
     // MARK: CustomStringConvertible
 
-    override public var description: String {
-        return self.formatter.stringFromNumber(self.float)!
+    override open var description: String {
+        return self.formatter.string(from: NSNumber(value: self.float.native))!
     }
 }

@@ -8,12 +8,12 @@
 
 import UIKit
 
-public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
+open class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
-    private let areaColor: UIColor
-    private let animDuration: Float
-    private let animDelay: Float
-    private let addContainerPoints: Bool
+    fileprivate let areaColor: UIColor
+    fileprivate let animDuration: Float
+    fileprivate let animDelay: Float
+    fileprivate let addContainerPoints: Bool
     
     public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], areaColor: UIColor, animDuration: Float, animDelay: Float, addContainerPoints: Bool) {
         self.areaColor = areaColor
@@ -24,7 +24,7 @@ public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
     }
     
-    override func display(chart chart: Chart) {
+    override func display(chart: Chart) {
         var points = self.chartPointScreenLocs
         
         let origin = self.innerFrame.origin
@@ -33,8 +33,8 @@ public class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
         let bottomY = origin.y + self.innerFrame.height
         
         if self.addContainerPoints {
-            points.append(CGPointMake(origin.x + xLength, bottomY))
-            points.append(CGPointMake(origin.x, bottomY))
+            points.append(CGPoint(x: origin.x + xLength, y: bottomY))
+            points.append(CGPoint(x: origin.x, y: bottomY))
         }
         
         let areaView = ChartAreasView(points: points, frame: chart.bounds, color: self.areaColor, animDuration: self.animDuration, animDelay: self.animDelay)

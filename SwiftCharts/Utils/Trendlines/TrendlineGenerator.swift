@@ -10,7 +10,7 @@ import UIKit
 
 public struct TrendlineGenerator {
     
-    public static func trendline(chartPoints: [ChartPoint]) -> [ChartPoint] {
+    public static func trendline(_ chartPoints: [ChartPoint]) -> [ChartPoint] {
         
         guard chartPoints.count > 1 else {return []}
         
@@ -34,7 +34,7 @@ public struct TrendlineGenerator {
         let a = (sumY - b * sumX) / count
         
         // equation of line: y = a + bx
-        func y(x: Double) -> Double {
+        func y(_ x: Double) -> Double {
             return a + b * x
         }
         

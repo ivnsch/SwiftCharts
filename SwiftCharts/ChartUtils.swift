@@ -9,7 +9,7 @@
 import UIKit
 
 /// A collection of useful utilities for chart calculations
-public class ChartUtils {
+open class ChartUtils {
 
     /**
      Calculates the size of a string if it were drawn with a given font
@@ -19,7 +19,7 @@ public class ChartUtils {
 
      - returns: The size of the string if it were drawn with a given font
      */
-    public class func textSize(text: String, font: UIFont) -> CGSize {
+    open class func textSize(_ text: String, font: UIFont) -> CGSize {
         return NSAttributedString(string: text, attributes: [NSFontAttributeName: font]).size()
     }
 
@@ -32,10 +32,10 @@ public class ChartUtils {
 
      - returns: The bounding bounds for the string if drawn with a given font and rotated
      */
-    public class func rotatedTextBounds(text: String, font: UIFont, angle: CGFloat) -> CGRect {
+    open class func rotatedTextBounds(_ text: String, font: UIFont, angle: CGFloat) -> CGRect {
         let labelSize = ChartUtils.textSize(text, font: font)
         let radians = angle * CGFloat(M_PI) / CGFloat(180)
-        return boundingRectAfterRotatingRect(CGRectMake(0, 0, labelSize.width, labelSize.height), radians: radians)
+        return boundingRectAfterRotatingRect(CGRect(x: 0, y: 0, width: labelSize.width, height: labelSize.height), radians: radians)
     }
     
     /**
@@ -48,9 +48,9 @@ public class ChartUtils {
 
      - returns: The bounding rectangle of the rotated rectangle
      */
-    public class func boundingRectAfterRotatingRect(rect: CGRect, radians: CGFloat) -> CGRect {
-        let xfrm = CGAffineTransformMakeRotation(radians)
-        return CGRectApplyAffineTransform(rect, xfrm)
+    open class func boundingRectAfterRotatingRect(_ rect: CGRect, radians: CGFloat) -> CGRect {
+        let xfrm = CGAffineTransform(rotationAngle: radians)
+        return rect.applying(xfrm)
     }
 
     /**
@@ -60,7 +60,7 @@ public class ChartUtils {
 
      - returns: The number of seconds as a dispatch_time_t
      */
-    public class func toDispatchTime(secs: Float) -> dispatch_time_t {
-        return dispatch_time(DISPATCH_TIME_NOW, Int64(Double(secs) * Double(NSEC_PER_SEC)))
+    open class func toDispatchTime(_ secs: Float) -> DispatchTime {
+        return DispatchTime.now() + Double(Int64(Double(secs) * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
     }
 }

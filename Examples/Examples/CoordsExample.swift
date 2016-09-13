@@ -11,7 +11,7 @@ import SwiftCharts
 
 class CoordsExample: UIViewController {
     
-    private var chart: Chart? // arc
+    fileprivate var chart: Chart? // arc
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,13 +43,13 @@ class CoordsExample: UIViewController {
             let font = ExamplesDefaults.labelFont
             let textSize = ChartUtils.textSize(text, font: font)
             let x = min(screenLoc.x + 5, chart.bounds.width - textSize.width - 5)
-            let view = UIView(frame: CGRectMake(x, screenLoc.y - h, w, h))
+            let view = UIView(frame: CGRect(x: x, y: screenLoc.y - h, width: w, height: h))
             let label = UILabel(frame: view.bounds)
             label.text = "(\(chartPoint.x), \(chartPoint.y))"
             label.font = ExamplesDefaults.labelFont
             view.addSubview(label)
             view.alpha = 0
-            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
                 view.alpha = 1
                 }, completion: nil)
             return view
@@ -61,9 +61,9 @@ class CoordsExample: UIViewController {
         let touchViewsGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
             let s: CGFloat = 30
-            let view = HandlingView(frame: CGRectMake(screenLoc.x - s/2, screenLoc.y - s/2, s, s))
+            let view = HandlingView(frame: CGRect(x: screenLoc.x - s/2, y: screenLoc.y - s/2, width: s, height: s))
             view.touchHandler = {[weak showCoordsLinesLayer, weak showCoordsTextLayer, weak chartPoint, weak chart] in
-                guard let chartPoint = chartPoint, chart = chart else {return}
+                guard let chartPoint = chartPoint, let chart = chart else {return}
                 showCoordsLinesLayer?.showChartPointLines(chartPoint, chart: chart)
                 showCoordsTextLayer?.showView(chartPoint: chartPoint, chart: chart)
             }
@@ -78,14 +78,14 @@ class CoordsExample: UIViewController {
         let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             let circleView = ChartPointEllipseView(center: chartPointModel.screenLoc, diameter: 24)
             circleView.animDuration = 1.5
-            circleView.fillColor = UIColor.whiteColor()
+            circleView.fillColor = UIColor.white
             circleView.borderWidth = 5
-            circleView.borderColor = UIColor.blueColor()
+            circleView.borderColor = UIColor.blue
             return circleView
         }
         let chartPointsCircleLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: circleViewGenerator, displayDelay: 0, delayBetweenItems: 0.05)
         
-        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
         
         

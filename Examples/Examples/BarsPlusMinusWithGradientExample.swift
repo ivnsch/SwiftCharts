@@ -11,11 +11,11 @@ import SwiftCharts
 
 class BarsPlusMinusWithGradientExample: UIViewController {
     
-    private var chart: Chart? // arc
+    fileprivate var chart: Chart? // arc
     
-    private let gradientPicker: GradientPicker // to pick the colors of the bars
+    fileprivate let gradientPicker: GradientPicker // to pick the colors of the bars
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         self.gradientPicker = GradientPicker(width: 200)
         super.init(nibName: nil, bundle: nil)
     }
@@ -56,18 +56,18 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         let length: CGFloat = maxVal - minVal
         
         let zero = ChartAxisValueDouble(0)
-        let bars: [ChartBarModel] = vals.enumerate().map {index, tuple in
+        let bars: [ChartBarModel] = vals.enumerated().map {index, tuple in
             let percentage = (tuple.val - minVal - 0.01) / length // FIXME without -0.01 bar with 1 (100 perc) is black
-            let color = self.gradientPicker.colorForPercentage(percentage).colorWithAlphaComponent(0.6)
+            let color = self.gradientPicker.colorForPercentage(percentage).withAlphaComponent(0.6)
             return ChartBarModel(constant: ChartAxisValueDouble(Double(index)), axisValue1: zero, axisValue2: ChartAxisValueDouble(Double(tuple.val)), bgColor: color)
         }
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
-        let xValues = (-80).stride(through: 80, by: 20).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
+        let xValues = stride(from: (-80), through: 80, by: 20).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
         let yValues =
             [ChartAxisValueString(order: -1)] +
-            vals.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+            vals.enumerated().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
             [ChartAxisValueString(order: vals.count)]
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
@@ -76,24 +76,24 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
         
         // calculate coords space in the background to keep UI smooth
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
             
             let coordsSpace = ChartCoordsSpaceLeftTopSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 
                 let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
                 
                 let barsLayer = ChartBarsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, bars: bars, horizontal: true, barWidth: Env.iPad ? 40 : 16, animDuration: 0.5)
                 
-                let settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-                let guidelinesLayer = ChartGuideLinesLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, axis: .X, settings: settings)
+                let settings = ChartGuideLinesLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
+                let guidelinesLayer = ChartGuideLinesLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, axis: .x, settings: settings)
                 
                 // create x zero guideline as view to be in front of the bars
                 let dummyZeroXChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
                 let xZeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: [dummyZeroXChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
                     let width: CGFloat = 2
-                    let v = UIView(frame: CGRectMake(chartPointModel.screenLoc.x - width / 2, innerFrame.origin.y, width, innerFrame.size.height))
+                    let v = UIView(frame: CGRect(x: chartPointModel.screenLoc.x - width / 2, y: innerFrame.origin.y, width: width, height: innerFrame.size.height))
                     v.backgroundColor = UIColor(red: 1, green: 69 / 255, blue: 0, alpha: 1)
                     return v
                 })
@@ -115,23 +115,23 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         }
     }
     
-    private class GradientPicker {
+    fileprivate class GradientPicker {
         
         let gradientImg: UIImage
         
         lazy var imgData: UnsafePointer<UInt8> = {
-            let provider = CGImageGetDataProvider(self.gradientImg.CGImage)
-            let pixelData = CGDataProviderCopyData(provider)
+            let provider = self.gradientImg.cgImage!.dataProvider
+            let pixelData = provider!.data
             return CFDataGetBytePtr(pixelData)
         }()
         
         init(width: CGFloat) {
             
             let gradient: CAGradientLayer = CAGradientLayer()
-            gradient.frame = CGRectMake(0, 0, width, 1)
-            gradient.colors = [UIColor.redColor().CGColor, UIColor.yellowColor().CGColor, UIColor.cyanColor().CGColor, UIColor.blueColor().CGColor]
-            gradient.startPoint = CGPointMake(0, 0.5)
-            gradient.endPoint = CGPointMake(1.0, 0.5)
+            gradient.frame = CGRect(x: 0, y: 0, width: width, height: 1)
+            gradient.colors = [UIColor.red.cgColor, UIColor.yellow.cgColor, UIColor.cyan.cgColor, UIColor.blue.cgColor]
+            gradient.startPoint = CGPoint(x: 0, y: 0.5)
+            gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
             
             let imgHeight = 1
             let imgWidth = Int(gradient.bounds.size.width)
@@ -139,26 +139,26 @@ class BarsPlusMinusWithGradientExample: UIViewController {
             let bitmapBytesPerRow = imgWidth * 4
             
             let colorSpace = CGColorSpaceCreateDeviceRGB()
-            let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue).rawValue
+            let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue).rawValue
 
-            let context = CGBitmapContextCreate (nil,
-                imgWidth,
-                imgHeight,
-                8,
-                bitmapBytesPerRow,
-                colorSpace,
-                bitmapInfo)
+            let context = CGContext (data: nil,
+                width: imgWidth,
+                height: imgHeight,
+                bitsPerComponent: 8,
+                bytesPerRow: bitmapBytesPerRow,
+                space: colorSpace,
+                bitmapInfo: bitmapInfo)
             
             UIGraphicsBeginImageContext(gradient.bounds.size)
-            gradient.renderInContext(context!)
+            gradient.render(in: context!)
             
-            let gradientImg = UIImage(CGImage: CGBitmapContextCreateImage(context)!)
+            let gradientImg = UIImage(cgImage: context!.makeImage()!)
             
             UIGraphicsEndImageContext()
             self.gradientImg = gradientImg
         }
         
-        func colorForPercentage(percentage: CGFloat) -> UIColor {
+        func colorForPercentage(_ percentage: CGFloat) -> UIColor {
             
             let data = self.imgData
             

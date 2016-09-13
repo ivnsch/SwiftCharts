@@ -19,7 +19,7 @@ struct ExamplesDefaults {
         }
     }
 
-    private static var iPadChartSettings: ChartSettings {
+    fileprivate static var iPadChartSettings: ChartSettings {
         let chartSettings = ChartSettings()
         chartSettings.leading = 20
         chartSettings.top = 20
@@ -34,7 +34,7 @@ struct ExamplesDefaults {
         return chartSettings
     }
     
-    private static var iPhoneChartSettings: ChartSettings {
+    fileprivate static var iPhoneChartSettings: ChartSettings {
         let chartSettings = ChartSettings()
         chartSettings.leading = 10
         chartSettings.top = 10
@@ -49,8 +49,8 @@ struct ExamplesDefaults {
         return chartSettings
     }
     
-    static func chartFrame(containerBounds: CGRect) -> CGRect {
-        return CGRectMake(0, 70, containerBounds.size.width, containerBounds.size.height - 70)
+    static func chartFrame(_ containerBounds: CGRect) -> CGRect {
+        return CGRect(x: 0, y: 70, width: containerBounds.size.width, height: containerBounds.size.height - 70)
     }
     
     static var labelSettings: ChartLabelSettings {
@@ -65,8 +65,8 @@ struct ExamplesDefaults {
         return ExamplesDefaults.fontWithSize(Env.iPad ? 12 : 10)
     }
     
-    static func fontWithSize(size: CGFloat) -> UIFont {
-        return UIFont(name: "Helvetica", size: size) ?? UIFont.systemFontOfSize(size)
+    static func fontWithSize(_ size: CGFloat) -> UIFont {
+        return UIFont(name: "Helvetica", size: size) ?? UIFont.systemFont(ofSize: size)
     }
     
     static var guidelinesWidth: CGFloat {

@@ -51,5 +51,5 @@ public protocol ChartAxisLayer: ChartLayer {
 
      - returns: The location along the axis' dimension that the axis value should be displayed
      */
-    func screenLocForScalar(scalar: Double) -> CGFloat
+    func screenLocForScalar(_ scalar: Double) -> CGFloat
 }

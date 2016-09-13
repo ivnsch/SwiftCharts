@@ -9,7 +9,7 @@
 import UIKit
 
 /// This class models the contents of a chart axis
-public class ChartAxisModel {
+open class ChartAxisModel {
 
     /// The values contained in the axis
     let axisValues: [ChartAxisValue]
@@ -20,11 +20,11 @@ public class ChartAxisModel {
     /// The axis title lables
     let axisTitleLabels: [ChartAxisLabel]
 
-    public convenience init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.blackColor(), axisTitleLabel: ChartAxisLabel) {
+    public convenience init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.black, axisTitleLabel: ChartAxisLabel) {
         self.init(axisValues: axisValues, lineColor: lineColor, axisTitleLabels: [axisTitleLabel])
     }
     
-    public init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.blackColor(), axisTitleLabels: [ChartAxisLabel] = []) {
+    public init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.black, axisTitleLabels: [ChartAxisLabel] = []) {
         self.axisValues = axisValues
         self.lineColor = lineColor
         self.axisTitleLabels = axisTitleLabels

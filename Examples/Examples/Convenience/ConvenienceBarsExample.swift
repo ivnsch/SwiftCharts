@@ -11,7 +11,7 @@ import SwiftCharts
 
 class ConvenienceBarsExample: UIViewController {
     
-    private var chart: Chart? // arc
+    fileprivate var chart: Chart? // arc
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +36,7 @@ class ConvenienceBarsExample: UIViewController {
                 ("E", 6.8),
                 ("F", 0.5)
             ],
-            color: UIColor.redColor(),
+            color: UIColor.red,
             barWidth: Env.iPad ? 40 : 20
         )
         

@@ -8,18 +8,18 @@
 
 import UIKit
 
-public class ChartPointTargetingView: UIView {
+open class ChartPointTargetingView: UIView {
 
-    private let animDuration: Float
-    private let animDelay: Float
+    fileprivate let animDuration: Float
+    fileprivate let animDelay: Float
     
-    private let lineHorizontal: UIView
-    private let lineVertical: UIView
+    fileprivate let lineHorizontal: UIView
+    fileprivate let lineVertical: UIView
   
-    private let lineWidth = 1
+    fileprivate let lineWidth = 1
     
-    private let lineHorizontalTargetFrame: CGRect
-    private let lineVerticalTargetFrame: CGRect
+    fileprivate let lineHorizontalTargetFrame: CGRect
+    fileprivate let lineVerticalTargetFrame: CGRect
     
     public init(chartPoint: ChartPoint, screenLoc: CGPoint, animDuration: Float, animDelay: Float, frame: CGRect, layer: ChartCoordsSpaceLayer) {
         self.animDuration = animDuration
@@ -32,11 +32,11 @@ public class ChartPointTargetingView: UIView {
         let axisLengthX = chartInnerFrame.width
         let axisLengthY = chartInnerFrame.height
         
-        self.lineHorizontal = UIView(frame: CGRectMake(axisOriginX, axisOriginY, axisLengthX, CGFloat(lineWidth)))
-        self.lineVertical = UIView(frame: CGRectMake(axisOriginX, axisOriginY, CGFloat(lineWidth), axisLengthY))
+        self.lineHorizontal = UIView(frame: CGRect(x: axisOriginX, y: axisOriginY, width: axisLengthX, height: CGFloat(lineWidth)))
+        self.lineVertical = UIView(frame: CGRect(x: axisOriginX, y: axisOriginY, width: CGFloat(lineWidth), height: axisLengthY))
         
-        self.lineHorizontal.backgroundColor = UIColor.blackColor()
-        self.lineVertical.backgroundColor = UIColor.redColor()
+        self.lineHorizontal.backgroundColor = UIColor.black
+        self.lineVertical.backgroundColor = UIColor.red
         
         let lineWidthHalf = self.lineWidth / 2
         var targetFrameH = lineHorizontal.frame
@@ -53,11 +53,11 @@ public class ChartPointTargetingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override public func didMoveToSuperview() {
+    override open func didMoveToSuperview() {
         addSubview(self.lineHorizontal)
         addSubview(self.lineVertical)
         
-        UIView.animateWithDuration(NSTimeInterval(self.animDuration), delay: NSTimeInterval(self.animDelay), options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: TimeInterval(self.animDuration), delay: TimeInterval(self.animDelay), options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
             
             self.lineHorizontal.frame = self.lineHorizontalTargetFrame
             self.lineVertical.frame = self.lineVerticalTargetFrame

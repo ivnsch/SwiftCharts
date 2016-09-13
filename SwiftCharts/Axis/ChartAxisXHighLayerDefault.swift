@@ -15,12 +15,12 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
 
     /// The start point of the axis line.
     override var lineP1: CGPoint {
-        return CGPointMake(self.p1.x, self.p1.y + self.lineOffset)
+        return CGPoint(x: self.p1.x, y: self.p1.y + self.lineOffset)
     }
 
     /// The end point of the axis line
     override var lineP2: CGPoint {
-        return CGPointMake(self.p2.x, self.p2.y + self.lineOffset)
+        return CGPoint(x: self.p2.x, y: self.p2.y + self.lineOffset)
     }
 
     /// The offset of the axis labels from the edge of the axis bounds
@@ -32,7 +32,7 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
     ///          ▼
     ///  Label
     /// ````
-    private lazy var labelsOffset: CGFloat = {
+    fileprivate lazy var labelsOffset: CGFloat = {
         return self.axisTitleLabelsHeight + self.settings.axisTitleLabelsToLabelsSpacing
     }()
 
@@ -48,11 +48,11 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
     ///          │
     /// ───────  ▼
     /// ````
-    private lazy var lineOffset: CGFloat = {
+    fileprivate lazy var lineOffset: CGFloat = {
         return self.labelsOffset + (self.settings.axisStrokeWidth / 2) + self.settings.labelsToAxisSpacingX + self.labelsTotalHeight
     }()
     
-    override func chartViewDrawing(context context: CGContextRef, chart: Chart) {
+    override func chartViewDrawing(context: CGContext, chart: Chart) {
         super.chartViewDrawing(context: context, chart: chart)
     }
     

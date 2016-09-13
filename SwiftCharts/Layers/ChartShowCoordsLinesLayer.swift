@@ -8,15 +8,15 @@
 
 import UIKit
 
-public class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
+open class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
-    private var view: UIView?
+    fileprivate var view: UIView?
 
     public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T]) {
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
     }
     
-    public func showChartPointLines(chartPoint: T, chart: Chart) {
+    open func showChartPointLines(_ chartPoint: T, chart: Chart) {
        
         if let view = self.view {
             
@@ -26,25 +26,25 @@ public class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
             
             let screenLoc = self.chartPointScreenLoc(chartPoint)
             
-            let hLine = UIView(frame: CGRectMake(screenLoc.x, screenLoc.y, 0, 1))
-            let vLine = UIView(frame: CGRectMake(screenLoc.x, screenLoc.y, 0, 1))
+            let hLine = UIView(frame: CGRect(x: screenLoc.x, y: screenLoc.y, width: 0, height: 1))
+            let vLine = UIView(frame: CGRect(x: screenLoc.x, y: screenLoc.y, width: 0, height: 1))
             
             for lineView in [hLine, vLine] {
-                lineView.backgroundColor = UIColor.blackColor()
+                lineView.backgroundColor = UIColor.black
                 view.addSubview(lineView)
             }
             
-            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-                hLine.frame = CGRectMake(self.innerFrame.origin.x, screenLoc.y, screenLoc.x - self.innerFrame.origin.x, 1)
-                vLine.frame = CGRectMake(screenLoc.x, screenLoc.y, 1, self.innerFrame.origin.y + self.innerFrame.height - screenLoc.y)
+            UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
+                hLine.frame = CGRect(x: self.innerFrame.origin.x, y: screenLoc.y, width: screenLoc.x - self.innerFrame.origin.x, height: 1)
+                vLine.frame = CGRect(x: screenLoc.x, y: screenLoc.y, width: 1, height: self.innerFrame.origin.y + self.innerFrame.height - screenLoc.y)
             }, completion: nil)
         }
     }
 
     
-    override func display(chart chart: Chart) {
+    override func display(chart: Chart) {
         let view = UIView(frame: chart.bounds)
-        view.userInteractionEnabled = true
+        view.isUserInteractionEnabled = true
         chart.addSubview(view)
         self.view = view
     }

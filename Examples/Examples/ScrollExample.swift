@@ -11,7 +11,7 @@ import SwiftCharts
 
 class ScrollExample: UIViewController {
 
-    private var chart: Chart? // arc
+    fileprivate var chart: Chart? // arc
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,30 +55,30 @@ class ScrollExample: UIViewController {
             self.createChartPoint(50, 20, labelSettings),
         ]
         
-        let xValues = 2.stride(through: 50, by: 1).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
+        let xValues = stride(from: 2, through: 50, by: 1).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
         let yValues = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: labelSettings)}, addPaddingSegmentIfEdge: false)
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
         let scrollViewFrame = ExamplesDefaults.chartFrame(self.view.bounds)
-        let chartFrame = CGRectMake(0, 0, 1400, scrollViewFrame.size.height)
+        let chartFrame = CGRect(x: 0, y: 0, width: 1400, height: scrollViewFrame.size.height)
         
         // calculate coords space in the background to keep UI smooth
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
             let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
 
-                let lineModel0 = ChartLineModel(chartPoints: chartPoints0, lineColor: UIColor.redColor(), animDuration: 1, animDelay: 0)
-                let lineModel1 = ChartLineModel(chartPoints: chartPoints1, lineColor: UIColor.blueColor(), animDuration: 1, animDelay: 0, dashPattern: [5,10])
+                let lineModel0 = ChartLineModel(chartPoints: chartPoints0, lineColor: UIColor.red, animDuration: 1, animDelay: 0)
+                let lineModel1 = ChartLineModel(chartPoints: chartPoints1, lineColor: UIColor.blue, animDuration: 1, animDelay: 0, dashPattern: [5,10])
                 let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel0, lineModel1])
                 
-                let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+                let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
                 let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
                 
                 let scrollView = UIScrollView(frame: scrollViewFrame)
-                scrollView.contentSize = CGSizeMake(chartFrame.size.width, scrollViewFrame.size.height)
+                scrollView.contentSize = CGSize(width: chartFrame.size.width, height: scrollViewFrame.size.height)
                 //        self.automaticallyAdjustsScrollViewInsets = false // nested view controller - this is in parent
                 
                 let chart = Chart(
@@ -99,7 +99,7 @@ class ScrollExample: UIViewController {
         }
     }
     
-    private func createChartPoint(x: Double, _ y: Double, _ labelSettings: ChartLabelSettings) -> ChartPoint {
+    fileprivate func createChartPoint(_ x: Double, _ y: Double, _ labelSettings: ChartLabelSettings) -> ChartPoint {
         return ChartPoint(x: ChartAxisValueDouble(x, labelSettings: labelSettings), y: ChartAxisValueDouble(y))
     }
 }

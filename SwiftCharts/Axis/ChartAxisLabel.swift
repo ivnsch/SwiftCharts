@@ -9,9 +9,9 @@
 import UIKit
 
 /// A model of an axis label
-public class ChartAxisLabel {
+open class ChartAxisLabel {
 
-    public let text: String
+    open let text: String
     let settings: ChartLabelSettings
 
     var hidden: Bool = false
@@ -22,7 +22,7 @@ public class ChartAxisLabel {
         if self.settings.rotation == 0 {
             return size
         } else {
-            return ChartUtils.boundingRectAfterRotatingRect(CGRectMake(0, 0, size.width, size.height), radians: self.settings.rotation * CGFloat(M_PI) / 180.0).size
+            return ChartUtils.boundingRectAfterRotatingRect(CGRect(x: 0, y: 0, width: size.width, height: size.height), radians: self.settings.rotation * CGFloat(M_PI) / 180.0).size
         }
     }()
     

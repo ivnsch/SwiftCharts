@@ -8,19 +8,19 @@
 
 import UIKit
 
-public class ChartCandleStickView: UIView {
+open class ChartCandleStickView: UIView {
 
-    private let innerRect: CGRect
+    fileprivate let innerRect: CGRect
     
-    private let fillColor: UIColor
-    private let strokeColor: UIColor
+    fileprivate let fillColor: UIColor
+    fileprivate let strokeColor: UIColor
     
-    private var currentFillColor: UIColor
-    private var currentStrokeColor: UIColor
+    fileprivate var currentFillColor: UIColor
+    fileprivate var currentStrokeColor: UIColor
     
-    private let highlightColor = UIColor.redColor()
+    fileprivate let highlightColor = UIColor.red
    
-    private let strokeWidth: CGFloat
+    fileprivate let strokeWidth: CGFloat
     
     var highlighted: Bool = false {
         didSet {
@@ -35,13 +35,13 @@ public class ChartCandleStickView: UIView {
         }
     }
     
-    public init(lineX: CGFloat, width: CGFloat, top: CGFloat, bottom: CGFloat, innerRectTop: CGFloat, innerRectBottom: CGFloat, fillColor: UIColor, strokeColor: UIColor = UIColor.blackColor(), strokeWidth: CGFloat = 1) {
+    public init(lineX: CGFloat, width: CGFloat, top: CGFloat, bottom: CGFloat, innerRectTop: CGFloat, innerRectBottom: CGFloat, fillColor: UIColor, strokeColor: UIColor = UIColor.black, strokeWidth: CGFloat = 1) {
         
         let frameX = lineX - width / CGFloat(2)
-        let frame = CGRectMake(frameX, top, width, bottom - top)
+        let frame = CGRect(x: frameX, y: top, width: width, height: bottom - top)
         let t = innerRectTop - top
         let hsw = strokeWidth / 2
-        self.innerRect = CGRectMake(hsw, t + hsw, width - strokeWidth, innerRectBottom - top - t - strokeWidth)
+        self.innerRect = CGRect(x: hsw, y: t + hsw, width: width - strokeWidth, height: innerRectBottom - top - t - strokeWidth)
 
         self.fillColor = fillColor
         self.strokeColor = strokeColor
@@ -52,29 +52,31 @@ public class ChartCandleStickView: UIView {
         
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
     }
 
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func drawRect(rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
+    override open func draw(_ rect: CGRect) {
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
 
         let wHalf = self.frame.width / 2
         
-        CGContextSetLineWidth(context, self.strokeWidth)
-        CGContextSetStrokeColorWithColor(context, self.currentStrokeColor.CGColor)
-        CGContextMoveToPoint(context, wHalf, 0)
-        CGContextAddLineToPoint(context, wHalf, self.frame.height)
+        context.setLineWidth(self.strokeWidth)
+        context.setStrokeColor(self.currentStrokeColor.cgColor)
+        context.move(to: CGPoint(x: wHalf, y: 0))
+        context.addLine(to: CGPoint(x: wHalf, y: self.frame.height))
         
-        CGContextStrokePath(context)
+        context.strokePath()
         
-        CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 0.0)
-        CGContextSetFillColorWithColor(context, self.currentFillColor.CGColor)
-        CGContextFillRect(context, self.innerRect)
-        CGContextStrokeRect(context, self.innerRect)
+        context.setFillColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.0)
+        context.setFillColor(self.currentFillColor.cgColor)
+        context.fill(self.innerRect)
+        context.stroke(self.innerRect)
     }
    
 

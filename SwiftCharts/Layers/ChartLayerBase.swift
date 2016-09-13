@@ -9,11 +9,11 @@
 import UIKit
 
 // Convenience class to make protocol's methods optional
-public class ChartLayerBase: ChartLayer {
+open class ChartLayerBase: ChartLayer {
 
-    public func chartInitialized(chart chart: Chart) {}
+    open func chartInitialized(chart: Chart) {}
     
-    public func chartViewDrawing(context context: CGContextRef, chart: Chart) {}
+    open func chartViewDrawing(context: CGContext, chart: Chart) {}
     
     public init() {}
 }

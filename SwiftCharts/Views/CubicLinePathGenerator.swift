@@ -8,10 +8,10 @@
 
 import UIKit
 
-public class CubicLinePathGenerator: ChartLinesViewPathGenerator {
+open class CubicLinePathGenerator: ChartLinesViewPathGenerator {
     
-    private let tension1: CGFloat
-    private let tension2: CGFloat
+    fileprivate let tension1: CGFloat
+    fileprivate let tension2: CGFloat
     
     /**
     - parameter tension1: p1 tension, where 0 is straight line. A value higher than 0.3 is not recommended.
@@ -23,7 +23,7 @@ public class CubicLinePathGenerator: ChartLinesViewPathGenerator {
     }
     
     // src: http://stackoverflow.com/a/29876400/930450 (modified)
-    public func generatePath(points points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
+    open func generatePath(points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
         
         let path = UIBezierPath()
         var p0: CGPoint
@@ -33,12 +33,12 @@ public class CubicLinePathGenerator: ChartLinesViewPathGenerator {
         var tensionBezier1: CGFloat
         var tensionBezier2: CGFloat
         
-        path.lineCapStyle = .Round
-        path.lineJoinStyle = .Round
+        path.lineCapStyle = .round
+        path.lineJoinStyle = .round
         
-        var previousPoint1: CGPoint = CGPointZero
+        var previousPoint1: CGPoint = CGPoint.zero
         
-        path.moveToPoint(points.first!)
+        path.move(to: points.first!)
         
         for i in 0..<(points.count - 1) {
             p1 = points[i]
@@ -69,10 +69,10 @@ public class CubicLinePathGenerator: ChartLinesViewPathGenerator {
                 tensionBezier2 = 0
             }
 
-            let controlPoint1 = CGPointMake(p1.x + (p2.x - p1.x) / 3, p1.y - (p1.y - p2.y) / 3 - (p0.y - p1.y) * tensionBezier1)
-            let controlPoint2 = CGPointMake(p1.x + 2 * (p2.x - p1.x) / 3, (p1.y - 2 * (p1.y - p2.y) / 3) + (p2.y - p3.y) * tensionBezier2)
+            let controlPoint1 = CGPoint(x: p1.x + (p2.x - p1.x) / 3, y: p1.y - (p1.y - p2.y) / 3 - (p0.y - p1.y) * tensionBezier1)
+            let controlPoint2 = CGPoint(x: p1.x + 2 * (p2.x - p1.x) / 3, y: (p1.y - 2 * (p1.y - p2.y) / 3) + (p2.y - p3.y) * tensionBezier2)
             
-            path.addCurveToPoint(p2, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
+            path.addCurve(to: p2, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
             
             previousPoint1 = p1;
         }
