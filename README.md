@@ -22,7 +22,7 @@ Easy to use and highly customizable charts library for iOS
 - Choice to use core graphics (directly on chart's context) or UIViews, or combine both.
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
-Swift 1.2, Swift 2.x, iOS 7, 8, 9
+Swift 3.0, 2.x, 1.2, iOS 10, 9, 8, 7
 
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM)
 
@@ -54,12 +54,18 @@ Swift 1.2, Swift 2.x, iOS 7, 8, 9
 
 Add to your Podfile:
 
+Swift 3.0:
+```ruby
+use_frameworks!
+pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
+```
+Note: To use Swift 3.x / master, you need Xcode 8+
+
 Swift 2.x:
 ```ruby
 use_frameworks!
 pod 'SwiftCharts', '~> 0.4'
 ```
-Note: To use Swift 2.x / master, you need Xcode 7+
 
 Swift 1.2 (not actively maintained):
 ```ruby
