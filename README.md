@@ -92,6 +92,11 @@ import SwiftCharts
 
 Add to your Cartfile:
 
+Swift 3.0:
+```
+github "i-schuetz/SwiftCharts" ~> 0.5
+```
+
 Swift 2.x:
 ```
 github "i-schuetz/SwiftCharts" ~> 0.4
