@@ -83,11 +83,14 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
     private let useView: Bool
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0, useView: Bool = true) {
+    private let delayInit: Bool
+    
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0, useView: Bool = true, delayInit: Bool = false) {
         
         self.lineModels = lineModels
         self.pathGenerator = pathGenerator
         self.useView = useView
+        self.delayInit = delayInit
         
         let chartPoints: [T] = lineModels.flatMap{$0.chartPoints}
         
@@ -108,12 +111,14 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }
     
     override func display(chart chart: Chart) {
-        if useView {
-            initScreenLines(chart)
+        if !delayInit {
+            if useView {
+                initScreenLines(chart)
+            }
         }
     }
     
-    private func initScreenLines(chart: Chart) {
+    public func initScreenLines(chart: Chart) {
         let screenLines = self.lineModels.map{self.toScreenLine(lineModel: $0, chart: chart)}
         
         for screenLine in screenLines {
