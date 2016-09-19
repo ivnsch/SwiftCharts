@@ -51,9 +51,9 @@ class TrackerExample: UIViewController {
             for (index, chartPointWithScreenLoc) in chartPointsWithScreenLoc.enumerate() {
                 
                 let label = UILabel()
-                label.center = chartPointWithScreenLoc.screenLoc
                 label.text = chartPointWithScreenLoc.chartPoint.description
                 label.sizeToFit()
+                label.center = CGPoint(x: chartPointWithScreenLoc.screenLoc.x + label.frame.width / 2, y: chartPointWithScreenLoc.screenLoc.y + chartFrame.minY - label.frame.height / 2)
                 
                 label.backgroundColor = index == 0 ? UIColor.redColor() : UIColor.blueColor()
                 label.textColor = UIColor.whiteColor()

@@ -220,6 +220,10 @@ public class Chart: Pannable, Zoomable {
         self.contentView.addSubview(view)
     }
 
+    public func addSubviewNoTransform(view: UIView) {
+        self.containerView.addSubview(view)
+    }
+    
     /// The frame of the chart's view
     public var frame: CGRect {
         return self.view.frame

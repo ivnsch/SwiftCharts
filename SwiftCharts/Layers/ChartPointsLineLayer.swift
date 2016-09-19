@@ -52,16 +52,17 @@ public enum LineCap {
     }
 }
 
-private struct ScreenLine {
-    let points: [CGPoint]
+private struct ScreenLine<T: ChartPoint> {
+    var points: [CGPoint]
     let color: UIColor
     let lineWidth: CGFloat
     let lineJoin: LineJoin
     let lineCap: LineCap
     let animDuration: Float
     let animDelay: Float
+    let lineModel: ChartLineModel<T>
     
-    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float) {
+    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>) {
         self.points = points
         self.color = color
         self.lineWidth = lineWidth
@@ -69,6 +70,7 @@ private struct ScreenLine {
         self.lineCap = lineCap
         self.animDuration = animDuration
         self.animDelay = animDelay
+        self.lineModel = lineModel
     }
 }
 
@@ -77,6 +79,8 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     private var lineViews: [ChartLinesView] = []
     private let pathGenerator: ChartLinesViewPathGenerator
 
+    private var screenLines: [(screenLine: ScreenLine<T>, view: ChartLinesView)] = []
+    
     private let useView: Bool
     
     public init(xAxis: ChartAxis, yAxis: ChartAxis, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0, useView: Bool = true) {
@@ -90,7 +94,7 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
-    private func toScreenLine(lineModel lineModel: ChartLineModel<T>, chart: Chart) -> ScreenLine {
+    private func toScreenLine(lineModel lineModel: ChartLineModel<T>, chart: Chart) -> ScreenLine<T> {
         return ScreenLine(
             points: lineModel.chartPoints.map{self.chartPointScreenLoc($0)},
             color: lineModel.lineColor,
@@ -98,32 +102,41 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             lineJoin: lineModel.lineJoin,
             lineCap: lineModel.lineCap,
             animDuration: lineModel.animDuration,
-            animDelay: lineModel.animDelay
+            animDelay: lineModel.animDelay,
+            lineModel: lineModel
         )
     }
     
     override func display(chart chart: Chart) {
         if useView {
-            let screenLines = self.lineModels.map{self.toScreenLine(lineModel: $0, chart: chart)}
-            
-            for screenLine in screenLines {
-                let lineView = ChartLinesView(
-                    path: self.pathGenerator.generatePath(points: screenLine.points, lineWidth: screenLine.lineWidth),
-                    frame: chart.contentView.bounds,
-                    lineColor: screenLine.color,
-                    lineWidth: screenLine.lineWidth,
-                    lineJoin: screenLine.lineJoin,
-                    lineCap: screenLine.lineCap,
-                    animDuration: self.isTransform ? 0 : screenLine.animDuration,
-                    animDelay: self.isTransform ? 0 : screenLine.animDelay)
-                
-                self.lineViews.append(lineView)
-                lineView.userInteractionEnabled = false
-                chart.addSubview(lineView)
-            }
+            initScreenLines(chart)
         }
     }
     
+    private func initScreenLines(chart: Chart) {
+        let screenLines = self.lineModels.map{self.toScreenLine(lineModel: $0, chart: chart)}
+        
+        for screenLine in screenLines {
+            let lineView = generateLineView(screenLine, chart: chart)
+            self.lineViews.append(lineView)
+            lineView.userInteractionEnabled = false
+            chart.addSubviewNoTransform(lineView)
+            self.screenLines.append((screenLine, lineView))
+        }
+    }
+    
+    private func generateLineView(screenLine: ScreenLine<T>, chart: Chart) -> ChartLinesView {
+        return ChartLinesView(
+            path: self.pathGenerator.generatePath(points: screenLine.points, lineWidth: screenLine.lineWidth),
+            frame: chart.contentView.bounds,
+            lineColor: screenLine.color,
+            lineWidth: screenLine.lineWidth,
+            lineJoin: screenLine.lineJoin,
+            lineCap: screenLine.lineCap,
+            animDuration: self.isTransform ? 0 : screenLine.animDuration,
+            animDelay: self.isTransform ? 0 : screenLine.animDelay)
+        
+    }
     
     override public func chartDrawersContentViewDrawing(context context: CGContextRef, chart: Chart, view: UIView) {
         if !useView {
@@ -148,11 +161,11 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }
     
     public override func modelLocToScreenLoc(x x: Double) -> CGFloat {
-        return useView ? super.modelLocToScreenLoc(x: x) : xAxis.screenLocForScalar(x) - (chart?.containerFrame.origin.x ?? 0)
+        return xAxis.screenLocForScalar(x) - (chart?.containerFrame.origin.x ?? 0)
     }
     
     public override func modelLocToScreenLoc(y y: Double) -> CGFloat {
-        return useView ? super.modelLocToScreenLoc(y: y) : yAxis.screenLocForScalar(y) - (chart?.containerFrame.origin.y ?? 0)
+        return yAxis.screenLocForScalar(y) - (chart?.containerFrame.origin.y ?? 0)
     }
     
     public override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
@@ -164,12 +177,35 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         if !useView {
             chart?.drawersContentView.setNeedsDisplay()
+        } else {
+            updateScreenLines()
         }
     }
     
     public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
         if !useView {
             chart?.drawersContentView.setNeedsDisplay()
+        } else {
+            updateScreenLines()
         }
+    }
+
+    private func updateScreenLines() {
+
+        guard let chart = chart else {return}
+        
+        isTransform = true
+        
+        for i in 0..<screenLines.count {
+            for j in 0..<screenLines[i].screenLine.points.count {
+                let chartPoint = screenLines[i].screenLine.lineModel.chartPoints[j]
+                screenLines[i].screenLine.points[j] = modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
+                screenLines[i].view.removeFromSuperview()
+                screenLines[i].view = generateLineView(screenLines[i].screenLine, chart: chart)
+                chart.addSubviewNoTransform(screenLines[i].view)
+            }
+        }
+        
+        isTransform = false
     }
 }

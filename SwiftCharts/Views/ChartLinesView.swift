@@ -83,8 +83,6 @@ public class ChartLinesView: UIView {
     }
     
     private func show(path path: UIBezierPath) {
-        let lineMask = self.createLineMask(frame: frame)
-        self.layer.mask = lineMask
         self.layer.addSublayer(self.generateLayer(path: path))
     }
  }
