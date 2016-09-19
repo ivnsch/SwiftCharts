@@ -42,10 +42,10 @@ public class ChartPointViewBarStacked: ChartPointViewBar {
         }
     }
     
-    public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, stackFrames: [ChartPointViewBarStackedFrame], animDuration: Float = 0.5, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, selectionViewUpdater: ChartViewSelector? = nil) {
+    public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, stackFrames: [ChartPointViewBarStackedFrame], animDuration: Float = 0.5, animDelay: Float = 0, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, selectionViewUpdater: ChartViewSelector? = nil) {
         self.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
         
-        super.init(p1: p1, p2: p2, width: width, bgColor: UIColor.clearColor(), animDuration: animDuration, selectionViewUpdater: selectionViewUpdater)
+        super.init(p1: p1, p2: p2, width: width, bgColor: UIColor.clearColor(), animDuration: animDuration, animDelay: animDelay, selectionViewUpdater: selectionViewUpdater)
         
         for (index, stackFrame) in stackFrames.enumerate() {
             let (targetFrame, firstFrame): (CGRect, CGRect) = {
@@ -88,7 +88,7 @@ public class ChartPointViewBarStacked: ChartPointViewBar {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, animDuration: Float, selectionViewUpdater: ChartViewSelector? = nil) {
+    public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, animDuration: Float, animDelay: Float, selectionViewUpdater: ChartViewSelector? = nil) {
         fatalError("init(p1:p2:width:bgColor:animDuration:selectionViewUpdater:) has not been implemented")
     }
     
@@ -105,7 +105,7 @@ public class ChartPointViewBarStacked: ChartPointViewBar {
         if animDuration =~ 0 {
             targetState()
         } else {
-            UIView.animateWithDuration(CFTimeInterval(animDuration), delay: 0, options: .CurveEaseOut, animations: {
+            UIView.animateWithDuration(CFTimeInterval(animDuration), delay: CFTimeInterval(animDelay), options: .CurveEaseOut, animations: {
                 targetState()
             }, completion: nil)
         }

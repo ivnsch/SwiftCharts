@@ -18,13 +18,13 @@ public class BarsChartConfig: ChartConfig {
         self.xAxisLabelSettings = xAxisLabelSettings
         self.yAxisLabelSettings = yAxisLabelSettings
         
-       super.init(chartSettings: chartSettings, guidelinesConfig: guidelinesConfig)
+        super.init(chartSettings: chartSettings, guidelinesConfig: guidelinesConfig)
     }
 }
 
 public class BarsChart: Chart {
     
-    public init(frame: CGRect, chartConfig: BarsChartConfig, xTitle: String, yTitle: String, bars barModels: [(String, Double)], color: UIColor, barWidth: CGFloat, animDuration: Float = 0.5, horizontal: Bool = false) {
+    public init(frame: CGRect, chartConfig: BarsChartConfig, xTitle: String, yTitle: String, bars barModels: [(String, Double)], color: UIColor, barWidth: CGFloat, animDuration: Float = 0.5, animDelay: Float = 0.5, horizontal: Bool = false) {
         
         let zero = ChartAxisValueDouble(0)
         let bars: [ChartBarModel] = barModels.enumerate().map {index, barModel in
@@ -41,7 +41,7 @@ public class BarsChart: Chart {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartConfig.chartSettings, chartFrame: frame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
-        let barsLayer: ChartLayer = ChartBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, bars: bars, horizontal: horizontal, barWidth: barWidth, animDuration: animDuration)
+        let barsLayer: ChartLayer = ChartBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, bars: bars, horizontal: horizontal, barWidth: barWidth, animDuration: animDuration, animDelay: animDelay)
         
         let guidelinesLayer = GuidelinesDefaultLayerGenerator.generateOpt(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, guidelinesConfig: chartConfig.guidelinesConfig)
         
