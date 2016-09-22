@@ -8,8 +8,11 @@
 
 import UIKit
 
-class StraightLinePathGenerator: ChartLinesViewPathGenerator {
-    func generatePath(points points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
+public class StraightLinePathGenerator: ChartLinesViewPathGenerator {
+    
+    public init() {}
+    
+    public func generatePath(points points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
 
         let progressline = UIBezierPath()
       
