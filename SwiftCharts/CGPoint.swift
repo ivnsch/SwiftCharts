@@ -45,4 +45,19 @@ extension CGPoint {
         }
         return minDistancePoint
     }
+    
+    func multiplyBy(value:CGFloat) -> CGPoint{
+        return CGPointMake(self.x * value, self.y * value)
+    }
+    
+    func length() -> CGFloat {
+        return CGFloat(sqrt(CDouble(
+            self.x * self.x + self.y * self.y
+        )))
+    }
+    
+    func normalize() -> CGPoint {
+        let l = self.length()
+        return CGPointMake(self.x / l, self.y / l)
+    }
 }
