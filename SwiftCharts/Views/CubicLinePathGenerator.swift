@@ -26,6 +26,9 @@ public class CubicLinePathGenerator: ChartLinesViewPathGenerator {
     public func generatePath(points points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
         
         let path = UIBezierPath()
+        
+        guard !points.isEmpty else {return path}
+        
         var p0: CGPoint
         var p1: CGPoint
         var p2: CGPoint
