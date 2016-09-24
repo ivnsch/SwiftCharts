@@ -205,10 +205,11 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             for j in 0..<screenLines[i].screenLine.points.count {
                 let chartPoint = screenLines[i].screenLine.lineModel.chartPoints[j]
                 screenLines[i].screenLine.points[j] = modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
-                screenLines[i].view.removeFromSuperview()
-                screenLines[i].view = generateLineView(screenLines[i].screenLine, chart: chart)
-                chart.addSubviewNoTransform(screenLines[i].view)
             }
+            
+            screenLines[i].view.removeFromSuperview()
+            screenLines[i].view = generateLineView(screenLines[i].screenLine, chart: chart)
+            chart.addSubviewNoTransform(screenLines[i].view)
         }
         
         isTransform = false
