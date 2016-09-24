@@ -61,8 +61,9 @@ private struct ScreenLine<T: ChartPoint> {
     let animDuration: Float
     let animDelay: Float
     let lineModel: ChartLineModel<T>
+    let dashPattern: [Double]?
     
-    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>) {
+    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>, dashPattern: [Double]?) {
         self.points = points
         self.color = color
         self.lineWidth = lineWidth
@@ -71,6 +72,7 @@ private struct ScreenLine<T: ChartPoint> {
         self.animDuration = animDuration
         self.animDelay = animDelay
         self.lineModel = lineModel
+        self.dashPattern = dashPattern
     }
 }
 
@@ -78,7 +80,6 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     private var lineModels: [ChartLineModel<T>]
     private var lineViews: [ChartLinesView] = []
     private let pathGenerator: ChartLinesViewPathGenerator
-
     private var screenLines: [(screenLine: ScreenLine<T>, view: ChartLinesView)] = []
     
     private let useView: Bool
@@ -86,7 +87,6 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     private let delayInit: Bool
     
     public init(xAxis: ChartAxis, yAxis: ChartAxis, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0, useView: Bool = true, delayInit: Bool = false) {
-        
         self.lineModels = lineModels
         self.pathGenerator = pathGenerator
         self.useView = useView
@@ -106,7 +106,8 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             lineCap: lineModel.lineCap,
             animDuration: lineModel.animDuration,
             animDelay: lineModel.animDelay,
-            lineModel: lineModel
+            lineModel: lineModel,
+            dashPattern: lineModel.dashPattern
         )
     }
     
@@ -139,8 +140,9 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             lineJoin: screenLine.lineJoin,
             lineCap: screenLine.lineCap,
             animDuration: self.isTransform ? 0 : screenLine.animDuration,
-            animDelay: self.isTransform ? 0 : screenLine.animDelay)
-        
+            animDelay: self.isTransform ? 0 : screenLine.animDelay,
+            dashPattern: screenLine.dashPattern
+        )
     }
     
     override public func chartDrawersContentViewDrawing(context context: CGContextRef, chart: Chart, view: UIView) {

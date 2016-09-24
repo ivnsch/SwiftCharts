@@ -180,6 +180,8 @@
 		22DBFFFE1BF5BF3900070F15 /* ChartAxisValueDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */; };
 		22DBFFFF1BF5BF3900070F15 /* ChartAxisValueFloatScreenLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06405DD21B8AA81D00A689FF /* ChartAxisValueFloatScreenLoc.swift */; };
 		22E702171BF5B96200C19675 /* SwiftCharts.h in Headers */ = {isa = PBXBuildFile; fileRef = 06405DAB1B8AA74700A689FF /* SwiftCharts.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		43649A691C7AC7E300523D7F /* ChartPointsTouchHighlightLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43649A681C7AC7E300523D7F /* ChartPointsTouchHighlightLayer.swift */; };
+		437C78521D1EF923003C19C3 /* MultiTrackerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437C78511D1EF923003C19C3 /* MultiTrackerExample.swift */; };
 		EB08E2331B93A15E0030081C /* ChartAxisValueDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */; };
 		EB093E5F1D2141EF001157BD /* ChartAxisValuesGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB093E5E1D2141EF001157BD /* ChartAxisValuesGenerator.swift */; };
 		EB093E611D21421D001157BD /* ChartAxisValuesGeneratorFixed.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB093E601D21421D001157BD /* ChartAxisValuesGeneratorFixed.swift */; };
@@ -366,6 +368,8 @@
 		06405E0C1B8AA81D00A689FF /* InfoBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoBubble.swift; sourceTree = "<group>"; };
 		067510C01B8AB36500A37F64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		22E7020F1BF5B8EC00C19675 /* SwiftCharts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftCharts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43649A681C7AC7E300523D7F /* ChartPointsTouchHighlightLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPointsTouchHighlightLayer.swift; sourceTree = "<group>"; };
+		437C78511D1EF923003C19C3 /* MultiTrackerExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiTrackerExample.swift; sourceTree = "<group>"; };
 		EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValueDouble.swift; sourceTree = "<group>"; };
 		EB093E5E1D2141EF001157BD /* ChartAxisValuesGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValuesGenerator.swift; sourceTree = "<group>"; };
 		EB093E601D21421D001157BD /* ChartAxisValuesGeneratorFixed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartAxisValuesGeneratorFixed.swift; sourceTree = "<group>"; };
@@ -460,7 +464,6 @@
 		062D23701B8AAE5D0017ABB8 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
-				062D23B01B8AB1620017ABB8 /* Convenience */,
 				062D23711B8AAE5D0017ABB8 /* AreasExample.swift */,
 				062D23721B8AAE5D0017ABB8 /* BarsExample.swift */,
 				062D23731B8AAE5D0017ABB8 /* BarsPlusMinusAndLinesExample.swift */,
@@ -468,6 +471,7 @@
 				062D23751B8AAE5D0017ABB8 /* BubbleExample.swift */,
 				062D23761B8AAE5D0017ABB8 /* CandleStickExample.swift */,
 				062D23771B8AAE5D0017ABB8 /* CandleStickInteractiveExample.swift */,
+				062D23B01B8AB1620017ABB8 /* Convenience */,
 				062D237A1B8AAE5D0017ABB8 /* CoordsExample.swift */,
 				062D237B1B8AAE5D0017ABB8 /* CubicLinesExample.swift */,
 				062D237C1B8AAE5D0017ABB8 /* CustomUnitsExample.swift */,
@@ -480,6 +484,7 @@
 				062D23831B8AAE5D0017ABB8 /* MultipleAxesExample.swift */,
 				062D23841B8AAE5D0017ABB8 /* MultipleAxesInteractiveExample.swift */,
 				062D23851B8AAE5D0017ABB8 /* MultipleLabelsExample.swift */,
+				437C78511D1EF923003C19C3 /* MultiTrackerExample.swift */,
 				062D23861B8AAE5D0017ABB8 /* NotificationsExample.swift */,
 				062D23871B8AAE5D0017ABB8 /* NotNumericExample.swift */,
 				062D23881B8AAE5D0017ABB8 /* ScatterExample.swift */,
@@ -661,6 +666,7 @@
 				06405DF51B8AA81D00A689FF /* ChartPointsLineTrackerLayer.swift */,
 				06405DF61B8AA81D00A689FF /* ChartPointsScatterLayer.swift */,
 				06405DF71B8AA81D00A689FF /* ChartPointsSingleViewLayer.swift */,
+				43649A681C7AC7E300523D7F /* ChartPointsTouchHighlightLayer.swift */,
 				06405DF81B8AA81D00A689FF /* ChartPointsTrackerLayer.swift */,
 				06405DF91B8AA81D00A689FF /* ChartPointsViewsLayer.swift */,
 				06405DFA1B8AA81D00A689FF /* ChartShowCoordsLinesLayer.swift */,
@@ -996,6 +1002,7 @@
 				062D23A31B8AAE5D0017ABB8 /* NotificationsExample.swift in Sources */,
 				EBA012DF1D60AD8C0064175C /* HorizontalGuide.swift in Sources */,
 				062D23961B8AAE5D0017ABB8 /* ConvenienceLinesExample.swift in Sources */,
+				437C78521D1EF923003C19C3 /* MultiTrackerExample.swift in Sources */,
 				062D23A81B8AAE5D0017ABB8 /* TargetExample.swift in Sources */,
 				062D23A91B8AAE5D0017ABB8 /* TrackerExample.swift in Sources */,
 				06342AC81B8AAD7F001C9F5D /* MasterViewController.swift in Sources */,
@@ -1088,6 +1095,7 @@
 				EB093E6E1D21AD09001157BD /* ChartAxisLabelsConflictSolver.swift in Sources */,
 				EB1351231D40C80600B1C1C2 /* ChartAxisLabelsGeneratorNumberSuffix.swift in Sources */,
 				EB9C88A71D2061FA003C19D1 /* ChartAxisY.swift in Sources */,
+				43649A691C7AC7E300523D7F /* ChartPointsTouchHighlightLayer.swift in Sources */,
 				06405E3A1B8AA81D00A689FF /* ChartPointsLineLayer.swift in Sources */,
 				06405E231B8AA81D00A689FF /* ChartPointBubble.swift in Sources */,
 				06405E3C1B8AA81D00A689FF /* ChartPointsScatterLayer.swift in Sources */,

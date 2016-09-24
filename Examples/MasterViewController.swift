@@ -10,7 +10,7 @@ import UIKit
 
 
 enum Example {
-    case HelloWorld, Bars, StackedBars, BarsPlusMinus, GroupedBars, BarsStackedGrouped, Scatter, Areas, Bubble, Coords, Target, Multival, Notifications, Combination, Scroll, EqualSpacing, Tracker, MultiAxis, MultiAxisInteractive, CandleStick, Cubiclines, NotNumeric, CandleStickInteractive, CustomUnits, Trendline
+    case HelloWorld, Bars, StackedBars, BarsPlusMinus, GroupedBars, BarsStackedGrouped, Scatter, Areas, Bubble, Coords, Target, Multival, Notifications, Combination, Scroll, EqualSpacing, Tracker, MultiTracker, MultiAxis, MultiAxisInteractive, CandleStick, Cubiclines, NotNumeric, CandleStickInteractive, CustomUnits, Trendline
 }
 
 class MasterViewController: UITableViewController {
@@ -33,6 +33,7 @@ class MasterViewController: UITableViewController {
         (.Scroll, "Multiline, Scroll"),
         (.Coords, "Show touch coords (interactive)"),
         (.Tracker, "Track touch (interactive)"),
+        (.MultiTracker, "Multi-chart touch tracking"),
         (.EqualSpacing, "Fixed axis spacing"),
         (.CustomUnits, "Custom units, rotated labels"),
         (.Multival, "Multiple axis labels"),
