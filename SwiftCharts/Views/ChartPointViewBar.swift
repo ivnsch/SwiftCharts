@@ -8,15 +8,36 @@
 
 import UIKit
 
-public class ChartPointViewBar: UIView {
+public struct ChartBarViewSettings {
     
-    let targetFrame: CGRect
     let animDuration: Float
     let animDelay: Float
     
-    var isSelected: Bool = false
+    let selectionViewUpdater: ChartViewSelector?
     
-    var selectionViewUpdater: ChartViewSelector?
+    let delayInit: Bool
+    
+    public init(animDuration: Float = 0.5, animDelay: Float = 0, selectionViewUpdater: ChartViewSelector? = nil, delayInit: Bool = false) {
+        self.animDuration = animDuration
+        self.animDelay = animDelay
+        self.selectionViewUpdater = selectionViewUpdater
+        self.delayInit = delayInit
+    }
+    
+    public func copy(animDuration animDuration: Float? = nil, animDelay: Float? = nil, selectionViewUpdater: ChartViewSelector? = nil) -> ChartBarViewSettings {
+        return ChartBarViewSettings(
+            animDuration: animDuration ?? self.animDuration,
+            animDelay: animDelay ?? self.animDelay,
+            selectionViewUpdater: selectionViewUpdater ?? self.selectionViewUpdater
+        )
+    }
+}
+
+public class ChartPointViewBar: UIView {
+    
+    let targetFrame: CGRect
+
+    var isSelected: Bool = false
     
     var tapHandler: (ChartPointViewBar -> Void)? {
         didSet {
@@ -28,7 +49,9 @@ public class ChartPointViewBar: UIView {
     
     public let isHorizontal: Bool
     
-    public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor? = nil, animDuration: Float = 0.5, animDelay: Float = 0, selectionViewUpdater: ChartViewSelector? = nil) {
+    let settings: ChartBarViewSettings
+    
+    public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, settings: ChartBarViewSettings) {
         
         let (targetFrame, firstFrame): (CGRect, CGRect) = {
             if p1.y - p2.y =~ 0 { // horizontal
@@ -44,10 +67,7 @@ public class ChartPointViewBar: UIView {
         }()
         
         self.targetFrame =  targetFrame
-        self.animDuration = animDuration
-        self.animDelay = animDelay
-        
-        self.selectionViewUpdater = selectionViewUpdater
+        self.settings = settings
         
         isHorizontal = p1.y == p2.y
         
@@ -68,7 +88,7 @@ public class ChartPointViewBar: UIView {
     
     func toggleSelection() {
         isSelected = !isSelected
-        selectionViewUpdater?.displaySelected(self, selected: isSelected)
+        settings.selectionViewUpdater?.displaySelected(self, selected: isSelected)
     }
 
     required public init(coder aDecoder: NSCoder) {
@@ -82,13 +102,12 @@ public class ChartPointViewBar: UIView {
             layoutIfNeeded()
         }
         
-        if animDuration =~ 0 {
+        if settings.animDuration =~ 0 {
             targetState()
         } else {
-            UIView.animateWithDuration(CFTimeInterval(animDuration), delay: CFTimeInterval(animDelay), options: .CurveEaseOut, animations: {
+            UIView.animateWithDuration(CFTimeInterval(settings.animDuration), delay: CFTimeInterval(settings.animDelay), options: .CurveEaseOut, animations: {
                 targetState()
-                }, completion: nil)
+            }, completion: nil)
         }
-
     }
 }

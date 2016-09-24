@@ -41,7 +41,9 @@ public class BarsChart: Chart {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartConfig.chartSettings, chartFrame: frame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
-        let barsLayer: ChartLayer = ChartBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, bars: bars, horizontal: horizontal, barWidth: barWidth, animDuration: animDuration, animDelay: animDelay)
+        let barViewSettings = ChartBarViewSettings(animDuration: animDuration, animDelay: animDelay)
+        
+        let barsLayer: ChartLayer = ChartBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, bars: bars, horizontal: horizontal, barWidth: barWidth, settings: barViewSettings)
         
         let guidelinesLayer = GuidelinesDefaultLayerGenerator.generateOpt(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, guidelinesConfig: chartConfig.guidelinesConfig)
         

@@ -41,7 +41,7 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
         super.init(horizontal: horizontal, layer: layer, barWidth: barWidth)
     }
     
-    override func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor? = nil, animDuration: Float, animDelay: Float, chart: Chart? = nil) -> ChartPointViewBarStacked {
+    override func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor? = nil, settings: ChartBarViewSettings, chart: Chart? = nil) -> ChartPointViewBarStacked {
         
         let constantScreenLoc = constantScreenLocMaybe ?? self.constantScreenLoc(barModel)
         
@@ -86,7 +86,7 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
         
         let viewPoints = self.viewPoints(barModel, constantScreenLoc: constantScreenLoc)
         
-        return ChartPointViewBarStacked(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, stackFrames: stackFrames.frames, animDuration: animDuration, animDelay: animDelay)
+        return ChartPointViewBarStacked(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: barModel.bgColor, stackFrames: stackFrames.frames, settings: settings)
     }
     
 }
@@ -105,24 +105,20 @@ public class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
     private let barModels: [ChartStackedBarModel]
     private let horizontal: Bool
     private let barWidth: CGFloat
-    private let animDuration: Float
-    private let animDelay: Float
+    private let settings: ChartBarViewSettings
     
     private var barViews: [UIView] = []
 
     private let stackFrameSelectionViewUpdater: ChartViewSelector?
-    private let barSelectionViewUpdater: ChartViewSelector?
     
     private var tapHandler: (ChartTappedBarStacked -> Void)?
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float, animDelay: Float = 0, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, barSelectionViewUpdater: ChartViewSelector? = nil, tapHandler: (ChartTappedBarStacked -> Void)? = nil) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barWidth: CGFloat, settings: ChartBarViewSettings, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, tapHandler: (ChartTappedBarStacked -> Void)? = nil) {
         self.barModels = barModels
         self.horizontal = horizontal
         self.barWidth = barWidth
-        self.animDuration = animDuration
-        self.animDelay = animDelay
+        self.settings = settings
         self.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
-        self.barSelectionViewUpdater = barSelectionViewUpdater
         self.tapHandler = tapHandler
         super.init(xAxis: xAxis, yAxis: yAxis)
     }
@@ -133,8 +129,7 @@ public class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
         let barsGenerator = ChartStackedBarsViewGenerator(horizontal: self.horizontal, layer: self, barWidth: self.barWidth)
         
         for barModel in barModels {
-            let barView = barsGenerator.generateView(barModel, animDuration: isTransform ? 0 : animDuration, animDelay: isTransform ? 0 : animDelay, chart: self.chart)
-            barView.selectionViewUpdater = barSelectionViewUpdater
+            let barView = barsGenerator.generateView(barModel, settings: isTransform ? settings.copy(animDuration: 0, animDelay: 0) : settings, chart: self.chart)
             barView.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
             barView.stackedTapHandler = {[weak self] tappedStackedBar in guard let weakSelf = self else {return}
                 let stackFrameIndex = tappedStackedBar.stackFrame.index

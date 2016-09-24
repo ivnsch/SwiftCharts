@@ -8,37 +8,35 @@
 
 import UIKit
 
+public struct ChartBarGreyOutSettings {
+    let barSettings: ChartBarViewSettings = ChartBarViewSettings()
+    let greyOutDelay: Float = 1
+    let greyOutAnimDuration: Float = 0.5
+}
+
 public class ChartPointViewBarGreyOut: ChartPointViewBar {
 
-    private let greyOut: Bool
-    private let greyOutDelay: Float
-    private let greyOutAnimDuration: Float
+    private let greyOutSettings: ChartBarGreyOutSettings
     
-    init(p1: CGPoint, p2: CGPoint, width: CGFloat, color: UIColor, animDuration: Float = 0.5, animDelay: Float = 0, greyOut: Bool = false, greyOutDelay: Float = 1, greyOutAnimDuration: Float = 0.5, selectionViewUpdater: ChartViewSelector? = nil) {
-        
-        self.greyOut = greyOut
-        self.greyOutDelay = greyOutDelay
-        self.greyOutAnimDuration = greyOutAnimDuration
-        
-        super.init(p1: p1, p2: p2, width: width, bgColor: color, animDuration: animDuration, animDelay: animDelay, selectionViewUpdater: selectionViewUpdater)
+    init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, settings: ChartBarGreyOutSettings) {
+        self.greyOutSettings = settings
+        super.init(p1: p1, p2: p2, width: width, bgColor: bgColor, settings: settings.barSettings)
     }
 
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public required convenience init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, animDuration: Float, animDelay: Float, selectionViewUpdater: ChartViewSelector? = nil) {
-        self.init(p1: p1, p2: p2, width: width, color: bgColor ?? UIColor.blackColor(), animDuration: animDuration, animDelay: animDelay, selectionViewUpdater: selectionViewUpdater)
+    public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, settings: ChartBarViewSettings) {
+        self.greyOutSettings = ChartBarGreyOutSettings()
+        super.init(p1: p1, p2: p2, width: width, bgColor: bgColor, settings: settings)
     }
 
     override public func didMoveToSuperview() {
-        
         super.didMoveToSuperview()
         
-        if self.greyOut {
-            UIView.animateWithDuration(CFTimeInterval(self.greyOutAnimDuration), delay: CFTimeInterval(self.greyOutDelay), options: UIViewAnimationOptions.CurveEaseOut, animations: {() -> Void in
-                self.backgroundColor = UIColor.grayColor()
-            }, completion: nil)
-        }
+        UIView.animateWithDuration(CFTimeInterval(greyOutSettings.greyOutAnimDuration), delay: CFTimeInterval(greyOutSettings.greyOutDelay), options: UIViewAnimationOptions.CurveEaseOut, animations: {
+            self.backgroundColor = UIColor.grayColor()
+        }, completion: nil)
     }
 }

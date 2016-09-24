@@ -70,7 +70,8 @@ class StackedBarsExample: UIViewController {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
-        let chartStackedBarsLayer = ChartStackedBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, barModels: barModels, horizontal: horizontal, barWidth: 40, animDuration: 0.5, stackFrameSelectionViewUpdater: ChartViewSelectorAlpha(selectedAlpha: 1, deselectedAlpha: alpha)) {tappedBar in
+        let barViewSettings = ChartBarViewSettings(animDuration: 0.5)
+        let chartStackedBarsLayer = ChartStackedBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, barModels: barModels, horizontal: horizontal, barWidth: 40, settings: barViewSettings, stackFrameSelectionViewUpdater: ChartViewSelectorAlpha(selectedAlpha: 1, deselectedAlpha: alpha)) {tappedBar in
             let chartViewPoint = tappedBar.layer.contentToGlobalCoordinates(CGPointMake(tappedBar.barView.frame.midX, tappedBar.stackedItemViewFrameRelativeToBarParent.minY))!
             let viewPoint = CGPointMake(chartViewPoint.x, chartViewPoint.y + 70)
             let infoBubble = InfoBubble(point: viewPoint, preferredSize: CGSizeMake(50, 40), superview: self.view, text: "\(tappedBar.stackedItemModel.quantity)", font: ExamplesDefaults.labelFont, textColor: UIColor.whiteColor(), bgColor: UIColor.blackColor())
