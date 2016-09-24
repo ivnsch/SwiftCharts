@@ -71,40 +71,42 @@ class AreasExample: UIViewController {
                 let w: CGFloat = Env.iPad ? 250 : 150
                 let h: CGFloat = Env.iPad ? 100 : 80
                 
-                let x: CGFloat = {
-                    let attempt = screenLoc.x - (w/2)
-                    let leftBound: CGFloat = chart.bounds.origin.x
-                    let rightBound = chart.bounds.size.width - 5
-                    if attempt < leftBound {
-                        return view.frame.origin.x
-                    } else if attempt + w > rightBound {
-                        return rightBound - w
-                    }
-                    return attempt
-                }()
-                
-                let frame = CGRectMake(x, screenLoc.y - (h + (Env.iPad ? 30 : 12)), w, h)
-                
-                let bubbleView = InfoBubble(point: screenLoc, frame: frame, arrowWidth: Env.iPad ? 40 : 28, arrowHeight: Env.iPad ? 20 : 14, bgColor: UIColor.blackColor(), arrowX: screenLoc.x - x, arrowY: -1) // TODO don't calculate this here
-                chart.addSubview(bubbleView)
-                
-                bubbleView.transform = CGAffineTransformConcat(CGAffineTransformMakeScale(0, 0), CGAffineTransformMakeTranslation(0, 100))
-                let infoView = UILabel(frame: CGRectMake(0, 10, w, h - 30))
-                infoView.textColor = UIColor.whiteColor()
-                infoView.backgroundColor = UIColor.blackColor()
-                infoView.text = "Some text about \(chartPoint)"
-                infoView.font = ExamplesDefaults.fontWithSize(Env.iPad ? 14 : 12)
-                infoView.textAlignment = NSTextAlignment.Center
-                
-                bubbleView.addSubview(infoView)
-                popups.append(bubbleView)
-                
-                UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions(), animations: {
-                    view.selected = true
-                    selectedView = view
+                if let chartViewScreenLoc = layer.containerToGlobalScreenLoc(chartPoint) {
+                    let x: CGFloat = {
+                        let attempt = chartViewScreenLoc.x - (w/2)
+                        let leftBound: CGFloat = chart.bounds.origin.x
+                        let rightBound = chart.bounds.size.width - 5
+                        if attempt < leftBound {
+                            return view.frame.origin.x
+                        } else if attempt + w > rightBound {
+                            return rightBound - w
+                        }
+                        return attempt
+                    }()
+
+                    let frame = CGRectMake(x, chartViewScreenLoc.y - (h + (Env.iPad ? 30 : 12)), w, h)
                     
-                    bubbleView.transform = CGAffineTransformIdentity
+                    let bubbleView = InfoBubble(point: chartViewScreenLoc, frame: frame, arrowWidth: Env.iPad ? 40 : 28, arrowHeight: Env.iPad ? 20 : 14, bgColor: UIColor.blackColor(), arrowX: chartViewScreenLoc.x - x, arrowY: -1) // TODO don't calculate this here
+                    chart.view.addSubview(bubbleView)
+                    
+                    bubbleView.transform = CGAffineTransformConcat(CGAffineTransformMakeScale(0, 0), CGAffineTransformMakeTranslation(0, 100))
+                    let infoView = UILabel(frame: CGRectMake(0, 10, w, h - 30))
+                    infoView.textColor = UIColor.whiteColor()
+                    infoView.backgroundColor = UIColor.blackColor()
+                    infoView.text = "Some text about \(chartPoint)"
+                    infoView.font = ExamplesDefaults.fontWithSize(Env.iPad ? 14 : 12)
+                    infoView.textAlignment = NSTextAlignment.Center
+                    
+                    bubbleView.addSubview(infoView)
+                    popups.append(bubbleView)
+                    
+                    UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions(), animations: {
+                        view.selected = true
+                        selectedView = view
+                        
+                        bubbleView.transform = CGAffineTransformIdentity
                     }, completion: {finished in})
+                }
             }
 
             func targetState() {
@@ -126,11 +128,11 @@ class AreasExample: UIViewController {
         }
         
         let itemsDelay: Float = 0.08
-        let chartPointsCircleLayer1 = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints1, viewGenerator: circleViewGenerator, displayDelay: 0.9, delayBetweenItems: itemsDelay)
+        let chartPointsCircleLayer1 = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints1, viewGenerator: circleViewGenerator, displayDelay: 0.9, delayBetweenItems: itemsDelay, mode: .Translate)
         
-        let chartPointsCircleLayer2 = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints2, viewGenerator: circleViewGenerator, displayDelay: 1.8, delayBetweenItems: itemsDelay)
+        let chartPointsCircleLayer2 = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints2, viewGenerator: circleViewGenerator, displayDelay: 1.8, delayBetweenItems: itemsDelay, mode: .Translate)
         
-        let chartPointsCircleLayer3 = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints3, viewGenerator: circleViewGenerator, displayDelay: 2.7, delayBetweenItems: itemsDelay)
+        let chartPointsCircleLayer3 = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints3, viewGenerator: circleViewGenerator, displayDelay: 2.7, delayBetweenItems: itemsDelay, mode: .Translate)
         
         let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)

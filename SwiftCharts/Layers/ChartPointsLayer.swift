@@ -92,7 +92,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
             let transformedScreenLoc = modelLocToScreenLoc(x: chartPointModel.chartPoint.x.scalar, y: chartPointModel.chartPoint.y.scalar)
             let distance = transformedScreenLoc.distance(localCenter)
             if distance < tapSettings.radius {
-                models.append(TappedChartPointLayerModel(model: chartPointModel.copy(screenLoc: containerToGlobalScreenLoc(chartPointModel.chartPoint)), distance: distance))
+                models.append(TappedChartPointLayerModel(model: chartPointModel.copy(screenLoc: contentToGlobalScreenLoc(chartPointModel.chartPoint)), distance: distance))
             }
         }
         
@@ -189,6 +189,14 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     
     func updateChartPointsScreenLocations() {
         chartPointsModels = updateChartPointsScreenLocations(chartPointsModels)
+    }
+    
+    public func contentScreenCoords(chartPoint: T) -> CGPoint {
+        return modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
+    }
+
+    public func containerScreenCoords(chartPoint: T) -> CGPoint {
+        return modelLocToContainerScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
     }
     
     func updateChartPointsScreenLocations(chartPointsModels: [ChartPointLayerModel<T>]) -> [ChartPointLayerModel<T>] {

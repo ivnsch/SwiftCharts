@@ -15,8 +15,8 @@ public class ChartPointsSingleViewLayer<T: ChartPoint, U: UIView>: ChartPointsVi
 
     private var activeChartPoint: T?
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], viewGenerator: ChartPointViewGenerator) {
-        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, viewGenerator: viewGenerator)
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], viewGenerator: ChartPointViewGenerator, mode: ChartPointsViewsLayerMode = .ScaleAndTranslate, keepOnFront: Bool = true) {
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, viewGenerator: viewGenerator, mode: mode, keepOnFront: keepOnFront)
     }
 
     override func display(chart chart: Chart) {
@@ -36,7 +36,7 @@ public class ChartPointsSingleViewLayer<T: ChartPoint, U: UIView>: ChartPointsVi
         let model: ChartPointLayerModel = ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: screenLoc)
         if let view = self.viewGenerator(chartPointModel: model, layer: self, chart: chart, isTransform: isTransform) {
             self.addedViews.append(view)
-            chart.addSubview(view)
+            addSubview(chart, view: view)
         }
     }
 }

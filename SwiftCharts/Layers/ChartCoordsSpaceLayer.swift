@@ -32,7 +32,19 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
     public func modelLocToScreenLoc(y y: Double) -> CGFloat {
         return yAxis.innerScreenLocForScalar(y) / (chart?.contentView.transform.d ?? 1)
     }
+
+    public func modelLocToContainerScreenLoc(x x: Double, y: Double) -> CGPoint {
+        return CGPointMake(modelLocToContainerScreenLoc(x: x), modelLocToContainerScreenLoc(y: y))
+    }
     
+    public func modelLocToContainerScreenLoc(x x: Double) -> CGFloat {
+        return xAxis.screenLocForScalar(x) - (chart?.containerFrame.origin.x ?? 0)
+    }
+    
+    public func modelLocToContainerScreenLoc(y y: Double) -> CGFloat {
+        return yAxis.screenLocForScalar(y) - (chart?.containerFrame.origin.y ?? 0)
+    }
+
     public func scalarForScreenLoc(x x: CGFloat) -> Double {
         return xAxis.innerScalarForScreenLoc(x * (chart?.contentView.transform.a ?? 1))
     }
@@ -62,8 +74,14 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
         return contentToContainerCoordinates(point).flatMap{containerToGlobalCoordinates($0)}
     }
     
-    public func containerToGlobalScreenLoc(chartPoint: ChartPoint) -> CGPoint? {
+    // TODO review method, variable names
+    public func contentToGlobalScreenLoc(chartPoint: ChartPoint) -> CGPoint? {
         let containerScreenLoc = CGPointMake(modelLocToScreenLoc(x: chartPoint.x.scalar), modelLocToScreenLoc(y: chartPoint.y.scalar))
+        return containerToGlobalCoordinates(containerScreenLoc)
+    }
+    
+    public func containerToGlobalScreenLoc(chartPoint: ChartPoint) -> CGPoint? {
+        let containerScreenLoc = CGPointMake(modelLocToContainerScreenLoc(x: chartPoint.x.scalar), modelLocToContainerScreenLoc(y: chartPoint.y.scalar))
         return containerToGlobalCoordinates(containerScreenLoc)
     }
 }

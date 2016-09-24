@@ -8,6 +8,9 @@
 
 import UIKit
 
+public enum ChartPointsViewsLayerMode {
+    case ScaleAndTranslate, Translate
+}
 
 public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> {
 
@@ -22,9 +25,17 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
     
     private var conflictSolver: ChartViewsConflictSolver<T, U>?
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints:[T], viewGenerator: ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0) {
+    private let mode: ChartPointsViewsLayerMode
+    
+    // For cases when layers behind re-add subviews on pan/zoom, ensure views of this layer stays on front
+    // TODO z ordering
+    private let keepOnFront: Bool
+    
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints:[T], viewGenerator: ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0, mode: ChartPointsViewsLayerMode = .ScaleAndTranslate, keepOnFront: Bool = true) {
         self.viewGenerator = viewGenerator
         self.conflictSolver = conflictSolver
+        self.mode = mode
+        self.keepOnFront = keepOnFront
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
@@ -34,14 +45,18 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
         self.viewsWithChartPoints = self.generateChartPointViews(chartPointModels: self.chartPointsModels, chart: chart)
         
         if self.isTransform || self.delayBetweenItems =~ 0 {
-            for v in self.viewsWithChartPoints {chart.addSubview(v.view)}
+            for v in viewsWithChartPoints {addSubview(chart, view: v.view)}
             
         } else {
             for viewWithChartPoint in viewsWithChartPoints {
                 let view = viewWithChartPoint.view
-                chart.addSubview(view)
+                addSubview(chart, view: view)
             }
         }
+    }
+    
+    func addSubview(chart: Chart, view: UIView) {
+        mode == .ScaleAndTranslate ? chart.addSubview(view) : chart.addSubviewNoTransform(view)
     }
     
     func reloadViews() {
@@ -102,11 +117,44 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
     
     public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         super.zoom(x, y: y, centerX: centerX, centerY: centerY)
-        updateChartPointsScreenLocations()
+        updateForTransform()
     }
     
     public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
         super.pan(deltaX, deltaY: deltaY)
-        updateChartPointsScreenLocations()
+        updateForTransform()
+    }
+    
+    func updateForTransform() {
+        switch mode {
+            
+        case .ScaleAndTranslate:
+            updateChartPointsScreenLocations()
+            
+        case .Translate:
+            for i in 0..<viewsWithChartPoints.count {
+                viewsWithChartPoints[i].chartPointModel.screenLoc = modelLocToScreenLoc(x: viewsWithChartPoints[i].chartPointModel.chartPoint.x.scalar, y: viewsWithChartPoints[i].chartPointModel.chartPoint.y.scalar)
+                viewsWithChartPoints[i].view.center = viewsWithChartPoints[i].chartPointModel.screenLoc
+            }
+        }
+        
+        if keepOnFront {
+            bringToFront()
+        }
+    }
+    
+    public override func modelLocToScreenLoc(x x: Double, y: Double) -> CGPoint {
+        switch mode {
+        case .ScaleAndTranslate:
+            return super.modelLocToScreenLoc(x: x, y: y)
+        case .Translate:
+            return super.modelLocToContainerScreenLoc(x: x, y: y)
+        }
+    }
+    
+    public func bringToFront() {
+        for (view, _) in viewsWithChartPoints {
+            view.superview?.bringSubviewToFront(view)
+        }
     }
 }
