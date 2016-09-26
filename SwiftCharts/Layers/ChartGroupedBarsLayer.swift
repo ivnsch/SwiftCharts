@@ -93,7 +93,7 @@ public class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: Char
                     }
                 }()
 
-                let barView = barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, settings: isTransform ? settings.copy(animDuration: 0, animDelay: 0) : settings)
+                let barView = barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, settings: isTransform ? settings.copy(animDuration: 0, animDelay: 0) : settings, model: bar, index: barIndex, groupIndex: groupIndex)
                 configBarView(group, groupIndex: groupIndex, barIndex: barIndex, bar: bar, barView: barView)
                 barViews.append(barView)
                 chart.addSubview(barView)
@@ -158,14 +158,14 @@ public class ChartGroupedStackedBarsLayer_<N>: ChartGroupedBarsLayer<ChartStacke
     private let stackFrameSelectionViewUpdater: ChartViewSelector?
     let tapHandler: (ChartTappedGroupBarStacked -> Void)?
     
-    public convenience init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, tapHandler: (ChartTappedGroupBarStacked -> Void)? = nil, viewGenerator: ChartBarsLayer<ChartPointViewBar>.ChartBarViewGenerator? = nil) {
+    public convenience init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, tapHandler: (ChartTappedGroupBarStacked -> Void)? = nil, viewGenerator: ChartBarsLayer<ChartPointViewBarStacked>.ChartBarViewGenerator? = nil) {
         self.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings, stackFrameSelectionViewUpdater: stackFrameSelectionViewUpdater, tapHandler: tapHandler, viewGenerator: viewGenerator)
     }
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool, barWidth: CGFloat?, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, tapHandler: (ChartTappedGroupBarStacked -> Void)? = nil, viewGenerator: ChartBarsLayer<ChartPointViewBar>.ChartBarViewGenerator? = nil) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool, barWidth: CGFloat?, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, tapHandler: (ChartTappedGroupBarStacked -> Void)? = nil, viewGenerator: ChartBarsLayer<ChartPointViewBarStacked>.ChartBarViewGenerator? = nil) {
         self.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
         self.tapHandler = tapHandler
-        super.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: barWidth, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings)
+        super.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: barWidth, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings, viewGenerator: viewGenerator)
     }
     
     override func barsGenerator(barWidth barWidth: CGFloat, chart: Chart) -> ChartBarsViewGenerator<ChartStackedBarModel, ChartPointViewBarStacked> {

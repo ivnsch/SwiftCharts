@@ -43,7 +43,7 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
         super.init(horizontal: horizontal, layer: layer, barWidth: barWidth, viewGenerator: nil)
     }
     
-    override func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor? = nil, settings: ChartBarViewSettings, chart: Chart? = nil) -> ChartPointViewBarStacked {
+    override func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor? = nil, settings: ChartBarViewSettings, model: ChartBarModel, index: Int, groupIndex: Int, chart: Chart? = nil) -> ChartPointViewBarStacked {
         
         let constantScreenLoc = constantScreenLocMaybe ?? self.constantScreenLoc(barModel)
         
@@ -88,7 +88,7 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
         
         let viewPoints = self.viewPoints(barModel, constantScreenLoc: constantScreenLoc)
         
-        return stackedViewGenerator?(p1: viewPoints.p1, p2: viewPoints.p2, width: barWidth, bgColor: barModel.bgColor, stackFrames: stackFrames.frames, settings: settings) ??
+        return stackedViewGenerator?(p1: viewPoints.p1, p2: viewPoints.p2, width: barWidth, bgColor: barModel.bgColor, stackFrames: stackFrames.frames, settings: settings, model: barModel, index: index) ??
             ChartPointViewBarStacked(p1: viewPoints.p1, p2: viewPoints.p2, width: barWidth, bgColor: barModel.bgColor, stackFrames: stackFrames.frames, settings: settings)
     }
     
@@ -106,7 +106,7 @@ public struct ChartTappedBarStacked {
 
 public class ChartStackedBarsLayer<T: ChartPointViewBarStacked>: ChartCoordsSpaceLayer {
     
-    public typealias ChartBarViewGenerator = (p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, stackFrames: [ChartPointViewBarStackedFrame], settings: ChartBarViewSettings) -> T
+    public typealias ChartBarViewGenerator = (p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, stackFrames: [ChartPointViewBarStackedFrame], settings: ChartBarViewSettings, model: ChartBarModel, index: Int) -> T
     
     private let barModels: [ChartStackedBarModel]
     private let horizontal: Bool
@@ -134,8 +134,8 @@ public class ChartStackedBarsLayer<T: ChartPointViewBarStacked>: ChartCoordsSpac
         
         let barsGenerator = ChartStackedBarsViewGenerator(horizontal: self.horizontal, layer: self, barWidth: self.barWidth)
         
-        for barModel in barModels {
-            let barView = barsGenerator.generateView(barModel, settings: isTransform ? settings.copy(animDuration: 0, animDelay: 0) : settings, chart: self.chart)
+        for (index, barModel) in barModels.enumerate() {
+            let barView = barsGenerator.generateView(barModel, settings: isTransform ? settings.copy(animDuration: 0, animDelay: 0) : settings, model: barModel, index: index, groupIndex: 0, chart: self.chart)
             barView.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
             barView.stackedTapHandler = {[weak self] tappedStackedBar in guard let weakSelf = self else {return}
                 let stackFrameIndex = tappedStackedBar.stackFrame.index

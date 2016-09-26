@@ -62,13 +62,13 @@ class ChartBarsViewGenerator<T: ChartBarModel, U: ChartPointViewBar> {
         return horizontal ? layer.modelLocToScreenLoc(y: barModel.constant.scalar) : layer.modelLocToScreenLoc(x: barModel.constant.scalar)
     }
     
-    func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor?, settings: ChartBarViewSettings, chart: Chart? = nil) -> U {
+    func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor?, settings: ChartBarViewSettings, model: ChartBarModel, index: Int, groupIndex: Int, chart: Chart? = nil) -> U {
         
         let constantScreenLoc = constantScreenLocMaybe ?? self.constantScreenLoc(barModel)
         
         let viewPoints = self.viewPoints(barModel, constantScreenLoc: constantScreenLoc)
 
-        return viewGenerator?(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: bgColor, settings: settings) ??
+        return viewGenerator?(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: bgColor, settings: settings, model: model, index: index) ??
             U(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: bgColor, settings: settings)
     }
 }
@@ -83,7 +83,7 @@ public struct ChartTappedBar {
 
 public class ChartBarsLayer<T: ChartPointViewBar>: ChartCoordsSpaceLayer {
     
-    public typealias ChartBarViewGenerator = (p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, settings: ChartBarViewSettings) -> T
+    public typealias ChartBarViewGenerator = (p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, settings: ChartBarViewSettings, model: ChartBarModel, index: Int) -> T
     
     private let bars: [ChartBarModel]
     private let barWidth: CGFloat
@@ -112,8 +112,8 @@ public class ChartBarsLayer<T: ChartPointViewBar>: ChartCoordsSpaceLayer {
         
         let barsGenerator = ChartBarsViewGenerator(horizontal: horizontal, layer: self, barWidth: barWidth, viewGenerator: viewGenerator)
         
-        for barModel in bars {
-            let barView = barsGenerator.generateView(barModel, bgColor: barModel.bgColor, settings: isTransform ? settings.copy(animDuration: 0, animDelay: 0) : settings, chart: chart)
+        for (index, barModel) in bars.enumerate() {
+            let barView = barsGenerator.generateView(barModel, bgColor: barModel.bgColor, settings: isTransform ? settings.copy(animDuration: 0, animDelay: 0) : settings, model: barModel, index: index, groupIndex: 0, chart: chart)
             barView.tapHandler = {[weak self] tappedBarView in guard let weakSelf = self else {return}
                 weakSelf.tapHandler?(ChartTappedBar(model: barModel, view: tappedBarView, layer: weakSelf))
             }
