@@ -34,10 +34,13 @@ class ChartBarsViewGenerator<T: ChartBarModel, U: ChartPointViewBar> {
     
     let horizontal: Bool
     
-    init(horizontal: Bool, layer: ChartCoordsSpaceLayer, barWidth: CGFloat) {
+    let viewGenerator: ChartBarsLayer<U>.ChartBarViewGenerator?
+    
+    init(horizontal: Bool, layer: ChartCoordsSpaceLayer, barWidth: CGFloat, viewGenerator: ChartBarsLayer<U>.ChartBarViewGenerator?) {
         self.layer = layer
         self.horizontal = horizontal
         self.barWidth = barWidth
+        self.viewGenerator = viewGenerator
     }
     
     func viewPoints(barModel: T, constantScreenLoc: CGFloat) -> (p1: CGPoint, p2: CGPoint) {
@@ -59,13 +62,14 @@ class ChartBarsViewGenerator<T: ChartBarModel, U: ChartPointViewBar> {
         return horizontal ? layer.modelLocToScreenLoc(y: barModel.constant.scalar) : layer.modelLocToScreenLoc(x: barModel.constant.scalar)
     }
     
-    // constantScreenLoc: (screen) coordinate that is equal in p1 and p2 - for vertical bar this is the x coordinate, for horizontal bar this is the y coordinate
     func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor?, settings: ChartBarViewSettings, chart: Chart? = nil) -> U {
         
         let constantScreenLoc = constantScreenLocMaybe ?? self.constantScreenLoc(barModel)
         
         let viewPoints = self.viewPoints(barModel, constantScreenLoc: constantScreenLoc)
-        return U(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: bgColor, settings: settings)
+
+        return viewGenerator?(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: bgColor, settings: settings) ??
+            U(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: bgColor, settings: settings)
     }
 }
 
@@ -76,7 +80,11 @@ public struct ChartTappedBar {
     public let layer: ChartCoordsSpaceLayer
 }
 
-public class ChartBarsLayer: ChartCoordsSpaceLayer {
+
+public class ChartBarsLayer<T: ChartPointViewBar>: ChartCoordsSpaceLayer {
+    
+    public typealias ChartBarViewGenerator = (p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, settings: ChartBarViewSettings) -> T
+    
     private let bars: [ChartBarModel]
     private let barWidth: CGFloat
     private let horizontal: Bool
@@ -86,12 +94,15 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
     
     private var tapHandler: (ChartTappedBar -> Void)?
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat, settings: ChartBarViewSettings, tapHandler: (ChartTappedBar -> Void)? = nil) {
+    private var viewGenerator: ChartBarViewGenerator? // Custom bar views
+    
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, bars: [ChartBarModel], horizontal: Bool = false, barWidth: CGFloat, settings: ChartBarViewSettings, tapHandler: (ChartTappedBar -> Void)? = nil, viewGenerator: ChartBarViewGenerator? = nil) {
         self.bars = bars
         self.horizontal = horizontal
         self.barWidth = barWidth
         self.settings = settings
         self.tapHandler = tapHandler
+        self.viewGenerator = viewGenerator
         
         super.init(xAxis: xAxis, yAxis: yAxis)
     }
@@ -99,7 +110,7 @@ public class ChartBarsLayer: ChartCoordsSpaceLayer {
     public override func chartInitialized(chart chart: Chart) {
         super.chartInitialized(chart: chart)
         
-        let barsGenerator = ChartBarsViewGenerator(horizontal: horizontal, layer: self, barWidth: barWidth)
+        let barsGenerator = ChartBarsViewGenerator(horizontal: horizontal, layer: self, barWidth: barWidth, viewGenerator: viewGenerator)
         
         for barModel in bars {
             let barView = barsGenerator.generateView(barModel, bgColor: barModel.bgColor, settings: isTransform ? settings.copy(animDuration: 0, animDelay: 0) : settings, chart: chart)

@@ -14,7 +14,7 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
     let yAxis: ChartAxis
     
     /// If layer is generating views as part of a transform (e.g. panning or zooming)
-    var isTransform = false
+    public internal(set) var isTransform = false
     
     public init(xAxis: ChartAxis, yAxis: ChartAxis) {
         self.xAxis = xAxis
@@ -45,6 +45,18 @@ public class ChartCoordsSpaceLayer: ChartLayerBase {
         return yAxis.screenLocForScalar(y) - (chart?.containerFrame.origin.y ?? 0)
     }
 
+    public func modelLocToGlobalScreenLoc(x x: Double, y: Double) -> CGPoint {
+        return CGPointMake(modelLocToGlobalScreenLoc(x: x), modelLocToGlobalScreenLoc(y: y))
+    }
+    
+    public func modelLocToGlobalScreenLoc(x x: Double) -> CGFloat {
+        return xAxis.screenLocForScalar(x)
+    }
+    
+    public func modelLocToGlobalScreenLoc(y y: Double) -> CGFloat {
+        return yAxis.screenLocForScalar(y)
+    }
+    
     public func scalarForScreenLoc(x x: CGFloat) -> Double {
         return xAxis.innerScalarForScreenLoc(x * (chart?.contentView.transform.a ?? 1))
     }

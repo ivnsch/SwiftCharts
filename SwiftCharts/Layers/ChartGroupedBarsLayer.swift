@@ -33,17 +33,20 @@ public class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: Char
     
     private var barViews: [UIView] = []
     
-    convenience init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<T>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings) {
-        self.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings)
+    private let viewGenerator: ChartBarsLayer<U>.ChartBarViewGenerator?
+    
+    convenience init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<T>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, viewGenerator: ChartBarsLayer<U>.ChartBarViewGenerator? = nil) {
+        self.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings, viewGenerator: viewGenerator)
     }
     
-    init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<T>], horizontal: Bool = false, barWidth: CGFloat?, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings) {
+    init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<T>], horizontal: Bool = false, barWidth: CGFloat?, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, viewGenerator: ChartBarsLayer<U>.ChartBarViewGenerator? = nil) {
         self.groups = groups
         self.horizontal = horizontal
         self.barWidth = barWidth
         self.barSpacing = barSpacing
         self.groupSpacing = groupSpacing
         self.settings = settings
+        self.viewGenerator = viewGenerator
         
         super.init(xAxis: xAxis, yAxis: yAxis)
     }
@@ -117,17 +120,17 @@ public class ChartGroupedPlainBarsLayer_<N>: ChartGroupedBarsLayer<ChartBarModel
     
     let tapHandler: (ChartTappedGroupBar -> Void)?
     
-    public convenience init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, tapHandler: (ChartTappedGroupBar -> Void)? = nil) {
-        self.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings, tapHandler: tapHandler)
+    public convenience init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, tapHandler: (ChartTappedGroupBar -> Void)? = nil, viewGenerator: ChartBarsLayer<ChartPointViewBar>.ChartBarViewGenerator? = nil) {
+        self.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings, tapHandler: tapHandler, viewGenerator: viewGenerator)
     }
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool, barWidth: CGFloat?, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, tapHandler: (ChartTappedGroupBar -> Void)? = nil) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool, barWidth: CGFloat?, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, tapHandler: (ChartTappedGroupBar -> Void)? = nil, viewGenerator: ChartBarsLayer<ChartPointViewBar>.ChartBarViewGenerator? = nil) {
         self.tapHandler = tapHandler
-        super.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: barWidth, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings)
+        super.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: barWidth, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings, viewGenerator: viewGenerator)
     }
     
     override func barsGenerator(barWidth barWidth: CGFloat, chart: Chart) -> ChartBarsViewGenerator<ChartBarModel, ChartPointViewBar> {
-        return ChartBarsViewGenerator(horizontal: self.horizontal, layer: self, barWidth: barWidth)
+        return ChartBarsViewGenerator(horizontal: self.horizontal, layer: self, barWidth: barWidth, viewGenerator: viewGenerator)
     }
     
     override func configBarView(group: ChartPointsBarGroup<ChartBarModel>, groupIndex: Int, barIndex: Int, bar: ChartBarModel, barView: ChartPointViewBar) {

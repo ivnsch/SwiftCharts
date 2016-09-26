@@ -32,13 +32,15 @@ public class ChartStackedBarModel: ChartBarModel {
     }()
 }
 
-
 class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGenerator<T, ChartPointViewBarStacked> {
     
     private typealias FrameBuilder = (barModel: ChartStackedBarModel, item: ChartStackedBarItemModel, currentTotalQuantity: Double) -> (frame: ChartPointViewBarStackedFrame, length: CGFloat)
     
-    override init(horizontal: Bool, layer: ChartCoordsSpaceLayer, barWidth: CGFloat) {
-        super.init(horizontal: horizontal, layer: layer, barWidth: barWidth)
+    private let stackedViewGenerator: ChartStackedBarsLayer<ChartPointViewBarStacked>.ChartBarViewGenerator?
+    
+    init(horizontal: Bool, layer: ChartCoordsSpaceLayer, barWidth: CGFloat, viewGenerator: ChartStackedBarsLayer<ChartPointViewBarStacked>.ChartBarViewGenerator? = nil) {
+        self.stackedViewGenerator = viewGenerator
+        super.init(horizontal: horizontal, layer: layer, barWidth: barWidth, viewGenerator: nil)
     }
     
     override func generateView(barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor? = nil, settings: ChartBarViewSettings, chart: Chart? = nil) -> ChartPointViewBarStacked {
@@ -86,7 +88,8 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
         
         let viewPoints = self.viewPoints(barModel, constantScreenLoc: constantScreenLoc)
         
-        return ChartPointViewBarStacked(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: barModel.bgColor, stackFrames: stackFrames.frames, settings: settings)
+        return stackedViewGenerator?(p1: viewPoints.p1, p2: viewPoints.p2, width: barWidth, bgColor: barModel.bgColor, stackFrames: stackFrames.frames, settings: settings) ??
+            ChartPointViewBarStacked(p1: viewPoints.p1, p2: viewPoints.p2, width: barWidth, bgColor: barModel.bgColor, stackFrames: stackFrames.frames, settings: settings)
     }
     
 }
@@ -101,7 +104,10 @@ public struct ChartTappedBarStacked {
     public let layer: ChartCoordsSpaceLayer
 }
 
-public class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
+public class ChartStackedBarsLayer<T: ChartPointViewBarStacked>: ChartCoordsSpaceLayer {
+    
+    public typealias ChartBarViewGenerator = (p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, stackFrames: [ChartPointViewBarStackedFrame], settings: ChartBarViewSettings) -> T
+    
     private let barModels: [ChartStackedBarModel]
     private let horizontal: Bool
     private let barWidth: CGFloat
