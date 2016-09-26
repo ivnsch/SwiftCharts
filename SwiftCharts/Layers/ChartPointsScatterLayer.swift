@@ -28,11 +28,11 @@ public class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
     override public func chartDrawersContentViewDrawing(context context: CGContextRef, chart: Chart, view: UIView) {
         if !optimized {
             for chartPointModel in chartPointsModels {
-                drawChartPointModel(context: context, chartPointModel: chartPointModel, view: view)
+                drawChartPointModel(context, chartPointModel: chartPointModel, view: view)
             }
         } else { // Generate CGLayer with shape only once and draw it at different positions.
             let contentScale = view.contentScaleFactor * 2
-            guard let layer = generateCGLayer(context: context, view: view, contentScale: contentScale) else {return}
+            guard let layer = generateCGLayer(context, view: view, contentScale: contentScale) else {return}
             
             let w = itemSize.width
             let h = itemSize.height
@@ -71,7 +71,7 @@ public class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
         chart?.drawersContentView.setNeedsDisplay()
     }
     
-    public func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
+    public func drawChartPointModel(context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
         fatalError("override")
     }
     
@@ -79,11 +79,11 @@ public class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
         fatalError("override")
     }
     
-    func generateCGLayer(context context: CGContextRef, view: UIView, contentScale: CGFloat) -> CGLayer? {
+    func generateCGLayer(context: CGContextRef, view: UIView, contentScale: CGFloat) -> CGLayer? {
         let scaledBounds = CGRectMake(0, 0, itemSize.width * contentScale, itemSize.height * contentScale)
         let layer = CGLayerCreateWithContext(context, scaledBounds.size, nil)
-        let myLayerContext1 = CGLayerGetContext(layer)
-        CGContextScaleCTM(myLayerContext1, contentScale, contentScale)
+        let myLayerContext1 = CGLayerGetContext(layer!)
+        CGContextScaleCTM(myLayerContext1!, contentScale, contentScale)
         return layer
     }
     
@@ -98,18 +98,18 @@ public class ChartPointsScatterTrianglesLayer<T: ChartPoint>: ChartPointsScatter
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized, tapSettings: tapSettings)
     }
     
-    override func generateCGLayer(context context: CGContextRef, view: UIView, contentScale: CGFloat) -> CGLayer? {
-        let layer = super.generateCGLayer(context: context, view: view, contentScale: contentScale)
-        let layerContext = CGLayerGetContext(layer)
+    override func generateCGLayer(context: CGContextRef, view: UIView, contentScale: CGFloat) -> CGLayer? {
+        let layer = super.generateCGLayer(context, view: view, contentScale: contentScale)
+        let layerContext = CGLayerGetContext(layer!)
         
-        CGContextSetFillColorWithColor(layerContext, itemFillColor.CGColor)
-        CGContextAddLines(layerContext, trianglePointsCG, 4)
-        CGContextFillPath(layerContext)
+        CGContextSetFillColorWithColor(layerContext!, itemFillColor.CGColor)
+        CGContextAddLines(layerContext!, trianglePointsCG, 4)
+        CGContextFillPath(layerContext!)
         
         return layer
     }
     
-    override public func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
+    override public func drawChartPointModel(context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
         
         let w = self.itemSize.width
         let h = self.itemSize.height
@@ -137,7 +137,7 @@ public class ChartPointsScatterSquaresLayer<T: ChartPoint>: ChartPointsScatterLa
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized, tapSettings: tapSettings)
     }
     
-    override public func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
+    override public func drawChartPointModel(context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
         
         let w = self.itemSize.width
         let h = self.itemSize.height
@@ -148,13 +148,13 @@ public class ChartPointsScatterSquaresLayer<T: ChartPoint>: ChartPointsScatterLa
         CGContextFillRect(context, CGRectMake(screenLoc.x - w / 2, screenLoc.y - h / 2, w, h))
     }
     
-    override func generateCGLayer(context context: CGContextRef, view: UIView, contentScale: CGFloat) -> CGLayer? {
-        let layer = super.generateCGLayer(context: context, view: view, contentScale: contentScale)
-        let layerContext = CGLayerGetContext(layer)
+    override func generateCGLayer(context: CGContextRef, view: UIView, contentScale: CGFloat) -> CGLayer? {
+        let layer = super.generateCGLayer(context, view: view, contentScale: contentScale)
+        let layerContext = CGLayerGetContext(layer!)
 
-        CGContextSetFillColorWithColor(layerContext, itemFillColor.CGColor)
-        CGContextFillRect(layerContext, CGRectMake(0, 0, itemSize.width, itemSize.height))
-        CGContextFillPath(layerContext)
+        CGContextSetFillColorWithColor(layerContext!, itemFillColor.CGColor)
+        CGContextFillRect(layerContext!, CGRectMake(0, 0, itemSize.width, itemSize.height))
+        CGContextFillPath(layerContext!)
         
         return layer
     }
@@ -166,7 +166,7 @@ public class ChartPointsScatterCirclesLayer<T: ChartPoint>: ChartPointsScatterLa
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized, tapSettings: tapSettings)
     }
     
-    override public func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
+    override public func drawChartPointModel(context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
         let w = self.itemSize.width
         let h = self.itemSize.height
         
@@ -176,13 +176,13 @@ public class ChartPointsScatterCirclesLayer<T: ChartPoint>: ChartPointsScatterLa
         CGContextFillEllipseInRect(context, CGRectMake(screenLoc.x - w / 2, screenLoc.y - h / 2, w, h))
     }
     
-    override func generateCGLayer(context context: CGContextRef, view: UIView, contentScale: CGFloat) -> CGLayer? {
-        let layer = super.generateCGLayer(context: context, view: view, contentScale: contentScale)
-        let layerContext = CGLayerGetContext(layer)
+    override func generateCGLayer(context: CGContextRef, view: UIView, contentScale: CGFloat) -> CGLayer? {
+        let layer = super.generateCGLayer(context, view: view, contentScale: contentScale)
+        let layerContext = CGLayerGetContext(layer!)
         
-        CGContextSetFillColorWithColor(layerContext, itemFillColor.CGColor)
-        CGContextFillEllipseInRect(layerContext, CGRectMake(0, 0, itemSize.width, itemSize.height))
-        CGContextFillPath(layerContext)
+        CGContextSetFillColorWithColor(layerContext!, itemFillColor.CGColor)
+        CGContextFillEllipseInRect(layerContext!, CGRectMake(0, 0, itemSize.width, itemSize.height))
+        CGContextFillPath(layerContext!)
         
         return layer
     }
@@ -202,7 +202,7 @@ public class ChartPointsScatterCrossesLayer<T: ChartPoint>: ChartPointsScatterLa
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay, itemSize: itemSize, itemFillColor: itemFillColor, optimized: optimized, tapSettings: tapSettings)
     }
     
-    override public func drawChartPointModel(context context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
+    override public func drawChartPointModel(context: CGContextRef, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
         let w = self.itemSize.width
         let h = self.itemSize.height
 
@@ -220,17 +220,17 @@ public class ChartPointsScatterCrossesLayer<T: ChartPoint>: ChartPointsScatterLa
         drawLine(screenLoc.x + w / 2, p1Y: screenLoc.y - h / 2, p2X: screenLoc.x - w / 2, p2Y: screenLoc.y + h / 2)
     }
     
-    override func generateCGLayer(context context: CGContextRef, view: UIView, contentScale: CGFloat) -> CGLayer? {
-        let layer = super.generateCGLayer(context: context, view: view, contentScale: contentScale)
-        let layerContext = CGLayerGetContext(layer)
+    override func generateCGLayer(context: CGContextRef, view: UIView, contentScale: CGFloat) -> CGLayer? {
+        let layer = super.generateCGLayer(context, view: view, contentScale: contentScale)
+        let layerContext = CGLayerGetContext(layer!)
 
         CGContextSetStrokeColorWithColor(context, itemFillColor.CGColor)
         CGContextSetLineWidth(context, strokeWidth)
         
-        CGContextAddLines(layerContext, line1PointsCG, 2)
-        CGContextAddLines(layerContext, line2PointsCG, 2)
+        CGContextAddLines(layerContext!, line1PointsCG, 2)
+        CGContextAddLines(layerContext!, line2PointsCG, 2)
         
-        CGContextStrokePath(layerContext)
+        CGContextStrokePath(layerContext!)
         
         return layer
     }

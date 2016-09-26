@@ -93,8 +93,8 @@ public class InfoBubble: UIView {
     
     override public func drawRect(rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, bgColor.CGColor)
-        CGContextSetStrokeColorWithColor(context, bgColor.CGColor)
+        CGContextSetFillColorWithColor(context!, bgColor.CGColor)
+        CGContextSetStrokeColorWithColor(context!, bgColor.CGColor)
         
         let rrect = horizontal ? rect.insetBy(dx: inverted ? 0 : arrowHeight, dw: inverted ? arrowHeight : 0) : rect.insetBy(dy: inverted ? arrowHeight : 0, dh: inverted ? 0 : arrowHeight)
         
@@ -108,7 +108,7 @@ public class InfoBubble: UIView {
         CGPathAddLineToPoint(outlinePath, nil, maxx, maxy)
         CGPathAddLineToPoint(outlinePath, nil, minx, maxy)
         CGPathCloseSubpath(outlinePath)
-        CGContextAddPath(context, outlinePath)
+        CGContextAddPath(context!, outlinePath)
 
         let arrowPath = CGPathCreateMutable()
         
@@ -140,9 +140,9 @@ public class InfoBubble: UIView {
         }
         
         CGPathCloseSubpath(arrowPath)
-        CGContextAddPath(context, arrowPath)
+        CGContextAddPath(context!, arrowPath)
         
-        CGContextFillPath(context)
+        CGContextFillPath(context!)
     }
 }
 

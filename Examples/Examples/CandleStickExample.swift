@@ -89,8 +89,9 @@ class CandleStickExample: UIViewController {
 //        }
 //        let xValues = generateDateAxisValues(10, year: 2015)
 //        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
+
         
-        let xGeneratorDate = ChartAxisValuesGeneratorDate(multiplier: 5, unit: .Day)
+        let xGeneratorDate = ChartAxisValuesGeneratorDate(unit: .Day, preferredDividers:2, minSpace: 1, maxTextSize: 12)
         let xLabelGeneratorDate = ChartAxisLabelsGeneratorDate(labelSettings: labelSettings, formatter: displayFormatter)
         let firstDate = date("01.10.2015")
         let lastDate = date("31.10.2015")

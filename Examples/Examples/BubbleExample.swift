@@ -73,7 +73,7 @@ class BubbleExample: UIViewController {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
-        let bubbleLayer = self.bubblesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, chartInnerFrame: innerFrame, chartPoints: chartPoints)
+        let bubbleLayer = self.bubblesLayer(xAxisLayer, yAxisLayer: yAxisLayer, chartInnerFrame: innerFrame, chartPoints: chartPoints)
         
         let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: guidelinesLayerSettings)
@@ -100,7 +100,7 @@ class BubbleExample: UIViewController {
     
     // We can use a view based layer for easy animation (or interactivity), in which case we use the default chart points layer with a generator to create bubble views.
     // On the other side, if we don't need animation or want a better performance, we use ChartPointsBubbleLayer, which instead of creating views, renders directly to the chart's context.
-    private func bubblesLayer(xAxisLayer xAxisLayer: ChartAxisLayer, yAxisLayer: ChartAxisLayer, chartInnerFrame: CGRect, chartPoints: [ChartPointBubble]) -> ChartLayer {
+    private func bubblesLayer(xAxisLayer: ChartAxisLayer, yAxisLayer: ChartAxisLayer, chartInnerFrame: CGRect, chartPoints: [ChartPointBubble]) -> ChartLayer {
         
         let maxBubbleDiameter: Double = 30, minBubbleDiameter: Double = 2
         
@@ -143,8 +143,8 @@ class BubbleExample: UIViewController {
         let gradientImg: UIImage
         
         lazy var imgData: UnsafePointer<UInt8> = {
-            let provider = CGImageGetDataProvider(self.gradientImg.CGImage)
-            let pixelData = CGDataProviderCopyData(provider)
+            let provider = CGImageGetDataProvider(self.gradientImg.CGImage!)
+            let pixelData = CGDataProviderCopyData(provider!)
             return CFDataGetBytePtr(pixelData)
         }()
         
@@ -176,7 +176,7 @@ class BubbleExample: UIViewController {
             UIGraphicsBeginImageContext(gradient.bounds.size)
             gradient.renderInContext(context!)
             
-            let gradientImg = UIImage(CGImage: CGBitmapContextCreateImage(context)!)
+            let gradientImg = UIImage(CGImage: CGBitmapContextCreateImage(context!)!)
             
             UIGraphicsEndImageContext()
             self.gradientImg = gradientImg

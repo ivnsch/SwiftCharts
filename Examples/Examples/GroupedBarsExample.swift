@@ -15,7 +15,7 @@ class GroupedBarsExample: UIViewController {
 
     private let dirSelectorHeight: CGFloat = 50
 
-    private func barsChart(horizontal horizontal: Bool) -> Chart {
+    private func barsChart(horizontal: Bool) -> Chart {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
         let groupsData: [(title: String, [(min: Double, max: Double)])] = [
@@ -71,11 +71,11 @@ class GroupedBarsExample: UIViewController {
         
         let barViewSettings = ChartBarViewSettings(animDuration: 0.5, selectionViewUpdater: ChartViewSelectorBrightness(selectedFactor: 0.5))
         
-        let groupsLayer = ChartGroupedPlainBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, groups: groups, horizontal: horizontal, barSpacing: 2, groupSpacing: 25, settings: barViewSettings) {tappedGroupBar in
+        let groupsLayer = ChartGroupedPlainBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, groups: groups, horizontal: horizontal, barSpacing: 2, groupSpacing: 25, settings: barViewSettings, tapHandler: { tappedGroupBar /*ChartTappedGroupBar*/ in
             
             let barPoint = horizontal ? CGPointMake(tappedGroupBar.tappedBar.view.frame.maxX, tappedGroupBar.tappedBar.view.frame.midY) : CGPointMake(tappedGroupBar.tappedBar.view.frame.midX, tappedGroupBar.tappedBar.view.frame.minY)
             
-            guard let chart = self.chart, chartViewPoint = tappedGroupBar.layer.contentToGlobalCoordinates(barPoint) else {return}
+            guard let chart = self.chart, let chartViewPoint = tappedGroupBar.layer.contentToGlobalCoordinates(barPoint) else {return}
             
             let viewPoint = CGPointMake(chartViewPoint.x, chartViewPoint.y)
             
@@ -102,7 +102,7 @@ class GroupedBarsExample: UIViewController {
             }
             
             animators.animate()
-        }
+        })
         
         let guidelinesSettings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, axis: horizontal ? .X : .Y, settings: guidelinesSettings)
@@ -121,16 +121,16 @@ class GroupedBarsExample: UIViewController {
     }
     
     
-    private func showChart(horizontal horizontal: Bool) {
+    private func showChart(horizontal: Bool) {
         self.chart?.clearView()
         
-        let chart = self.barsChart(horizontal: horizontal)
+        let chart = self.barsChart(horizontal)
         self.view.addSubview(chart.view)
         self.chart = chart
     }
     
     override func viewDidLoad() {
-        self.showChart(horizontal: false)
+        self.showChart(false)
         if let chart = self.chart {
             let dirSelector = DirSelector(frame: CGRectMake(0, chart.frame.origin.y + chart.frame.size.height, self.view.frame.size.width, self.dirSelectorHeight), controller: self)
             self.view.addSubview(dirSelector)
@@ -171,7 +171,7 @@ class GroupedBarsExample: UIViewController {
         
         func buttonTapped(sender: UIButton) {
             let horizontal = sender == self.horizontal ? true : false
-            controller?.showChart(horizontal: horizontal)
+            controller?.showChart(horizontal)
         }
         
         override func didMoveToSuperview() {

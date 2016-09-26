@@ -36,8 +36,8 @@ public class ChartAxisLabel {
         self.originalText = text
     }
     
-    func copy(text text: String? = nil, settings: ChartLabelSettings? = nil, originalText: String? = nil, hidden: Bool? = nil) -> ChartAxisLabel {
-        var label = ChartAxisLabel(
+    func copy(text: String? = nil, settings: ChartLabelSettings? = nil, originalText: String? = nil, hidden: Bool? = nil) -> ChartAxisLabel {
+        let label = ChartAxisLabel(
             text: text ?? self.text,
             settings: settings ?? self.settings
         )

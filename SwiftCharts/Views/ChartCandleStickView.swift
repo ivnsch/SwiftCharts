@@ -64,17 +64,17 @@ public class ChartCandleStickView: UIView {
 
         let wHalf = self.frame.width / 2
         
-        CGContextSetLineWidth(context, self.strokeWidth)
-        CGContextSetStrokeColorWithColor(context, self.currentStrokeColor.CGColor)
-        CGContextMoveToPoint(context, wHalf, 0)
-        CGContextAddLineToPoint(context, wHalf, self.frame.height)
+        CGContextSetLineWidth(context!, self.strokeWidth)
+        CGContextSetStrokeColorWithColor(context!, self.currentStrokeColor.CGColor)
+        CGContextMoveToPoint(context!, wHalf, 0)
+        CGContextAddLineToPoint(context!, wHalf, self.frame.height)
         
-        CGContextStrokePath(context)
+        CGContextStrokePath(context!)
         
-        CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 0.0)
-        CGContextSetFillColorWithColor(context, self.currentFillColor.CGColor)
-        CGContextFillRect(context, self.innerRect)
-        CGContextStrokeRect(context, self.innerRect)
+        CGContextSetRGBFillColor(context!, 1.0, 1.0, 1.0, 0.0)
+        CGContextSetFillColorWithColor(context!, self.currentFillColor.CGColor)
+        CGContextFillRect(context!, self.innerRect)
+        CGContextStrokeRect(context!, self.innerRect)
     }
    
 
