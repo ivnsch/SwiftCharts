@@ -52,16 +52,16 @@ public enum LineCap {
     }
 }
 
-private struct ScreenLine<T: ChartPoint> {
-    var points: [CGPoint]
-    let color: UIColor
-    let lineWidth: CGFloat
-    let lineJoin: LineJoin
-    let lineCap: LineCap
-    let animDuration: Float
-    let animDelay: Float
-    let lineModel: ChartLineModel<T>
-    let dashPattern: [Double]?
+public struct ScreenLine<T: ChartPoint> {
+    public internal(set) var points: [CGPoint]
+    public let color: UIColor
+    public let lineWidth: CGFloat
+    public let lineJoin: LineJoin
+    public let lineCap: LineCap
+    public let animDuration: Float
+    public let animDelay: Float
+    public let lineModel: ChartLineModel<T>
+    public let dashPattern: [Double]?
     
     init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>, dashPattern: [Double]?) {
         self.points = points
@@ -77,10 +77,10 @@ private struct ScreenLine<T: ChartPoint> {
 }
 
 public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
-    private var lineModels: [ChartLineModel<T>]
-    private var lineViews: [ChartLinesView] = []
-    private let pathGenerator: ChartLinesViewPathGenerator
-    private var screenLines: [(screenLine: ScreenLine<T>, view: ChartLinesView)] = []
+    public private(set) var lineModels: [ChartLineModel<T>]
+    public private(set) var lineViews: [ChartLinesView] = []
+    public let pathGenerator: ChartLinesViewPathGenerator
+    public private(set) var screenLines: [(screenLine: ScreenLine<T>, view: ChartLinesView)] = []
     
     private let useView: Bool
     
@@ -131,7 +131,7 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
         }
     }
     
-    private func generateLineView(screenLine: ScreenLine<T>, chart: Chart) -> ChartLinesView {
+    public func generateLineView(screenLine: ScreenLine<T>, chart: Chart) -> ChartLinesView {
         return ChartLinesView(
             path: self.pathGenerator.generatePath(points: screenLine.points, lineWidth: screenLine.lineWidth),
             frame: chart.contentView.bounds,

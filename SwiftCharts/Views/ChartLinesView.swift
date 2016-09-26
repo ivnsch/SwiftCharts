@@ -14,15 +14,15 @@ public protocol ChartLinesViewPathGenerator {
 
 public class ChartLinesView: UIView {
 
-    private let lineColor: UIColor
-    private let lineWidth: CGFloat
-    private let lineJoin: LineJoin
-    private let lineCap: LineCap
-    private let animDuration: Float
-    private let animDelay: Float
-    private let dashPattern: [Double]?
+    public let lineColor: UIColor
+    public let lineWidth: CGFloat
+    public let lineJoin: LineJoin
+    public let lineCap: LineCap
+    public let animDuration: Float
+    public let animDelay: Float
+    public let dashPattern: [Double]?
     
-    init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
+    public init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
         self.lineColor = lineColor
         self.lineWidth = lineWidth
         self.lineJoin = lineJoin
@@ -53,7 +53,7 @@ public class ChartLinesView: UIView {
         return lineMaskLayer
     }
 
-    private func generateLayer(path path: UIBezierPath) -> CAShapeLayer {
+    public func generateLayer(path path: UIBezierPath) -> CAShapeLayer {
         let lineLayer = CAShapeLayer()
         lineLayer.lineJoin = lineJoin.CALayerString
         lineLayer.lineCap = lineCap.CALayerString
