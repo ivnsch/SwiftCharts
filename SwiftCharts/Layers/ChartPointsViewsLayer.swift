@@ -31,17 +31,25 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
     // TODO z ordering
     private let keepOnFront: Bool
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints:[T], viewGenerator: ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0, mode: ChartPointsViewsLayerMode = .ScaleAndTranslate, keepOnFront: Bool = true) {
+    private let delayInit: Bool
+    
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints:[T], viewGenerator: ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0, mode: ChartPointsViewsLayerMode = .ScaleAndTranslate, keepOnFront: Bool = true, delayInit: Bool = false) {
         self.viewGenerator = viewGenerator
         self.conflictSolver = conflictSolver
         self.mode = mode
         self.keepOnFront = keepOnFront
+        self.delayInit = delayInit
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
     override func display(chart chart: Chart) {
         super.display(chart: chart)
-        
+        if !delayInit {
+            initViews(chart)
+        }
+    }
+    
+    public func initViews(chart: Chart) {
         self.viewsWithChartPoints = self.generateChartPointViews(chartPointModels: self.chartPointsModels, chart: chart)
         
         if self.isTransform || self.delayBetweenItems =~ 0 {
