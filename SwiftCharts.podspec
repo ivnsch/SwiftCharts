@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "SwiftCharts"
-  s.version = "0.42"
+  s.version = "0.50"
   s.summary = "extensible, flexible charts library for iOS with extensions for Grafiti.io"
   s.homepage = "http://grafiti.io"
   s.license = { :type => "Apache License, Version 2.0", :file => "LICENSE" }
