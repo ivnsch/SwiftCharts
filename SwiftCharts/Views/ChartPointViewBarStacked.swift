@@ -89,7 +89,7 @@ public class ChartPointViewBarStacked: ChartPointViewBar {
     }
     
     public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, settings: ChartBarViewSettings) {
-        fatalError("init(p1:p2:width:settings:) has not been implemented")
+        super.init(p1: p1, p2: p2, width: width, bgColor: bgColor, settings: settings)
     }
     
     override public func didMoveToSuperview() {
