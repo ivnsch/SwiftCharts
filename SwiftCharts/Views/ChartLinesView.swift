@@ -58,10 +58,14 @@ public class ChartLinesView: UIView {
         lineLayer.lineJoin = lineJoin.CALayerString
         lineLayer.lineCap = lineCap.CALayerString
         lineLayer.fillColor = UIColor.clearColor().CGColor
-        lineLayer.lineWidth = self.lineWidth
+        lineLayer.lineWidth = lineWidth
         
-        lineLayer.path = path.CGPath;
-        lineLayer.strokeColor = self.lineColor.CGColor;
+        lineLayer.path = path.CGPath
+        lineLayer.strokeColor = lineColor.CGColor
+        
+        if dashPattern != nil {
+            lineLayer.lineDashPattern = dashPattern
+        }
         
         if self.animDuration > 0 {
             lineLayer.strokeEnd = 0.0
@@ -77,9 +81,6 @@ public class ChartLinesView: UIView {
             pathAnimation.beginTime = CACurrentMediaTime() + CFTimeInterval(self.animDelay)
             lineLayer.addAnimation(pathAnimation, forKey: "strokeEndAnimation")
             
-            if self.dashPattern != nil {
-                lineLayer.lineDashPattern = dashPattern
-            }
         } else {
             lineLayer.strokeEnd = 1
         }
