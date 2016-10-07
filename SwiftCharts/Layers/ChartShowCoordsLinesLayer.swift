@@ -58,7 +58,7 @@ public class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
         }
     }
     
-    override func display(chart chart: Chart) {
+    override public func display(chart chart: Chart) {
         let view = UIView(frame: chart.bounds)
         view.userInteractionEnabled = true
         chart.addSubview(view)

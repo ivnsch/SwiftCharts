@@ -53,16 +53,12 @@ public class ChartPointViewBar: UIView {
     
     public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, settings: ChartBarViewSettings) {
         
-        let (targetFrame, firstFrame): (CGRect, CGRect) = {
+        let targetFrame = ChartPointViewBar.frame(p1, p2: p2, width: width)
+        let firstFrame: CGRect = {
             if p1.y - p2.y =~ 0 { // horizontal
-                let targetFrame = CGRectMake(p1.x, p1.y - width / 2, p2.x - p1.x, width)
-                let initFrame = CGRectMake(targetFrame.origin.x, targetFrame.origin.y, 0, targetFrame.size.height)
-                return (targetFrame, initFrame)
-                
+                return CGRectMake(targetFrame.origin.x, targetFrame.origin.y, 0, targetFrame.size.height)
             } else { // vertical
-                let targetFrame = CGRectMake(p1.x - width / 2, p1.y, width, p2.y - p1.y)
-                let initFrame = CGRectMake(targetFrame.origin.x, targetFrame.origin.y, targetFrame.size.width, 0)
-                return (targetFrame, initFrame)
+                return CGRectMake(targetFrame.origin.x, targetFrame.origin.y, targetFrame.size.width, 0)
             }
         }()
         
@@ -76,6 +72,19 @@ public class ChartPointViewBar: UIView {
         self.backgroundColor = bgColor
     }
 
+    static func frame(p1: CGPoint, p2: CGPoint, width: CGFloat) -> CGRect {
+        if p1.y - p2.y =~ 0 { // horizontal
+            return CGRectMake(p1.x, p1.y - width / 2, p2.x - p1.x, width)
+            
+        } else { // vertical
+            return CGRectMake(p1.x - width / 2, p1.y, width, p2.y - p1.y)
+        }
+    }
+    
+    func updateFrame(p1: CGPoint, p2: CGPoint) {
+        frame = ChartPointViewBar.frame(p1, p2: p2, width: isHorizontal ? frame.height : frame.width)
+    }
+    
     func enableTap() {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTap))
         self.addGestureRecognizer(tapRecognizer)

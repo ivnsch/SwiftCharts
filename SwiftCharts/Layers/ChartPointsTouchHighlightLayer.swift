@@ -29,7 +29,7 @@ public class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoin
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
 
-    override func display(chart chart: Chart) {
+    override public func display(chart chart: Chart) {
         self.chart = chart
         
         let view = UIView(frame: chart.bounds)

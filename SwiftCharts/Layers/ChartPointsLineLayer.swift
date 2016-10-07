@@ -111,7 +111,7 @@ public class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
         )
     }
     
-    override func display(chart chart: Chart) {
+    override public func display(chart chart: Chart) {
         if !delayInit {
             if useView {
                 initScreenLines(chart)

@@ -67,7 +67,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
 
     public internal(set) var chartPointsModels: [ChartPointLayerModel<T>] = []
     
-    private let displayDelay: Float
+    public let displayDelay: Float
     
     public var chartPointScreenLocs: [CGPoint] {
         return self.chartPointsModels.map{$0.screenLoc}
@@ -131,7 +131,7 @@ public class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         }
     }
     
-    func display(chart chart: Chart) {}
+    public func display(chart chart: Chart) {}
     
     public override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)

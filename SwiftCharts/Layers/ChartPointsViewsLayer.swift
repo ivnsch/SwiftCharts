@@ -42,7 +42,7 @@ public class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
-    override func display(chart chart: Chart) {
+    override public func display(chart chart: Chart) {
         super.display(chart: chart)
         if !delayInit {
             initViews(chart)
