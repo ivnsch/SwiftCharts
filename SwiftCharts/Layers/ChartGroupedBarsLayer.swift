@@ -150,6 +150,7 @@ public class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: Char
                             let barView = groupViews[barIndex]
                             let (p1, p2) = barsGenerator.viewPoints(bar, constantScreenLoc: constantScreenLoc)
                             barView.updateFrame(p1, p2: p2)
+                            barView.setNeedsDisplay()
                         }
                     }
                 }
