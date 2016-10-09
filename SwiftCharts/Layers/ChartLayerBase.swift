@@ -39,6 +39,10 @@ public class ChartLayerBase: NSObject, ChartLayer {
     
     public func handlePanStart(location: CGPoint) {}
     
+    public func handlePanFinish() {}
+    
+    public func handleZoomFinish() {}
+    
     public func handlePanEnd() {}
     
     public func handleZoomEnd() {}

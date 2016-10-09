@@ -294,6 +294,9 @@ public class Chart: Pannable, Zoomable {
     }
     
     public func onZoomFinish(scaleX scaleX: CGFloat, scaleY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool) {
+        for layer in layers {
+            layer.handleZoomFinish()
+        }
         delegate?.onZoom(scaleX: scaleX, scaleY: scaleY, deltaX: deltaX, deltaY: deltaY, centerX: centerX, centerY: centerY, isGesture: isGesture)
     }
     
@@ -322,6 +325,9 @@ public class Chart: Pannable, Zoomable {
     }
     
     public func onPanFinish(transX transX: CGFloat, transY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) {
+        for layer in layers {
+            layer.handlePanFinish()
+        }
         delegate?.onPan(transX: transX, transY: transY, deltaX: deltaX, deltaY: deltaY, isGesture: isGesture, isDeceleration: isDeceleration)
     }
 

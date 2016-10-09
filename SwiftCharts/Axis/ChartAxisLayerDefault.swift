@@ -348,6 +348,10 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
     
     public func handlePanStart() {}
     
+    public func handlePanFinish() {}
+    
+    public func handleZoomFinish() {}
+    
     public func handlePanEnd() {}
     
     public func handleZoomEnd() {}

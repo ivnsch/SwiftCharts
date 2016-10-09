@@ -13,7 +13,7 @@ public protocol ChartLayer {
     var chart: Chart? {get set}
 
     // Execute actions after chart initialisation, e.g. add subviews
-     func chartInitialized(chart chart: Chart)
+    func chartInitialized(chart chart: Chart)
     
     // Draw directly in chart's context
     // Everything drawn here will appear behind subviews added by any layer (regardless of position in layers array)
@@ -36,6 +36,10 @@ public protocol ChartLayer {
     func pan(deltaX: CGFloat, deltaY: CGFloat)
     
     func handlePanStart(location: CGPoint)
+    
+    func handlePanFinish()
+    
+    func handleZoomFinish()
     
     func handlePanEnd()
     
