@@ -197,7 +197,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     }
     
     override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
-        axis.zoom(scaleX, scaleY: scaleY, centerX: centerX, centerY: centerX, elastic: chart?.zoomPanSettings.elastic ?? false)
+        axis.zoom(scaleX, scaleY: scaleY, centerX: centerX, centerY: centerY, elastic: chart?.zoomPanSettings.elastic ?? false)
         initDrawers()
         chart?.view.setNeedsDisplay()
     }
