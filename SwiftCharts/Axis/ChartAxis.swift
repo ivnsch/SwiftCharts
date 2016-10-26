@@ -32,11 +32,11 @@ public class ChartAxis: CustomStringConvertible {
     public var fixedPaddingFirstScreen: CGFloat?
     public var fixedPaddingLastScreen: CGFloat?
     
-    var firstVisible: Double {
+    public var firstVisible: Double {
         return scalarForScreenLoc(firstVisibleScreen)
     }
     
-    var lastVisible: Double {
+    public var lastVisible: Double {
         return scalarForScreenLoc(lastVisibleScreen)
     }
     
