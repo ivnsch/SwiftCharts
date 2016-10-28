@@ -14,10 +14,10 @@ extension Array where Element: ChartAxisValue {
         return flatMap({
             guard let label = $0.labels.first else {return nil}
             return label.text.size(label.settings.font)
-        }).reduce((total: CGSizeZero, max: CGSizeZero), combine: {(lhs: (total: CGSize, max: CGSize), rhs: CGSize) in
+        }).reduce((total: CGSize.zero, max: CGSize.zero), {(lhs: (total: CGSize, max: CGSize), rhs: CGSize) in
             return (
                 CGSize(width: lhs.total.width + rhs.width, height: lhs.total.height + rhs.height),
-                CGSize(width: max(lhs.max.width, rhs.width), height: max(lhs.max.height, rhs.height))
+                CGSize(width: Swift.max(lhs.max.width, rhs.width), height: Swift.max(lhs.max.height, rhs.height))
             )
         })
     }

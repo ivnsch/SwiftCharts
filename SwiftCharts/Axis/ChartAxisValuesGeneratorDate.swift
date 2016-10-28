@@ -8,15 +8,15 @@
 
 import UIKit
 
-public class ChartAxisValuesGeneratorDate: ChartAxisGeneratorMultiplier {
+open class ChartAxisValuesGeneratorDate: ChartAxisGeneratorMultiplier {
     
-    let unit: NSCalendarUnit
+    let unit: Calendar.Component
 
-    private let minSpace: CGFloat
-    private let preferredDividers: Int
-    private let maxTextSize: CGFloat
+    fileprivate let minSpace: CGFloat
+    fileprivate let preferredDividers: Int
+    fileprivate let maxTextSize: CGFloat
     
-    public init(unit: NSCalendarUnit, preferredDividers: Int, minSpace: CGFloat, maxTextSize: CGFloat, multiplierUpdateMode: ChartAxisGeneratorMultiplierUpdateMode = .Halve) {
+    public init(unit: Calendar.Component, preferredDividers: Int, minSpace: CGFloat, maxTextSize: CGFloat, multiplierUpdateMode: ChartAxisGeneratorMultiplierUpdateMode = .halve) {
         self.unit = unit
         self.preferredDividers = preferredDividers
         self.minSpace = minSpace
@@ -24,21 +24,21 @@ public class ChartAxisValuesGeneratorDate: ChartAxisGeneratorMultiplier {
         super.init(0, multiplierUpdateMode: multiplierUpdateMode)
     }
     
-    override func calculateModelStart(axis: ChartAxis, multiplier: Double) -> Double {
-        guard !multiplier.isNaN && !multiplier.isZero else {return Double.NaN}
+    override func calculateModelStart(_ axis: ChartAxis, multiplier: Double) -> Double {
+        guard !multiplier.isNaN && !multiplier.isZero else {return Double.nan}
         
-        let firstVisibleDate = NSDate(timeIntervalSince1970: axis.firstVisible)
-        let firstInitDate = NSDate(timeIntervalSince1970: axis.firstInit)
+        let firstVisibleDate = Date(timeIntervalSince1970: axis.firstVisible)
+        let firstInitDate = Date(timeIntervalSince1970: axis.firstInit)
         
         return firstInitDate.addComponent(Int((Double(firstVisibleDate.timeInterval(firstInitDate, unit: unit)) / multiplier)) * Int(multiplier), unit: unit).timeIntervalSince1970
     }
     
-    override func incrementScalar(scalar: Double, multiplier: Double) -> Double {
-        let scalarDate = NSDate(timeIntervalSince1970: scalar)
+    override func incrementScalar(_ scalar: Double, multiplier: Double) -> Double {
+        let scalarDate = Date(timeIntervalSince1970: scalar)
         return scalarDate.addComponent(Int(multiplier), unit: unit).timeIntervalSince1970
     }
     
-    public override func axisInitialized(axis: ChartAxis) {
+    open override func axisInitialized(_ axis: ChartAxis) {
         
         var dividers = preferredDividers
         var cont = true
@@ -46,8 +46,8 @@ public class ChartAxisValuesGeneratorDate: ChartAxisGeneratorMultiplier {
         while dividers > 1 && cont {
             if requiredLengthForDividers(dividers) < axis.screenLength {
                 
-                let firstDate = NSDate(timeIntervalSince1970: axis.first)
-                let lastDate = NSDate(timeIntervalSince1970: axis.last)
+                let firstDate = Date(timeIntervalSince1970: axis.first)
+                let lastDate = Date(timeIntervalSince1970: axis.last)
                 let lengthInUnits = lastDate.timeInterval(firstDate, unit: unit)
                 
                 self.multiplier = Double(lengthInUnits) / Double(dividers)
@@ -59,7 +59,7 @@ public class ChartAxisValuesGeneratorDate: ChartAxisGeneratorMultiplier {
         }
     }
     
-    private func requiredLengthForDividers(dividers: Int) -> CGFloat {
+    fileprivate func requiredLengthForDividers(_ dividers: Int) -> CGFloat {
         return minSpace + ((maxTextSize + minSpace) * CGFloat(dividers))
     }
 }

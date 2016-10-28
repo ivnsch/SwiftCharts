@@ -8,29 +8,29 @@
 
 import UIKit
 
-public class ChartAxisLabelsGeneratorDate: ChartAxisLabelsGeneratorBase {
+open class ChartAxisLabelsGeneratorDate: ChartAxisLabelsGeneratorBase {
     
-    public let labelSettings: ChartLabelSettings
+    open let labelSettings: ChartLabelSettings
     
-    public let formatter: NSDateFormatter
+    open let formatter: DateFormatter
     
-    public init(labelSettings: ChartLabelSettings, formatter: NSDateFormatter = ChartAxisLabelsGeneratorDate.defaultFormatter) {
+    public init(labelSettings: ChartLabelSettings, formatter: DateFormatter = ChartAxisLabelsGeneratorDate.defaultFormatter) {
         self.labelSettings = labelSettings
         self.formatter = formatter
     }
     
-    public override func generate(scalar: Double) -> [ChartAxisLabel] {
-        let text = self.formatter.stringFromDate(NSDate(timeIntervalSince1970: scalar))
+    open override func generate(_ scalar: Double) -> [ChartAxisLabel] {
+        let text = self.formatter.string(from: Date(timeIntervalSince1970: scalar))
         return [ChartAxisLabel(text: text, settings: labelSettings)]
     }
     
-    static var defaultFormatter: NSDateFormatter = {
-        let formatter = NSDateFormatter()
+    static var defaultFormatter: DateFormatter = {
+        let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         return formatter
     }()
     
-    public override func fonts(scalar: Double) -> [UIFont] {
+    open override func fonts(_ scalar: Double) -> [UIFont] {
         return [labelSettings.font]
     }
 }

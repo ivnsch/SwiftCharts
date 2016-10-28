@@ -11,8 +11,8 @@ import UIKit
 /// Debug helper
 class HorizontalGuide: UIView {
 
-    init(_ location: CGFloat, color: UIColor = UIColor.redColor()) {
-        super.init(frame: CGRectMake(-10000000, location, 100000000, 1))
+    init(_ location: CGFloat, color: UIColor = UIColor.red) {
+        super.init(frame: CGRect(x: -10000000, y: location, width: 100000000, height: 1))
         backgroundColor = color
     }
     

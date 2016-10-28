@@ -11,35 +11,35 @@ import SwiftCharts
 
 class CandleStickExample: UIViewController {
 
-    private var chart: Chart? // arc
+    fileprivate var chart: Chart? // arc
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
 
-        var readFormatter = NSDateFormatter()
+        var readFormatter = DateFormatter()
         readFormatter.dateFormat = "dd.MM.yyyy"
         
-        var displayFormatter = NSDateFormatter()
+        var displayFormatter = DateFormatter()
         displayFormatter.dateFormat = "MMM dd"
         
-        let date = {(str: String) -> NSDate in
-            return readFormatter.dateFromString(str)!
+        let date = {(str: String) -> Date in
+            return readFormatter.date(from: str)!
         }
         
-        let calendar = NSCalendar.currentCalendar()
+        let calendar = Calendar.current
         
-        let dateWithComponents = {(day: Int, month: Int, year: Int) -> NSDate in
-            let components = NSDateComponents()
+        let dateWithComponents = {(day: Int, month: Int, year: Int) -> Date in
+            var components = DateComponents()
             components.day = day
             components.month = month
             components.year = year
-            return calendar.dateFromComponents(components)!
+            return calendar.date(from: components)!
         }
         
-        func filler(date: NSDate) -> ChartAxisValueDate {
-            let filler = ChartAxisValueDate(date: date, formatter: displayFormatter)
+        func filler(_ date: NSDate) -> ChartAxisValueDate {
+            let filler = ChartAxisValueDate(date: date as Date, formatter: displayFormatter)
             filler.hidden = true
             return filler
         }
@@ -73,7 +73,7 @@ class CandleStickExample: UIViewController {
             ChartPointCandleStick(date: date("29.10.2015"), formatter: displayFormatter, high: 35, low: 31, open: 31, close: 33)
         ]
         
-        let yValues = 20.stride(through: 55, by: 5).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
+        let yValues = stride(from: 20, through: 55, by: 5).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
 
         // Static x axis dates - alternative to using generators
 //        func generateDateAxisValues(month: Int, year: Int) -> [ChartAxisValueDate] {
@@ -91,7 +91,7 @@ class CandleStickExample: UIViewController {
 //        let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
 
         
-        let xGeneratorDate = ChartAxisValuesGeneratorDate(unit: .Day, preferredDividers:2, minSpace: 1, maxTextSize: 12)
+        let xGeneratorDate = ChartAxisValuesGeneratorDate(unit: .day, preferredDividers:2, minSpace: 1, maxTextSize: 12)
         let xLabelGeneratorDate = ChartAxisLabelsGeneratorDate(labelSettings: labelSettings, formatter: displayFormatter)
         let firstDate = date("01.10.2015")
         let lastDate = date("31.10.2015")
@@ -107,10 +107,10 @@ class CandleStickExample: UIViewController {
         
         let chartPointsLineLayer = ChartCandleStickLayer<ChartPointCandleStick>(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, itemWidth: Env.iPad ? 10 : 5, strokeWidth: Env.iPad ? 1 : 0.6)
         
-        let settings = ChartGuideLinesLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let settings = ChartGuideLinesLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)
         
-        let dividersSettings =  ChartDividersLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth, start: Env.iPad ? 7 : 3, end: 0)
+        let dividersSettings =  ChartDividersLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth, start: Env.iPad ? 7 : 3, end: 0)
         let dividersLayer = ChartDividersLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: dividersSettings)
         
         let chart = Chart(

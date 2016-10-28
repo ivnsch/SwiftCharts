@@ -9,17 +9,17 @@
 import Foundation
 
 /// Generates a fixed axis values array
-public class ChartAxisValuesGeneratorFixed: ChartAxisValuesGenerator {
+open class ChartAxisValuesGeneratorFixed: ChartAxisValuesGenerator {
     
-    public var first: Double? {
+    open var first: Double? {
         return values.first
     }
     
-    public var last: Double? {
+    open var last: Double? {
         return values.last
     }
     
-    public internal(set) var values: [Double]
+    open internal(set) var values: [Double]
     
     public convenience init(values: [ChartAxisValue]) {
         self.init(values: values.map{$0.scalar})
@@ -29,9 +29,9 @@ public class ChartAxisValuesGeneratorFixed: ChartAxisValuesGenerator {
         self.values = values
     }
 
-    public func axisInitialized(axis: ChartAxis) {}
+    open func axisInitialized(_ axis: ChartAxis) {}
     
-    public func generate(axis: ChartAxis) -> [Double] {
+    open func generate(_ axis: ChartAxis) -> [Double] {
         let (first, last) = axis.firstVisible > axis.lastVisible ? (axis.lastModelValueInBounds, axis.firstVisible) : (axis.firstVisible, axis.lastVisible)
         return values.filter{$0 >= first && $0 <= last}
     }

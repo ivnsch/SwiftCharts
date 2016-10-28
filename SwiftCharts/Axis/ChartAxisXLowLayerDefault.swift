@@ -15,15 +15,15 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
 
     /// The start point of the axis line.
     override var lineP1: CGPoint {
-        return CGPointMake(axis.firstVisibleScreen, origin.y)
+        return CGPoint(x: axis.firstVisibleScreen, y: origin.y)
     }
 
     /// The end point of the axis line.
     override var lineP2: CGPoint {
-        return CGPointMake(axis.lastVisibleScreen, end.y)
+        return CGPoint(x: axis.lastVisibleScreen, y: end.y)
     }
     
-    override func chartViewDrawing(context context: CGContextRef, chart: Chart) {
+    override func chartViewDrawing(context: CGContext, chart: Chart) {
         super.chartViewDrawing(context: context, chart: chart)
     }
 
@@ -41,11 +41,11 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
         }
     }
 
-    override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+    override func handleAxisInnerFrameChange(_ xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
         
         // Handle resizing of other low x axes
-        if let xLow = xLow where xLow.layer.frame.maxY > self.frame.maxY {
+        if let xLow = xLow , xLow.layer.frame.maxY > self.frame.maxY {
             offset = offset - xLow.delta
             self.initDrawers()
         }

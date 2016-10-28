@@ -8,15 +8,15 @@
 
 import UIKit
 
-public class ChartPointCandleStick: ChartPoint {
+open class ChartPointCandleStick: ChartPoint {
     
-    public let date: NSDate
-    public let open: Double
-    public let close: Double
-    public let low: Double
-    public let high: Double
+    open let date: Date
+    open let open: Double
+    open let close: Double
+    open let low: Double
+    open let high: Double
     
-    public init(date: NSDate, formatter: NSDateFormatter, high: Double, low: Double, open: Double, close: Double, labelHidden: Bool = false) {
+    public init(date: Date, formatter: DateFormatter, high: Double, low: Double, open: Double, close: Double, labelHidden: Bool = false) {
         
         let x = ChartAxisValueDate(date: date, formatter: formatter)
         self.date = date

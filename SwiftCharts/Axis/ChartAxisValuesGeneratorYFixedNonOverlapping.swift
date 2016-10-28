@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ChartAxisValuesGeneratorYFixedNonOverlapping: ChartAxisValuesGeneratorFixedNonOverlapping {
+open class ChartAxisValuesGeneratorYFixedNonOverlapping: ChartAxisValuesGeneratorFixedNonOverlapping {
     
     public init(axisValues: [ChartAxisValue], spacing: CGFloat = 4) {
         super.init(axisValues: axisValues, spacing: spacing, isX: false)

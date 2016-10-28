@@ -10,25 +10,25 @@ import UIKit
 
 extension CGRect {
 
-    public func insetBy(dx dx: CGFloat = 0, dy: CGFloat = 0, dw: CGFloat = 0, dh: CGFloat = 0) -> CGRect {
-        return CGRectMake(
-            origin.x + dx,
-            origin.y + dy,
-            width - dw - dx,
-            height - dh - dy
+    public func insetBy(dx: CGFloat = 0, dy: CGFloat = 0, dw: CGFloat = 0, dh: CGFloat = 0) -> CGRect {
+        return CGRect(
+            x: origin.x + dx,
+            y: origin.y + dy,
+            width: width - dw - dx,
+            height: height - dh - dy
         )
     }
     
     func asLinesArray() -> [(p1: CGPoint, p2: CGPoint)] {
         return [
-            (p1: CGPointMake(minX, minY), p2: CGPointMake(maxX, minY)),
-            (p1: CGPointMake(maxX, minY), p2: CGPointMake(maxX, maxY)),
-            (p1: CGPointMake(maxX, maxY), p2: CGPointMake(minX, maxY)),
-            (p1: CGPointMake(minX, maxY), p2: CGPointMake(minX, minY))
+            (p1: CGPoint(x: minX, y: minY), p2: CGPoint(x: maxX, y: minY)),
+            (p1: CGPoint(x: maxX, y: minY), p2: CGPoint(x: maxX, y: maxY)),
+            (p1: CGPoint(x: maxX, y: maxY), p2: CGPoint(x: minX, y: maxY)),
+            (p1: CGPoint(x: minX, y: maxY), p2: CGPoint(x: minX, y: minY))
         ]
     }
     var center: CGPoint {
-        return CGPointMake(width / 2, height / 2)
+        return CGPoint(x: width / 2, y: height / 2)
     }
     
 
@@ -41,8 +41,8 @@ extension CGRect {
      
      - returns: The bounding rectangle of the rotated rectangle
      */
-    public func boundingRectAfterRotating(radians radians: CGFloat) -> CGRect {
-        return CGRectApplyAffineTransform(self, CGAffineTransformMakeRotation(radians))
+    public func boundingRectAfterRotating(radians: CGFloat) -> CGRect {
+        return self.applying(CGAffineTransform(rotationAngle: radians))
     }
 
 }

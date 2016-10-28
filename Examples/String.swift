@@ -10,15 +10,15 @@ import UIKit
 
 extension String {
     
-    func size(font: UIFont) -> CGSize {
+    func size(_ font: UIFont) -> CGSize {
         return NSAttributedString(string: self, attributes: [NSFontAttributeName: font]).size()
     }
     
-    func width(font: UIFont) -> CGFloat {
+    func width(_ font: UIFont) -> CGFloat {
         return size(font).width
     }
     
-    func height(font: UIFont) -> CGFloat {
+    func height(_ font: UIFont) -> CGFloat {
         return size(font).height
     }
 }

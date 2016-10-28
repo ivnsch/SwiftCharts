@@ -9,20 +9,20 @@
 import Foundation
 
 public enum ChartAxisLabelNumberSuffixUnit {
-    case K, M, G, T, P, E
+    case k, m, g, t, p, e
 
     static var seq: [ChartAxisLabelNumberSuffixUnit] {
-        return [K, M, G, T, P, E]
+        return [k, m, g, t, p, e]
     }
     
     var values: (factor: Double, text: String) {
         switch self {
-        case .K: return (pow(10, 3), "K")
-        case .M: return (pow(10, 6), "M")
-        case .G: return (pow(10, 9), "G")
-        case .T: return (pow(10, 12), "T")
-        case .P: return (pow(10, 15), "P")
-        case .E: return (pow(10, 18), "E")
+        case .k: return (pow(10, 3), "K")
+        case .m: return (pow(10, 6), "M")
+        case .g: return (pow(10, 9), "G")
+        case .t: return (pow(10, 12), "T")
+        case .p: return (pow(10, 15), "P")
+        case .e: return (pow(10, 18), "E")
         }
     }
     
@@ -35,22 +35,22 @@ public enum ChartAxisLabelNumberSuffixUnit {
     }
 }
 
-public class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGeneratorBase {
+open class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGeneratorBase {
     
-    public let labelSettings: ChartLabelSettings
+    open let labelSettings: ChartLabelSettings
     
-    public let startUnit: ChartAxisLabelNumberSuffixUnit
+    open let startUnit: ChartAxisLabelNumberSuffixUnit
     
-    public let formatter: NSNumberFormatter
+    open let formatter: NumberFormatter
     
-    public init(labelSettings: ChartLabelSettings, startUnit: ChartAxisLabelNumberSuffixUnit = .M, formatter: NSNumberFormatter = ChartAxisLabelsGeneratorNumberSuffix.defaultFormatter) {
+    public init(labelSettings: ChartLabelSettings, startUnit: ChartAxisLabelNumberSuffixUnit = .m, formatter: NumberFormatter = ChartAxisLabelsGeneratorNumberSuffix.defaultFormatter) {
         self.labelSettings = labelSettings
         self.startUnit = startUnit
         self.formatter = formatter
     }
 
     // src: http://stackoverflow.com/a/23290016/930450
-    public override func generate(scalar: Double) -> [ChartAxisLabel] {
+    open override func generate(_ scalar: Double) -> [ChartAxisLabel] {
         let sign = scalar < 0 ? "-" : ""
         
         let absScalar = fabs(scalar)
@@ -66,17 +66,17 @@ public class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGeneratorBase 
             }
         }()
 
-        let text = "\(sign)\(formatter.stringFromNumber(number)!)\(suffix)"
+        let text = "\(sign)\(formatter.string(from: NSNumber(value: number))!)\(suffix)"
         return [ChartAxisLabel(text: text, settings: labelSettings)]
     }
     
-    static var defaultFormatter: NSNumberFormatter = {
-        let formatter = NSNumberFormatter()
+    static var defaultFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 2
         return formatter
     }()
     
-    public override func fonts(scalar: Double) -> [UIFont] {
+    open override func fonts(_ scalar: Double) -> [UIFont] {
         return [labelSettings.font]
     }
 }

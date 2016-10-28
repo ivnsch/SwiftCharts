@@ -11,5 +11,5 @@ import UIKit
 /// Updates a UIView for selected / deselected state
 public protocol ChartViewSelector {
     
-    func displaySelected(view: UIView, selected: Bool)
+    func displaySelected(_ view: UIView, selected: Bool)
 }

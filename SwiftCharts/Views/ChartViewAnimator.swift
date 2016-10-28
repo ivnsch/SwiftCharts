@@ -11,29 +11,29 @@ import UIKit
 /// Animates a view from init state to target state and back. General animation settings like duration, delay, etc. are defined in the containing ChartViewAnimators instance.
 public protocol ChartViewAnimator {
     
-    func initState(view: UIView)
+    func initState(_ view: UIView)
     
-    func targetState(view: UIView)
+    func targetState(_ view: UIView)
     
     
-    func prepare(view: UIView)
+    func prepare(_ view: UIView)
     
-    func animate(view: UIView)
+    func animate(_ view: UIView)
     
-    func invert(view: UIView)
+    func invert(_ view: UIView)
 }
 
 extension ChartViewAnimator {
     
-    public func prepare(view: UIView) {
+    public func prepare(_ view: UIView) {
         initState(view)
     }
     
-    public func animate(view: UIView) {
+    public func animate(_ view: UIView) {
         targetState(view)
     }
     
-    public func invert(view: UIView) {
+    public func invert(_ view: UIView) {
         initState(view)
     }
 }

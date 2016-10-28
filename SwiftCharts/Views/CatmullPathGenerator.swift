@@ -8,11 +8,11 @@
 
 import UIKit
 
-public class CatmullPathGenerator: ChartLinesViewPathGenerator {
+open class CatmullPathGenerator: ChartLinesViewPathGenerator {
     
     public init() {}
     
-    public func generatePath(points points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
+    open func generatePath(points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
         guard let last = points.last else {return UIBezierPath()}
         return UIBezierPath(catmullRomPoints: points + [last.offset(x: 1)], alpha: 0.5) ?? CubicLinePathGenerator(tension1: 0.2, tension2: 0.2).generatePath(points: points, lineWidth: lineWidth)
     }
@@ -56,10 +56,10 @@ private extension UIBezierPath {
             b2 = b2.multiplyBy(1.0 / (3 * pow(d3, alpha) * (pow(d3, alpha) + pow(d2, alpha))))
             
             if i == startIndex {
-                moveToPoint(p1)
+                move(to: p1)
             }
             
-            addCurveToPoint(p2, controlPoint1: b1, controlPoint2: b2)
+            addCurve(to: p2, controlPoint1: b1, controlPoint2: b2)
         }
     }
 }

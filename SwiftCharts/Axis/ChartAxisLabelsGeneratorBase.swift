@@ -9,27 +9,27 @@
 import Foundation
 
 /// Needed for common stored properties which are not possible in the extension (without workarounds)
-public class ChartAxisLabelsGeneratorBase: ChartAxisLabelsGenerator {
+open class ChartAxisLabelsGeneratorBase: ChartAxisLabelsGenerator {
 
-    public var onlyShowCompleteLabels: Bool = false
+    open var onlyShowCompleteLabels: Bool = false
     
-    public var maxStringPTWidth: CGFloat? = nil
+    open var maxStringPTWidth: CGFloat? = nil
     
     var cache = [Double: [ChartAxisLabel]]()
     
-    public func generate(scalar: Double) -> [ChartAxisLabel] {
+    open func generate(_ scalar: Double) -> [ChartAxisLabel] {
         fatalError("Override")
     }
     
-    public func fonts(scalar: Double) -> [UIFont] {
+    open func fonts(_ scalar: Double) -> [UIFont] {
         fatalError("Override")
     }
     
-    public func cache(scalar: Double, labels: [ChartAxisLabel]) {
+    open func cache(_ scalar: Double, labels: [ChartAxisLabel]) {
         cache[scalar] = labels
     }
     
-    public func cachedLabels(scalar: Double) -> [ChartAxisLabel]? {
+    open func cachedLabels(_ scalar: Double) -> [ChartAxisLabel]? {
         return cache[scalar]
     }
 }

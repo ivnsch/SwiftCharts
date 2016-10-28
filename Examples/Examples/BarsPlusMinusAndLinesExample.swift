@@ -11,7 +11,7 @@ import SwiftCharts
 
 class BarsPlusMinusAndLinesExample: UIViewController {
 
-    private var chart: Chart? // arc
+    fileprivate var chart: Chart? // arc
 
     override func viewDidLoad() {
         
@@ -40,20 +40,20 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         ]
         
         let alpha: CGFloat = 0.5
-        let posColor = UIColor.greenColor().colorWithAlphaComponent(alpha)
-        let negColor = UIColor.redColor().colorWithAlphaComponent(alpha)
+        let posColor = UIColor.green.withAlphaComponent(alpha)
+        let negColor = UIColor.red.withAlphaComponent(alpha)
         let zero = ChartAxisValueDouble(0)
-        let bars: [ChartBarModel] = barsData.enumerate().flatMap {index, tuple in
+        let bars: [ChartBarModel] = barsData.enumerated().flatMap {index, tuple in
             [
                 ChartBarModel(constant: ChartAxisValueDouble(index), axisValue1: zero, axisValue2: ChartAxisValueDouble(tuple.min), bgColor: negColor),
                 ChartBarModel(constant: ChartAxisValueDouble(index), axisValue1: zero, axisValue2: ChartAxisValueDouble(tuple.max), bgColor: posColor)
             ]
         }
         
-        let yValues = (-80).stride(through: 80, by: 20).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
+        let yValues = stride(from: -80, through: 80, by: 20).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
         let xValues =
             [ChartAxisValueString(order: -1)] +
-                barsData.enumerate().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
+                barsData.enumerated().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
                 [ChartAxisValueString(order: barsData.count)]
         
         let xGenerator = ChartAxisGeneratorMultiplier(1)
@@ -80,7 +80,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         let labelChartPoints = bars.map {bar in
             ChartPoint(x: bar.constant, y: bar.axisValue2)
         }
-        let formatter = NSNumberFormatter()
+        let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 2
         let labelsLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: labelChartPoints, viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
             let label = HandlingLabel()
@@ -89,10 +89,10 @@ class BarsPlusMinusAndLinesExample: UIViewController {
             let pos = chartPointModel.chartPoint.y.scalar > 0
             
             let yOffset = pos ? -posOffset : posOffset
-            label.text = "\(formatter.stringFromNumber(chartPointModel.chartPoint.y.scalar)!)%"
+            label.text = "\(formatter.string(from: NSNumber(value: chartPointModel.chartPoint.y.scalar))!)%"
             label.font = ExamplesDefaults.labelFont
             label.sizeToFit()
-            label.center = CGPointMake(chartPointModel.screenLoc.x, pos ? innerFrame.origin.y : innerFrame.origin.y + innerFrame.size.height)
+            label.center = CGPoint(x: chartPointModel.screenLoc.x, y: pos ? innerFrame.origin.y : innerFrame.origin.y + innerFrame.size.height)
             label.alpha = 0
 
             label.movedToSuperViewHandler = {[weak label] in
@@ -105,7 +105,7 @@ class BarsPlusMinusAndLinesExample: UIViewController {
                 if isTransform {
                     targetState()
                 } else {
-                    UIView.animateWithDuration(0.3, animations: {
+                    UIView.animate(withDuration: 0.3, animations: {
                         targetState()
                     })
                 }
@@ -115,8 +115,8 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         }, displayDelay: 0.5) // show after bars animation
         
         // line layer
-        let lineChartPoints = lineData.enumerate().map {index, tuple in ChartPoint(x: ChartAxisValueDouble(index), y: ChartAxisValueDouble(tuple.val))}
-        let lineModel = ChartLineModel(chartPoints: lineChartPoints, lineColor: UIColor.blackColor(), lineWidth: 2, animDuration: 0.5, animDelay: 1)
+        let lineChartPoints = lineData.enumerated().map {index, tuple in ChartPoint(x: ChartAxisValueDouble(index), y: ChartAxisValueDouble(tuple.val))}
+        let lineModel = ChartLineModel(chartPoints: lineChartPoints, lineColor: UIColor.black, lineWidth: 2, animDuration: 0.5, animDelay: 1)
         let lineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel])
         
         let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart, isTransform: Bool) -> UIView? in
@@ -133,8 +133,8 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         let dummyZeroYChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
         let yZeroGapLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: [dummyZeroYChartPoint], viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
             let height: CGFloat = 2
-            let v = UIView(frame: CGRectMake(chart.contentView.frame.origin.x + 2, chartPointModel.screenLoc.y - height / 2, chart.contentView.frame.origin.x + chart.contentView.frame.height, height))
-            v.backgroundColor = UIColor.whiteColor()
+            let v = UIView(frame: CGRect(x: chart.contentView.frame.origin.x + 2, y: chartPointModel.screenLoc.y - height / 2, width: chart.contentView.frame.origin.x + chart.contentView.frame.height, height: height))
+            v.backgroundColor = UIColor.white
             return v
         })
         

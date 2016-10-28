@@ -10,17 +10,17 @@ import UIKit
 import SwiftCharts
 
 class MultipleAxesExample: UIViewController {
-
-    private var chart: Chart? // arc
-
+    
+    fileprivate var chart: Chart? // arc
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFontSmall)
-
-        let bgColors = [UIColor.redColor(), UIColor.blueColor(), UIColor(red: 0, green: 0.7, blue: 0, alpha: 1), UIColor(red: 1, green: 0.5, blue: 0, alpha: 1)]
         
-        func createChartPoints0(color: UIColor) -> [ChartPoint] {
+        let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFontSmall)
+        
+        let bgColors = [UIColor.red, UIColor.blue, UIColor(red: 0, green: 0.7, blue: 0, alpha: 1), UIColor(red: 1, green: 0.5, blue: 0, alpha: 1)]
+        
+        func createChartPoints0(_ color: UIColor) -> [ChartPoint] {
             return [
                 self.createChartPoint(0, 0, color),
                 self.createChartPoint(2, 2, color),
@@ -33,7 +33,7 @@ class MultipleAxesExample: UIViewController {
             ]
         }
         
-        func createChartPoints1(color: UIColor) -> [ChartPoint] {
+        func createChartPoints1(_ color: UIColor) -> [ChartPoint] {
             return [
                 self.createChartPoint(0, 7, color),
                 self.createChartPoint(1, 10, color),
@@ -44,7 +44,7 @@ class MultipleAxesExample: UIViewController {
             ]
         }
         
-        func createChartPoints2(color: UIColor) -> [ChartPoint] {
+        func createChartPoints2(_ color: UIColor) -> [ChartPoint] {
             return [
                 self.createChartPoint(-200, -10, color),
                 self.createChartPoint(-160, -30, color),
@@ -55,7 +55,7 @@ class MultipleAxesExample: UIViewController {
             ]
         }
         
-        func createChartPoints3(color: UIColor) -> [ChartPoint] {
+        func createChartPoints3(_ color: UIColor) -> [ChartPoint] {
             return [
                 self.createChartPoint(10000, 70, color),
                 self.createChartPoint(20000, 100, color),
@@ -73,11 +73,11 @@ class MultipleAxesExample: UIViewController {
         let xValues2 = chartPoints2.map{$0.x}
         let xValues3 = chartPoints3.map{$0.x}
         
-        let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
+        let chartSettings = ExamplesDefaults.chartSettings
         
         
         let top: CGFloat = 80
-        let viewFrame = CGRectMake(0, top, self.view.frame.size.width, self.view.frame.size.height - top - 10)
+        let viewFrame = CGRect(x: 0, y: top, width: self.view.frame.size.width, height: self.view.frame.size.height - top - 10)
         
         let yValues1 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[0]))}, addPaddingSegmentIfEdge: false)
         
@@ -90,28 +90,28 @@ class MultipleAxesExample: UIViewController {
         let axisTitleFont = ExamplesDefaults.labelFontSmall
         
         let yLowModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: yValues2, lineColor: bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[1], font: axisTitleFont).defaultVertical())]),
-            ChartAxisModel(axisValues: yValues1, lineColor: bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[0], font: axisTitleFont).defaultVertical())])
+            ChartAxisModel(axisValues: yValues2, lineColor: bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[1]).defaultVertical())]),
+            ChartAxisModel(axisValues: yValues1, lineColor: bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[0]).defaultVertical())])
         ]
         let yHighModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: yValues4, lineColor: bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[2], font: axisTitleFont).defaultVertical())]),
-            ChartAxisModel(axisValues: yValues5, lineColor: bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[3], font: axisTitleFont).defaultVertical())])
+            ChartAxisModel(axisValues: yValues4, lineColor: bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[2]).defaultVertical())]),
+            ChartAxisModel(axisValues: yValues5, lineColor: bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[3]).defaultVertical())])
         ]
         let xLowModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: xValues0, lineColor: bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[0], font: axisTitleFont))]),
-            ChartAxisModel(axisValues: xValues1, lineColor: bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[1], font: axisTitleFont))])
+            ChartAxisModel(axisValues: xValues0, lineColor: bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[0]))]),
+            ChartAxisModel(axisValues: xValues1, lineColor: bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[1]))])
         ]
         let xHighModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: xValues3, lineColor: bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[3], font: axisTitleFont))]),
-            ChartAxisModel(axisValues: xValues2, lineColor: bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(fontColor: bgColors[2], font: axisTitleFont))])
+            ChartAxisModel(axisValues: xValues3, lineColor: bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[3]))]),
+            ChartAxisModel(axisValues: xValues2, lineColor: bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[2]))])
         ]
         
         // calculate coords space in the background to keep UI smooth
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
             
             let coordsSpace = ChartCoordsSpace(chartSettings: chartSettings, chartSize: viewFrame.size, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels)
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 
                 let chartInnerFrame = coordsSpace.chartInnerFrame
                 
@@ -130,7 +130,7 @@ class MultipleAxesExample: UIViewController {
                 let chartPointsLineLayer0 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[0].axis, yAxis: yLowAxes[1].axis, lineModels: [lineModel0])
                 let chartPointsLineLayer1 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[1].axis, yAxis: yLowAxes[0].axis, lineModels: [lineModel1])
                 let chartPointsLineLayer3 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[1].axis, yAxis: yHighAxes[0].axis, lineModels: [lineModel2])
-                let chartPointsLineLayer4 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[0].axis, yAxis: yHighAxes[1].axis, lineModels: [lineModel3])
+                let chartPointsLineLayer4 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[0].axis, yAxis: yHighAxes[1].axis, lineModels: [lineModel3])     
                 
                 let lineLayers = [chartPointsLineLayer0, chartPointsLineLayer1, chartPointsLineLayer3, chartPointsLineLayer4]
                 
@@ -156,7 +156,7 @@ class MultipleAxesExample: UIViewController {
 
     }
     
-    private func createChartPoint(x: Double, _ y: Double, _ labelColor: UIColor) -> ChartPoint {
+    fileprivate func createChartPoint(_ x: Double, _ y: Double, _ labelColor: UIColor) -> ChartPoint {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: labelColor)
         return ChartPoint(x: ChartAxisValueDouble(x, labelSettings: labelSettings), y: ChartAxisValueDouble(y, labelSettings: labelSettings))
     }

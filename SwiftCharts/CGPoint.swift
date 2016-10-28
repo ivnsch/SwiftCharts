@@ -10,32 +10,32 @@ import UIKit
 
 extension CGPoint {
 
-    func distance(point: CGPoint) -> CGFloat {
+    func distance(_ point: CGPoint) -> CGFloat {
         return CGFloat(hypotf(Float(x) - Float(point.x), Float(y) - Float(point.y)))
     }
     
-    func add(point: CGPoint) -> CGPoint {
+    func add(_ point: CGPoint) -> CGPoint {
         return offset(x: point.x, y: point.y)
     }
     
-    func substract(point: CGPoint) -> CGPoint {
+    func substract(_ point: CGPoint) -> CGPoint {
         return offset(x: -point.x, y: -point.y)
     }
     
-    func offset(x x: CGFloat = 0, y: CGFloat = 0) -> CGPoint {
-        return CGPointMake(self.x + x, self.y + y)
+    func offset(x: CGFloat = 0, y: CGFloat = 0) -> CGPoint {
+        return CGPoint(x: self.x + x, y: self.y + y)
     }
     
-    func surroundingRect(size: CGFloat) -> CGRect {
-        return CGRectMake(x - size / 2, y - size / 2, size, size)
+    func surroundingRect(_ size: CGFloat) -> CGRect {
+        return CGRect(x: x - size / 2, y: y - size / 2, width: size, height: size)
     }
     
-    func nearest(intersections: [CGPoint]) -> (distance: CGFloat, point: CGPoint)? {
+    func nearest(_ intersections: [CGPoint]) -> (distance: CGFloat, point: CGPoint)? {
         return nearest(intersections, pointMapper: {$0}).map{(distance: $0.distance, point: $0.pointMappable)}
     }
     
     /// Finds nearest object which can be mapped to a point using pointMapper function. This is convenient for objects that contain/represent a point, in order to avoid having to map to points and back.
-    func nearest<T>(pointMappables: [T], pointMapper: T -> CGPoint) -> (distance: CGFloat, pointMappable: T)? {
+    func nearest<T>(_ pointMappables: [T], pointMapper: (T) -> CGPoint) -> (distance: CGFloat, pointMappable: T)? {
         var minDistancePoint: (distance: CGFloat, pointMappable: T)? = nil
         for pointMappable in pointMappables {
             let dist = distance(pointMapper(pointMappable))
@@ -46,8 +46,8 @@ extension CGPoint {
         return minDistancePoint
     }
     
-    func multiplyBy(value:CGFloat) -> CGPoint{
-        return CGPointMake(self.x * value, self.y * value)
+    func multiplyBy(_ value:CGFloat) -> CGPoint{
+        return CGPoint(x: self.x * value, y: self.y * value)
     }
     
     func length() -> CGFloat {
@@ -58,6 +58,6 @@ extension CGPoint {
     
     func normalize() -> CGPoint {
         let l = self.length()
-        return CGPointMake(self.x / l, self.y / l)
+        return CGPoint(x: self.x / l, y: self.y / l)
     }
 }

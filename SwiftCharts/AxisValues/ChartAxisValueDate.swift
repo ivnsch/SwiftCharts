@@ -8,38 +8,38 @@
 
 import UIKit
 
-public class ChartAxisValueDate: ChartAxisValue {
+open class ChartAxisValueDate: ChartAxisValue {
   
-    private let formatter: (NSDate) -> String
+    fileprivate let formatter: (Date) -> String
 
-    public var date: NSDate {
+    open var date: Date {
         return ChartAxisValueDate.dateFromScalar(self.scalar)
     }
 
-    public init(date: NSDate, formatter: (NSDate) -> String, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
+    public init(date: Date, formatter: @escaping (Date) -> String, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.formatter = formatter
         super.init(scalar: ChartAxisValueDate.scalarFromDate(date), labelSettings: labelSettings)
     }
 
-    convenience public init(date: NSDate, formatter: NSDateFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
-        self.init(date: date, formatter: { formatter.stringFromDate($0) }, labelSettings: labelSettings)
+    convenience public init(date: Date, formatter: DateFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
+        self.init(date: date, formatter: { formatter.string(from: $0) }, labelSettings: labelSettings)
     }
     
-    public class func dateFromScalar(scalar: Double) -> NSDate {
-        return NSDate(timeIntervalSince1970: NSTimeInterval(scalar))
+    open class func dateFromScalar(_ scalar: Double) -> Date {
+        return Date(timeIntervalSince1970: TimeInterval(scalar))
     }
     
-    public class func scalarFromDate(date: NSDate) -> Double {
+    open class func scalarFromDate(_ date: Date) -> Double {
         return Double(date.timeIntervalSince1970)
     }
 
     // MARK: CustomStringConvertible
 
-    override public var description: String {
+    override open var description: String {
         return self.formatter(self.date)
     }
     
-    public override func copy(scalar: Double) -> ChartAxisValue {
+    open override func copy(_ scalar: Double) -> ChartAxisValue {
         return ChartAxisValueDate(date: ChartAxisValueDate.dateFromScalar(scalar), formatter: formatter, labelSettings: labelSettings)
     }
 }

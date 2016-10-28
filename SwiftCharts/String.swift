@@ -11,7 +11,7 @@ import UIKit
 extension String {
     
     subscript (i: Int) -> Character {
-        return self[self.startIndex.advancedBy(i)]
+        return self[self.characters.index(self.startIndex, offsetBy: i)]
     }
     
     subscript (i: Int) -> String {
@@ -19,29 +19,30 @@ extension String {
     }
     
     subscript (r: Range<Int>) -> String {
-        let start = startIndex.advancedBy(r.startIndex)
-        let end = start.advancedBy(r.endIndex - r.startIndex)
+        let start = characters.index(startIndex, offsetBy: r.lowerBound)
+//        let end = <#T##String.CharacterView corresponding to `start`##String.CharacterView#>.index(start, offsetBy: r.upperBound - r.lowerBound)
+        let end = characters.index(start, offsetBy: r.upperBound - r.lowerBound)
         return self[Range(start..<end)]
     }
 
-    func size(font: UIFont) -> CGSize {
+    func size(_ font: UIFont) -> CGSize {
         return NSAttributedString(string: self, attributes: [NSFontAttributeName: font]).size()
     }
     
-    func width(font: UIFont) -> CGFloat {
+    func width(_ font: UIFont) -> CGFloat {
         return size(font).width
     }
     
-    func height(font: UIFont) -> CGFloat {
+    func height(_ font: UIFont) -> CGFloat {
         return size(font).height
     }
     
     func trim() -> String {
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        return self.trimmingCharacters(in: CharacterSet.whitespaces)
     }
     
-    func fittingSubstring(width: CGFloat, font: UIFont) -> String {
-        for i in characters.count.stride(to: 0, by: -1) {
+    func fittingSubstring(_ width: CGFloat, font: UIFont) -> String {
+        for i in stride(from: characters.count, to: 0, by: -1) {
             let substr = self[0..<i]
             if substr.width(font) <= width {
                 return substr
@@ -50,7 +51,7 @@ extension String {
         return ""
     }
 
-    func truncate(width: CGFloat, font: UIFont) -> String {
+    func truncate(_ width: CGFloat, font: UIFont) -> String {
         let ellipsis = "..."
         let substr = fittingSubstring(width - ellipsis.width(font), font: font)
         if substr.characters.count != self.characters.count {

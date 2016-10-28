@@ -17,7 +17,7 @@ struct ChartTimeUtils {
      
      - returns: The number of seconds as a dispatch_time_t
      */
-    static func toDispatchTime(secs: Float) -> dispatch_time_t {
-        return dispatch_time(DISPATCH_TIME_NOW, Int64(Double(secs) * Double(NSEC_PER_SEC)))
+    static func toDispatchTime(_ secs: Float) -> DispatchTime {
+        return DispatchTime.now() + Double(Int64(Double(secs) * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
     }    
 }

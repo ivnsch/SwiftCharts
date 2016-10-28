@@ -9,35 +9,35 @@
 import Foundation
 
 public enum ChartAxisGeneratorMultiplierUpdateMode {
-    case Halve
-    case Nice
+    case halve
+    case nice
 }
 
-public typealias ChartAxisGeneratorMultiplierUpdater = (axis: ChartAxis, generator: ChartAxisGeneratorMultiplier) -> Double
+public typealias ChartAxisGeneratorMultiplierUpdater = (_ axis: ChartAxis, _ generator: ChartAxisGeneratorMultiplier) -> Double
 
-public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
+open class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
     
-    public var first: Double? {
+    open var first: Double? {
         return nil
     }
     
-    public var last: Double?  {
+    open var last: Double?  {
         return nil
     }
     
     var multiplier: Double
     
     /// After zooming in a while the multiplier may be rounded down to 0, which means the intervals are not divisible anymore. We store the last multiplier which worked and keep returning values corresponding to it until the user zooms out until a new valid multiplier.
-    private var lastValidMultiplier: Double?
+    fileprivate var lastValidMultiplier: Double?
     
-    private let multiplierUpdater: ChartAxisGeneratorMultiplierUpdater
+    fileprivate let multiplierUpdater: ChartAxisGeneratorMultiplierUpdater
     
-    public init(_ multiplier: Double, multiplierUpdateMode: ChartAxisGeneratorMultiplierUpdateMode = .Halve) {
+    public init(_ multiplier: Double, multiplierUpdateMode: ChartAxisGeneratorMultiplierUpdateMode = .halve) {
         
         let multiplierUpdater: ChartAxisGeneratorMultiplierUpdater = {
             switch multiplierUpdateMode {
-            case .Halve: return MultiplierUpdaters.halve
-            case .Nice: return MultiplierUpdaters.nice
+            case .halve: return MultiplierUpdaters.halve
+            case .nice: return MultiplierUpdaters.nice
             }
         }()
         
@@ -45,16 +45,16 @@ public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
         self.multiplierUpdater = multiplierUpdater
     }
     
-    public func axisInitialized(axis: ChartAxis) {}
+    open func axisInitialized(_ axis: ChartAxis) {}
     
-    public func generate(axis: ChartAxis) -> [Double] {
+    open func generate(_ axis: ChartAxis) -> [Double] {
 
-        let updatedMultiplier = multiplierUpdater(axis: axis, generator: self)
+        let updatedMultiplier = multiplierUpdater(axis, self)
         
         return generate(axis, multiplier: updatedMultiplier)
     }
     
-    private func generate(axis: ChartAxis, multiplier: Double) -> [Double] {
+    fileprivate func generate(_ axis: ChartAxis, multiplier: Double) -> [Double] {
         
         let modelStart = calculateModelStart(axis, multiplier: multiplier)
         
@@ -81,18 +81,18 @@ public class ChartAxisGeneratorMultiplier: ChartAxisValuesGenerator {
         return values
     }
     
-    func calculateModelStart(axis: ChartAxis, multiplier: Double) -> Double {
+    func calculateModelStart(_ axis: ChartAxis, multiplier: Double) -> Double {
         return (floor((axis.firstVisible - axis.firstInit) / multiplier) * multiplier) + (axis.firstInit)
     }
     
-    func incrementScalar(scalar: Double, multiplier: Double) -> Double {
+    func incrementScalar(_ scalar: Double, multiplier: Double) -> Double {
         return scalar + multiplier
     }
 }
 
 private struct MultiplierUpdaters {
  
-    static func halve(axis: ChartAxis, generator: ChartAxisGeneratorMultiplier) -> Double {
+    static func halve(_ axis: ChartAxis, generator: ChartAxisGeneratorMultiplier) -> Double {
         // Update intervals when zooming duplicates / halves
         // In order to do this, we round the zooming factor to the lowest value in 2^0, 2^1...2^n sequence (this corresponds to 1x, 2x...nx zooming) and divide the original multiplier by this
         // For example, given a 2 multiplier, when zooming in, zooming factors in 2x..<4x are rounded down to 2x, and dividing our multiplier by 2x, we get a 1 multiplier, meaning during zoom  2x..<4x the values have 1 interval length. If continue zooming in, for 4x..<8x, we get a 0.5 multiplier, etc.
@@ -100,7 +100,7 @@ private struct MultiplierUpdaters {
         return generator.multiplier / pow(2, floor(round(log2(axis.zoomFactor) * roundDecimals) / roundDecimals))
     }
 
-    static func nice(axis: ChartAxis, generator: ChartAxisGeneratorMultiplier) -> Double {
+    static func nice(_ axis: ChartAxis, generator: ChartAxisGeneratorMultiplier) -> Double {
         let origDividers = axis.length / generator.multiplier
         let newDividers = floor(origDividers * axis.zoomFactor)
         return ChartNiceNumberCalculator.niceNumber(axis.length / (Double(newDividers)), round: true)

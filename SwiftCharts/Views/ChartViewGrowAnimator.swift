@@ -16,7 +16,7 @@ public struct ChartViewGrowAnimator: ChartViewAnimator {
         self.anchor = anchor
     }
     
-    public func prepare(view: UIView) {
+    public func prepare(_ view: UIView) {
         view.layer.anchorPoint = anchor
         let offsetX = view.frame.width * (0.5 - anchor.x)
         let offsetY = view.frame.height * (0.5 - anchor.y)
@@ -25,11 +25,11 @@ public struct ChartViewGrowAnimator: ChartViewAnimator {
         initState(view)
     }
  
-    public func initState(view: UIView) {
-        view.transform = CGAffineTransformMakeScale(0.001, 0.001)
+    public func initState(_ view: UIView) {
+        view.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
     }
     
-    public func targetState(view: UIView) {
-        view.transform = CGAffineTransformMakeScale(1, 1)
+    public func targetState(_ view: UIView) {
+        view.transform = CGAffineTransform(scaleX: 1, y: 1)
     }
 }

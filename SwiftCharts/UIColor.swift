@@ -27,7 +27,7 @@ extension UIColor {
         return UIColor(hue: h, saturation: s, brightness: min(b * brightnessFactor, 1), alpha: a)
     }
     
-    func copy(red: CGFloat? = nil, green: CGFloat? = nil, blue: CGFloat? = nil, alpha: CGFloat? = nil) -> UIColor {
+    func copy(_ red: CGFloat? = nil, green: CGFloat? = nil, blue: CGFloat? = nil, alpha: CGFloat? = nil) -> UIColor {
         let components = self.components
         return UIColor(red: red ?? components.red, green: green ?? components.green, blue: blue ?? components.blue, alpha: alpha ?? components.alpha)
     }

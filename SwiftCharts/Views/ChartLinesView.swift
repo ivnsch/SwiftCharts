@@ -9,18 +9,18 @@
 import UIKit
 
 public protocol ChartLinesViewPathGenerator {
-    func generatePath(points points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath
+    func generatePath(points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath
 }
 
-public class ChartLinesView: UIView {
+open class ChartLinesView: UIView {
 
-    public let lineColor: UIColor
-    public let lineWidth: CGFloat
-    public let lineJoin: LineJoin
-    public let lineCap: LineCap
-    public let animDuration: Float
-    public let animDelay: Float
-    public let dashPattern: [Double]?
+    open let lineColor: UIColor
+    open let lineWidth: CGFloat
+    open let lineJoin: LineJoin
+    open let lineCap: LineCap
+    open let animDuration: Float
+    open let animDelay: Float
+    open let dashPattern: [Double]?
     
     public init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
         self.lineColor = lineColor
@@ -33,7 +33,7 @@ public class ChartLinesView: UIView {
         
         super.init(frame: frame)
 
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         self.show(path: path)
     }
 
@@ -41,30 +41,30 @@ public class ChartLinesView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func createLineMask(frame frame: CGRect) -> CALayer {
+    fileprivate func createLineMask(frame: CGRect) -> CALayer {
         let lineMaskLayer = CAShapeLayer()
         var maskRect = frame
         maskRect.origin.y = 0
         maskRect.size.height = frame.size.height
-        let path = CGPathCreateWithRect(maskRect, nil)
+        let path = CGPath(rect: maskRect, transform: nil)
         
         lineMaskLayer.path = path
         
         return lineMaskLayer
     }
 
-    public func generateLayer(path path: UIBezierPath) -> CAShapeLayer {
+    open func generateLayer(path: UIBezierPath) -> CAShapeLayer {
         let lineLayer = CAShapeLayer()
         lineLayer.lineJoin = lineJoin.CALayerString
         lineLayer.lineCap = lineCap.CALayerString
-        lineLayer.fillColor = UIColor.clearColor().CGColor
+        lineLayer.fillColor = UIColor.clear.cgColor
         lineLayer.lineWidth = lineWidth
         
-        lineLayer.path = path.CGPath
-        lineLayer.strokeColor = lineColor.CGColor
+        lineLayer.path = path.cgPath
+        lineLayer.strokeColor = lineColor.cgColor
         
         if dashPattern != nil {
-            lineLayer.lineDashPattern = dashPattern
+            lineLayer.lineDashPattern = dashPattern as [NSNumber]?
         }
         
         if self.animDuration > 0 {
@@ -72,14 +72,14 @@ public class ChartLinesView: UIView {
             let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
             pathAnimation.duration = CFTimeInterval(self.animDuration)
             pathAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            pathAnimation.fromValue = NSNumber(float: 0)
-            pathAnimation.toValue = NSNumber(float: 1)
+            pathAnimation.fromValue = NSNumber(value: 0 as Float)
+            pathAnimation.toValue = NSNumber(value: 1 as Float)
             pathAnimation.autoreverses = false
-            pathAnimation.removedOnCompletion = false
+            pathAnimation.isRemovedOnCompletion = false
             pathAnimation.fillMode = kCAFillModeForwards
             
             pathAnimation.beginTime = CACurrentMediaTime() + CFTimeInterval(self.animDelay)
-            lineLayer.addAnimation(pathAnimation, forKey: "strokeEndAnimation")
+            lineLayer.add(pathAnimation, forKey: "strokeEndAnimation")
             
         } else {
             lineLayer.strokeEnd = 1
@@ -88,7 +88,7 @@ public class ChartLinesView: UIView {
         return lineLayer
     }
     
-    private func show(path path: UIBezierPath) {
+    fileprivate func show(path: UIBezierPath) {
         self.layer.addSublayer(self.generateLayer(path: path))
     }
  }

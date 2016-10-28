@@ -8,9 +8,9 @@
 
 import Foundation
 
-public class ChartAxisLabelsGeneratorFixed: ChartAxisLabelsGeneratorBase {
+open class ChartAxisLabelsGeneratorFixed: ChartAxisLabelsGeneratorBase {
     
-    public let dict: [Double: [ChartAxisLabel]]
+    open let dict: [Double: [ChartAxisLabel]]
     
     public convenience init(axisValues: [ChartAxisValue]) {
         var dict = [Double: [ChartAxisLabel]]()
@@ -27,11 +27,11 @@ public class ChartAxisLabelsGeneratorFixed: ChartAxisLabelsGeneratorBase {
         self.dict = dict
     }
     
-    public override func generate(scalar: Double) -> [ChartAxisLabel] {
+    open override func generate(_ scalar: Double) -> [ChartAxisLabel] {
         return dict[scalar] ?? []
     }
     
-    public override func fonts(scalar: Double) -> [UIFont] {
+    open override func fonts(_ scalar: Double) -> [UIFont] {
         return dict[scalar].map {labels in labels.map{$0.settings.font}} ?? []
     }
 }

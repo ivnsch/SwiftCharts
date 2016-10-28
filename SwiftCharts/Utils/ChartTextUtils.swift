@@ -10,14 +10,14 @@ import UIKit
 
 public struct ChartTextUtils {
     
-    public static func maxTextWidth(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
+    public static func maxTextWidth(_ minValue: Double, maxValue: Double, formatter: NumberFormatter, font: UIFont) -> CGFloat {
         
-        let noDecimalsFormatter = NSNumberFormatter()
+        let noDecimalsFormatter = NumberFormatter()
         noDecimalsFormatter.maximumFractionDigits = 0
-        noDecimalsFormatter.roundingMode = .RoundDown
+        noDecimalsFormatter.roundingMode = .down
         
-        let noDecimalsMin = noDecimalsFormatter.stringFromNumber(minValue)!
-        let noDecimalsMax = noDecimalsFormatter.stringFromNumber(maxValue)!
+        let noDecimalsMin = noDecimalsFormatter.string(from: NSNumber(value: minValue))!
+        let noDecimalsMax = noDecimalsFormatter.string(from: NSNumber(value: maxValue))!
         
         let minNumberNoDecimalsTextSize = noDecimalsMin.width(font)
         let maxNumberNoDecimalsTextSize = noDecimalsMax.width(font)
@@ -32,7 +32,7 @@ public struct ChartTextUtils {
         return maxNoDecimalsLength + maxDecimalsWidth + widthForDecimalSign
     }
     
-    public static func maxTextHeight(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
+    public static func maxTextHeight(_ minValue: Double, maxValue: Double, formatter: NumberFormatter, font: UIFont) -> CGFloat {
         return "H".height(font)
     }
 }

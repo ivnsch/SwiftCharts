@@ -8,24 +8,24 @@
 
 import UIKit
 
-public class ChartAxisValuesGeneratorNice: ChartAxisGeneratorMultiplier {
+open class ChartAxisValuesGeneratorNice: ChartAxisGeneratorMultiplier {
     
-    public override var first: Double? {
+    open override var first: Double? {
         return Double(minValue)
     }
     
-    public override var last: Double?  {
+    open override var last: Double?  {
         return Double(maxValue)
     }
     
-    private var minValue: Double
-    private var maxValue: Double
-    private let minSpace: CGFloat
-    private let preferredDividers: Int
+    fileprivate var minValue: Double
+    fileprivate var maxValue: Double
+    fileprivate let minSpace: CGFloat
+    fileprivate let preferredDividers: Int
     
-    private let maxTextSize: CGFloat
+    fileprivate let maxTextSize: CGFloat
     
-    public init(minValue: Double, maxValue: Double, preferredDividers: Int, minSpace: CGFloat, maxTextSize: CGFloat, multiplierUpdateMode: ChartAxisGeneratorMultiplierUpdateMode = .Halve) {
+    public init(minValue: Double, maxValue: Double, preferredDividers: Int, minSpace: CGFloat, maxTextSize: CGFloat, multiplierUpdateMode: ChartAxisGeneratorMultiplierUpdateMode = .halve) {
         
         self.minValue = minValue
         self.maxValue = maxValue
@@ -38,7 +38,7 @@ public class ChartAxisValuesGeneratorNice: ChartAxisGeneratorMultiplier {
         super.init(DBL_MAX, multiplierUpdateMode: multiplierUpdateMode)
     }
     
-    func niceRangeAndMultiplier(dividers: Int) -> (minValue: Double, maxValue: Double, multiplier: Double) {
+    func niceRangeAndMultiplier(_ dividers: Int) -> (minValue: Double, maxValue: Double, multiplier: Double) {
         let niceLength = ChartNiceNumberCalculator.niceNumber(maxValue - minValue, round: true)
         let niceMultiplier = ChartNiceNumberCalculator.niceNumber(niceLength / (Double(dividers) - 1), round: true)
         let niceMinValue = floor(minValue / niceMultiplier) * niceMultiplier
@@ -46,7 +46,7 @@ public class ChartAxisValuesGeneratorNice: ChartAxisGeneratorMultiplier {
         return (niceMinValue, niceMaxValue, niceMultiplier)
     }
     
-    public override func axisInitialized(axis: ChartAxis) {
+    open override func axisInitialized(_ axis: ChartAxis) {
         
         var dividers = preferredDividers
         var cont = true
@@ -69,7 +69,7 @@ public class ChartAxisValuesGeneratorNice: ChartAxisGeneratorMultiplier {
         }
     }
     
-    private func requiredLengthForDividers(dividers: Int) -> CGFloat {
+    fileprivate func requiredLengthForDividers(_ dividers: Int) -> CGFloat {
         return minSpace + ((maxTextSize + minSpace) * CGFloat(dividers))
     }
 }

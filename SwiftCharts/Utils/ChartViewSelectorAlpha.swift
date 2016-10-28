@@ -8,17 +8,17 @@
 
 import UIKit
 
-public class ChartViewSelectorAlpha: ChartViewSelector {
+open class ChartViewSelectorAlpha: ChartViewSelector {
     
-    private var selectedAlpha: CGFloat
-    private var deselectedAlpha: CGFloat
+    fileprivate var selectedAlpha: CGFloat
+    fileprivate var deselectedAlpha: CGFloat
     
     public init(selectedAlpha: CGFloat, deselectedAlpha: CGFloat) {
         self.selectedAlpha = selectedAlpha
         self.deselectedAlpha = deselectedAlpha
     }
     
-    public func displaySelected(view: UIView, selected: Bool) {
+    open func displaySelected(_ view: UIView, selected: Bool) {
         view.backgroundColor = view.backgroundColor.map{$0.copy(alpha: selected ? selectedAlpha : deselectedAlpha)}
     }
 }

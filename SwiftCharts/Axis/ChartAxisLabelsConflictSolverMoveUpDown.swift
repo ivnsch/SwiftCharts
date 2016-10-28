@@ -9,7 +9,7 @@
 import Foundation
 
 /// Solves frame overlaps by moving drawers up and down by half of the height of their frames. Assumes being used for y axis, which currently supports only 1 label per axis value.
-public class ChartAxisLabelsConflictSolverMoveUpDown: ChartAxisLabelsConflictSolver {
+open class ChartAxisLabelsConflictSolverMoveUpDown: ChartAxisLabelsConflictSolver {
     
     let maxIterations: Int
  
@@ -20,7 +20,7 @@ public class ChartAxisLabelsConflictSolverMoveUpDown: ChartAxisLabelsConflictSol
         self.maxIterations = maxIterations
     }
     
-    public func solveConflicts(labels: [ChartAxisValueLabelDrawers]) -> [ChartAxisValueLabelDrawers] {
+    open func solveConflicts(_ labels: [ChartAxisValueLabelDrawers]) -> [ChartAxisValueLabelDrawers] {
         
         var lastDrawerWithRect: (drawer: ChartLabelDrawer, rect: CGRect)?
         
@@ -36,13 +36,13 @@ public class ChartAxisLabelsConflictSolverMoveUpDown: ChartAxisLabelsConflictSol
                 guard let labelDrawer = labelDrawers.first else {continue} // for now y axis supports only one label / value
                 
                 if let (lastDrawer, lastRect) = lastDrawerWithRect {
-                    let intersection = labelDrawer.frame.intersect(lastRect)
-                    if intersection != CGRectNull {
+                    let intersection = labelDrawer.frame.intersection(lastRect)
+                    if intersection != CGRect.null {
                         
                         doNextIteration = true // if there's a conflict do another iteration after this iteration in case there are more conflicts as result of solving this conflict
                         
-                        labelDrawer.screenLoc = CGPointMake(labelDrawer.screenLoc.x, labelDrawer.screenLoc.y - intersection.height / 2)
-                        lastDrawer.screenLoc = CGPointMake(lastDrawer.screenLoc.x, lastDrawer.screenLoc.y + intersection.height / 2)
+                        labelDrawer.screenLoc = CGPoint(x: labelDrawer.screenLoc.x, y: labelDrawer.screenLoc.y - intersection.height / 2)
+                        lastDrawer.screenLoc = CGPoint(x: lastDrawer.screenLoc.x, y: lastDrawer.screenLoc.y + intersection.height / 2)
                     }
                 }
                 

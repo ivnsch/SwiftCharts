@@ -13,7 +13,7 @@ extension Int {
     // Lazily computes prime factors 
     // src: https://gist.github.com/JadenGeller/f998071fe71c2bc2976ef6465f0e6e5d
     public var primeFactors: AnySequence<Int> {
-        func factor(input: Int) -> (prime: Int, remainder: Int) {
+        func factor(_ input: Int) -> (prime: Int, remainder: Int) {
             let end = Int(sqrt(Float(input)))
             if end > 2 {
                 for prime in 2...end {
@@ -25,7 +25,7 @@ extension Int {
             return (input, 1)
         }
         var current = self
-        return AnySequence(AnyGenerator {
+        return AnySequence(AnyIterator {
             guard current != 1 else { return nil }
             
             let result = factor(current)
@@ -34,11 +34,11 @@ extension Int {
         })
     }
     
-    func floorMultiple(value: Int) -> Int {
+    func floorMultiple(_ value: Int) -> Int {
         return Int(floor(Double(self) / Double(value)) * Double(value))
     }
     
-    func ceilMultiple(value: Int) -> Int {
+    func ceilMultiple(_ value: Int) -> Int {
         return Int(ceil(Double(self) / Double(value)) * Double(value))
     }
 }

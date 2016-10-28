@@ -8,15 +8,15 @@
 
 import UIKit
 
-public class ChartAxisValuesGeneratorFixedNonOverlapping: ChartAxisValuesGeneratorFixed {
+open class ChartAxisValuesGeneratorFixedNonOverlapping: ChartAxisValuesGeneratorFixed {
     
-    public let axisValues: [ChartAxisValue]
+    open let axisValues: [ChartAxisValue]
     
-    public let maxLabelSize: CGSize
-    public let totalLabelSize: CGSize
-    public let spacing: CGFloat
+    open let maxLabelSize: CGSize
+    open let totalLabelSize: CGSize
+    open let spacing: CGFloat
     
-    private var isX: Bool
+    fileprivate var isX: Bool
     
     init(axisValues: [ChartAxisValue], spacing: CGFloat, isX: Bool) {
         self.axisValues = axisValues
@@ -28,16 +28,16 @@ public class ChartAxisValuesGeneratorFixedNonOverlapping: ChartAxisValuesGenerat
         super.init(values: axisValues.map{$0.scalar})
     }
         
-    public override func generate(axis: ChartAxis) -> [Double] {
+    open override func generate(_ axis: ChartAxis) -> [Double] {
         updateAxisValues(axis)
         return super.generate(axis)
     }
     
-    private func updateAxisValues(axis: ChartAxis) {
+    fileprivate func updateAxisValues(_ axis: ChartAxis) {
         values = selectNonOverlappingAxisLabels(axisValues, screenLength: axis.screenLength).map{$0.scalar}
     }
     
-    private func selectNonOverlappingAxisLabels(axisValues: [ChartAxisValue], screenLength: CGFloat) -> [ChartAxisValue] {
+    fileprivate func selectNonOverlappingAxisLabels(_ axisValues: [ChartAxisValue], screenLength: CGFloat) -> [ChartAxisValue] {
         
         // Select only the x-axis labels which would prevent any overlap
         let spacePerTick = screenLength / CGFloat(axisValues.count)
@@ -54,7 +54,7 @@ public class ChartAxisValuesGeneratorFixedNonOverlapping: ChartAxisValuesGenerat
         })
         
         // Always show the last label
-        if let filteredLast = filteredAxisValues.last, axisLabelLast = axisValues.last where filteredLast != axisLabelLast {
+        if let filteredLast = filteredAxisValues.last, let axisLabelLast = axisValues.last , filteredLast != axisLabelLast {
             filteredAxisValues[filteredAxisValues.count - 1] = axisLabelLast
         }
         

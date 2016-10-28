@@ -10,23 +10,23 @@ import UIKit
 
 extension Optional where Wrapped: Comparable {
     
-    func minOpt(other: Wrapped?) -> Wrapped? {
+    func minOpt(_ other: Wrapped?) -> Wrapped? {
         return anyOrF(other) {min($0, $1)}
     }
     
-    func maxOpt(other: Wrapped?) -> Wrapped? {
+    func maxOpt(_ other: Wrapped?) -> Wrapped? {
         return anyOrF(other) {max($0, $1)}
     }
 
-    func minOpt(other: Wrapped) -> Wrapped {
+    func minOpt(_ other: Wrapped) -> Wrapped {
         return anyOrF(other) {min($0, $1)}!
     }
     
-    func maxOpt(other: Wrapped) -> Wrapped {
+    func maxOpt(_ other: Wrapped) -> Wrapped {
         return anyOrF(other) {max($0, $1)}!
     }
     
-    private func anyOrF(other: Wrapped?, f: (Wrapped, Wrapped) -> Wrapped?) -> Wrapped? {
+    fileprivate func anyOrF(_ other: Wrapped?, f: (Wrapped, Wrapped) -> Wrapped?) -> Wrapped? {
         switch (self, other) {
         case (nil, nil): return nil
         case (let value, nil): return value

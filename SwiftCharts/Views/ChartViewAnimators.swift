@@ -21,7 +21,7 @@ public struct ChartViewAnimatorsSettings {
         self.animInitSpringVelocity = animInitSpringVelocity
     }
     
-    public func copy(animDelay: Float? = nil, animDuration: Float? = nil, animDamping: CGFloat? = nil, animInitSpringVelocity: CGFloat? = nil) -> ChartViewAnimatorsSettings {
+    public func copy(_ animDelay: Float? = nil, animDuration: Float? = nil, animDamping: CGFloat? = nil, animInitSpringVelocity: CGFloat? = nil) -> ChartViewAnimatorsSettings {
         return ChartViewAnimatorsSettings(
             animDelay: animDelay ?? self.animDelay,
             animDuration: animDuration ?? self.animDuration,
@@ -37,22 +37,22 @@ public struct ChartViewAnimatorsSettings {
 
 
 /// Runs a series of animations on a view
-public class ChartViewAnimators {
+open class ChartViewAnimators {
     
-    public var animDelay: Float = 0
-    public var animDuration: Float = 10.3
-    public var animDamping: CGFloat = 0.4
-    public var animInitSpringVelocity: CGFloat = 0.5
+    open var animDelay: Float = 0
+    open var animDuration: Float = 10.3
+    open var animDamping: CGFloat = 0.4
+    open var animInitSpringVelocity: CGFloat = 0.5
     
-    private let animators: [ChartViewAnimator]
+    fileprivate let animators: [ChartViewAnimator]
     
-    private let onFinishAnimations: (() -> Void)?
-    private let onFinishInverts: (() -> Void)?
+    fileprivate let onFinishAnimations: (() -> Void)?
+    fileprivate let onFinishInverts: (() -> Void)?
     
-    private let view: UIView
+    fileprivate let view: UIView
     
-    private let settings: ChartViewAnimatorsSettings
-    private let invertSettings: ChartViewAnimatorsSettings
+    fileprivate let settings: ChartViewAnimatorsSettings
+    fileprivate let invertSettings: ChartViewAnimatorsSettings
     
     public init(view: UIView, animators: ChartViewAnimator..., settings: ChartViewAnimatorsSettings = ChartViewAnimatorsSettings(), invertSettings: ChartViewAnimatorsSettings? = nil, onFinishAnimations: (() -> Void)? = nil, onFinishInverts: (() -> Void)? = nil) {
         self.view = view
@@ -63,7 +63,7 @@ public class ChartViewAnimators {
         self.invertSettings = invertSettings ?? settings
     }
     
-    public func animate() {
+    open func animate() {
         for animator in animators {
             animator.prepare(view)
         }
@@ -77,7 +77,7 @@ public class ChartViewAnimators {
         })
     }
     
-    public func invert() {
+    open func invert() {
         animate(invertSettings, animations: {
             for animator in self.animators {
                 animator.invert(self.view)
@@ -87,8 +87,8 @@ public class ChartViewAnimators {
         })
     }
     
-    private func animate(settings: ChartViewAnimatorsSettings, animations: () -> Void, onFinish: () -> Void) {
-        UIView.animateWithDuration(NSTimeInterval(settings.animDuration), delay: NSTimeInterval(settings.animDelay), usingSpringWithDamping: settings.animDamping, initialSpringVelocity: settings.animInitSpringVelocity, options: UIViewAnimationOptions(), animations: {
+    fileprivate func animate(_ settings: ChartViewAnimatorsSettings, animations: @escaping () -> Void, onFinish: @escaping () -> Void) {
+        UIView.animate(withDuration: TimeInterval(settings.animDuration), delay: TimeInterval(settings.animDelay), usingSpringWithDamping: settings.animDamping, initialSpringVelocity: settings.animInitSpringVelocity, options: UIViewAnimationOptions(), animations: {
             animations()
             }, completion: {finished in
                 if finished {

@@ -8,48 +8,48 @@
 
 import UIKit
 
-var systemCalendar: NSCalendar {
-    return NSCalendar.currentCalendar()
+var systemCalendar: Calendar {
+    return Calendar.current
 }
 
-extension NSDate {
+extension Date {
     
     var day: Int {
-        return systemCalendar.components([.Day], fromDate: self).day
+        return systemCalendar.dateComponents([.day], from: self).day!
     }
 
     var month: Int {
-        return systemCalendar.components([.Month], fromDate: self).month
+        return systemCalendar.dateComponents([.month], from: self).month!
     }
     
     var year: Int {
-        return systemCalendar.components([.Year], fromDate: self).year
+        return systemCalendar.dateComponents([.year], from: self).year!
     }
     
-    func components(unitFlags: NSCalendarUnit) -> NSDateComponents {
-        return systemCalendar.components(unitFlags, fromDate: self)
+    func components(_ unitFlags: Set<Calendar.Component>) -> DateComponents {
+        return systemCalendar.dateComponents(unitFlags, from: self)
     }
     
-    func component(unit: NSCalendarUnit) -> Int {
-        let components = systemCalendar.components([unit], fromDate: self)
-        return components.valueForComponent(unit)
+    func component(_ unit: Calendar.Component) -> Int {
+        let components = systemCalendar.dateComponents([unit], from: self)
+        return components.value(for: unit)!
     }
     
-    func addComponent(value: Int, unit: NSCalendarUnit) -> NSDate {
-        let dateComponents = NSDateComponents()
-        dateComponents.setValue(value, forComponent: unit)
-        return systemCalendar.dateByAddingComponents(dateComponents, toDate: self, options: NSCalendarOptions(rawValue: 0))!
+    func addComponent(_ value: Int, unit: Calendar.Component) -> Date {
+        var dateComponents = DateComponents()
+        dateComponents.setValue(value, for: unit)
+        return systemCalendar.date(byAdding: dateComponents, to: self)!
     }
     
-    static func toDateComponents(timeInterval: NSTimeInterval, unit: NSCalendarUnit) -> NSDateComponents {
-        let date1 = NSDate()
-        let date2 = NSDate(timeInterval: timeInterval, sinceDate: date1)
-        return systemCalendar.components(unit, fromDate: date1, toDate: date2, options: [])
+    static func toDateComponents(_ timeInterval: TimeInterval, unit: Calendar.Component) -> DateComponents {
+        let date1 = Date()
+        let date2 = Date(timeInterval: timeInterval, since: date1)
+        return systemCalendar.dateComponents([unit], from: date1, to: date2)
     }
     
-    func timeInterval(date: NSDate, unit: NSCalendarUnit) -> Int {
-        let interval = timeIntervalSinceDate(date)
-        let components = NSDate.toDateComponents(interval, unit: unit)
-        return components.valueForComponent(unit)
+    func timeInterval(_ date: Date, unit: Calendar.Component) -> Int {
+        let interval = timeIntervalSince(date)
+        let components = Date.toDateComponents(interval, unit: unit)
+        return components.value(for: unit)!
     }
 }

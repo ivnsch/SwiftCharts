@@ -18,11 +18,11 @@ public struct ChartViewAlphaAnimator: ChartViewAnimator {
         self.targetAlpha = targetAlpha
     }
     
-    public func initState(view: UIView) {
+    public func initState(_ view: UIView) {
         view.alpha = initAlpha
     }
     
-    public func targetState(view: UIView) {
+    public func targetState(_ view: UIView) {
         view.alpha = targetAlpha
     }
 }

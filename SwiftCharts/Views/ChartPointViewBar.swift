@@ -24,7 +24,7 @@ public struct ChartBarViewSettings {
         self.delayInit = delayInit
     }
     
-    public func copy(animDuration animDuration: Float? = nil, animDelay: Float? = nil, selectionViewUpdater: ChartViewSelector? = nil) -> ChartBarViewSettings {
+    public func copy(animDuration: Float? = nil, animDelay: Float? = nil, selectionViewUpdater: ChartViewSelector? = nil) -> ChartBarViewSettings {
         return ChartBarViewSettings(
             animDuration: animDuration ?? self.animDuration,
             animDelay: animDelay ?? self.animDelay,
@@ -33,13 +33,13 @@ public struct ChartBarViewSettings {
     }
 }
 
-public class ChartPointViewBar: UIView {
+open class ChartPointViewBar: UIView {
     
     let targetFrame: CGRect
 
     var isSelected: Bool = false
     
-    var tapHandler: (ChartPointViewBar -> Void)? {
+    var tapHandler: ((ChartPointViewBar) -> Void)? {
         didSet {
             if tapHandler != nil && gestureRecognizers?.isEmpty ?? true {
                 enableTap()
@@ -47,18 +47,18 @@ public class ChartPointViewBar: UIView {
         }
     }
     
-    public let isHorizontal: Bool
+    open let isHorizontal: Bool
     
-    public let settings: ChartBarViewSettings
+    open let settings: ChartBarViewSettings
     
     public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, settings: ChartBarViewSettings) {
         
         let targetFrame = ChartPointViewBar.frame(p1, p2: p2, width: width)
         let firstFrame: CGRect = {
             if p1.y - p2.y =~ 0 { // horizontal
-                return CGRectMake(targetFrame.origin.x, targetFrame.origin.y, 0, targetFrame.size.height)
+                return CGRect(x: targetFrame.origin.x, y: targetFrame.origin.y, width: 0, height: targetFrame.size.height)
             } else { // vertical
-                return CGRectMake(targetFrame.origin.x, targetFrame.origin.y, targetFrame.size.width, 0)
+                return CGRect(x: targetFrame.origin.x, y: targetFrame.origin.y, width: targetFrame.size.width, height: 0)
             }
         }()
         
@@ -72,16 +72,16 @@ public class ChartPointViewBar: UIView {
         self.backgroundColor = bgColor
     }
 
-    static func frame(p1: CGPoint, p2: CGPoint, width: CGFloat) -> CGRect {
+    static func frame(_ p1: CGPoint, p2: CGPoint, width: CGFloat) -> CGRect {
         if p1.y - p2.y =~ 0 { // horizontal
-            return CGRectMake(p1.x, p1.y - width / 2, p2.x - p1.x, width)
+            return CGRect(x: p1.x, y: p1.y - width / 2, width: p2.x - p1.x, height: width)
             
         } else { // vertical
-            return CGRectMake(p1.x - width / 2, p1.y, width, p2.y - p1.y)
+            return CGRect(x: p1.x - width / 2, y: p1.y, width: width, height: p2.y - p1.y)
         }
     }
     
-    func updateFrame(p1: CGPoint, p2: CGPoint) {
+    func updateFrame(_ p1: CGPoint, p2: CGPoint) {
         frame = ChartPointViewBar.frame(p1, p2: p2, width: isHorizontal ? frame.height : frame.width)
     }
     
@@ -90,7 +90,7 @@ public class ChartPointViewBar: UIView {
         self.addGestureRecognizer(tapRecognizer)
     }
     
-    func onTap(sender: UITapGestureRecognizer) {
+    func onTap(_ sender: UITapGestureRecognizer) {
         toggleSelection()
         tapHandler?(self)
     }
@@ -104,7 +104,7 @@ public class ChartPointViewBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func didMoveToSuperview() {
+    override open func didMoveToSuperview() {
         
         func targetState() {
             frame = targetFrame
@@ -114,7 +114,7 @@ public class ChartPointViewBar: UIView {
         if settings.animDuration =~ 0 {
             targetState()
         } else {
-            UIView.animateWithDuration(CFTimeInterval(settings.animDuration), delay: CFTimeInterval(settings.animDelay), options: .CurveEaseOut, animations: {
+            UIView.animate(withDuration: CFTimeInterval(settings.animDuration), delay: CFTimeInterval(settings.animDelay), options: .curveEaseOut, animations: {
                 targetState()
             }, completion: nil)
         }

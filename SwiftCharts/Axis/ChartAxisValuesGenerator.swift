@@ -15,7 +15,7 @@ public protocol ChartAxisValuesGenerator {
 
     var last: Double? {get}
     
-    func axisInitialized(axis: ChartAxis)
+    func axisInitialized(_ axis: ChartAxis)
     
-    func generate(axis: ChartAxis) -> [Double]
+    func generate(_ axis: ChartAxis) -> [Double]
 }

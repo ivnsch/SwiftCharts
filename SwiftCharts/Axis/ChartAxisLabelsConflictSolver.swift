@@ -11,5 +11,5 @@ import Foundation
 /// Maps label drawers array to a new array in order to solve conflicts
 public protocol ChartAxisLabelsConflictSolver {
     
-    func solveConflicts(labels: [ChartAxisValueLabelDrawers]) -> [ChartAxisValueLabelDrawers]
+    func solveConflicts(_ labels: [ChartAxisValueLabelDrawers]) -> [ChartAxisValueLabelDrawers]
 }

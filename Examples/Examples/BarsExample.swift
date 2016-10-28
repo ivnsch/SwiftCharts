@@ -13,14 +13,14 @@ import SwiftCharts
 // Alternatively it's possible to use ChartBarsLayer (see e.g. implementation of BarsChart for a simple example), which provides more ready to use, bar-specific functionality, but is accordingly more constrained.
 class BarsExample: UIViewController {
     
-    private var chart: Chart?
+    fileprivate var chart: Chart?
     
     let sideSelectorHeight: CGFloat = 50
     
-    private func barsChart(horizontal horizontal: Bool) -> Chart {
+    fileprivate func barsChart(horizontal: Bool) -> Chart {
         let tuplesXY = [(2, 8), (4, 9), (6, 10), (8, 12), (12, 17)]
 
-        func reverseTuples(tuples: [(Int, Int)]) -> [(Int, Int)] {
+        func reverseTuples(_ tuples: [(Int, Int)]) -> [(Int, Int)] {
             return tuples.map{($0.1, $0.0)}
         }
         
@@ -46,16 +46,16 @@ class BarsExample: UIViewController {
             
             let (p1, p2): (CGPoint, CGPoint) = {
                 if horizontal {
-                    return (CGPointMake(bottomLeft.x, chartPointModel.screenLoc.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
+                    return (CGPoint(x: bottomLeft.x, y: chartPointModel.screenLoc.y), CGPoint(x: chartPointModel.screenLoc.x, y: chartPointModel.screenLoc.y))
                 } else {
-                    return (CGPointMake(chartPointModel.screenLoc.x, bottomLeft.y), CGPointMake(chartPointModel.screenLoc.x, chartPointModel.screenLoc.y))
+                    return (CGPoint(x: chartPointModel.screenLoc.x, y: bottomLeft.y), CGPoint(x: chartPointModel.screenLoc.x, y: chartPointModel.screenLoc.y))
                 }
             }()
-            return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: UIColor.blueColor().colorWithAlphaComponent(0.6), settings: settings)
+            return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: UIColor.blue.withAlphaComponent(0.6), settings: settings)
         }
         
         let frame = ExamplesDefaults.chartFrame(self.view.bounds)
-        let chartFrame = self.chart?.frame ?? CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height - sideSelectorHeight)
+        let chartFrame = self.chart?.frame ?? CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height - sideSelectorHeight)
         
         let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
 
@@ -64,7 +64,7 @@ class BarsExample: UIViewController {
         
         let chartPointsLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: barViewGenerator)
         
-        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)
         
         return Chart(
@@ -80,7 +80,7 @@ class BarsExample: UIViewController {
         )
     }
     
-    private func showChart(horizontal horizontal: Bool) {
+    fileprivate func showChart(horizontal: Bool) {
         self.chart?.clearView()
         
         let chart = self.barsChart(horizontal: horizontal)
@@ -91,7 +91,7 @@ class BarsExample: UIViewController {
     override func viewDidLoad() {
         self.showChart(horizontal: false)
         if let chart = self.chart {
-            let sideSelector = DirSelector(frame: CGRectMake(0, chart.frame.origin.y + chart.frame.size.height, self.view.frame.size.width, self.sideSelectorHeight), controller: self)
+            let sideSelector = DirSelector(frame: CGRect(x: 0, y: chart.frame.origin.y + chart.frame.size.height, width: self.view.frame.size.width, height: self.sideSelectorHeight), controller: self)
             self.view.addSubview(sideSelector)
         }
     }
@@ -104,16 +104,16 @@ class BarsExample: UIViewController {
         
         weak var controller: BarsExample?
         
-        private let buttonDirs: [UIButton : Bool]
+        fileprivate let buttonDirs: [UIButton : Bool]
         
         init(frame: CGRect, controller: BarsExample) {
             
             self.controller = controller
             
             self.horizontal = UIButton()
-            self.horizontal.setTitle("Horizontal", forState: .Normal)
+            self.horizontal.setTitle("Horizontal", for: UIControlState())
             self.vertical = UIButton()
-            self.vertical.setTitle("Vertical", forState: .Normal)
+            self.vertical.setTitle("Vertical", for: UIControlState())
             
             self.buttonDirs = [self.horizontal : true, self.vertical : false]
             
@@ -124,12 +124,12 @@ class BarsExample: UIViewController {
             
             for button in [self.horizontal, self.vertical] {
                 button.titleLabel?.font = ExamplesDefaults.fontWithSize(14)
-                button.setTitleColor(UIColor.blueColor(), forState: .Normal)
-                button.addTarget(self, action: #selector(DirSelector.buttonTapped(_:)), forControlEvents: .TouchUpInside)
+                button.setTitleColor(UIColor.blue, for: UIControlState())
+                button.addTarget(self, action: #selector(DirSelector.buttonTapped(_:)), for: .touchUpInside)
             }
         }
         
-        func buttonTapped(sender: UIButton) {
+        func buttonTapped(_ sender: UIButton) {
             let horizontal = sender == self.horizontal ? true : false
             controller?.showChart(horizontal: horizontal)
         }
@@ -140,7 +140,7 @@ class BarsExample: UIViewController {
                 v.translatesAutoresizingMaskIntoConstraints = false
             }
             
-            let namedViews = views.enumerate().map{index, view in
+            let namedViews = views.enumerated().map{index, view in
                 ("v\(index)", view)
             }
             
@@ -155,9 +155,9 @@ class BarsExample: UIViewController {
                 "\(str)-(\(buttonsSpace))-[\(tuple.0)]"
             }
             
-            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraintsWithVisualFormat("V:|[\($0.0)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
+            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraints(withVisualFormat: "V:|[\($0.0)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
             
-            self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
+            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
                 + vConstraits)
         }
         

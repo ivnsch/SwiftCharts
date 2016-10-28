@@ -11,7 +11,7 @@ import SwiftCharts
 
 class HelloWorld: UIViewController {
 
-    private var chart: Chart? // arc
+    fileprivate var chart: Chart? // arc
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,23 +41,23 @@ class HelloWorld: UIViewController {
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
         // create layer with guidelines
-        let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: guidelinesLayerSettings)
         
         // view generator - this is a function that creates a view for each chartpoint
         let viewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart, isTransform: Bool) -> UIView? in
             let viewSize: CGFloat = Env.iPad ? 30 : 20
             let center = chartPointModel.screenLoc
-            let view = UIView(frame: CGRectMake(center.x - viewSize / 2, center.y - viewSize / 2, viewSize, viewSize))
-            view.backgroundColor = UIColor.cyanColor()
-            let dot = UIView(frame: CGRectMake(view.bounds.midX - 1, view.bounds.midY - 1, 2, 2))
-            dot.backgroundColor = UIColor.blueColor()
+            let view = UIView(frame: CGRect(x: center.x - viewSize / 2, y: center.y - viewSize / 2, width: viewSize, height: viewSize))
+            view.backgroundColor = UIColor.cyan
+            let dot = UIView(frame: CGRect(x: view.bounds.midX - 1, y: view.bounds.midY - 1, width: 2, height: 2))
+            dot.backgroundColor = UIColor.blue
             view.addSubview(dot)
             return view
         }
         
         // create layer that uses viewGenerator to display chartpoints
-        let chartPointsLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: viewGenerator, mode: .Translate)
+        let chartPointsLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: viewGenerator, mode: .translate)
         
         // create chart instance with frame and layers
         let chart = Chart(

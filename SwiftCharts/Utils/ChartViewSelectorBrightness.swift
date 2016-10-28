@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ChartViewSelectorBrightness: ChartViewSelector {
+open class ChartViewSelectorBrightness: ChartViewSelector {
  
     let selectedFactor: CGFloat
     
@@ -16,7 +16,7 @@ public class ChartViewSelectorBrightness: ChartViewSelector {
         self.selectedFactor = selectedFactor
     }
     
-    public func displaySelected(view: UIView, selected: Bool) {
+    open func displaySelected(_ view: UIView, selected: Bool) {
         view.backgroundColor = selected ? view.backgroundColor?.adjustBrigtness(factor: selectedFactor) : view.backgroundColor?.adjustBrigtness(factor: 1 / selectedFactor)
     }
 }

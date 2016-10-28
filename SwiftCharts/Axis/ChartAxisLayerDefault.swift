@@ -29,7 +29,7 @@ import UIKit
                    └───────────────────────────────────────────────────────────────────┘
  ````
  */
-public class ChartAxisSettings {
+open class ChartAxisSettings {
     var screenLeading: CGFloat = 0
     var screenTrailing: CGFloat = 0
     var screenTop: CGFloat = 0
@@ -38,7 +38,7 @@ public class ChartAxisSettings {
     var labelsToAxisSpacingX: CGFloat = 5
     var labelsToAxisSpacingY: CGFloat = 5
     var axisTitleLabelsToLabelsSpacing: CGFloat = 5
-    var lineColor:UIColor = UIColor.blackColor()
+    var lineColor:UIColor = UIColor.black
     var axisStrokeWidth: CGFloat = 2.0
     var isAxisLineVisible: Bool = true
     
@@ -75,18 +75,18 @@ extension Optional where Wrapped: ChartAxisLayerWithFrameDelta {
 }
 
 public enum AxisLabelsSpaceReservationMode {
-    case MinPresentedSize /// Doesn't reserve less space than the min presented label width/height so far
-    case MaxPresentedSize /// Doesn't reserve less space than the max presented label width/height so far
-    case Fixed(CGFloat) /// Fixed value, ignores labels width/height
-    case Current /// Reserves space for currently visible labels
+    case minPresentedSize /// Doesn't reserve less space than the min presented label width/height so far
+    case maxPresentedSize /// Doesn't reserve less space than the max presented label width/height so far
+    case fixed(CGFloat) /// Fixed value, ignores labels width/height
+    case current /// Reserves space for currently visible labels
 }
 
 public typealias ChartAxisValueLabelDrawersWithAxisLayer = (valueLabelDrawers: ChartAxisValueLabelDrawers, layer: ChartAxisLayer)
 public struct ChartAxisLayerTapSettings {
     public let expandArea: CGSize
-    let handler: (ChartAxisValueLabelDrawersWithAxisLayer -> Void)?
+    let handler: ((ChartAxisValueLabelDrawersWithAxisLayer) -> Void)?
     
-    public init(expandArea: CGSize = CGSizeMake(10, 10), handler: (ChartAxisValueLabelDrawersWithAxisLayer -> Void)? = nil) {
+    public init(expandArea: CGSize = CGSize(width: 10, height: 10), handler: ((ChartAxisValueLabelDrawersWithAxisLayer) -> Void)? = nil) {
         self.expandArea = expandArea
         self.handler = handler
     }
@@ -94,9 +94,9 @@ public struct ChartAxisLayerTapSettings {
 
 
 /// A default implementation of ChartAxisLayer, which delegates drawing of the axis line and labels to the appropriate Drawers
-public class ChartAxisLayerDefault: ChartAxisLayer {
+open class ChartAxisLayerDefault: ChartAxisLayer {
     
-    public var axis: ChartAxis
+    open var axis: ChartAxis
     
     var origin: CGPoint {
         fatalError("Override")
@@ -106,25 +106,25 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("Override")
     }
     
-    public var frame: CGRect {
-        return CGRectMake(origin.x, origin.y, width, height)
+    open var frame: CGRect {
+        return CGRect(x: origin.x, y: origin.y, width: width, height: height)
     }
     
-    public var frameWithoutLabels: CGRect {
-        return CGRectMake(origin.x, origin.y, widthWithoutLabels, heightWithoutLabels)
+    open var frameWithoutLabels: CGRect {
+        return CGRect(x: origin.x, y: origin.y, width: widthWithoutLabels, height: heightWithoutLabels)
     }
     
-    public var visibleFrame: CGRect {
+    open var visibleFrame: CGRect {
         fatalError("Override")
     }
     
     /// Constant dimension between origin and end
     var offset: CGFloat
     
-    public var currentAxisValues: [Double] = []
+    open var currentAxisValues: [Double] = []
     
-    public let valuesGenerator: ChartAxisValuesGenerator
-    public var labelsGenerator: ChartAxisLabelsGenerator
+    open let valuesGenerator: ChartAxisValuesGenerator
+    open var labelsGenerator: ChartAxisLabelsGenerator
     
     let axisTitleLabels: [ChartAxisLabel]
     let settings: ChartAxisSettings
@@ -136,13 +136,13 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
     
     let labelsConflictSolver: ChartAxisLabelsConflictSolver?
     
-    public weak var chart: Chart?
+    open weak var chart: Chart?
     
     let labelSpaceReservationMode: AxisLabelsSpaceReservationMode
 
     let clipContents: Bool
     
-    public var tapSettings: ChartAxisLayerTapSettings?
+    open var tapSettings: ChartAxisLayerTapSettings?
     
     var widthWithoutLabels: CGFloat {
         return width
@@ -152,11 +152,11 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         return settings.axisStrokeWidth + settings.labelsToAxisSpacingX + settings.axisTitleLabelsToLabelsSpacing + axisTitleLabelsHeight
     }
     
-    public var axisValuesScreenLocs: [CGFloat] {
+    open var axisValuesScreenLocs: [CGFloat] {
         return self.currentAxisValues.map{self.axis.screenLocForScalar($0)}
     }
     
-    public var axisValuesWithFrames: [(axisValue: Double, frames: [CGRect])] {
+    open var axisValuesWithFrames: [(axisValue: Double, frames: [CGRect])] {
         return labelDrawers.map {(axisValue, drawers) in
             (axisValue: axisValue, frames: drawers.map{$0.frame})
         }
@@ -169,8 +169,8 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
     }
     
     // smallest screen space between axis values
-    public var minAxisScreenSpace: CGFloat {
-        return self.axisValuesScreenLocs.reduce((CGFloat.max, -CGFloat.max)) {tuple, screenLoc in
+    open var minAxisScreenSpace: CGFloat {
+        return self.axisValuesScreenLocs.reduce((CGFloat.greatestFiniteMagnitude, -CGFloat.greatestFiniteMagnitude)) {tuple, screenLoc in
             let minSpace = tuple.0
             let previousScreenLoc = tuple.1
             return (min(minSpace, abs(screenLoc - previousScreenLoc)), screenLoc)
@@ -189,7 +189,7 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         }
     }()
     
-    public func keepInBoundaries() {
+    open func keepInBoundaries() {
         axis.keepInBoundaries()
         initDrawers()
         chart?.view.setNeedsDisplay()
@@ -199,11 +199,11 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
     
-    public var lineP1: CGPoint {
+    open var lineP1: CGPoint {
         fatalError("override")
     }
     
-    public var lineP2: CGPoint {
+    open var lineP2: CGPoint {
         fatalError("override")
     }
     
@@ -211,12 +211,12 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         fatalError("override")
     }
     
-    public var low: Bool {
+    open var low: Bool {
         fatalError("override")
     }
 
     /// Frame of layer after last update. This is used to detect deltas with the frame resulting from an update. Note that the layer's frame can be altered by only updating the model data (this depends on how the concrete axis layer calculates the frame), which is why this frame is not always identical to the layer's frame directly before calling udpate.
-    var lastFrame: CGRect = CGRectZero
+    var lastFrame: CGRect = CGRect.zero
     
     // NOTE: Assumes axis values sorted by scalar (can be increasing or decreasing)
     public required init(axis: ChartAxis, offset: CGFloat, valuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, labelSpaceReservationMode: AxisLabelsSpaceReservationMode, clipContents: Bool)  {
@@ -234,13 +234,13 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         self.currentAxisValues = valuesGenerator.generate(axis)
     }
     
-    public func update() {
+    open func update() {
         self.prepareUpdate()
         self.updateInternal()
         self.postUpdate()
     }
     
-    private func clearDrawers() {
+    fileprivate func clearDrawers() {
         self.lineDrawer = nil
         self.labelDrawers = []
         self.axisTitleLabelDrawers = []
@@ -258,10 +258,10 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         self.lastFrame = frame
     }
     
-    public func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+    open func handleAxisInnerFrameChange(_ xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
     }
     
-    public func chartInitialized(chart chart: Chart) {
+    open func chartInitialized(chart: Chart) {
         self.chart = chart
         
         self.update()
@@ -273,11 +273,11 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
      - parameter context: The context to draw the axis contents in
      - parameter chart:   The chart that this axis belongs to
      */
-    public func chartViewDrawing(context context: CGContextRef, chart: Chart) {
+    open func chartViewDrawing(context: CGContext, chart: Chart) {
         func draw() {
             if self.settings.isAxisLineVisible {
                 if let lineDrawer = self.lineDrawer {
-                    CGContextSetLineWidth(context, CGFloat(self.settings.axisStrokeWidth))
+                    context.setLineWidth(CGFloat(self.settings.axisStrokeWidth))
                     lineDrawer.triggerDraw(context: context, chart: chart)
                 }
             }
@@ -293,71 +293,71 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         }
         
         if clipContents {
-            CGContextSaveGState(context)
-            CGContextAddRect(context, visibleFrame)
-            CGContextClip(context)
+            context.saveGState()
+            context.addRect(visibleFrame)
+            context.clip()
             draw()
-            CGContextRestoreGState(context)
+            context.restoreGState()
         } else {
             draw()
         }
     }
     
-    public func chartContentViewDrawing(context context: CGContextRef, chart: Chart) {}
+    open func chartContentViewDrawing(context: CGContext, chart: Chart) {}
     
-    public func chartDrawersContentViewDrawing(context context: CGContextRef, chart: Chart, view: UIView) {}
+    open func chartDrawersContentViewDrawing(context: CGContext, chart: Chart, view: UIView) {}
     
-    public func handleGlobalTap(location: CGPoint) {}
+    open func handleGlobalTap(_ location: CGPoint) {}
     
     func initDrawers() {
         fatalError("override")
     }
     
-    func generateLineDrawer(offset offset: CGFloat) -> ChartLineDrawer {
+    func generateLineDrawer(offset: CGFloat) -> ChartLineDrawer {
         fatalError("override")
     }
     
-    func generateAxisTitleLabelsDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
+    func generateAxisTitleLabelsDrawers(offset: CGFloat) -> [ChartLabelDrawer] {
         fatalError("override")
     }
     
     /// Generates label drawers to be displayed on the screen. Calls generateDirectLabelDrawers to generate labels and passes result to an optional conflict solver, which maps the labels array to a new one such that the conflicts are solved. If there's no conflict solver returns the drawers unmodified.
-    func generateLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
+    func generateLabelDrawers(offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         let directLabelDrawers = generateDirectLabelDrawers(offset: offset)
         return labelsConflictSolver.map{$0.solveConflicts(directLabelDrawers)} ?? directLabelDrawers
     }
     
     /// Generates label drawers which correspond directly to axis values. No conflict solving.
-    func generateDirectLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
+    func generateDirectLabelDrawers(offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         fatalError("override")
     }
     
-    public func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    open func zoom(_ x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         fatalError("override")
     }
     
-    public func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    open func zoom(_ scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         fatalError("override")
     }
     
-    public func pan(deltaX: CGFloat, deltaY: CGFloat) {
+    open func pan(_ deltaX: CGFloat, deltaY: CGFloat) {
         fatalError("override")
     }
     
-    public func handlePanStart(location: CGPoint) {}
+    open func handlePanStart(_ location: CGPoint) {}
     
-    public func handlePanStart() {}
+    open func handlePanStart() {}
     
-    public func handlePanFinish() {}
+    open func handlePanFinish() {}
     
-    public func handleZoomFinish() {}
+    open func handleZoomFinish() {}
     
-    public func handlePanEnd() {}
+    open func handlePanEnd() {}
     
-    public func handleZoomEnd() {}
+    open func handleZoomEnd() {}
     
-    public func copy(axis: ChartAxis? = nil, offset: CGFloat? = nil, valuesGenerator: ChartAxisValuesGenerator? = nil, labelsGenerator: ChartAxisLabelsGenerator? = nil, axisTitleLabels: [ChartAxisLabel]? = nil, settings: ChartAxisSettings? = nil, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, labelSpaceReservationMode: AxisLabelsSpaceReservationMode? = nil, clipContents: Bool? = nil) -> ChartAxisLayerDefault {
-        return self.dynamicType.init(
+    open func copy(_ axis: ChartAxis? = nil, offset: CGFloat? = nil, valuesGenerator: ChartAxisValuesGenerator? = nil, labelsGenerator: ChartAxisLabelsGenerator? = nil, axisTitleLabels: [ChartAxisLabel]? = nil, settings: ChartAxisSettings? = nil, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, labelSpaceReservationMode: AxisLabelsSpaceReservationMode? = nil, clipContents: Bool? = nil) -> ChartAxisLayerDefault {
+        return type(of: self).init(
             axis: axis ?? self.axis,
             offset: offset ?? self.offset,
             valuesGenerator: valuesGenerator ?? self.valuesGenerator,
@@ -370,11 +370,11 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         )
     }
     
-    public func handleGlobalTap(location: CGPoint) -> Any? {
+    open func handleGlobalTap(_ location: CGPoint) -> Any? {
         guard let tapSettings = tapSettings else {return nil}
         
         if visibleFrame.contains(location) {
-            if let tappedLabelDrawers = (labelDrawers.filter{$0.drawers.contains{drawer in CGRectInset(drawer.frame, -tapSettings.expandArea.width, -tapSettings.expandArea.height).contains(location)}}).first {
+            if let tappedLabelDrawers = (labelDrawers.filter{$0.drawers.contains{drawer in drawer.frame.insetBy(dx: -tapSettings.expandArea.width, dy: -tapSettings.expandArea.height).contains(location)}}).first {
                 tapSettings.handler?((valueLabelDrawers: tappedLabelDrawers, layer: self))
                 return tappedLabelDrawers
             } else {
@@ -385,11 +385,11 @@ public class ChartAxisLayerDefault: ChartAxisLayer {
         }
     }
     
-    public func processZoom(deltaX deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool {
+    open func processZoom(deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool {
         return false
     }
     
-    public func processPan(location location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool {
+    open func processPan(location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool {
         return false
     }
 }

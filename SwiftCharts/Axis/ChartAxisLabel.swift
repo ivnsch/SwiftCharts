@@ -9,24 +9,24 @@
 import UIKit
 
 /// A model of an axis label
-public class ChartAxisLabel {
+open class ChartAxisLabel {
 
     /// Displayed text. Can be truncated.
-    public let text: String
+    open let text: String
     
-    public let settings: ChartLabelSettings
+    open let settings: ChartLabelSettings
 
-    public private(set) var originalText: String
+    open fileprivate(set) var originalText: String
     
     var hidden: Bool = false
 
     /// The size of the bounding rectangle for the axis label, taking into account the font and rotation it will be drawn with
-    public lazy var textSize: CGSize = {
+    open lazy var textSize: CGSize = {
         let size = self.text.size(self.settings.font)
         if self.settings.rotation =~ 0 {
             return size
         } else {
-            return CGRectMake(0, 0, size.width, size.height).boundingRectAfterRotating(radians: self.settings.rotation * CGFloat(M_PI) / 180.0).size
+            return CGRect(x: 0, y: 0, width: size.width, height: size.height).boundingRectAfterRotating(radians: self.settings.rotation * CGFloat(M_PI) / 180.0).size
         }
     }()
     
@@ -36,7 +36,7 @@ public class ChartAxisLabel {
         self.originalText = text
     }
     
-    func copy(text: String? = nil, settings: ChartLabelSettings? = nil, originalText: String? = nil, hidden: Bool? = nil) -> ChartAxisLabel {
+    func copy(_ text: String? = nil, settings: ChartLabelSettings? = nil, originalText: String? = nil, hidden: Bool? = nil) -> ChartAxisLabel {
         let label = ChartAxisLabel(
             text: text ?? self.text,
             settings: settings ?? self.settings

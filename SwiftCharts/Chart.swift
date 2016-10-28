@@ -9,128 +9,128 @@
 import UIKit
 
 /// ChartSettings allows configuration of the visual layout of a chart
-public class ChartSettings {
+open class ChartSettings {
 
     /// Empty space in points added to the leading edge of the chart
-    public var leading: CGFloat = 0
+    open var leading: CGFloat = 0
 
     /// Empty space in points added to the top edge of the chart
-    public var top: CGFloat = 0
+    open var top: CGFloat = 0
 
     /// Empty space in points added to the trailing edge of the chart
-    public var trailing: CGFloat = 0
+    open var trailing: CGFloat = 0
 
     /// Empty space in points added to the bottom edge of the chart
-    public var bottom: CGFloat = 0
+    open var bottom: CGFloat = 0
 
     /// The spacing in points between axis labels when using multiple labels for each axis value. This is currently only supported with an X axis.
-    public var labelsSpacing: CGFloat = 5
+    open var labelsSpacing: CGFloat = 5
 
     /// The spacing in points between X axis labels and the X axis line
-    public var labelsToAxisSpacingX: CGFloat = 5
+    open var labelsToAxisSpacingX: CGFloat = 5
 
     /// The spacing in points between Y axis labels and the Y axis line
-    public var labelsToAxisSpacingY: CGFloat = 5
+    open var labelsToAxisSpacingY: CGFloat = 5
 
-    public var spacingBetweenAxesX: CGFloat = 15
+    open var spacingBetweenAxesX: CGFloat = 15
 
-    public var spacingBetweenAxesY: CGFloat = 15
+    open var spacingBetweenAxesY: CGFloat = 15
 
     /// The spacing in points between axis title labels and axis labels
-    public var axisTitleLabelsToLabelsSpacing: CGFloat = 5
+    open var axisTitleLabelsToLabelsSpacing: CGFloat = 5
 
     /// The stroke width in points of the axis lines
-    public var axisStrokeWidth: CGFloat = 1.0
+    open var axisStrokeWidth: CGFloat = 1.0
     
-    public var zoomPan = ChartSettingsZoomPan()
+    open var zoomPan = ChartSettingsZoomPan()
     
     public init() {}
 }
 
-public class ChartSettingsZoomPan {
-    public var panEnabled = false
+open class ChartSettingsZoomPan {
+    open var panEnabled = false
     
-    public var zoomEnabled = false
+    open var zoomEnabled = false
 
-    public var minZoomX: CGFloat?
+    open var minZoomX: CGFloat?
     
-    public var minZoomY: CGFloat?
+    open var minZoomY: CGFloat?
     
-    public var maxZoomX: CGFloat?
+    open var maxZoomX: CGFloat?
     
-    public var maxZoomY: CGFloat?
+    open var maxZoomY: CGFloat?
     
-    public var gestureMode: ChartZoomPanGestureMode = .Max
+    open var gestureMode: ChartZoomPanGestureMode = .max
     
-    public var elastic: Bool = false
+    open var elastic: Bool = false
 }
 
 public enum ChartZoomPanGestureMode {
-    case OnlyX // Only X axis is zoomed/panned
-    case OnlyY // Only Y axis is zoomed/panned
-    case Max // Only axis corresponding to dimension with max zoom/pan delta is zoomed/panned
-    case Both // Both axes are zoomed/panned
+    case onlyX // Only X axis is zoomed/panned
+    case onlyY // Only Y axis is zoomed/panned
+    case max // Only axis corresponding to dimension with max zoom/pan delta is zoomed/panned
+    case both // Both axes are zoomed/panned
 }
 
 public protocol ChartDelegate {
     
-    func onZoom(scaleX scaleX: CGFloat, scaleY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool)
+    func onZoom(scaleX: CGFloat, scaleY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool)
     
-    func onPan(transX transX: CGFloat, transY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool)
+    func onPan(transX: CGFloat, transY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool)
     
-    func onTap(models: [TappedChartPointLayerModels<ChartPoint>])
+    func onTap(_ models: [TappedChartPointLayerModels<ChartPoint>])
 }
 
 /// A Chart object is the highest level access to your chart. It has the view where all of the chart layers are drawn, which you can provide (useful if you want to position it as part of a storyboard or XIB), or it can be created for you.
-public class Chart: Pannable, Zoomable {
+open class Chart: Pannable, Zoomable {
 
     /// The view that the chart is drawn in
-    public let view: ChartView
+    open let view: ChartView
 
-    public let containerView: UIView
-    public let contentView: UIView
-    public let drawersContentView: UIView
+    open let containerView: UIView
+    open let contentView: UIView
+    open let drawersContentView: UIView
 
     /// The layers of the chart that are drawn in the view
-    private let layers: [ChartLayer]
+    fileprivate let layers: [ChartLayer]
 
-    public var delegate: ChartDelegate?
+    open var delegate: ChartDelegate?
 
-    public var transX: CGFloat {
+    open var transX: CGFloat {
         return contentFrame.minX
     }
     
-    public var transY: CGFloat {
+    open var transY: CGFloat {
         return contentFrame.minY
     }
 
-    public var scaleX: CGFloat {
+    open var scaleX: CGFloat {
         return contentFrame.width / containerFrame.width
     }
     
-    public var scaleY: CGFloat {
+    open var scaleY: CGFloat {
         return contentFrame.height / containerFrame.height
     }
  
-    public var maxScaleX: CGFloat? {
+    open var maxScaleX: CGFloat? {
         return settings.zoomPan.maxZoomX
     }
     
-    public var minScaleX: CGFloat? {
+    open var minScaleX: CGFloat? {
         return settings.zoomPan.minZoomX
     }
     
-    public var maxScaleY: CGFloat? {
+    open var maxScaleY: CGFloat? {
         return settings.zoomPan.maxZoomY
     }
     
-    public var minScaleY: CGFloat? {
+    open var minScaleY: CGFloat? {
         return settings.zoomPan.minZoomY
     }
     
-    private let settings: ChartSettings
+    fileprivate let settings: ChartSettings
     
-    public var zoomPanSettings: ChartSettingsZoomPan {
+    open var zoomPanSettings: ChartSettingsZoomPan {
         set {
             settings.zoomPan = zoomPanSettings
             configZoomPan(zoomPanSettings)
@@ -175,11 +175,11 @@ public class Chart: Pannable, Zoomable {
         let containerView = UIView(frame: innerFrame ?? view.bounds)
         
         let drawersContentView = ChartContentView(frame: containerView.bounds)
-        drawersContentView.backgroundColor = UIColor.clearColor()
+        drawersContentView.backgroundColor = UIColor.clear
         containerView.addSubview(drawersContentView)
         
         let contentView = ChartContentView(frame: containerView.bounds)
-        contentView.backgroundColor = UIColor.clearColor()
+        contentView.backgroundColor = UIColor.clear
         containerView.addSubview(contentView)
         
         containerView.clipsToBounds = true
@@ -202,7 +202,7 @@ public class Chart: Pannable, Zoomable {
         configZoomPan(settings.zoomPan)
     }
     
-    private func configZoomPan(settings: ChartSettingsZoomPan) {
+    fileprivate func configZoomPan(_ settings: ChartSettingsZoomPan) {
         if settings.minZoomX != nil || settings.minZoomY != nil {
             zoom(scaleX: settings.minZoomX ?? 1, scaleY: settings.minZoomY ?? 1, anchorX: 0, anchorY: 0)
         }
@@ -217,47 +217,47 @@ public class Chart: Pannable, Zoomable {
 
      - parameter view: The subview to add to the chart's content view
      */
-    public func addSubview(view: UIView) {
+    open func addSubview(_ view: UIView) {
         self.contentView.addSubview(view)
     }
 
-    public func addSubviewNoTransform(view: UIView) {
+    open func addSubviewNoTransform(_ view: UIView) {
         self.containerView.addSubview(view)
     }
     
     /// The frame of the chart's view
-    public var frame: CGRect {
+    open var frame: CGRect {
         return self.view.frame
     }
 
-    public var containerFrame: CGRect {
+    open var containerFrame: CGRect {
         return containerView.frame
     }
     
-    public var contentFrame: CGRect {
+    open var contentFrame: CGRect {
         return contentView.frame
     }
     
     /// The bounds of the chart's view
-    public var bounds: CGRect {
+    open var bounds: CGRect {
         return self.view.bounds
     }
 
     /**
      Removes the chart's view from its superview
      */
-    public func clearView() {
+    open func clearView() {
         self.view.removeFromSuperview()
     }
 
-    public func update() {
+    open func update() {
         for layer in self.layers {
             layer.update()
         }
         self.view.setNeedsDisplay()
     }
  
-    func notifyAxisInnerFrameChange(xLow xLow: ChartAxisLayerWithFrameDelta? = nil, yLow: ChartAxisLayerWithFrameDelta? = nil, xHigh: ChartAxisLayerWithFrameDelta? = nil, yHigh: ChartAxisLayerWithFrameDelta? = nil) {
+    func notifyAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta? = nil, yLow: ChartAxisLayerWithFrameDelta? = nil, xHigh: ChartAxisLayerWithFrameDelta? = nil, yHigh: ChartAxisLayerWithFrameDelta? = nil) {
         for layer in layers {
             layer.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
         }
@@ -265,73 +265,73 @@ public class Chart: Pannable, Zoomable {
         handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
     }
     
-    private func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+    fileprivate func handleAxisInnerFrameChange(_ xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
         let previousContentFrame = contentView.frame
         
         // Resize container view
         containerView.frame = containerView.frame.insetBy(dx: yLow.deltaDefault0, dy: xHigh.deltaDefault0, dw: yHigh.deltaDefault0, dh: xLow.deltaDefault0)
         // Change dimensions of content view by total delta of container view
-        contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.width - (yLow.deltaDefault0 + yHigh.deltaDefault0), contentView.frame.height - (xLow.deltaDefault0 + xHigh.deltaDefault0))
+        contentView.frame = CGRect(x: contentView.frame.origin.x, y: contentView.frame.origin.y, width: contentView.frame.width - (yLow.deltaDefault0 + yHigh.deltaDefault0), height: contentView.frame.height - (xLow.deltaDefault0 + xHigh.deltaDefault0))
 
         // Scale contents of content view
         let widthChangeFactor = contentView.frame.width / previousContentFrame.width
         let heightChangeFactor = contentView.frame.height / previousContentFrame.height
         let frameBeforeScale = contentView.frame
-        contentView.transform = CGAffineTransformMakeScale(contentView.transform.a * widthChangeFactor, contentView.transform.d * heightChangeFactor)
+        contentView.transform = CGAffineTransform(scaleX: contentView.transform.a * widthChangeFactor, y: contentView.transform.d * heightChangeFactor)
         contentView.frame = frameBeforeScale
     }
     
-    public func onZoomStart(deltaX deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    open func onZoomStart(deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         for layer in layers {
             layer.zoom(deltaX, y: deltaY, centerX: centerX, centerY: centerY)
         }
     }
     
-    public func onZoomStart(scaleX scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    open func onZoomStart(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         for layer in layers {
             layer.zoom(scaleX, scaleY: scaleY, centerX: centerX, centerY: centerY)
         }
     }
     
-    public func onZoomFinish(scaleX scaleX: CGFloat, scaleY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool) {
+    open func onZoomFinish(scaleX: CGFloat, scaleY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool) {
         for layer in layers {
             layer.handleZoomFinish()
         }
         delegate?.onZoom(scaleX: scaleX, scaleY: scaleY, deltaX: deltaX, deltaY: deltaY, centerX: centerX, centerY: centerY, isGesture: isGesture)
     }
     
-    public func onPanStart(deltaX deltaX: CGFloat, deltaY: CGFloat) {
+    open func onPanStart(deltaX: CGFloat, deltaY: CGFloat) {
         for layer in layers {
             layer.pan(deltaX, deltaY: deltaY)
         }
     }
     
-    public func onPanStart(location location: CGPoint) {
+    open func onPanStart(location: CGPoint) {
         for layer in layers {
             layer.handlePanStart(location)
         }
     }
 
-    public func onPanEnd() {
+    open func onPanEnd() {
         for layer in layers {
             layer.handlePanEnd()
         }
     }
 
-    public func onZoomEnd() {
+    open func onZoomEnd() {
         for layer in layers {
             layer.handleZoomEnd()
         }
     }
     
-    public func onPanFinish(transX transX: CGFloat, transY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) {
+    open func onPanFinish(transX: CGFloat, transY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) {
         for layer in layers {
             layer.handlePanFinish()
         }
         delegate?.onPan(transX: transX, transY: transY, deltaX: deltaX, deltaY: deltaY, isGesture: isGesture, isDeceleration: isDeceleration)
     }
 
-    func onTap(location: CGPoint) {
+    func onTap(_ location: CGPoint) {
         var models = [TappedChartPointLayerModels<ChartPoint>]()
         for layer in layers {
             if let chartPointsLayer = layer as? ChartPointsLayer {
@@ -345,7 +345,7 @@ public class Chart: Pannable, Zoomable {
         delegate?.onTap(models)
     }
     
-    public func resetPanZoom() {
+    open func resetPanZoom() {
         zoom(scaleX: minScaleX ?? 1, scaleY: minScaleY ?? 1, anchorX: 0, anchorY: 0)
         
         pan(deltaX: 10000, deltaY: 10000, isGesture: false, isDeceleration: false, elastic: false)
@@ -361,14 +361,14 @@ public class Chart: Pannable, Zoomable {
 
      - parameter rect: The rect that needs to be drawn
      */
-    private func drawRect(rect: CGRect) {
+    fileprivate func drawRect(_ rect: CGRect) {
         guard let context = UIGraphicsGetCurrentContext() else {return}
         for layer in self.layers {
             layer.chartViewDrawing(context: context, chart: self)
         }
     }
     
-    private func drawContentViewRect(rect: CGRect, sender: ChartContentView) {
+    fileprivate func drawContentViewRect(_ rect: CGRect, sender: ChartContentView) {
         guard let context = UIGraphicsGetCurrentContext() else {return}
         if sender == drawersContentView {
             for layer in layers {
@@ -382,7 +382,7 @@ public class Chart: Pannable, Zoomable {
         }
     }
     
-    func allowPan(location location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool {
+    func allowPan(location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool {
         var someLayerProcessedPan = false
         for layer in self.layers {
             if layer.processPan(location: location, deltaX: deltaX, deltaY: deltaY, isGesture: isGesture, isDeceleration: isDeceleration) {
@@ -392,7 +392,7 @@ public class Chart: Pannable, Zoomable {
         return !someLayerProcessedPan
     }
     
-    func allowZoom(deltaX deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool {
+    func allowZoom(deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool {
         var someLayerProcessedZoom = false
         for layer in self.layers {
             if layer.processZoom(deltaX: deltaX, deltaY: deltaY, anchorX: anchorX, anchorY: anchorY) {
@@ -404,34 +404,34 @@ public class Chart: Pannable, Zoomable {
 }
 
 
-public class ChartContentView: UIView {
+open class ChartContentView: UIView {
     
     weak var chart: Chart?
     
-    override public func drawRect(rect: CGRect) {
+    override open func draw(_ rect: CGRect) {
         self.chart?.drawContentViewRect(rect, sender: self)
     }
 }
 
 /// A UIView subclass for drawing charts
-public class ChartBaseView: ChartView {
+open class ChartBaseView: ChartView {
     
-    override public func drawRect(rect: CGRect) {
+    override open func draw(_ rect: CGRect) {
         self.chart?.drawRect(rect)
     }
 }
 
-public class ChartView: UIView, UIGestureRecognizerDelegate {
+open class ChartView: UIView, UIGestureRecognizerDelegate {
     
     /// The chart that will be drawn in this view
     weak var chart: Chart?
     
-    private var lastPanTranslation: CGPoint?
-    private var isPanningX: Bool? // true: x, false: y
+    fileprivate var lastPanTranslation: CGPoint?
+    fileprivate var isPanningX: Bool? // true: x, false: y
     
-    private var pinchRecognizer: UIPinchGestureRecognizer?
-    private var panRecognizer: UIPanGestureRecognizer?
-    private var tapRecognizer: UITapGestureRecognizer?
+    fileprivate var pinchRecognizer: UIPinchGestureRecognizer?
+    fileprivate var panRecognizer: UIPanGestureRecognizer?
+    fileprivate var tapRecognizer: UITapGestureRecognizer?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -466,39 +466,39 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
      Initialization code shared between all initializers
      */
     func sharedInit() {
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         initRecognizers()
     }
 
-    private var zoomCenter: CGPoint?
+    fileprivate var zoomCenter: CGPoint?
     
-    @objc func onPinch(sender: UIPinchGestureRecognizer) {
+    @objc func onPinch(_ sender: UIPinchGestureRecognizer) {
         
-        guard let chartSettings = chart?.settings where chartSettings.zoomPan.zoomEnabled else {return}
+        guard let chartSettings = chart?.settings , chartSettings.zoomPan.zoomEnabled else {return}
 
         switch sender.state {
-        case .Began:
+        case .began:
             zoomCenter = nil
             fallthrough
             
-        case .Changed:
-            guard sender.numberOfTouches() > 1 else {return}
+        case .changed:
+            guard sender.numberOfTouches > 1 else {return}
             
             let center = zoomCenter ?? {
-                let center = sender.locationInView(self)
+                let center = sender.location(in: self)
                 zoomCenter = center
                 return center
             }()
             
-            let x = abs(sender.locationInView(self).x - sender.locationOfTouch(1, inView: self).x)
-            let y = abs(sender.locationInView(self).y - sender.locationOfTouch(1, inView: self).y)
+            let x = abs(sender.location(in: self).x - sender.location(ofTouch: 1, in: self).x)
+            let y = abs(sender.location(in: self).y - sender.location(ofTouch: 1, in: self).y)
             
             let (deltaX, deltaY): (CGFloat, CGFloat) = {
                 switch chartSettings.zoomPan.gestureMode {
-                case .OnlyX: return (sender.scale, 1)
-                case .OnlyY: return (1, sender.scale)
-                case .Max: return x > y ? (sender.scale, 1) : (1, sender.scale)
-                case .Both:
+                case .onlyX: return (sender.scale, 1)
+                case .onlyY: return (1, sender.scale)
+                case .max: return x > y ? (sender.scale, 1) : (1, sender.scale)
+                case .both:
                     // calculate scale x and scale y
                     let (absMax, absMin) = x > y ? (abs(x), abs(y)) : (abs(y), abs(x))
                     let minScale = (absMin * (sender.scale - 1) / absMax) + 1
@@ -507,15 +507,15 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             }()
             chart?.zoom(deltaX: deltaX, deltaY: deltaY, centerX: center.x, centerY: center.y, isGesture: true)
             
-        case .Ended:
-            guard let center = zoomCenter, chart = chart else {print("No center or chart"); return}
+        case .ended:
+            guard let center = zoomCenter, let chart = chart else {print("No center or chart"); return}
             
             let adjustBoundsVelocity: CGFloat = 0.2
             
             let minScaleX = chart.settings.zoomPan.minZoomX ?? 1
             let minScaleY = chart.settings.zoomPan.minZoomY ?? 1
             
-            func outOfBoundsOffsets(limit: Bool) -> (x: CGFloat, y: CGFloat) {
+            func outOfBoundsOffsets(_ limit: Bool) -> (x: CGFloat, y: CGFloat) {
                 let scaleX = chart.scaleX
                 var x: CGFloat?
                 if scaleX < minScaleX {
@@ -538,7 +538,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             }
             
             
-            func adjustBoundsRec(counter: Int) {
+            func adjustBoundsRec(_ counter: Int) {
                 // FIXME
                 if counter > 400 {
                     let (xOffset, yOffset) = outOfBoundsOffsets(false)
@@ -546,7 +546,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
                     return
                 }
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     
                     let (xOffset, yOffset) = outOfBoundsOffsets(true)
                     
@@ -578,46 +578,46 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             
             chart.onZoomEnd()
             
-        case .Cancelled:
+        case .cancelled:
             chart?.onZoomEnd()
-        case .Failed:
+        case .failed:
             fallthrough
-        case .Possible: break
+        case .possible: break
         }
         
         sender.scale = 1.0
     }
     
-    @objc func onPan(sender: UIPanGestureRecognizer) {
+    @objc func onPan(_ sender: UIPanGestureRecognizer) {
         
-        guard let chartSettings = chart?.settings where chartSettings.zoomPan.panEnabled else {return}
+        guard let chartSettings = chart?.settings , chartSettings.zoomPan.panEnabled else {return}
         
-        func finalPanDelta(deltaX deltaX: CGFloat, deltaY: CGFloat) -> (deltaX: CGFloat, deltaY: CGFloat) {
+        func finalPanDelta(deltaX: CGFloat, deltaY: CGFloat) -> (deltaX: CGFloat, deltaY: CGFloat) {
             switch chartSettings.zoomPan.gestureMode {
-            case .OnlyX: return (deltaX, 0)
-            case .OnlyY: return (0, deltaY)
-            case .Max:
+            case .onlyX: return (deltaX, 0)
+            case .onlyY: return (0, deltaY)
+            case .max:
                 if isPanningX == nil {
                     isPanningX = abs(deltaX) > abs(deltaY)
                 }
                 return isPanningX! ? (deltaX, 0) : (0, deltaY)
-            case .Both: return (deltaX, deltaY)
+            case .both: return (deltaX, deltaY)
             }
         }
         
         switch sender.state {
             
-        case .Began:
+        case .began:
             lastPanTranslation = nil
             isPanningX = nil
             
-            chart?.onPanStart(location: sender.locationInView(self))
+            chart?.onPanStart(location: sender.location(in: self))
             
-        case .Changed:
+        case .changed:
             
-            let trans = sender.translationInView(self)
+            let trans = sender.translation(in: self)
             
-            let location = sender.locationInView(self)
+            let location = sender.location(in: self)
             
             var deltaX = lastPanTranslation.map{trans.x - $0.x} ?? trans.x
             let deltaY = lastPanTranslation.map{trans.y - $0.y} ?? trans.y
@@ -630,20 +630,20 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
                 chart?.pan(deltaX: finalDeltaX, deltaY: finalDeltaY, isGesture: true, isDeceleration: false, elastic: chart?.zoomPanSettings.elastic ?? false)
             }
 
-        case .Ended:
+        case .ended:
             
-            guard let view = sender.view, chart = chart else {print("No view or chart"); return}
+            guard let view = sender.view, let chart = chart else {print("No view or chart"); return}
             
             
-            let velocityX = sender.velocityInView(sender.view).x
-            let velocityY = sender.velocityInView(sender.view).y
+            let velocityX = sender.velocity(in: sender.view).x
+            let velocityY = sender.velocity(in: sender.view).y
             
             let (finalDeltaX, finalDeltaY) = finalPanDelta(deltaX: velocityX, deltaY: velocityY)
 
-            let location = sender.locationInView(self)
+            let location = sender.location(in: self)
             
-            func next(velocityX: CGFloat, velocityY: CGFloat) {
-                dispatch_async(dispatch_get_main_queue()) {
+            func next(_ velocityX: CGFloat, velocityY: CGFloat) {
+                DispatchQueue.main.async {
                     
                     chart.pan(deltaX: velocityX, deltaY: velocityY, isGesture: true, isDeceleration: true, elastic: chart.zoomPanSettings.elastic)
                     
@@ -663,7 +663,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             
             let adjustBoundsVelocity: CGFloat = 20
             
-            func outOfBoundsOffsets(limit: Bool) -> (x: CGFloat, y: CGFloat) {
+            func outOfBoundsOffsets(_ limit: Bool) -> (x: CGFloat, y: CGFloat) {
                 var x: CGFloat?
                 if chart.contentView.frame.minX > 0 {
                     x = limit ? max(-adjustBoundsVelocity, -chart.contentView.frame.minX) : -chart.contentView.frame.minX
@@ -692,7 +692,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
                 return (x ?? 0, y ?? 0)
             }
             
-            func adjustBoundsRec(counter: Int) {
+            func adjustBoundsRec(_ counter: Int) {
                 
                 // FIXME
                 if counter > 400 {
@@ -701,7 +701,7 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
                     return
                 }
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     let (xOffset, yOffset) = outOfBoundsOffsets(true)
                     
                     if xOffset != 0 || yOffset != 0 {
@@ -730,15 +730,15 @@ public class ChartView: UIView, UIGestureRecognizerDelegate {
             
             chart.onPanEnd()
             
-        case .Cancelled: break;
-        case .Failed: break;
-        case .Possible:
+        case .cancelled: break;
+        case .failed: break;
+        case .possible:
 //            sender.state = UIGestureRecognizerState.Changed
             break;
         }
     }
     
-    @objc func onTap(sender: UITapGestureRecognizer) {
-        chart?.onTap(sender.locationInView(self))
+    @objc func onTap(_ sender: UITapGestureRecognizer) {
+        chart?.onTap(sender.location(in: self))
     }
 }

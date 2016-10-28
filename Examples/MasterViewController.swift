@@ -10,44 +10,44 @@ import UIKit
 
 
 enum Example {
-    case HelloWorld, Bars, StackedBars, BarsPlusMinus, GroupedBars, BarsStackedGrouped, Scatter, Areas, Bubble, Coords, Target, Multival, Notifications, Combination, Scroll, EqualSpacing, Tracker, MultiTracker, MultiAxis, MultiAxisInteractive, CandleStick, Cubiclines, NotNumeric, CandleStickInteractive, CustomUnits, Trendline
+    case helloWorld, bars, stackedBars, barsPlusMinus, groupedBars, barsStackedGrouped, scatter, areas, bubble, coords, target, multival, notifications, combination, scroll, equalSpacing, tracker, multiTracker, multiAxis, multiAxisInteractive, candleStick, cubiclines, notNumeric, candleStickInteractive, customUnits, trendline
 }
 
 class MasterViewController: UITableViewController {
     
     var detailViewController: DetailViewController? = nil
     var examples: [(Example, String)] = [
-        (.HelloWorld, "Hello World"),
-        (.Bars, "Bars"),
-        (.StackedBars, "Stacked bars"),
-        (.BarsPlusMinus, "+/- bars with dynamic gradient"),
-        (.GroupedBars, "Grouped bars"),
-        (.BarsStackedGrouped, "Stacked, grouped bars"),
-        (.Combination, "+/- bars and line"),
-        (.Scatter, "Scatter"),
-        (.Notifications, "Notifications (interactive)"),
-        (.Target, "Target point animation"),
-        (.Areas, "Areas, lines, circles (interactive)"),
-        (.Bubble, "Bubble, gradient bar mapping"),
-        (.NotNumeric, "Not numeric values"),
-        (.Scroll, "Multiline, Scroll"),
-        (.Coords, "Show touch coords (interactive)"),
-        (.Tracker, "Track touch (interactive)"),
-        (.MultiTracker, "Multi-chart touch tracking"),
-        (.EqualSpacing, "Fixed axis spacing"),
-        (.CustomUnits, "Custom units, rotated labels"),
-        (.Multival, "Multiple axis labels"),
-        (.MultiAxis, "Multiple axes"),
-        (.MultiAxisInteractive, "Multiple axes (interactive)"),
-        (.CandleStick, "Candlestick"),
-        (.CandleStickInteractive, "Candlestick (interactive)"),
-        (.Cubiclines, "Cubic lines"),
-        (.Trendline, "Trendline")
+        (.helloWorld, "Hello World"),
+        (.bars, "Bars"),
+        (.stackedBars, "Stacked bars"),
+        (.barsPlusMinus, "+/- bars with dynamic gradient"),
+        (.groupedBars, "Grouped bars"),
+        (.barsStackedGrouped, "Stacked, grouped bars"),
+        (.combination, "+/- bars and line"),
+        (.scatter, "Scatter"),
+        (.notifications, "Notifications (interactive)"),
+        (.target, "Target point animation"),
+        (.areas, "Areas, lines, circles (interactive)"),
+        (.bubble, "Bubble, gradient bar mapping"),
+        (.notNumeric, "Not numeric values"),
+        (.scroll, "Multiline, Scroll"),
+        (.coords, "Show touch coords (interactive)"),
+        (.tracker, "Track touch (interactive)"),
+        (.multiTracker, "Multi-chart touch tracking"),
+        (.equalSpacing, "Fixed axis spacing"),
+        (.customUnits, "Custom units, rotated labels"),
+        (.multival, "Multiple axis labels"),
+        (.multiAxis, "Multiple axes"),
+        (.multiAxisInteractive, "Multiple axes (interactive)"),
+        (.candleStick, "Candlestick"),
+        (.candleStickInteractive, "Candlestick (interactive)"),
+        (.cubiclines, "Cubic lines"),
+        (.trendline, "Trendline")
     ]
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             self.clearsSelectionOnViewWillAppear = false
             self.preferredContentSize = CGSize(width: 320.0, height: 600.0)
         }
@@ -57,7 +57,7 @@ class MasterViewController: UITableViewController {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.titleTextAttributes = ["NSFontAttributeName" : ExamplesDefaults.fontWithSize(22)]
-        UIBarButtonItem.appearance().setTitleTextAttributes(["NSFontAttributeName" : ExamplesDefaults.fontWithSize(22)], forState: UIControlState.Normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes(["NSFontAttributeName" : ExamplesDefaults.fontWithSize(22)], for: UIControlState())
         
         if let split = self.splitViewController {
             
@@ -73,28 +73,28 @@ class MasterViewController: UITableViewController {
     
     // MARK: - Segues
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             
-            func showExample(index: Int) {
+            func showExample(_ index: Int) {
                 let example = self.examples[index]
-                let controller = segue.destinationViewController as! DetailViewController
+                let controller = segue.destination as! DetailViewController
                 controller.detailItem = example.0
                 controller.title = example.1
                 
             }
             
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                showExample(indexPath.row)
+                showExample((indexPath as NSIndexPath).row)
             } else {
                 showExample(0)
             }
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
-            let example = self.examples[indexPath.row]
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad {
+            let example = self.examples[(indexPath as NSIndexPath).row]
             self.detailViewController?.detailItem = example.0
             self.detailViewController?.title = example.1
             
@@ -104,17 +104,17 @@ class MasterViewController: UITableViewController {
     
     // MARK: - Table View
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return examples.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel!.text = examples[indexPath.row].1
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell
+        cell.textLabel!.text = examples[(indexPath as NSIndexPath).row].1
         cell.textLabel!.font = ExamplesDefaults.fontWithSize(Env.iPad ? 22 : 16)
         return cell
     }

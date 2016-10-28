@@ -9,53 +9,53 @@
 import UIKit
 
 /// Convenience class to store common properties and make protocol's methods optional
-public class ChartLayerBase: NSObject, ChartLayer {
+open class ChartLayerBase: NSObject, ChartLayer {
 
-    public weak var chart: Chart?
+    open weak var chart: Chart?
     
-    public func chartInitialized(chart chart: Chart) {
+    open func chartInitialized(chart: Chart) {
         self.chart = chart
     }
     
-    public func chartViewDrawing(context context: CGContextRef, chart: Chart) {}
+    open func chartViewDrawing(context: CGContext, chart: Chart) {}
 
-    public func chartContentViewDrawing(context context: CGContextRef, chart: Chart) {}
+    open func chartContentViewDrawing(context: CGContext, chart: Chart) {}
 
-    public func chartDrawersContentViewDrawing(context context: CGContextRef, chart: Chart, view: UIView) {}
+    open func chartDrawersContentViewDrawing(context: CGContext, chart: Chart, view: UIView) {}
     
-    public func update() {}
+    open func update() {}
     
-    public func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {}
+    open func handleAxisInnerFrameChange(_ xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {}
     
-    public func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {}
+    open func zoom(_ x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {}
     
-    public func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {}
+    open func zoom(_ scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {}
     
-    public func pan(deltaX: CGFloat, deltaY: CGFloat) {}
+    open func pan(_ deltaX: CGFloat, deltaY: CGFloat) {}
 
-    public func processPan(location location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool {
+    open func processPan(location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool {
         return false
     }
     
-    public func handlePanStart(location: CGPoint) {}
+    open func handlePanStart(_ location: CGPoint) {}
     
-    public func handlePanFinish() {}
+    open func handlePanFinish() {}
     
-    public func handleZoomFinish() {}
+    open func handleZoomFinish() {}
     
-    public func handlePanEnd() {}
+    open func handlePanEnd() {}
     
-    public func handleZoomEnd() {}
+    open func handleZoomEnd() {}
     
-    public func processZoom(deltaX deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool {
+    open func processZoom(deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool {
         return false
     }
     
-    public func handleGlobalTap(location: CGPoint) -> Any? {
+    open func handleGlobalTap(_ location: CGPoint) -> Any? {
         return nil
     }
     
-    public func keepInBoundaries() {}
+    open func keepInBoundaries() {}
     
     public override init() {}
 }

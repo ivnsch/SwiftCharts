@@ -11,7 +11,7 @@ import SwiftCharts
 
 class CoordsExample: UIViewController {
     
-    private var chart: Chart? // arc
+    fileprivate var chart: Chart? // arc
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +42,7 @@ class CoordsExample: UIViewController {
             let text = "(\(chartPoint.x), \(chartPoint.y))"
             let font = ExamplesDefaults.labelFont
             let x = min(screenLoc.x + 5, chart.bounds.width - text.width(font) - 5)
-            let view = UIView(frame: CGRectMake(x, screenLoc.y - h, w, h))
+            let view = UIView(frame: CGRect(x: x, y: screenLoc.y - h, width: w, height: h))
             let label = UILabel(frame: view.bounds)
             label.text = "(\(chartPoint.x), \(chartPoint.y))"
             label.font = ExamplesDefaults.labelFont
@@ -55,7 +55,7 @@ class CoordsExample: UIViewController {
             if isTransform {
                 targetState()
             } else {
-                UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
+                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
                     targetState()
                 }, completion: nil)
             }
@@ -64,21 +64,21 @@ class CoordsExample: UIViewController {
         }
         
         let showCoordsLinesLayer = ChartShowCoordsLinesLayer<ChartPoint>(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints)
-        let showCoordsTextLayer = ChartPointsSingleViewLayer<ChartPoint, UIView>(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: showCoordsTextViewsGenerator, mode: .Translate, keepOnFront: true)
+        let showCoordsTextLayer = ChartPointsSingleViewLayer<ChartPoint, UIView>(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: showCoordsTextViewsGenerator, mode: .translate, keepOnFront: true)
         
         let touchViewsGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart, isTransform: Bool) -> UIView? in
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
             let s: CGFloat = 30
-            let view = HandlingView(frame: CGRectMake(screenLoc.x - s/2, screenLoc.y - s/2, s, s))
+            let view = HandlingView(frame: CGRect(x: screenLoc.x - s/2, y: screenLoc.y - s/2, width: s, height: s))
             view.touchHandler = {[weak showCoordsLinesLayer, weak showCoordsTextLayer, weak chartPoint, weak chart] in
-                guard let chartPoint = chartPoint, chart = chart else {return}
+                guard let chartPoint = chartPoint, let chart = chart else {return}
                 showCoordsLinesLayer?.showChartPointLines(chartPoint, chart: chart)
                 showCoordsTextLayer?.showView(chartPoint: chartPoint, chart: chart)
             }
             return view
         }
         
-        let touchLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: touchViewsGenerator, mode: .Translate, keepOnFront: true)
+        let touchLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: touchViewsGenerator, mode: .translate, keepOnFront: true)
         
         let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor(red: 0.4, green: 0.4, blue: 1, alpha: 0.2), lineWidth: 3, animDuration: 0.7, animDelay: 0)
         let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel])
@@ -86,14 +86,14 @@ class CoordsExample: UIViewController {
         let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart, isTransform: Bool) -> UIView? in
             let circleView = ChartPointEllipseView(center: chartPointModel.screenLoc, diameter: 24)
             circleView.animDuration = isTransform ? 0 : 1.5
-            circleView.fillColor = UIColor.whiteColor()
+            circleView.fillColor = UIColor.white
             circleView.borderWidth = 5
-            circleView.borderColor = UIColor.blueColor()
+            circleView.borderColor = UIColor.blue
             return circleView
         }
-        let chartPointsCircleLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: circleViewGenerator, displayDelay: 0, delayBetweenItems: 0.05, mode: .Translate)
+        let chartPointsCircleLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: circleViewGenerator, displayDelay: 0, delayBetweenItems: 0.05, mode: .translate)
         
-        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)
         
         

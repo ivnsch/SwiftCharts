@@ -9,21 +9,21 @@
 import UIKit
 
 protocol StringType {
-    func width(font: UIFont) -> CGFloat
-    func height(font: UIFont) -> CGFloat
+    func width(_ font: UIFont) -> CGFloat
+    func height(_ font: UIFont) -> CGFloat
 }
 
 extension String: StringType {}
 
 extension Array where Element: StringType {
     
-    func maxWidth(font: UIFont) -> CGFloat {
+    func maxWidth(_ font: UIFont) -> CGFloat {
         return reduce(0) {sum, str in
             sum + str.width(font)
         }
     }
     
-    func maxHeight(font: UIFont) -> CGFloat {
+    func maxHeight(_ font: UIFont) -> CGFloat {
         return reduce(0) {sum, str in
             sum + str.width(font)
         }

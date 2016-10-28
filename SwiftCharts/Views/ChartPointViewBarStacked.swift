@@ -28,13 +28,13 @@ private class ChartBarStackFrameView: UIView {
 
 public typealias ChartPointViewBarStackedFrame = (rect: CGRect, color: UIColor)
 
-public class ChartPointViewBarStacked: ChartPointViewBar {
+open class ChartPointViewBarStacked: ChartPointViewBar {
     
-    private var stackViews: [(index: Int, view: ChartBarStackFrameView, targetFrame: CGRect)] = []
+    fileprivate var stackViews: [(index: Int, view: ChartBarStackFrameView, targetFrame: CGRect)] = []
     
     var stackFrameSelectionViewUpdater: ChartViewSelector?
     
-    var stackedTapHandler: (TappedChartPointViewBarStacked -> Void)? {
+    var stackedTapHandler: ((TappedChartPointViewBarStacked) -> Void)? {
         didSet {
             if stackedTapHandler != nil && gestureRecognizers?.isEmpty ?? true {
                 enableTap()
@@ -47,14 +47,14 @@ public class ChartPointViewBarStacked: ChartPointViewBar {
         
         super.init(p1: p1, p2: p2, width: width, bgColor: bgColor, settings: settings)
         
-        for (index, stackFrame) in stackFrames.enumerate() {
+        for (index, stackFrame) in stackFrames.enumerated() {
             let (targetFrame, firstFrame): (CGRect, CGRect) = {
                 if p1.y - p2.y =~ 0 { // horizontal
-                    let initFrame = CGRectMake(0, stackFrame.rect.origin.y, 0, stackFrame.rect.size.height)
+                    let initFrame = CGRect(x: 0, y: stackFrame.rect.origin.y, width: 0, height: stackFrame.rect.size.height)
                     return (stackFrame.rect, initFrame)
                     
                 } else { // vertical
-                    let initFrame = CGRectMake(stackFrame.rect.origin.x, self.frame.height, stackFrame.rect.size.width, 0)
+                    let initFrame = CGRect(x: stackFrame.rect.origin.x, y: self.frame.height, width: stackFrame.rect.size.width, height: 0)
                     return (stackFrame.rect, initFrame)
                 }
             }()
@@ -68,8 +68,8 @@ public class ChartPointViewBarStacked: ChartPointViewBar {
         }
     }
     
-    override func onTap(sender: UITapGestureRecognizer) {
-        let loc = sender.locationInView(self)
+    override func onTap(_ sender: UITapGestureRecognizer) {
+        let loc = sender.location(in: self)
         guard let tappedStackFrame = (stackViews.filter{$0.view.frame.contains(loc)}.first) else {
             print("Warn: no stacked frame found in stacked bar")
             return
@@ -92,7 +92,7 @@ public class ChartPointViewBarStacked: ChartPointViewBar {
         super.init(p1: p1, p2: p2, width: width, bgColor: bgColor, settings: settings)
     }
     
-    override public func didMoveToSuperview() {
+    override open func didMoveToSuperview() {
         
         func targetState() {
             frame = targetFrame
@@ -105,7 +105,7 @@ public class ChartPointViewBarStacked: ChartPointViewBar {
         if settings.animDuration =~ 0 {
             targetState()
         } else {
-            UIView.animateWithDuration(CFTimeInterval(settings.animDuration), delay: CFTimeInterval(settings.animDelay), options: .CurveEaseOut, animations: {
+            UIView.animate(withDuration: CFTimeInterval(settings.animDuration), delay: CFTimeInterval(settings.animDelay), options: .curveEaseOut, animations: {
                 targetState()
             }, completion: nil)
         }

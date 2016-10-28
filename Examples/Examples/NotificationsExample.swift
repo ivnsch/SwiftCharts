@@ -11,7 +11,7 @@ import SwiftCharts
 
 class NotificationsExample: UIViewController {
 
-    private var chart: Chart? // arc
+    fileprivate var chart: Chart? // arc
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,34 +23,34 @@ class NotificationsExample: UIViewController {
         let xValues = chartPoints.map{$0.x}
         let yValues = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: labelSettings)}, addPaddingSegmentIfEdge: false)
         
-        let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.redColor(), animDuration: 1, animDelay: 0)
+        let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.red, animDuration: 1, animDelay: 0)
         
         let notificationGenerator = {[weak self] (chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart, isTransform: Bool) -> UIView? in
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
             if chartPoint.y.scalar <= 1 {
                 let w: CGFloat = Env.iPad ? 30 : 20
                 let h: CGFloat = Env.iPad ? 30 : 20
-                let chartPointView = HandlingView(frame: CGRectMake(screenLoc.x + 5, screenLoc.y - h - 5, w, h))
+                let chartPointView = HandlingView(frame: CGRect(x: screenLoc.x + 5, y: screenLoc.y - h - 5, width: w, height: h))
                 let label = UILabel(frame: chartPointView.bounds)
                 label.layer.cornerRadius = Env.iPad ? 15 : 10
                 label.clipsToBounds = true
-                label.backgroundColor = UIColor.redColor()
-                label.textColor = UIColor.whiteColor()
-                label.textAlignment = NSTextAlignment.Center
-                label.font = UIFont.boldSystemFontOfSize(Env.iPad ? 22 : 18)
+                label.backgroundColor = UIColor.red
+                label.textColor = UIColor.white
+                label.textAlignment = NSTextAlignment.center
+                label.font = UIFont.boldSystemFont(ofSize: Env.iPad ? 22 : 18)
                 label.text = "!"
                 chartPointView.addSubview(label)
-                label.transform = CGAffineTransformMakeScale(0, 0)
+                label.transform = CGAffineTransform(scaleX: 0, y: 0)
                 
                 
                 func targetState() {
-                    label.transform = CGAffineTransformMakeScale(1, 1)
+                    label.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }
                 if isTransform {
                     targetState()
                 } else {
                     chartPointView.movedToSuperViewHandler = {
-                        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
+                        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
                             targetState()
                         }, completion: nil)
                     }
@@ -63,15 +63,15 @@ class NotificationsExample: UIViewController {
                     let ok = "Ok"
                     
                         if #available(iOS 8.0, *) {
-                            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: ok, style: UIAlertActionStyle.Default, handler: nil))
-                            self!.presentViewController(alert, animated: true, completion: nil)
+                            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: ok, style: UIAlertActionStyle.default, handler: nil))
+                            self!.present(alert, animated: true, completion: nil)
 
                         } else {
                             let alert = UIAlertView()
                             alert.title = title
                             alert.message = message
-                            alert.addButtonWithTitle(ok)
+                            alert.addButton(withTitle: ok)
                             alert.show()
                         }
                 }
@@ -94,7 +94,7 @@ class NotificationsExample: UIViewController {
         
         let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel])
         
-        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
+        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)
         
         let chart = Chart(

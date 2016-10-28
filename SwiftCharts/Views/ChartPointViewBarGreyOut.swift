@@ -14,9 +14,9 @@ public struct ChartBarGreyOutSettings {
     let greyOutAnimDuration: Float = 0.5
 }
 
-public class ChartPointViewBarGreyOut: ChartPointViewBar {
+open class ChartPointViewBarGreyOut: ChartPointViewBar {
 
-    private let greyOutSettings: ChartBarGreyOutSettings
+    fileprivate let greyOutSettings: ChartBarGreyOutSettings
     
     init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, settings: ChartBarGreyOutSettings) {
         self.greyOutSettings = settings
@@ -32,11 +32,11 @@ public class ChartPointViewBarGreyOut: ChartPointViewBar {
         super.init(p1: p1, p2: p2, width: width, bgColor: bgColor, settings: settings)
     }
 
-    override public func didMoveToSuperview() {
+    override open func didMoveToSuperview() {
         super.didMoveToSuperview()
         
-        UIView.animateWithDuration(CFTimeInterval(greyOutSettings.greyOutAnimDuration), delay: CFTimeInterval(greyOutSettings.greyOutDelay), options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            self.backgroundColor = UIColor.grayColor()
+        UIView.animate(withDuration: CFTimeInterval(greyOutSettings.greyOutAnimDuration), delay: CFTimeInterval(greyOutSettings.greyOutDelay), options: UIViewAnimationOptions.curveEaseOut, animations: {
+            self.backgroundColor = UIColor.gray
         }, completion: nil)
     }
 }

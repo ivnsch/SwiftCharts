@@ -11,15 +11,15 @@ import UIKit
 /// A ChartAxisLayer for Y axes
 class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
-    private var minCalculatedLabelWidth: CGFloat?
-    private var maxCalculatedLabelWidth: CGFloat?
+    fileprivate var minCalculatedLabelWidth: CGFloat?
+    fileprivate var maxCalculatedLabelWidth: CGFloat?
     
     override var origin: CGPoint {
-        return CGPointMake(offset, axis.lastScreen)
+        return CGPoint(x: offset, y: axis.lastScreen)
     }
     
     override var end: CGPoint {
-        return CGPointMake(offset, axis.firstScreen)
+        return CGPoint(x: offset, y: axis.firstScreen)
     }
     
     override var height: CGFloat {
@@ -27,7 +27,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     }
     
     override var visibleFrame: CGRect {
-        return CGRectMake(offset, axis.lastVisibleScreen, width, axis.visibleScreenLength)
+        return CGRect(x: offset, y: axis.lastVisibleScreen, width: width, height: axis.visibleScreenLength)
     }
     
     var labelsMaxWidth: CGFloat {
@@ -45,10 +45,10 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         
         let width: CGFloat = {
             switch labelSpaceReservationMode {
-            case .MinPresentedSize: return minCalculatedLabelWidth.maxOpt(currentWidth)
-            case .MaxPresentedSize: return maxCalculatedLabelWidth.maxOpt(currentWidth)
-            case .Fixed(let value): return value
-            case .Current: return currentWidth
+            case .minPresentedSize: return minCalculatedLabelWidth.maxOpt(currentWidth)
+            case .maxPresentedSize: return maxCalculatedLabelWidth.maxOpt(currentWidth)
+            case .fixed(let value): return value
+            case .current: return currentWidth
             }
         }()
         
@@ -73,7 +73,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         return height
     }
     
-    override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+    override func handleAxisInnerFrameChange(_ xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
         
         if let xLow = xLow {
@@ -88,7 +88,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         
     }
     
-    override func generateAxisTitleLabelsDrawers(offset offset: CGFloat) -> [ChartLabelDrawer] {
+    override func generateAxisTitleLabelsDrawers(offset: CGFloat) -> [ChartLabelDrawer] {
         
         if let firstTitleLabel = self.axisTitleLabels.first {
             
@@ -97,9 +97,9 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             }
             let axisLabel = firstTitleLabel
             let labelSize = axisLabel.text.size(axisLabel.settings.font)
-            let axisLabelDrawer = ChartLabelDrawer(label: axisLabel, screenLoc: CGPointMake(
-                self.offset + offset,
-                axis.lastScreenInit + ((axis.firstScreenInit - axis.lastScreenInit) / 2) - (labelSize.height / 2)))
+            let axisLabelDrawer = ChartLabelDrawer(label: axisLabel, screenLoc: CGPoint(
+                x: self.offset + offset,
+                y: axis.lastScreenInit + ((axis.firstScreenInit - axis.lastScreenInit) / 2) - (labelSize.height / 2)))
             
             return [axisLabelDrawer]
             
@@ -108,7 +108,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         }
     }
     
-    override func generateDirectLabelDrawers(offset offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
+    override func generateDirectLabelDrawers(offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         
         var drawers: [ChartAxisValueLabelDrawers] = []
         
@@ -121,7 +121,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
                 let labelSize = axisLabel.text.size(axisLabel.settings.font)
                 let labelY = y - (labelSize.height / 2)
                 let labelX = self.labelsX(offset: offset, labelWidth: labelSize.width, textAlignment: axisLabel.settings.textAlignment)
-                let labelDrawer = ChartLabelDrawer(label: axisLabel, screenLoc: CGPointMake(labelX, labelY))
+                let labelDrawer = ChartLabelDrawer(label: axisLabel, screenLoc: CGPoint(x: labelX, y: labelY))
 
                 let labelDrawers = ChartAxisValueLabelDrawers(scalar, [labelDrawer])
                 drawers.append(labelDrawers)
@@ -130,35 +130,35 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         return drawers
     }
     
-    func labelsX(offset offset: CGFloat, labelWidth: CGFloat, textAlignment: ChartLabelTextAlignment) -> CGFloat {
+    func labelsX(offset: CGFloat, labelWidth: CGFloat, textAlignment: ChartLabelTextAlignment) -> CGFloat {
         fatalError("override")
     }
     
-    private func maxLabelWidth(axisLabels: [ChartAxisLabel]) -> CGFloat {
+    fileprivate func maxLabelWidth(_ axisLabels: [ChartAxisLabel]) -> CGFloat {
         return axisLabels.reduce(CGFloat(0)) {maxWidth, label in
             return max(maxWidth, label.text.width(label.settings.font))
         }
     }
-    private func maxLabelWidth(axisValues: [Double]) -> CGFloat {
+    fileprivate func maxLabelWidth(_ axisValues: [Double]) -> CGFloat {
         return axisValues.reduce(CGFloat(0)) {maxWidth, value in
             let labels = self.labelsGenerator.generate(value, axis: axis)
             return max(maxWidth, maxLabelWidth(labels))
         }
     }
     
-    override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    override func zoom(_ x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         axis.zoom(x, y: y, centerX: centerX, centerY: centerY, elastic: chart?.zoomPanSettings.elastic ?? false)
         update()
         chart?.view.setNeedsDisplay()
     }
     
-    override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+    override func pan(_ deltaX: CGFloat, deltaY: CGFloat) {
         axis.pan(deltaX, deltaY: deltaY, elastic: chart?.zoomPanSettings.elastic ?? false)
         update()
         chart?.view.setNeedsDisplay()
     }
     
-    override func zoom(scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    override func zoom(_ scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         axis.zoom(scaleX, scaleY: scaleY, centerX: centerX, centerY: centerY, elastic: chart?.zoomPanSettings.elastic ?? false)
         update()
         chart?.view.setNeedsDisplay()

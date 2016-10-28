@@ -8,25 +8,25 @@
 
 import Foundation
 
-public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
+open class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
     
-    public override var first: Double? {
+    open override var first: Double? {
         return Double(minValue)
     }
     
-    public override var last: Double?  {
+    open override var last: Double?  {
         return Double(maxValue)
     }
     
-    private var minValue: Double
-    private var maxValue: Double
-    private let minSpace: CGFloat
-    private let nice: Bool
-    private let preferredDividers: Int
+    fileprivate var minValue: Double
+    fileprivate var maxValue: Double
+    fileprivate let minSpace: CGFloat
+    fileprivate let nice: Bool
+    fileprivate let preferredDividers: Int
     
-    private let maxTextSize: CGFloat
+    fileprivate let maxTextSize: CGFloat
     
-    public init(minValue: Double, maxValue: Double, preferredDividers: Int, nice: Bool, formatter: NSNumberFormatter, font: UIFont, minSpace: CGFloat = 10, multiplierUpdateMode: ChartAxisGeneratorMultiplierUpdateMode = .Halve) {
+    public init(minValue: Double, maxValue: Double, preferredDividers: Int, nice: Bool, formatter: NumberFormatter, font: UIFont, minSpace: CGFloat = 10, multiplierUpdateMode: ChartAxisGeneratorMultiplierUpdateMode = .halve) {
         
         self.minValue = minValue
         self.maxValue = maxValue
@@ -40,10 +40,10 @@ public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
         super.init(DBL_MAX, multiplierUpdateMode: multiplierUpdateMode)
     }
     
-    private static func largestSize(minValue: Double, maxValue: Double, formatter: NSNumberFormatter, font: UIFont) -> CGFloat {
+    fileprivate static func largestSize(_ minValue: Double, maxValue: Double, formatter: NumberFormatter, font: UIFont) -> CGFloat {
         
-        let minNumberTextSize = formatter.stringFromNumber(minValue)!.width(font)
-        let maxNumberTextSize = formatter.stringFromNumber(maxValue)!.width(font)
+        let minNumberTextSize = formatter.string(from: NSNumber(value: minValue))!.width(font)
+        let maxNumberTextSize = formatter.string(from: NSNumber(value: maxValue))!.width(font)
         
         let minDigits = formatter.minimumFractionDigits
         let maxDigits = formatter.maximumFractionDigits
@@ -59,7 +59,7 @@ public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
         return max(minNumberTextSize, maxNumberTextSize) + remainingWidth
     }
     
-    public func calculateFittingRangeAndFactor(axis: ChartAxis) -> (min: Double, max: Double, factor: Double)? {
+    open func calculateFittingRangeAndFactor(_ axis: ChartAxis) -> (min: Double, max: Double, factor: Double)? {
         
         if nice {
             let niceMinMax = self.nice(minValue: Double(minValue), maxValue: Double(maxValue))
@@ -102,12 +102,12 @@ public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
     }
     
     // inspired by d3 nice
-    private func nice(minValue minValue: Double, maxValue: Double) -> (minValue: Double, maxValue: Double) {
+    fileprivate func nice(minValue: Double, maxValue: Double) -> (minValue: Double, maxValue: Double) {
         let span = pow(10, round(log(maxValue - minValue)/log(10)) - 1)
         return(minValue: (floor(minValue / span) * span), maxValue: (ceil(maxValue / span) * span))
     }
     
-    private func findFittingFactor(axis: ChartAxis, modelLength: Int) -> Int? {
+    fileprivate func findFittingFactor(_ axis: ChartAxis, modelLength: Int) -> Int? {
         
         let factors = modelLength.primeFactors
         
@@ -124,7 +124,7 @@ public class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
         return lastFitting
     }
     
-    public override func axisInitialized(axis: ChartAxis) {
+    open override func axisInitialized(_ axis: ChartAxis) {
         
         func defaultInit() {
             let maxDividers = Int((axis.screenLength + minSpace) / (maxTextSize + minSpace))

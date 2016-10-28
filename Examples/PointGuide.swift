@@ -13,8 +13,8 @@ class PointGuide: UIView {
     
     let size: CGFloat = 5
     
-    init(_ location: CGPoint, color: UIColor = UIColor.redColor()) {
-        super.init(frame: CGRectMake(location.x - size / 2, location.y - size / 2, size, size))
+    init(_ location: CGPoint, color: UIColor = UIColor.red) {
+        super.init(frame: CGRect(x: location.x - size / 2, y: location.y - size / 2, width: size, height: size))
         backgroundColor = color
     }
     

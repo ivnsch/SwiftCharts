@@ -9,26 +9,26 @@
 import UIKit
 
 public enum ChartAxisPadding {
-    case Label /// Add padding corresponding to half of leading / trailing label sizes
-    case None
-    case Fixed(CGFloat) /// Set a fixed padding value
-    case MaxLabelFixed(CGFloat) /// Use max of padding value corresponding to .Label and a fixed value
-    case LabelPlus(CGFloat) /// Use .Label padding + a fixed value
+    case label /// Add padding corresponding to half of leading / trailing label sizes
+    case none
+    case fixed(CGFloat) /// Set a fixed padding value
+    case maxLabelFixed(CGFloat) /// Use max of padding value corresponding to .Label and a fixed value
+    case labelPlus(CGFloat) /// Use .Label padding + a fixed value
 }
 
 public func ==(a: ChartAxisPadding, b: ChartAxisPadding) -> Bool {
     switch (a, b) {
-    case (.Label, .Label): return true
-    case (.Fixed(let a), .Fixed(let b)) where a == b: return true
-    case (.MaxLabelFixed(let a), .MaxLabelFixed(let b)) where a == b: return true
-    case (.LabelPlus(let a), .LabelPlus(let b)) where a == b: return true
-    case (.None, .None): return true
+    case (.label, .label): return true
+    case (.fixed(let a), .fixed(let b)) where a == b: return true
+    case (.maxLabelFixed(let a), .maxLabelFixed(let b)) where a == b: return true
+    case (.labelPlus(let a), .labelPlus(let b)) where a == b: return true
+    case (.none, .none): return true
     default: return false
     }
 }
 
 /// This class models the contents of a chart axis
-public class ChartAxisModel {
+open class ChartAxisModel {
     
     let firstModelValue: Double
     let lastModelValue: Double
@@ -50,12 +50,12 @@ public class ChartAxisModel {
     let labelSpaceReservationMode: AxisLabelsSpaceReservationMode
     let clipContents: Bool
     
-    public convenience init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.blackColor(), axisTitleLabel: ChartAxisLabel, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, leadingPadding: ChartAxisPadding = .None, trailingPadding: ChartAxisPadding = .None, labelSpaceReservationMode: AxisLabelsSpaceReservationMode = .MinPresentedSize, clipContents: Bool = false) {
+    public convenience init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.black, axisTitleLabel: ChartAxisLabel, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, leadingPadding: ChartAxisPadding = .none, trailingPadding: ChartAxisPadding = .none, labelSpaceReservationMode: AxisLabelsSpaceReservationMode = .minPresentedSize, clipContents: Bool = false) {
         self.init(axisValues: axisValues, lineColor: lineColor, axisTitleLabels: [axisTitleLabel], labelsConflictSolver: labelsConflictSolver, leadingPadding: leadingPadding, trailingPadding: trailingPadding, labelSpaceReservationMode: labelSpaceReservationMode, clipContents: clipContents)
     }
 
     /// Convenience initializer to pass a fixed axis value array. The array is mapped to axis values and label generators. 
-    public convenience init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.blackColor(), axisTitleLabels: [ChartAxisLabel] = [], labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, leadingPadding: ChartAxisPadding = .None, trailingPadding: ChartAxisPadding = .None, labelSpaceReservationMode: AxisLabelsSpaceReservationMode = .MinPresentedSize, clipContents: Bool = false) {
+    public convenience init(axisValues: [ChartAxisValue], lineColor: UIColor = UIColor.black, axisTitleLabels: [ChartAxisLabel] = [], labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, leadingPadding: ChartAxisPadding = .none, trailingPadding: ChartAxisPadding = .none, labelSpaceReservationMode: AxisLabelsSpaceReservationMode = .minPresentedSize, clipContents: Bool = false) {
         var scalars: [Double] = []
         var dict = [Double: [ChartAxisLabel]]()
         for axisValue in axisValues {
@@ -73,11 +73,11 @@ public class ChartAxisModel {
         self.init(lineColor: lineColor, firstModelValue: firstModelValue, lastModelValue: lastModelValue, axisTitleLabels: axisTitleLabels, axisValuesGenerator: fixedArrayGenerator, labelsGenerator: fixedLabelGenerator, labelsConflictSolver: labelsConflictSolver, leadingPadding: leadingPadding, trailingPadding: trailingPadding, labelSpaceReservationMode: labelSpaceReservationMode, clipContents: clipContents)
     }
     
-    public convenience init(lineColor: UIColor = UIColor.blackColor(), firstModelValue: Double, lastModelValue: Double, axisTitleLabel: ChartAxisLabel, axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, leadingPadding: ChartAxisPadding = .None, trailingPadding: ChartAxisPadding = .None, labelSpaceReservationMode: AxisLabelsSpaceReservationMode = .MinPresentedSize, clipContents: Bool = false) {
+    public convenience init(lineColor: UIColor = UIColor.black, firstModelValue: Double, lastModelValue: Double, axisTitleLabel: ChartAxisLabel, axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, leadingPadding: ChartAxisPadding = .none, trailingPadding: ChartAxisPadding = .none, labelSpaceReservationMode: AxisLabelsSpaceReservationMode = .minPresentedSize, clipContents: Bool = false) {
         self.init(lineColor: lineColor, firstModelValue: firstModelValue, lastModelValue: lastModelValue, axisTitleLabels: [axisTitleLabel], axisValuesGenerator: axisValuesGenerator, labelsGenerator: labelsGenerator, labelsConflictSolver: labelsConflictSolver, leadingPadding: leadingPadding, trailingPadding: trailingPadding, labelSpaceReservationMode: labelSpaceReservationMode, clipContents: clipContents)
     }
 
-    public init(lineColor: UIColor = UIColor.blackColor(), firstModelValue: Double, lastModelValue: Double, axisTitleLabels: [ChartAxisLabel] = [], axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, leadingPadding: ChartAxisPadding = .None, trailingPadding: ChartAxisPadding = .None, labelSpaceReservationMode: AxisLabelsSpaceReservationMode = .MinPresentedSize, clipContents: Bool = false) {
+    public init(lineColor: UIColor = UIColor.black, firstModelValue: Double, lastModelValue: Double, axisTitleLabels: [ChartAxisLabel] = [], axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, labelsConflictSolver: ChartAxisLabelsConflictSolver? = nil, leadingPadding: ChartAxisPadding = .none, trailingPadding: ChartAxisPadding = .none, labelSpaceReservationMode: AxisLabelsSpaceReservationMode = .minPresentedSize, clipContents: Bool = false) {
         
         self.lineColor = lineColor
         self.firstModelValue = firstModelValue

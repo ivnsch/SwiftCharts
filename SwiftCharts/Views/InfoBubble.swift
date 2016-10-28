@@ -8,30 +8,30 @@
 
 import UIKit
 
-public class InfoBubble: UIView {
+open class InfoBubble: UIView {
 
-    public let arrowWidth: CGFloat
-    public let arrowHeight: CGFloat
-    public let bgColor: UIColor
-    public let arrowX: CGFloat
-    public let arrowY: CGFloat
+    open let arrowWidth: CGFloat
+    open let arrowHeight: CGFloat
+    open let bgColor: UIColor
+    open let arrowX: CGFloat
+    open let arrowY: CGFloat
     
-    private let contentView: UIView?
+    fileprivate let contentView: UIView?
     
-    public let minSuperviewPadding: CGFloat
-    public let space: CGFloat
+    open let minSuperviewPadding: CGFloat
+    open let space: CGFloat
     
-    public let point: CGPoint
+    open let point: CGPoint
     
-    public var tapHandler: (() -> Void)?
+    open var tapHandler: (() -> Void)?
 
-    public var inverted: Bool {
+    open var inverted: Bool {
         return superview.map{inverted($0)} ?? false
     }
 
-    public let horizontal: Bool
+    open let horizontal: Bool
     
-    public convenience init(point: CGPoint, size: CGSize, superview: UIView, arrowHeight: CGFloat = 15, contentView: UIView, bgColor: UIColor = UIColor.grayColor(), minSuperviewPadding: CGFloat = 2, space: CGFloat = 12, horizontal: Bool = false) {
+    public convenience init(point: CGPoint, size: CGSize, superview: UIView, arrowHeight: CGFloat = 15, contentView: UIView, bgColor: UIColor = UIColor.gray, minSuperviewPadding: CGFloat = 2, space: CGFloat = 12, horizontal: Bool = false) {
         
         let w: CGFloat = size.width + (horizontal ? arrowHeight : 0)
         let h: CGFloat = size.height + (!horizontal ? arrowHeight : 0)
@@ -41,16 +41,16 @@ public class InfoBubble: UIView {
         
         let frame: CGRect = {
             if !horizontal {
-                return point.y < h ? CGRectMake(x, point.y + space, w, h) : CGRectMake(x, point.y - (h + space), w, h)
+                return point.y < h ? CGRect(x: x, y: point.y + space, width: w, height: h) : CGRect(x: x, y: point.y - (h + space), width: w, height: h)
             } else {
-                return point.x < superview.frame.width - w - space ? CGRectMake(x + space, y, w, h) : CGRectMake(x - (w + space), y, w, h)
+                return point.x < superview.frame.width - w - space ? CGRect(x: x + space, y: y, width: w, height: h) : CGRect(x: x - (w + space), y: y, width: w, height: h)
             }
         }()
    
         self.init(point: point, frame: frame, arrowWidth: 15, arrowHeight: arrowHeight, contentView: contentView, bgColor: bgColor, arrowX: point.x - x, arrowY: point.y - y, horizontal: horizontal)
     }
     
-    public init(point: CGPoint, frame: CGRect, arrowWidth: CGFloat, arrowHeight: CGFloat, contentView: UIView? = nil, bgColor: UIColor = UIColor.whiteColor(), space: CGFloat = 12, minSuperviewPadding: CGFloat = 2, arrowX: CGFloat, arrowY: CGFloat, horizontal: Bool = false) {
+    public init(point: CGPoint, frame: CGRect, arrowWidth: CGFloat, arrowHeight: CGFloat, contentView: UIView? = nil, bgColor: UIColor = UIColor.white, space: CGFloat = 12, minSuperviewPadding: CGFloat = 2, arrowX: CGFloat, arrowY: CGFloat, horizontal: Bool = false) {
         self.point = point
         self.arrowWidth = arrowWidth
         self.arrowHeight = arrowHeight
@@ -66,24 +66,24 @@ public class InfoBubble: UIView {
         self.contentView = contentView
         
         super.init(frame: frame)
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTap))
         self.addGestureRecognizer(tapRecognizer)
     }
     
-    func onTap(sender: UITapGestureRecognizer) {
+    func onTap(_ sender: UITapGestureRecognizer) {
         tapHandler?()
     }
     
-    public override func didMoveToSuperview() {
+    open override func didMoveToSuperview() {
         if let contentView = contentView {
             contentView.center = horizontal ? bounds.center.offset(x: inverted ? -arrowHeight / 2 : arrowHeight / 2) : bounds.center.offset(y: inverted ? arrowHeight / 2 : -arrowHeight / 2)
             addSubview(contentView)
         }
     }
 
-    public func inverted(superview: UIView) -> Bool {
+    open func inverted(_ superview: UIView) -> Bool {
         return horizontal ? point.x > superview.frame.width - frame.width - space : point.y < bounds.size.height
     }
     
@@ -91,72 +91,72 @@ public class InfoBubble: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func drawRect(rect: CGRect) {
+    override open func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context!, bgColor.CGColor)
-        CGContextSetStrokeColorWithColor(context!, bgColor.CGColor)
+        context!.setFillColor(bgColor.cgColor)
+        context!.setStrokeColor(bgColor.cgColor)
         
         let rrect = horizontal ? rect.insetBy(dx: inverted ? 0 : arrowHeight, dw: inverted ? arrowHeight : 0) : rect.insetBy(dy: inverted ? arrowHeight : 0, dh: inverted ? 0 : arrowHeight)
         
-        let minx = CGRectGetMinX(rrect), maxx = CGRectGetMaxX(rrect)
-        let miny = CGRectGetMinY(rrect), maxy = CGRectGetMaxY(rrect)
+        let minx = rrect.minX, maxx = rrect.maxX
+        let miny = rrect.minY, maxy = rrect.maxY
         
-        let outlinePath = CGPathCreateMutable()
-        
-        CGPathMoveToPoint(outlinePath, nil, minx, miny)
-        CGPathAddLineToPoint(outlinePath, nil, maxx, miny)
-        CGPathAddLineToPoint(outlinePath, nil, maxx, maxy)
-        CGPathAddLineToPoint(outlinePath, nil, minx, maxy)
-        CGPathCloseSubpath(outlinePath)
-        CGContextAddPath(context!, outlinePath)
+        let outlinePath = CGMutablePath()
 
-        let arrowPath = CGPathCreateMutable()
+        outlinePath.move(to: CGPoint(x: minx, y: miny))
+        outlinePath.addLine(to: CGPoint(x: maxx, y: miny))
+        outlinePath.addLine(to: CGPoint(x: maxx, y: maxy))
+        outlinePath.addLine(to: CGPoint(x: minx, y: maxy))
+        outlinePath.closeSubpath()
+        context!.addPath(outlinePath)
+
+        let arrowPath = CGMutablePath()
         
         if inverted {
             
             if horizontal {
-                CGPathMoveToPoint(arrowPath, nil, maxx, arrowY - arrowWidth / 2)
-                CGPathAddLineToPoint(arrowPath, nil, maxx + arrowHeight, arrowY)
-                CGPathAddLineToPoint(arrowPath, nil, maxx, arrowY + arrowWidth / 2)
+                arrowPath.move(to: CGPoint(x: maxx, y: arrowY - arrowWidth / 2))
+                arrowPath.addLine(to: CGPoint(x: maxx + arrowHeight, y: arrowY))
+                arrowPath.addLine(to: CGPoint(x: maxx, y: arrowY + arrowWidth / 2))
                 
             } else {
-                CGPathMoveToPoint(arrowPath, nil, arrowX - arrowWidth / 2, miny)
-                CGPathAddLineToPoint(arrowPath, nil, arrowX, miny - arrowHeight)
-                CGPathAddLineToPoint(arrowPath, nil, arrowX + arrowWidth / 2, miny)
+                arrowPath.move(to: CGPoint(x: arrowX - arrowWidth / 2, y: miny))
+                arrowPath.addLine(to: CGPoint(x: arrowX, y: miny - arrowHeight))
+                arrowPath.addLine(to: CGPoint(x: arrowX + arrowWidth / 2, y: miny))
             }
 
         } else {
             
             if horizontal {
-                CGPathMoveToPoint(arrowPath, nil, minx, arrowY - arrowWidth / 2)
-                CGPathAddLineToPoint(arrowPath, nil, minx - arrowHeight, arrowY)
-                CGPathAddLineToPoint(arrowPath, nil, minx, arrowY + arrowWidth / 2)
+                arrowPath.move(to: CGPoint(x: minx, y: arrowY - arrowWidth / 2))
+                arrowPath.addLine(to: CGPoint(x: minx - arrowHeight, y: arrowY))
+                arrowPath.addLine(to: CGPoint(x: minx, y: arrowY + arrowWidth / 2))
 
             } else {
-                CGPathMoveToPoint(arrowPath, nil, arrowX + arrowWidth / 2, maxy)
-                CGPathAddLineToPoint(arrowPath, nil, arrowX, maxy + arrowHeight)
-                CGPathAddLineToPoint(arrowPath, nil, arrowX - arrowWidth / 2, maxy)
+                arrowPath.move(to: CGPoint(x: arrowX + arrowWidth / 2, y: maxy))
+                arrowPath.addLine(to: CGPoint(x: arrowX, y: maxy + arrowHeight))
+                arrowPath.addLine(to: CGPoint(x: arrowX - arrowWidth / 2, y: maxy))
             }
         }
         
-        CGPathCloseSubpath(arrowPath)
-        CGContextAddPath(context!, arrowPath)
+        arrowPath.closeSubpath()
+        context!.addPath(arrowPath)
         
-        CGContextFillPath(context!)
+        context!.fillPath()
     }
 }
 
 
 extension InfoBubble {
     
-    public convenience init(point: CGPoint, preferredSize: CGSize, superview: UIView, arrowHeight: CGFloat = 15, text: String, font: UIFont, textColor: UIColor, bgColor: UIColor = UIColor.grayColor(), minSuperviewPadding: CGFloat = 2, innerPadding: CGFloat = 4, horizontal: Bool = false) {
+    public convenience init(point: CGPoint, preferredSize: CGSize, superview: UIView, arrowHeight: CGFloat = 15, text: String, font: UIFont, textColor: UIColor, bgColor: UIColor = UIColor.gray, minSuperviewPadding: CGFloat = 2, innerPadding: CGFloat = 4, horizontal: Bool = false) {
         let label = UILabel()
         label.text = text
         label.font = font
         label.textColor = textColor
         label.sizeToFit()
         
-        let size = CGSizeMake(max(preferredSize.width, label.frame.width + innerPadding * 2), max(preferredSize.height, label.frame.height + innerPadding * 2))
+        let size = CGSize(width: max(preferredSize.width, label.frame.width + innerPadding * 2), height: max(preferredSize.height, label.frame.height + innerPadding * 2))
         
         self.init(point: point, size: size, superview: superview, arrowHeight: arrowHeight, contentView: label, bgColor: bgColor, horizontal: horizontal)
     }

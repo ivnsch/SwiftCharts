@@ -33,7 +33,7 @@ public struct ChartLineModel<T: ChartPoint> {
     /// The dash pattern for the line
     let dashPattern: [Double]?
     
-    public init(chartPoints: [T], lineColor: UIColor, lineWidth: CGFloat = 1, lineJoin: LineJoin = .Round, lineCap: LineCap = .Round, animDuration: Float, animDelay: Float, dashPattern: [Double]? = nil) {
+    public init(chartPoints: [T], lineColor: UIColor, lineWidth: CGFloat = 1, lineJoin: LineJoin = .round, lineCap: LineCap = .round, animDuration: Float, animDelay: Float, dashPattern: [Double]? = nil) {
         self.chartPoints = chartPoints
         self.lineColor = lineColor
         self.lineWidth = lineWidth

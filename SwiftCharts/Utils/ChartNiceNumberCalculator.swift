@@ -11,7 +11,7 @@ import Foundation
 class ChartNiceNumberCalculator {
     
     // src: http://stackoverflow.com/a/4948320/930450
-    static func niceNumber(value: Double, round: Bool) -> Double {
+    static func niceNumber(_ value: Double, round: Bool) -> Double {
         
         let exponent = floor(log10(value))
         

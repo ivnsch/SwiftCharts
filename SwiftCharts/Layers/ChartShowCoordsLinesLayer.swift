@@ -8,17 +8,17 @@
 
 import UIKit
 
-public class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
+open class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
-    private var view: UIView?
+    fileprivate var view: UIView?
 
-    private var activeChartPoint: T?
+    fileprivate var activeChartPoint: T?
     
     public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T]) {
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
     }
     
-    public func showChartPointLines(chartPoint: T, chart: Chart) {
+    open func showChartPointLines(_ chartPoint: T, chart: Chart) {
        
         if let view = self.view {
             
@@ -30,11 +30,11 @@ public class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
             
             let screenLoc = self.chartPointScreenLoc(chartPoint)
             
-            let hLine = UIView(frame: CGRectMake(screenLoc.x, screenLoc.y, 0, 1))
-            let vLine = UIView(frame: CGRectMake(screenLoc.x, screenLoc.y, 0, 1))
+            let hLine = UIView(frame: CGRect(x: screenLoc.x, y: screenLoc.y, width: 0, height: 1))
+            let vLine = UIView(frame: CGRect(x: screenLoc.x, y: screenLoc.y, width: 0, height: 1))
             
             for lineView in [hLine, vLine] {
-                lineView.backgroundColor = UIColor.blackColor()
+                lineView.backgroundColor = UIColor.black
                 view.addSubview(lineView)
             }
             
@@ -44,33 +44,33 @@ public class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 let axisOriginY = modelLocToScreenLoc(y: yAxis.first)
                 let axisLengthY = axisOriginY - modelLocToScreenLoc(y: yAxis.last)
                 
-                hLine.frame = CGRectMake(axisOriginX, screenLoc.y, screenLoc.x - axisOriginX, 1)
-                vLine.frame = CGRectMake(screenLoc.x, screenLoc.y, 1, axisLengthY - screenLoc.y)
+                hLine.frame = CGRect(x: axisOriginX, y: screenLoc.y, width: screenLoc.x - axisOriginX, height: 1)
+                vLine.frame = CGRect(x: screenLoc.x, y: screenLoc.y, width: 1, height: axisLengthY - screenLoc.y)
                 
             }
             if isTransform {
                 finalState()
             } else {
-                UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
+                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
                     finalState()
                 }, completion: nil)
             }
         }
     }
     
-    override public func display(chart chart: Chart) {
+    override open func display(chart: Chart) {
         let view = UIView(frame: chart.bounds)
-        view.userInteractionEnabled = true
+        view.isUserInteractionEnabled = true
         chart.addSubview(view)
         self.view = view
     }
     
-    public override func zoom(x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+    open override func zoom(_ x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
         super.zoom(x, y: y, centerX: centerX, centerY: centerY)
         updateChartPointsScreenLocations()
     }
     
-    public override func pan(deltaX: CGFloat, deltaY: CGFloat) {
+    open override func pan(_ deltaX: CGFloat, deltaY: CGFloat) {
         super.pan(deltaX, deltaY: deltaY)
         updateChartPointsScreenLocations()
     }

@@ -9,29 +9,29 @@
 import Foundation
 
 /// Generates a single formatted number for scalar
-public class ChartAxisLabelsGeneratorNumber: ChartAxisLabelsGeneratorBase {
+open class ChartAxisLabelsGeneratorNumber: ChartAxisLabelsGeneratorBase {
     
-    public let labelSettings: ChartLabelSettings
+    open let labelSettings: ChartLabelSettings
     
-    public let formatter: NSNumberFormatter
+    open let formatter: NumberFormatter
     
-    public init(labelSettings: ChartLabelSettings, formatter: NSNumberFormatter = ChartAxisLabelsGeneratorNumber.defaultFormatter) {
+    public init(labelSettings: ChartLabelSettings, formatter: NumberFormatter = ChartAxisLabelsGeneratorNumber.defaultFormatter) {
         self.labelSettings = labelSettings
         self.formatter = formatter
     }
     
-    public override func generate(scalar: Double) -> [ChartAxisLabel] {
-        let text = formatter.stringFromNumber(scalar)!
+    open override func generate(_ scalar: Double) -> [ChartAxisLabel] {
+        let text = formatter.string(from: NSNumber(value: scalar))!
         return [ChartAxisLabel(text: text, settings: labelSettings)]
     }
     
-    static var defaultFormatter: NSNumberFormatter = {
-        let formatter = NSNumberFormatter()
+    static var defaultFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 2
         return formatter
     }()
     
-    public override func fonts(scalar: Double) -> [UIFont] {
+    open override func fonts(_ scalar: Double) -> [UIFont] {
         return [labelSettings.font]
     }
 }

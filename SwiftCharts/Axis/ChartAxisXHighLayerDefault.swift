@@ -15,12 +15,12 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
 
     /// The start point of the axis line.
     override var lineP1: CGPoint {
-        return CGPointMake(self.origin.x, self.origin.y + self.lineOffset)
+        return CGPoint(x: self.origin.x, y: self.origin.y + self.lineOffset)
     }
 
     /// The end point of the axis line
     override var lineP2: CGPoint {
-        return CGPointMake(self.end.x, self.end.y + self.lineOffset)
+        return CGPoint(x: self.end.x, y: self.end.y + self.lineOffset)
     }
 
     /// The offset of the axis labels from the edge of the axis bounds
@@ -32,7 +32,7 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
     ///          ▼
     ///  Label
     /// ````
-    private var labelsOffset: CGFloat {
+    fileprivate var labelsOffset: CGFloat {
         return self.axisTitleLabelsHeight + self.settings.axisTitleLabelsToLabelsSpacing
     }
 
@@ -48,11 +48,11 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
     ///          │
     /// ───────  ▼
     /// ````
-    private var lineOffset: CGFloat {
+    fileprivate var lineOffset: CGFloat {
         return self.labelsOffset + (self.settings.axisStrokeWidth / 2) + self.settings.labelsToAxisSpacingX + self.labelsTotalHeight
     }
     
-    override func chartViewDrawing(context context: CGContextRef, chart: Chart) {
+    override func chartViewDrawing(context: CGContext, chart: Chart) {
         super.chartViewDrawing(context: context, chart: chart)
     }
     
@@ -66,11 +66,11 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
         }
     }
 
-    override func handleAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+    override func handleAxisInnerFrameChange(_ xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
         
         // handle resizing of other high x axes
-        if let xHigh = xHigh where xHigh.layer.frame.minY < self.frame.minY {
+        if let xHigh = xHigh , xHigh.layer.frame.minY < self.frame.minY {
             offset = offset + xHigh.delta
             
             self.initDrawers()

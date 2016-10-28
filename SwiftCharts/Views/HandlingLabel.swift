@@ -9,10 +9,10 @@
 import UIKit
 
 // Convenience view to handle events without subclassing
-public class HandlingLabel: UILabel {
+open class HandlingLabel: UILabel {
         
-    public var movedToSuperViewHandler: (() -> ())?
-    public var touchHandler: (() -> ())?
+    open var movedToSuperViewHandler: (() -> ())?
+    open var touchHandler: (() -> ())?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,15 +24,15 @@ public class HandlingLabel: UILabel {
         sharedInit()
     }
     
-    private func sharedInit() {
-        userInteractionEnabled = true
+    fileprivate func sharedInit() {
+        isUserInteractionEnabled = true
     }
     
-    override public func didMoveToSuperview() {
+    override open func didMoveToSuperview() {
         self.movedToSuperViewHandler?()
     }
     
-    override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.touchHandler?()
     }
 }

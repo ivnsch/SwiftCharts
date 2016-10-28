@@ -16,16 +16,16 @@ public protocol ChartAxisLabelsGenerator {
     
     var maxStringPTWidth: CGFloat? {get set}
     
-    func generate(scalar: Double) -> [ChartAxisLabel]
+    func generate(_ scalar: Double) -> [ChartAxisLabel]
     
     /// Generates label for scalar taking into account axis state
-    func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel]
+    func generate(_ scalar: Double, axis: ChartAxis) -> [ChartAxisLabel]
     
-    func fonts(scalar: Double) -> [UIFont]
+    func fonts(_ scalar: Double) -> [UIFont]
     
-    func cache(scalar: Double, labels: [ChartAxisLabel])
+    func cache(_ scalar: Double, labels: [ChartAxisLabel])
     
-    func cachedLabels(scalar: Double) -> [ChartAxisLabel]?
+    func cachedLabels(_ scalar: Double) -> [ChartAxisLabel]?
 }
 
 
@@ -39,14 +39,14 @@ extension ChartAxisLabelsGenerator {
         return nil
     }
     
-    private func truncate(labels: [ChartAxisLabel], scalar: Double, maxStringPTWidth: CGFloat) -> [ChartAxisLabel] {
+    fileprivate func truncate(_ labels: [ChartAxisLabel], scalar: Double, maxStringPTWidth: CGFloat) -> [ChartAxisLabel] {
         guard let font = fonts(scalar).first else {return []}
         return labels.map {label in
             label.copy(label.text.truncate(maxStringPTWidth, font: font))
         }
     }
     
-    public func generate(scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
+    public func generate(_ scalar: Double, axis: ChartAxis) -> [ChartAxisLabel] {
     
         return cachedLabels(scalar) ?? {
         

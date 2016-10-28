@@ -8,9 +8,9 @@
 
 import UIKit
 
-public class ChartAxisValueString: ChartAxisValue {
+open class ChartAxisValueString: ChartAxisValue {
    
-    public let string: String
+    open let string: String
     
     public init(_ string: String = "", order: Int, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.string = string
@@ -19,7 +19,7 @@ public class ChartAxisValueString: ChartAxisValue {
     
     // MARK: CustomStringConvertible
 
-    override public var description: String {
+    override open var description: String {
         return self.string
     }
 }
