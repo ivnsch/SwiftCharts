@@ -13,7 +13,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
     
     fileprivate var chart: Chart? // arc
     
-    fileprivate let gradientPicker: GradientPicker // to pick the colors of the bars
+    fileprivate let gradientPicker: GradientPicker? // to pick the colors of the bars
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         gradientPicker = GradientPicker(width: 200)
@@ -58,7 +58,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         let zero = ChartAxisValueDouble(0)
         let bars: [ChartBarModel] = vals.enumerated().map {index, tuple in
             let percentage = (tuple.val - minVal - 0.01) / length // FIXME without -0.01 bar with 1 (100 perc) is black
-            let color = gradientPicker.colorForPercentage(percentage).withAlphaComponent(0.6)
+            let color = gradientPicker?.colorForPercentage(percentage).withAlphaComponent(0.6) ?? {print("No gradient picker, defaulting to black"); return UIColor.black}()
             return ChartBarModel(constant: ChartAxisValueDouble(Double(index)), axisValue1: zero, axisValue2: ChartAxisValueDouble(Double(tuple.val)), bgColor: color)
         }
         
@@ -125,13 +125,12 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         
         let gradientImg: UIImage
         
-        lazy var imgData: UnsafePointer<UInt8> = {
-            let provider = self.gradientImg.cgImage!.dataProvider
-            let pixelData = provider!.data
+        lazy var imgData: UnsafePointer<UInt8>? = {
+            let pixelData = self.gradientImg.cgImage?.dataProvider?.data
             return CFDataGetBytePtr(pixelData)
         }()
         
-        init(width: CGFloat) {
+        init?(width: CGFloat) {
             
             let gradient: CAGradientLayer = CAGradientLayer()
             gradient.frame = CGRect(x: 0, y: 0, width: width, height: 1)
@@ -147,26 +146,32 @@ class BarsPlusMinusWithGradientExample: UIViewController {
             let colorSpace = CGColorSpaceCreateDeviceRGB()
             let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue).rawValue
 
-            let context = CGContext (data: nil,
+            guard let context = CGContext(data: nil,
                 width: imgWidth,
                 height: imgHeight,
                 bitsPerComponent: 8,
                 bytesPerRow: bitmapBytesPerRow,
                 space: colorSpace,
-                bitmapInfo: bitmapInfo)
+                bitmapInfo: bitmapInfo) else {
+                    print("Couldn't create context")
+                    return nil
+            }
             
             UIGraphicsBeginImageContext(gradient.bounds.size)
-            gradient.render(in: context!)
+            gradient.render(in: context)
             
-            let gradientImg = UIImage(cgImage: context!.makeImage()!)
-            
+            guard let gradientImg = (context.makeImage().map{UIImage(cgImage: $0)}) else {
+                print("Couldn't create image")
+                UIGraphicsEndImageContext()
+                return nil
+            }
+
             UIGraphicsEndImageContext()
             self.gradientImg = gradientImg
         }
         
         func colorForPercentage(_ percentage: CGFloat) -> UIColor {
-            
-            let data = imgData
+            guard let data = imgData else {print("Couldn't get imgData, returning black"); return UIColor.black}
             
             let xNotRounded = gradientImg.size.width * percentage
             let x = 4 * (floor(abs(xNotRounded / 4)))

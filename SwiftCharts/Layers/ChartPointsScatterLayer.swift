@@ -32,7 +32,7 @@ open class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
             }
         } else { // Generate CGLayer with shape only once and draw it at different positions.
             let contentScale = view.contentScaleFactor * 2
-            guard let layer = generateCGLayer(context, view: view, contentScale: contentScale) else {return}
+            guard let layer = generateCGLayer(context, view: view, contentScale: contentScale) else {print("Couldn't generate layer"); return}
             
             let w = itemSize.width
             let h = itemSize.height
@@ -82,8 +82,8 @@ open class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
     func generateCGLayer(_ context: CGContext, view: UIView, contentScale: CGFloat) -> CGLayer? {
         let scaledBounds = CGRect(x: 0, y: 0, width: itemSize.width * contentScale, height: itemSize.height * contentScale)
         let layer = CGLayer(context, size: scaledBounds.size, auxiliaryInfo: nil)
-        let myLayerContext1 = layer!.context
-        myLayerContext1!.scaleBy(x: contentScale, y: contentScale)
+        let myLayerContext1 = layer?.context
+        myLayerContext1?.scaleBy(x: contentScale, y: contentScale)
         return layer
     }
     
@@ -99,12 +99,11 @@ open class ChartPointsScatterTrianglesLayer<T: ChartPoint>: ChartPointsScatterLa
     }
     
     override func generateCGLayer(_ context: CGContext, view: UIView, contentScale: CGFloat) -> CGLayer? {
-        let layer = super.generateCGLayer(context, view: view, contentScale: contentScale)
-        let layerContext = layer!.context
+        guard let layer = super.generateCGLayer(context, view: view, contentScale: contentScale), let layerContext = layer.context else {print("Couldn't get context"); return nil}
         
-        layerContext?.setFillColor(itemFillColor.cgColor)
-        layerContext?.addLines(between: trianglePointsCG)
-        layerContext?.fillPath()
+        layerContext.setFillColor(itemFillColor.cgColor)
+        layerContext.addLines(between: trianglePointsCG)
+        layerContext.fillPath()
         
         return layer
     }
@@ -149,12 +148,11 @@ open class ChartPointsScatterSquaresLayer<T: ChartPoint>: ChartPointsScatterLaye
     }
     
     override func generateCGLayer(_ context: CGContext, view: UIView, contentScale: CGFloat) -> CGLayer? {
-        let layer = super.generateCGLayer(context, view: view, contentScale: contentScale)
-        let layerContext = layer!.context
-
-        layerContext!.setFillColor(itemFillColor.cgColor)
-        layerContext!.fill(CGRect(x: 0, y: 0, width: itemSize.width, height: itemSize.height))
-        layerContext!.fillPath()
+        guard let layer = super.generateCGLayer(context, view: view, contentScale: contentScale), let layerContext = layer.context else {print("Couldn't get context"); return nil}
+        
+        layerContext.setFillColor(itemFillColor.cgColor)
+        layerContext.fill(CGRect(x: 0, y: 0, width: itemSize.width, height: itemSize.height))
+        layerContext.fillPath()
         
         return layer
     }
@@ -177,12 +175,11 @@ open class ChartPointsScatterCirclesLayer<T: ChartPoint>: ChartPointsScatterLaye
     }
     
     override func generateCGLayer(_ context: CGContext, view: UIView, contentScale: CGFloat) -> CGLayer? {
-        let layer = super.generateCGLayer(context, view: view, contentScale: contentScale)
-        let layerContext = layer!.context
+        guard let layer = super.generateCGLayer(context, view: view, contentScale: contentScale), let layerContext = layer.context else {print("Couldn't get context"); return nil}
         
-        layerContext!.setFillColor(itemFillColor.cgColor)
-        layerContext!.fillEllipse(in: CGRect(x: 0, y: 0, width: itemSize.width, height: itemSize.height))
-        layerContext!.fillPath()
+        layerContext.setFillColor(itemFillColor.cgColor)
+        layerContext.fillEllipse(in: CGRect(x: 0, y: 0, width: itemSize.width, height: itemSize.height))
+        layerContext.fillPath()
         
         return layer
     }
@@ -225,16 +222,15 @@ open class ChartPointsScatterCrossesLayer<T: ChartPoint>: ChartPointsScatterLaye
     }
     
     override func generateCGLayer(_ context: CGContext, view: UIView, contentScale: CGFloat) -> CGLayer? {
-        let layer = super.generateCGLayer(context, view: view, contentScale: contentScale)
-        let layerContext = layer!.context
+        guard let layer = super.generateCGLayer(context, view: view, contentScale: contentScale), let layerContext = layer.context else {print("Couldn't get context"); return nil}
 
         context.setStrokeColor(itemFillColor.cgColor)
         context.setLineWidth(strokeWidth)
         
-        layerContext?.addLines(between: line1PointsCG)
-        layerContext?.addLines(between: line2PointsCG)
+        layerContext.addLines(between: line1PointsCG)
+        layerContext.addLines(between: line2PointsCG)
         
-        layerContext!.strokePath()
+        layerContext.strokePath()
         
         return layer
     }
