@@ -28,9 +28,9 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
     }
 
     override func updateInternal() {
-        guard let chart = self.chart else {return}
+        guard let chart = chart else {return}
         super.updateInternal()
-        if lastFrame.height != self.frame.height {
+        if lastFrame.height != frame.height {
             
             // Move drawers by delta
             let delta = frame.height - lastFrame.height
@@ -45,17 +45,17 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
         
         // Handle resizing of other low x axes
-        if let xLow = xLow , xLow.layer.frame.maxY > self.frame.maxY {
+        if let xLow = xLow , xLow.layer.frame.maxY > frame.maxY {
             offset = offset - xLow.delta
-            self.initDrawers()
+            initDrawers()
         }
     }
     
     override func initDrawers() {
-        self.lineDrawer = self.generateLineDrawer(offset: 0)
-        let labelsOffset = (self.settings.axisStrokeWidth / 2) + self.settings.labelsToAxisSpacingX
-        self.labelDrawers = self.generateLabelDrawers(offset: labelsOffset)
-        let definitionLabelsOffset = labelsOffset + self.labelsTotalHeight + self.settings.axisTitleLabelsToLabelsSpacing
-        self.axisTitleLabelDrawers = self.generateAxisTitleLabelsDrawers(offset: definitionLabelsOffset)
+        lineDrawer = generateLineDrawer(offset: 0)
+        let labelsOffset = (settings.axisStrokeWidth / 2) + settings.labelsToAxisSpacingX
+        labelDrawers = generateLabelDrawers(offset: labelsOffset)
+        let definitionLabelsOffset = labelsOffset + labelsTotalHeight + settings.axisTitleLabelsToLabelsSpacing
+        axisTitleLabelDrawers = generateAxisTitleLabelsDrawers(offset: definitionLabelsOffset)
     }
 }

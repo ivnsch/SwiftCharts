@@ -50,9 +50,9 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
     }
     
     open func initViews(_ chart: Chart) {
-        self.viewsWithChartPoints = self.generateChartPointViews(chartPointModels: self.chartPointsModels, chart: chart)
+        viewsWithChartPoints = generateChartPointViews(chartPointModels: chartPointsModels, chart: chart)
         
-        if self.isTransform || self.delayBetweenItems =~ 0 {
+        if isTransform || delayBetweenItems =~ 0 {
             for v in viewsWithChartPoints {addSubview(chart, view: v.view)}
             
         } else {
@@ -80,33 +80,33 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
     }
     
     fileprivate func generateChartPointViews(chartPointModels: [ChartPointLayerModel<T>], chart: Chart) -> [ViewWithChartPoint] {
-        let viewsWithChartPoints: [ViewWithChartPoint] = self.chartPointsModels.flatMap {model in
-            if let view = self.viewGenerator(model, self, chart, isTransform) {
+        let viewsWithChartPoints: [ViewWithChartPoint] = chartPointsModels.flatMap {model in
+            if let view = viewGenerator(model, self, chart, isTransform) {
                 return (view: view, chartPointModel: model)
             } else {
                 return nil
             }
         }
         
-        self.conflictSolver?.solveConflicts(views: viewsWithChartPoints)
+        conflictSolver?.solveConflicts(views: viewsWithChartPoints)
         
         return viewsWithChartPoints
     }
     
     override open func chartPointsForScreenLoc(_ screenLoc: CGPoint) -> [T] {
-        return self.filterChartPoints{self.inXBounds(screenLoc.x, view: $0.view) && self.inYBounds(screenLoc.y, view: $0.view)}
+        return filterChartPoints{inXBounds(screenLoc.x, view: $0.view) && inYBounds(screenLoc.y, view: $0.view)}
     }
     
     override open func chartPointsForScreenLocX(_ x: CGFloat) -> [T] {
-        return self.filterChartPoints{self.inXBounds(x, view: $0.view)}
+        return filterChartPoints{inXBounds(x, view: $0.view)}
     }
     
     override open func chartPointsForScreenLocY(_ y: CGFloat) -> [T] {
-        return self.filterChartPoints{self.inYBounds(y, view: $0.view)}
+        return filterChartPoints{inYBounds(y, view: $0.view)}
     }
     
     fileprivate func filterChartPoints(_ filter: (ViewWithChartPoint) -> Bool) -> [T] {
-        return self.viewsWithChartPoints.reduce([]) {arr, viewWithChartPoint in
+        return viewsWithChartPoints.reduce([]) {arr, viewWithChartPoint in
             if filter(viewWithChartPoint) {
                 return arr + [viewWithChartPoint.chartPointModel.chartPoint]
             } else {

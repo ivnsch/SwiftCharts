@@ -144,7 +144,7 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint, U>: ChartPointsLayer<T> {
     }
 
     fileprivate func linesIntersection(line1P1: CGPoint, line1P2: CGPoint, line2P1: CGPoint, line2P2: CGPoint) -> CGPoint? {
-        return self.findLineIntersection(p0X: line1P1.x, p0y: line1P1.y, p1x: line1P2.x, p1y: line1P2.y, p2x: line2P1.x, p2y: line2P1.y, p3x: line2P2.x, p3y: line2P2.y)
+        return findLineIntersection(p0X: line1P1.x, p0y: line1P1.y, p1x: line1P2.x, p1y: line1P2.y, p2x: line2P1.x, p2y: line2P1.y, p3x: line2P2.x, p3y: line2P2.y)
     }
     
     override func initChartPointModels() {
@@ -230,7 +230,7 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint, U>: ChartPointsLayer<T> {
     }
    
     fileprivate func updateTrackerLineOnValidState(updateFunc: (_ view: UIView) -> ()) {
-        if !self.chartPointsModels.isEmpty {
+        if !chartPointsModels.isEmpty {
             if let view = chart?.contentView {
                 updateFunc(view)
             }
@@ -258,7 +258,7 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint, U>: ChartPointsLayer<T> {
     
     fileprivate func updateTrackerLine(touchPoint: CGPoint) {
         
-        self.updateTrackerLineOnValidState{(view) in
+        updateTrackerLineOnValidState{(view) in
             
             let constantX = touchPoint.x
             
@@ -314,17 +314,17 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint, U>: ChartPointsLayer<T> {
     
     fileprivate func updateLineView() {
         
-        guard let firstIntersection = self.currentIntersections.first, let containerTouchCoordinates = globalToDrawersContainerCoordinates(firstIntersection.screenLoc) else {return}
+        guard let firstIntersection = currentIntersections.first, let containerTouchCoordinates = globalToDrawersContainerCoordinates(firstIntersection.screenLoc) else {return}
         
-        if self.lineView == nil {
+        if lineView == nil {
             let lineView = UIView()
             lineView.frame.size = CGSize(width: 2, height: 10000000)
             lineView.backgroundColor = UIColor.black
-            self.chart?.addSubviewNoTransform(lineView)
+            chart?.addSubviewNoTransform(lineView)
             self.lineView = lineView
         }
         
-        self.lineView?.center.x = containerTouchCoordinates.x
+        lineView?.center.x = containerTouchCoordinates.x
     }
 
     fileprivate func toLine(_ intersection: CGPoint) -> (p1: CGPoint, p2: CGPoint) {

@@ -98,7 +98,7 @@ class CandleStickExample: UIViewController {
         let xModel = ChartAxisModel(firstModelValue: firstDate.timeIntervalSince1970, lastModelValue: lastDate.timeIntervalSince1970, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings)], axisValuesGenerator: xGeneratorDate, labelsGenerator: xLabelGeneratorDate)
         
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
-        let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
+        let chartFrame = ExamplesDefaults.chartFrame(view.bounds)
         
         let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
 
@@ -126,7 +126,7 @@ class CandleStickExample: UIViewController {
             ]
         )
         
-        self.view.addSubview(chart.view)
+        view.addSubview(chart.view)
         self.chart = chart
     }
 }

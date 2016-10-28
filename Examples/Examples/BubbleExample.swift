@@ -21,10 +21,10 @@ class BubbleExample: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let frame = ExamplesDefaults.chartFrame(self.view.bounds)
+        let frame = ExamplesDefaults.chartFrame(view.bounds)
         let chartFrame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height - colorBarHeight)
-        let colorBar = ColorBar(frame: CGRect(x: 0, y: chartFrame.origin.y + chartFrame.size.height, width: self.view.frame.size.width, height: self.colorBarHeight), c1: UIColor.red, c2: UIColor.green)
-        self.view.addSubview(colorBar)
+        let colorBar = ColorBar(frame: CGRect(x: 0, y: chartFrame.origin.y + chartFrame.size.height, width: view.frame.size.width, height: colorBarHeight), c1: UIColor.red, c2: UIColor.green)
+        view.addSubview(colorBar)
         
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
@@ -73,7 +73,7 @@ class BubbleExample: UIViewController {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
-        let bubbleLayer = self.bubblesLayer(xAxisLayer, yAxisLayer: yAxisLayer, chartInnerFrame: innerFrame, chartPoints: chartPoints)
+        let bubbleLayer = bubblesLayer(xAxisLayer, yAxisLayer: yAxisLayer, chartInnerFrame: innerFrame, chartPoints: chartPoints)
         
         let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: guidelinesLayerSettings)
@@ -94,7 +94,7 @@ class BubbleExample: UIViewController {
             ]
         )
         
-        self.view.addSubview(chart.view)
+        view.addSubview(chart.view)
         self.chart = chart
     }
     
@@ -104,7 +104,7 @@ class BubbleExample: UIViewController {
         
         let maxBubbleDiameter: Double = 30, minBubbleDiameter: Double = 2
         
-        if self.useViewsLayer == true {
+        if useViewsLayer == true {
                 
             let (minDiameterScalar, maxDiameterScalar): (Double, Double) = chartPoints.reduce((min: 0, max: 0)) {tuple, chartPoint in
                 (min: min(tuple.min, chartPoint.diameterScalar), max: max(tuple.max, chartPoint.diameterScalar))
@@ -182,11 +182,11 @@ class BubbleExample: UIViewController {
             self.gradientImg = gradientImg
             
             let segmentSize = gradient.frame.size.width / 6
-            self.dividers = Array(stride(from: segmentSize, through: gradient.frame.size.width, by: segmentSize))
+            dividers = Array(stride(from: segmentSize, through: gradient.frame.size.width, by: segmentSize))
 
             super.init(frame: frame)
 
-            self.layer.insertSublayer(gradient, at: 0)
+            layer.insertSublayer(gradient, at: 0)
             
             let numberFormatter = NumberFormatter()
             numberFormatter.maximumFractionDigits = 2
@@ -196,7 +196,7 @@ class BubbleExample: UIViewController {
                 let dividerW: CGFloat = 1
                 let divider = UIView(frame: CGRect(x: x - dividerW / 2, y: 25, width: dividerW, height: 5))
                 divider.backgroundColor = UIColor.black
-                self.addSubview(divider)
+                addSubview(divider)
                 
                 let text = "\(numberFormatter.string(from: NSNumber(value: Float(x / gradient.frame.size.width)))!)"
                 let labelWidth = text.width(ExamplesDefaults.labelFont)
@@ -206,15 +206,15 @@ class BubbleExample: UIViewController {
                 label.text = text
                 label.sizeToFit()
 
-                self.addSubview(label)
+                addSubview(label)
             }
         }
         
         func colorForPercentage(_ percentage: Double) -> UIColor {
 
-            let data = self.imgData
+            let data = imgData
             
-            let xNotRounded = self.gradientImg.size.width * CGFloat(percentage)
+            let xNotRounded = gradientImg.size.width * CGFloat(percentage)
             let x = 4 * (floor(abs(xNotRounded / 4)))
             let pixelIndex = Int(x * 4)
             

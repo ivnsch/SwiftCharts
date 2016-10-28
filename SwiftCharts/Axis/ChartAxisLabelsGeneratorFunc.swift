@@ -29,6 +29,6 @@ open class ChartAxisLabelsGeneratorFunc: ChartAxisLabelsGeneratorBase {
     }
     
     open override func fonts(_ scalar: Double) -> [UIFont] {
-        return f(scalar).map {$0.settings.font} ?? []
+        return f(scalar).map{$0.settings.font}
     }
 }

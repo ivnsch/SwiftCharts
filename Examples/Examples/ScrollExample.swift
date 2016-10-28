@@ -19,40 +19,40 @@ class ScrollExample: UIViewController {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
 
         let chartPoints0 = [
-            self.createChartPoint(2, 2, labelSettings),
-            self.createChartPoint(4, -4, labelSettings),
-            self.createChartPoint(7, 1, labelSettings),
-            self.createChartPoint(8.3, 11.5, labelSettings),
-            self.createChartPoint(9, 15.9, labelSettings),
-            self.createChartPoint(10.8, 3, labelSettings),
-            self.createChartPoint(13, 24, labelSettings),
-            self.createChartPoint(15, 0, labelSettings),
-            self.createChartPoint(17.2, 29, labelSettings),
-            self.createChartPoint(20, 10, labelSettings),
-            self.createChartPoint(22.3, 10, labelSettings),
-            self.createChartPoint(27, 15, labelSettings),
-            self.createChartPoint(30, 6, labelSettings),
-            self.createChartPoint(40, 10, labelSettings),
-            self.createChartPoint(50, 2, labelSettings),
+            createChartPoint(2, 2, labelSettings),
+            createChartPoint(4, -4, labelSettings),
+            createChartPoint(7, 1, labelSettings),
+            createChartPoint(8.3, 11.5, labelSettings),
+            createChartPoint(9, 15.9, labelSettings),
+            createChartPoint(10.8, 3, labelSettings),
+            createChartPoint(13, 24, labelSettings),
+            createChartPoint(15, 0, labelSettings),
+            createChartPoint(17.2, 29, labelSettings),
+            createChartPoint(20, 10, labelSettings),
+            createChartPoint(22.3, 10, labelSettings),
+            createChartPoint(27, 15, labelSettings),
+            createChartPoint(30, 6, labelSettings),
+            createChartPoint(40, 10, labelSettings),
+            createChartPoint(50, 2, labelSettings),
         ]
         
         let chartPoints1 = [
-            self.createChartPoint(2, 5, labelSettings),
-            self.createChartPoint(3, 7, labelSettings),
-            self.createChartPoint(5, 9, labelSettings),
-            self.createChartPoint(8, 6, labelSettings),
-            self.createChartPoint(9, 10, labelSettings),
-            self.createChartPoint(10, 20, labelSettings),
-            self.createChartPoint(12, 19, labelSettings),
-            self.createChartPoint(13, 20, labelSettings),
-            self.createChartPoint(14, 25, labelSettings),
-            self.createChartPoint(16, 28, labelSettings),
-            self.createChartPoint(17, 15, labelSettings),
-            self.createChartPoint(19, 6, labelSettings),
-            self.createChartPoint(25, 3, labelSettings),
-            self.createChartPoint(30, 10, labelSettings),
-            self.createChartPoint(45, 15, labelSettings),
-            self.createChartPoint(50, 20, labelSettings),
+            createChartPoint(2, 5, labelSettings),
+            createChartPoint(3, 7, labelSettings),
+            createChartPoint(5, 9, labelSettings),
+            createChartPoint(8, 6, labelSettings),
+            createChartPoint(9, 10, labelSettings),
+            createChartPoint(10, 20, labelSettings),
+            createChartPoint(12, 19, labelSettings),
+            createChartPoint(13, 20, labelSettings),
+            createChartPoint(14, 25, labelSettings),
+            createChartPoint(16, 28, labelSettings),
+            createChartPoint(17, 15, labelSettings),
+            createChartPoint(19, 6, labelSettings),
+            createChartPoint(25, 3, labelSettings),
+            createChartPoint(30, 10, labelSettings),
+            createChartPoint(45, 15, labelSettings),
+            createChartPoint(50, 20, labelSettings),
         ]
         
         let xValues = stride(from: 2, through: 50, by: 1).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
@@ -60,7 +60,7 @@ class ScrollExample: UIViewController {
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
-        let scrollViewFrame = ExamplesDefaults.chartFrame(self.view.bounds)
+        let scrollViewFrame = ExamplesDefaults.chartFrame(view.bounds)
         let chartFrame = CGRect(x: 0, y: 0, width: 1400, height: scrollViewFrame.size.height)
         
         // calculate coords space in the background to keep UI smooth
@@ -83,7 +83,7 @@ class ScrollExample: UIViewController {
                 
                 let scrollView = UIScrollView(frame: scrollViewFrame)
                 scrollView.contentSize = CGSize(width: chartFrame.size.width, height: scrollViewFrame.size.height)
-                //        self.automaticallyAdjustsScrollViewInsets = false // nested view controller - this is in parent
+                //        automaticallyAdjustsScrollViewInsets = false // nested view controller - this is in parent
                 
                 let chart = Chart(
                     frame: chartFrame,

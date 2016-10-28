@@ -66,10 +66,10 @@ open class InfoBubble: UIView {
         self.contentView = contentView
         
         super.init(frame: frame)
-        self.backgroundColor = UIColor.clear
+        backgroundColor = UIColor.clear
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTap))
-        self.addGestureRecognizer(tapRecognizer)
+        addGestureRecognizer(tapRecognizer)
     }
     
     func onTap(_ sender: UITapGestureRecognizer) {

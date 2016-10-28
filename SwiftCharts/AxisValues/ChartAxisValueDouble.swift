@@ -22,7 +22,7 @@ open class ChartAxisValueDouble: ChartAxisValue {
     }
     
     override open func copy(_ scalar: Double) -> ChartAxisValueDouble {
-        return ChartAxisValueDouble(scalar, formatter: self.formatter, labelSettings: self.labelSettings)
+        return ChartAxisValueDouble(scalar, formatter: formatter, labelSettings: labelSettings)
     }
     
     static var defaultFormatter: NumberFormatter = {
@@ -34,6 +34,6 @@ open class ChartAxisValueDouble: ChartAxisValue {
     // MARK: CustomStringConvertible
 
     override open var description: String {
-        return self.formatter.string(from: NSNumber(value: self.scalar))!
+        return formatter.string(from: NSNumber(value: scalar))!
     }
 }

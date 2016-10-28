@@ -31,6 +31,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     }
     
     var labelsMaxWidth: CGFloat {
+        
         let currentWidth: CGFloat = {
             if self.labelDrawers.isEmpty {
                 return self.maxLabelWidth(self.currentAxisValues)
@@ -40,7 +41,8 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
                         max(maxWidth, drawer.size.width)
                     })
                 }
-            }}()
+            }
+        }()
         
         
         let width: CGFloat = {
@@ -62,11 +64,11 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     }
     
     override var width: CGFloat {
-        return self.labelsMaxWidth + self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingY + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsWidth
+        return labelsMaxWidth + settings.axisStrokeWidth + settings.labelsToAxisSpacingY + settings.axisTitleLabelsToLabelsSpacing + axisTitleLabelsWidth
     }
     
     override var widthWithoutLabels: CGFloat {
-        return self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingY + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsWidth
+        return settings.axisStrokeWidth + settings.labelsToAxisSpacingY + settings.axisTitleLabelsToLabelsSpacing + axisTitleLabelsWidth
     }
     
     override var heightWithoutLabels: CGFloat {
@@ -78,21 +80,21 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         
         if let xLow = xLow {
             axis.offsetFirstScreen(-xLow.delta)
-            self.initDrawers()
+            initDrawers()
         }
         
         if let xHigh = xHigh {
             axis.offsetLastScreen(xHigh.delta)
-            self.initDrawers()
+            initDrawers()
         }
         
     }
     
     override func generateAxisTitleLabelsDrawers(offset: CGFloat) -> [ChartLabelDrawer] {
         
-        if let firstTitleLabel = self.axisTitleLabels.first {
+        if let firstTitleLabel = axisTitleLabels.first {
             
-            if self.axisTitleLabels.count > 1 {
+            if axisTitleLabels.count > 1 {
                 print("WARNING: No support for multiple definition labels on vertical axis. Using only first one.")
             }
             let axisLabel = firstTitleLabel
@@ -112,15 +114,15 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         
         var drawers: [ChartAxisValueLabelDrawers] = []
         
-        let scalars = self.valuesGenerator.generate(self.axis)
+        let scalars = valuesGenerator.generate(axis)
         currentAxisValues = scalars
         for scalar in scalars {
-            let labels = self.labelsGenerator.generate(scalar, axis: axis)
-            let y = self.axis.screenLocForScalar(scalar)
+            let labels = labelsGenerator.generate(scalar, axis: axis)
+            let y = axis.screenLocForScalar(scalar)
             if let axisLabel = labels.first { // for now y axis supports only one label x value
                 let labelSize = axisLabel.text.size(axisLabel.settings.font)
                 let labelY = y - (labelSize.height / 2)
-                let labelX = self.labelsX(offset: offset, labelWidth: labelSize.width, textAlignment: axisLabel.settings.textAlignment)
+                let labelX = labelsX(offset: offset, labelWidth: labelSize.width, textAlignment: axisLabel.settings.textAlignment)
                 let labelDrawer = ChartLabelDrawer(label: axisLabel, screenLoc: CGPoint(x: labelX, y: labelY))
 
                 let labelDrawers = ChartAxisValueLabelDrawers(scalar, [labelDrawer])
@@ -141,7 +143,7 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     }
     fileprivate func maxLabelWidth(_ axisValues: [Double]) -> CGFloat {
         return axisValues.reduce(CGFloat(0)) {maxWidth, value in
-            let labels = self.labelsGenerator.generate(value, axis: axis)
+            let labels = labelsGenerator.generate(value, axis: axis)
             return max(maxWidth, maxLabelWidth(labels))
         }
     }

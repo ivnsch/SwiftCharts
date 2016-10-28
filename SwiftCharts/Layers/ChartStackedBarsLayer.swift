@@ -132,10 +132,10 @@ open class ChartStackedBarsLayer<T: ChartPointViewBarStacked>: ChartCoordsSpaceL
     open override func chartInitialized(chart: Chart) {
         super.chartInitialized(chart: chart)
         
-        let barsGenerator = ChartStackedBarsViewGenerator(horizontal: self.horizontal, layer: self, barWidth: self.barWidth)
+        let barsGenerator = ChartStackedBarsViewGenerator(horizontal: horizontal, layer: self, barWidth: barWidth)
         
         for (index, barModel) in barModels.enumerated() {
-            let barView = barsGenerator.generateView(barModel, settings: isTransform ? settings.copy(animDuration: 0, animDelay: 0) : settings, model: barModel, index: index, groupIndex: 0, chart: self.chart)
+            let barView = barsGenerator.generateView(barModel, settings: isTransform ? settings.copy(animDuration: 0, animDelay: 0) : settings, model: barModel, index: index, groupIndex: 0, chart: chart)
             barView.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
             barView.stackedTapHandler = {[weak self] tappedStackedBar in guard let weakSelf = self else {return}
                 let stackFrameIndex = tappedStackedBar.stackFrame.index

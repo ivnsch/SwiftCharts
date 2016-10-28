@@ -69,7 +69,7 @@ open class ChartPointViewBar: UIView {
         
         super.init(frame: firstFrame)
         
-        self.backgroundColor = bgColor
+        backgroundColor = bgColor
     }
 
     static func frame(_ p1: CGPoint, p2: CGPoint, width: CGFloat) -> CGRect {
@@ -87,7 +87,7 @@ open class ChartPointViewBar: UIView {
     
     func enableTap() {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTap))
-        self.addGestureRecognizer(tapRecognizer)
+        addGestureRecognizer(tapRecognizer)
     }
     
     func onTap(_ sender: UITapGestureRecognizer) {

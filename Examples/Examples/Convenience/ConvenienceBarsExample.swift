@@ -24,7 +24,7 @@ class ConvenienceBarsExample: UIViewController {
         )
         
         let chart = BarsChart(
-            frame: ExamplesDefaults.chartFrame(self.view.bounds),
+            frame: ExamplesDefaults.chartFrame(view.bounds),
             chartConfig: chartConfig,
             xTitle: "X axis",
             yTitle: "Y axis",
@@ -40,7 +40,7 @@ class ConvenienceBarsExample: UIViewController {
             barWidth: Env.iPad ? 40 : 20
         )
         
-        self.view.addSubview(chart.view)
+        view.addSubview(chart.view)
         self.chart = chart
     }
 }

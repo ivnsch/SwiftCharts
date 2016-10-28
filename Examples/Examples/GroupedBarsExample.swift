@@ -61,8 +61,8 @@ class GroupedBarsExample: UIViewController {
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
-        let frame = ExamplesDefaults.chartFrame(self.view.bounds)
-        let chartFrame = self.chart?.frame ?? CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height - self.dirSelectorHeight)
+        let frame = ExamplesDefaults.chartFrame(view.bounds)
+        let chartFrame = chart?.frame ?? CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height - dirSelectorHeight)
         
         let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
 
@@ -124,16 +124,16 @@ class GroupedBarsExample: UIViewController {
     fileprivate func showChart(horizontal: Bool) {
         self.chart?.clearView()
         
-        let chart = self.barsChart(horizontal: horizontal)
-        self.view.addSubview(chart.view)
+        let chart = barsChart(horizontal: horizontal)
+        view.addSubview(chart.view)
         self.chart = chart
     }
     
     override func viewDidLoad() {
-        self.showChart(horizontal: false)
-        if let chart = self.chart {
-            let dirSelector = DirSelector(frame: CGRect(x: 0, y: chart.frame.origin.y + chart.frame.size.height, width: self.view.frame.size.width, height: self.dirSelectorHeight), controller: self)
-            self.view.addSubview(dirSelector)
+        showChart(horizontal: false)
+        if let chart = chart {
+            let dirSelector = DirSelector(frame: CGRect(x: 0, y: chart.frame.origin.y + chart.frame.size.height, width: view.frame.size.width, height: dirSelectorHeight), controller: self)
+            view.addSubview(dirSelector)
         }
     }
     
@@ -150,19 +150,19 @@ class GroupedBarsExample: UIViewController {
             
             self.controller = controller
             
-            self.horizontal = UIButton()
-            self.horizontal.setTitle("Horizontal", for: UIControlState())
-            self.vertical = UIButton()
-            self.vertical.setTitle("Vertical", for: UIControlState())
+            horizontal = UIButton()
+            horizontal.setTitle("Horizontal", for: UIControlState())
+            vertical = UIButton()
+            vertical.setTitle("Vertical", for: UIControlState())
             
-            self.buttonDirs = [self.horizontal : true, self.vertical : false]
+            buttonDirs = [horizontal : true, vertical : false]
             
             super.init(frame: frame)
             
-            self.addSubview(self.horizontal)
-            self.addSubview(self.vertical)
+            addSubview(horizontal)
+            addSubview(vertical)
             
-            for button in [self.horizontal, self.vertical] {
+            for button in [horizontal, vertical] {
                 button.titleLabel?.font = ExamplesDefaults.fontWithSize(14)
                 button.setTitleColor(UIColor.blue, for: UIControlState())
                 button.addTarget(self, action: #selector(DirSelector.buttonTapped(_:)), for: .touchUpInside)
@@ -175,7 +175,7 @@ class GroupedBarsExample: UIViewController {
         }
         
         override func didMoveToSuperview() {
-            let views = [self.horizontal, self.vertical]
+            let views = [horizontal, vertical]
             for v in views {
                 v.translatesAutoresizingMaskIntoConstraints = false
             }
@@ -197,7 +197,7 @@ class GroupedBarsExample: UIViewController {
             
             let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraints(withVisualFormat: "V:|[\($0.0)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
             
-            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
+            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
                 + vConstraits)
         }
         

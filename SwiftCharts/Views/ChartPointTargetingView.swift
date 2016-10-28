@@ -30,19 +30,19 @@ open class ChartPointTargetingView: UIView {
         let axisLengthX = layer.modelLocToScreenLoc(x: layer.xAxis.last) - axisOriginX
         let axisLengthY = abs(axisOriginY - layer.modelLocToScreenLoc(y: layer.yAxis.first))
         
-        self.lineHorizontal = UIView(frame: CGRect(x: axisOriginX, y: axisOriginY, width: axisLengthX, height: CGFloat(lineWidth)))
-        self.lineVertical = UIView(frame: CGRect(x: axisOriginX, y: axisOriginY, width: CGFloat(lineWidth), height: axisLengthY))
+        lineHorizontal = UIView(frame: CGRect(x: axisOriginX, y: axisOriginY, width: axisLengthX, height: CGFloat(lineWidth)))
+        lineVertical = UIView(frame: CGRect(x: axisOriginX, y: axisOriginY, width: CGFloat(lineWidth), height: axisLengthY))
         
-        self.lineHorizontal.backgroundColor = UIColor.black
-        self.lineVertical.backgroundColor = UIColor.red
+        lineHorizontal.backgroundColor = UIColor.black
+        lineVertical.backgroundColor = UIColor.red
         
-        let lineWidthHalf = self.lineWidth / 2
+        let lineWidthHalf = lineWidth / 2
         var targetFrameH = lineHorizontal.frame
         targetFrameH.origin.y = screenLoc.y - CGFloat(lineWidthHalf)
-        self.lineHorizontalTargetFrame = targetFrameH
+        lineHorizontalTargetFrame = targetFrameH
         var targetFrameV = lineVertical.frame
         targetFrameV.origin.x = screenLoc.x - CGFloat(lineWidthHalf)
-        self.lineVerticalTargetFrame = targetFrameV
+        lineVerticalTargetFrame = targetFrameV
  
         super.init(frame: chart.bounds)
     }
@@ -52,8 +52,8 @@ open class ChartPointTargetingView: UIView {
     }
 
     override open func didMoveToSuperview() {
-        addSubview(self.lineHorizontal)
-        addSubview(self.lineVertical)
+        addSubview(lineHorizontal)
+        addSubview(lineVertical)
 
         func targetState() {
             lineHorizontal.frame = lineHorizontalTargetFrame

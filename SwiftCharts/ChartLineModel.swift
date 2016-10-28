@@ -46,7 +46,7 @@ public struct ChartLineModel<T: ChartPoint> {
 
     /// The number of chart points in the model
     var chartPointsCount: Int {
-        return self.chartPoints.count
+        return chartPoints.count
     }
     
 }

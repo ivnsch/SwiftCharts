@@ -50,7 +50,7 @@ open class ChartAxisValuesGeneratorDate: ChartAxisGeneratorMultiplier {
                 let lastDate = Date(timeIntervalSince1970: axis.last)
                 let lengthInUnits = lastDate.timeInterval(firstDate, unit: unit)
                 
-                self.multiplier = Double(lengthInUnits) / Double(dividers)
+                multiplier = Double(lengthInUnits) / Double(dividers)
                 cont = false
                 
             } else {

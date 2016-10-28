@@ -67,7 +67,7 @@ public struct GuidelinesDefaultLayerGenerator {
 
     public static func generateOpt(xAxisLayer: ChartAxisLayer, yAxisLayer: ChartAxisLayer, guidelinesConfig: GuidelinesConfig?) -> ChartLayer? {
         if let guidelinesConfig = guidelinesConfig {
-            return self.generate(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, guidelinesConfig: guidelinesConfig)
+            return generate(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, guidelinesConfig: guidelinesConfig)
         } else {
             return nil
         }

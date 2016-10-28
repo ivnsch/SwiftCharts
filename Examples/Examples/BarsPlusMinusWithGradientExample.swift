@@ -16,7 +16,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
     fileprivate let gradientPicker: GradientPicker // to pick the colors of the bars
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        self.gradientPicker = GradientPicker(width: 200)
+        gradientPicker = GradientPicker(width: 200)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -58,7 +58,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         let zero = ChartAxisValueDouble(0)
         let bars: [ChartBarModel] = vals.enumerated().map {index, tuple in
             let percentage = (tuple.val - minVal - 0.01) / length // FIXME without -0.01 bar with 1 (100 perc) is black
-            let color = self.gradientPicker.colorForPercentage(percentage).withAlphaComponent(0.6)
+            let color = gradientPicker.colorForPercentage(percentage).withAlphaComponent(0.6)
             return ChartBarModel(constant: ChartAxisValueDouble(Double(index)), axisValue1: zero, axisValue2: ChartAxisValueDouble(Double(tuple.val)), bgColor: color)
         }
         
@@ -74,7 +74,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         let yValues = [ChartAxisValueString(order: -1)] + vals.enumerated().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} + [ChartAxisValueString(order: vals.count)]
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
         
-        let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
+        let chartFrame = ExamplesDefaults.chartFrame(view.bounds)
         
         // calculate coords space in the background to keep UI smooth
         DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
@@ -166,9 +166,9 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         
         func colorForPercentage(_ percentage: CGFloat) -> UIColor {
             
-            let data = self.imgData
+            let data = imgData
             
-            let xNotRounded = self.gradientImg.size.width * percentage
+            let xNotRounded = gradientImg.size.width * percentage
             let x = 4 * (floor(abs(xNotRounded / 4)))
             let pixelIndex = Int(x * 4)
             

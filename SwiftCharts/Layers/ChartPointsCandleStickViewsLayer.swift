@@ -16,7 +16,7 @@ open class ChartPointsCandleStickViewsLayer<T: ChartPointCandleStick, U: ChartCa
     
     open func highlightChartpointView(screenLoc: CGPoint) {
         let  x = screenLoc.x
-        for viewWithChartPoint in self.viewsWithChartPoints {
+        for viewWithChartPoint in viewsWithChartPoints {
             let view = viewWithChartPoint.view
             let originX = view.frame.origin.x
             view.highlighted = x > originX && x < originX + view.frame.width

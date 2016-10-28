@@ -47,17 +47,17 @@ extension CGPoint {
     }
     
     func multiplyBy(_ value:CGFloat) -> CGPoint{
-        return CGPoint(x: self.x * value, y: self.y * value)
+        return CGPoint(x: x * value, y: y * value)
     }
     
     func length() -> CGFloat {
         return CGFloat(sqrt(CDouble(
-            self.x * self.x + self.y * self.y
+            x * x + y * y
         )))
     }
     
     func normalize() -> CGPoint {
-        let l = self.length()
-        return CGPoint(x: self.x / l, y: self.y / l)
+        let l = length()
+        return CGPoint(x: x / l, y: y / l)
     }
 }

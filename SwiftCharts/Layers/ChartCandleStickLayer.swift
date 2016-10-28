@@ -30,9 +30,9 @@ open class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T> 
     
     override open func chartContentViewDrawing(context: CGContext, chart: Chart) {
         
-        for screenItem in self.screenItems {
+        for screenItem in screenItems {
             
-            context.setLineWidth(self.strokeWidth)
+            context.setLineWidth(strokeWidth)
             context.setStrokeColor(UIColor.black.cgColor)
             context.move(to: CGPoint(x: screenItem.x, y: screenItem.lineTop))
             context.addLine(to: CGPoint(x: screenItem.x, y: screenItem.lineBottom))
@@ -52,13 +52,13 @@ open class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T> 
             
             let x = model.screenLoc.x
             
-            let highScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.high)).y
-            let lowScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.low)).y
-            let openScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.open)).y
-            let closeScreenY = self.modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.close)).y
+            let highScreenY = modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.high)).y
+            let lowScreenY = modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.low)).y
+            let openScreenY = modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.open)).y
+            let closeScreenY = modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.close)).y
             
             let (rectTop, rectBottom, fillColor) = closeScreenY < openScreenY ? (closeScreenY, openScreenY, UIColor.white) : (openScreenY, closeScreenY, UIColor.black)
-            return CandleStickScreenItem(x: x, lineTop: highScreenY, lineBottom: lowScreenY, rectTop: rectTop, rectBottom: rectBottom, width: self.itemWidth, fillColor: fillColor)
+            return CandleStickScreenItem(x: x, lineTop: highScreenY, lineBottom: lowScreenY, rectTop: rectTop, rectBottom: rectBottom, width: itemWidth, fillColor: fillColor)
         }
     }
     

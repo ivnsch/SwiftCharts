@@ -19,7 +19,7 @@ open class ChartPoint: Hashable, Equatable, CustomStringConvertible {
     }
     
     open var description: String {
-        return "\(self.x), \(self.y)"
+        return "\(x), \(y)"
     }
     
     open var hashValue: Int {

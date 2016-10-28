@@ -30,7 +30,7 @@ class MultipleLabelsExample: UIViewController {
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
-        let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
+        let chartFrame = ExamplesDefaults.chartFrame(view.bounds)
         let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
         chartSettings.trailing = 20
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
@@ -54,7 +54,7 @@ class MultipleLabelsExample: UIViewController {
             ]
         )
         
-        self.view.addSubview(chart.view)
+        view.addSubview(chart.view)
         self.chart = chart
     }
 }
@@ -72,9 +72,9 @@ private class MyMultiLabelAxisValue: ChartAxisValue {
     
     override var labels:[ChartAxisLabel] {
         return [
-            ChartAxisLabel(text: "\(self.myVal)", settings: ChartLabelSettings(font: UIFont.systemFont(ofSize: 18), fontColor: UIColor.black)),
+            ChartAxisLabel(text: "\(myVal)", settings: ChartLabelSettings(font: UIFont.systemFont(ofSize: 18), fontColor: UIColor.black)),
             ChartAxisLabel(text: "blabla", settings: ChartLabelSettings(font: UIFont.systemFont(ofSize: 10), fontColor: UIColor.blue)),
-            ChartAxisLabel(text: "\(self.derivedVal)", settings: ChartLabelSettings(font: UIFont.systemFont(ofSize: 14), fontColor: UIColor.purple))
+            ChartAxisLabel(text: "\(derivedVal)", settings: ChartLabelSettings(font: UIFont.systemFont(ofSize: 14), fontColor: UIColor.purple))
         ]
     }
 }

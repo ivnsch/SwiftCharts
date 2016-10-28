@@ -90,10 +90,10 @@ class MultipleAxesInteractiveExample: UIViewController {
             ]
         }
         
-        self.chartPoints0 = createChartPoints0(bgColors[0])
-        self.chartPoints1 = createChartPoints1(bgColors[1])
-        self.chartPoints2 = createChartPoints2(bgColors[2])
-        self.chartPoints3 = createChartPoints3(bgColors[3])
+        chartPoints0 = createChartPoints0(bgColors[0])
+        chartPoints1 = createChartPoints1(bgColors[1])
+        chartPoints2 = createChartPoints2(bgColors[2])
+        chartPoints3 = createChartPoints3(bgColors[3])
 
         
         super.init(nibName: nil, bundle: nil)
@@ -107,42 +107,42 @@ class MultipleAxesInteractiveExample: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let xValues0 = self.chartPoints0.map{$0.x}
-        let xValues1 = self.chartPoints1.map{$0.x}
-        let xValues2 = self.chartPoints2.map{$0.x}
-        let xValues3 = self.chartPoints3.map{$0.x}
+        let xValues0 = chartPoints0.map{$0.x}
+        let xValues1 = chartPoints1.map{$0.x}
+        let xValues2 = chartPoints2.map{$0.x}
+        let xValues3 = chartPoints3.map{$0.x}
         
         let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
         
         let top: CGFloat = 80
         
-        self.viewFrame = CGRect(x: 0, y: top, width: self.view.frame.size.width, height: self.view.frame.size.height - selectionViewH - showGuidesViewH - top - 10)
+        viewFrame = CGRect(x: 0, y: top, width: view.frame.size.width, height: view.frame.size.height - selectionViewH - showGuidesViewH - top - 10)
         
-        let yValues0 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(self.chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[0]))}, addPaddingSegmentIfEdge: false)
+        let yValues0 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[0]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues1 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(self.chartPoints1, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[1]))}, addPaddingSegmentIfEdge: false)
+        let yValues1 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints1, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[1]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues2 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(self.chartPoints2, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[2]))}, addPaddingSegmentIfEdge: false)
+        let yValues2 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints2, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[2]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues3 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(self.chartPoints3, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: self.bgColors[3]))}, addPaddingSegmentIfEdge: false)
+        let yValues3 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints3, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[3]))}, addPaddingSegmentIfEdge: false)
         
         let axisTitleFont = ExamplesDefaults.labelFontSmall
         
         let yLowModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: yValues1, lineColor: self.bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: self.bgColors[1]).defaultVertical())]),
-            ChartAxisModel(axisValues: yValues0, lineColor: self.bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: self.bgColors[0]).defaultVertical())])
+            ChartAxisModel(axisValues: yValues1, lineColor: bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[1]).defaultVertical())]),
+            ChartAxisModel(axisValues: yValues0, lineColor: bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[0]).defaultVertical())])
         ]
         let yHighModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: yValues2, lineColor: self.bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: self.bgColors[2]).defaultVertical())]),
-            ChartAxisModel(axisValues: yValues3, lineColor: self.bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: self.bgColors[3]).defaultVertical())])
+            ChartAxisModel(axisValues: yValues2, lineColor: bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[2]).defaultVertical())]),
+            ChartAxisModel(axisValues: yValues3, lineColor: bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[3]).defaultVertical())])
         ]
         let xLowModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: xValues0, lineColor: self.bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: self.bgColors[0]))]),
-            ChartAxisModel(axisValues: xValues1, lineColor: self.bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: self.bgColors[1]))])
+            ChartAxisModel(axisValues: xValues0, lineColor: bgColors[0], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[0]))]),
+            ChartAxisModel(axisValues: xValues1, lineColor: bgColors[1], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[1]))])
         ]
         let xHighModels: [ChartAxisModel] = [
-            ChartAxisModel(axisValues: xValues3, lineColor: self.bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: self.bgColors[3]))]),
-            ChartAxisModel(axisValues: xValues2, lineColor: self.bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: self.bgColors[2]))])
+            ChartAxisModel(axisValues: xValues3, lineColor: bgColors[3], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[3]))]),
+            ChartAxisModel(axisValues: xValues2, lineColor: bgColors[2], axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: ChartLabelSettings(font: axisTitleFont, fontColor: bgColors[2]))])
         ]
         
         // calculate coords space in the background to keep UI smooth
@@ -175,8 +175,8 @@ class MultipleAxesInteractiveExample: UIViewController {
         }
         
         
-        self.view.addSubview(self.createSelectionView(chartSettings))
-        self.view.addSubview(self.createShowGuidesView(chartSettings))
+        view.addSubview(createSelectionView(chartSettings))
+        view.addSubview(createShowGuidesView(chartSettings))
     }
     
     fileprivate func createLineLayers(animDuration: Float) -> [ChartPointsLineLayer<ChartPoint>] {
@@ -199,7 +199,7 @@ class MultipleAxesInteractiveExample: UIViewController {
         var axisLayers: [ChartLayer] = []
         var itemsLayers: [ChartLayer] = []
         
-        let lineLayers = self.createLineLayers(animDuration: lineAnimDuration)
+        let lineLayers = createLineLayers(animDuration: lineAnimDuration)
         
         func group(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, lineLayer: ChartLayer, guideLayer: ChartLayer) -> [ChartLayer] {
             return [xAxis, yAxis, lineLayer] + (showGuides ? [guideLayer] : [])
@@ -228,7 +228,7 @@ class MultipleAxesInteractiveExample: UIViewController {
         
         self.chart?.clearView()
         
-        let layers = self.createLayers(selectedLayersFlags: self.selectedLayersFlags, showGuides: self.showGuides, lineAnimDuration: lineAnimDuration)
+        let layers = createLayers(selectedLayersFlags: selectedLayersFlags, showGuides: showGuides, lineAnimDuration: lineAnimDuration)
         
         let view = ChartBaseView(frame: viewFrame)
         let chart = Chart(
@@ -241,11 +241,11 @@ class MultipleAxesInteractiveExample: UIViewController {
         self.view.addSubview(chart.view)
         self.chart = chart
         
-        self.chartInnerFrame = chart.containerView.frame
+        chartInnerFrame = chart.containerView.frame
     }
     
     fileprivate func createSelectionView(_ chartSettings: ChartSettings) -> UIView {
-        let v = UIView(frame: CGRect(x: 0, y: self.view.frame.height - selectionViewH - showGuidesViewH, width: self.view.frame.width, height: selectionViewH))
+        let v = UIView(frame: CGRect(x: 0, y: view.frame.height - selectionViewH - showGuidesViewH, width: view.frame.width, height: selectionViewH))
         v.backgroundColor = UIColor.white
         v.isUserInteractionEnabled = true
         
@@ -256,12 +256,12 @@ class MultipleAxesInteractiveExample: UIViewController {
             let y: CGFloat = (selectionViewH - selectorSize) / 2
             
             let selectorView = HandlingView(frame: CGRect(x: x, y: y, width: selectorSize, height: selectorSize))
-            selectorView.backgroundColor = self.bgColors[index]
+            selectorView.backgroundColor = bgColors[index]
             weak var selectorViewWeak = selectorView
-            selectorView.touchHandler = {[weak self] in
-                self!.selectedLayersFlags[index] = !self!.selectedLayersFlags[index]
-                selectorViewWeak?.backgroundColor = self!.selectedLayersFlags[index] ? self!.bgColors[index] : UIColor.gray
-                self!.showChart(chartSettings, lineAnimDuration: 0)
+            selectorView.touchHandler = {[weak self] in guard let weakSelf = self else {return}
+                weakSelf.selectedLayersFlags[index] = !weakSelf.selectedLayersFlags[index]
+                selectorViewWeak?.backgroundColor = weakSelf.selectedLayersFlags[index] ? weakSelf.bgColors[index] : UIColor.gray
+                weakSelf.showChart(chartSettings, lineAnimDuration: 0)
             }
             
             v.addSubview(selectorView)
@@ -270,10 +270,10 @@ class MultipleAxesInteractiveExample: UIViewController {
     }
     
     fileprivate func createShowGuidesView(_ chartSettings: ChartSettings) -> UIView {
-        let v = HandlingView(frame: CGRect(x: 0, y: self.view.frame.height - showGuidesViewH, width: self.view.frame.width, height: showGuidesViewH))
+        let v = HandlingView(frame: CGRect(x: 0, y: view.frame.height - showGuidesViewH, width: view.frame.width, height: showGuidesViewH))
         v.backgroundColor = UIColor.green
         v.isUserInteractionEnabled = true
-        let label = UILabel(frame: CGRect(x: 10, y: 0, width: self.view.frame.width, height: showGuidesViewH))
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: view.frame.width, height: showGuidesViewH))
         label.text = "Show guidelines"
         v.addSubview(label)
         

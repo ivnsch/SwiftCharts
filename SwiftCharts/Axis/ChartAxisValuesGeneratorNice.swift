@@ -57,9 +57,9 @@ open class ChartAxisValuesGeneratorNice: ChartAxisGeneratorMultiplier {
             
             if requiredLengthForDividers(dividers) < axis.screenLength {
                 
-                self.minValue = nice.minValue
-                self.maxValue = nice.maxValue
-                self.multiplier = nice.multiplier
+                minValue = nice.minValue
+                maxValue = nice.maxValue
+                multiplier = nice.multiplier
                 
                 cont = false
                 

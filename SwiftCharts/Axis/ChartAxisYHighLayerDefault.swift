@@ -24,9 +24,9 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
     }
     
     override func updateInternal() {
-        guard let chart = self.chart else {return}
+        guard let chart = chart else {return}
         super.updateInternal()
-        if lastFrame.width != self.frame.width {
+        if lastFrame.width != frame.width {
             
             // Move drawers by delta
             let delta = frame.width - lastFrame.width
@@ -50,29 +50,29 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
     
     override func initDrawers() {
         
-        self.lineDrawer = self.generateLineDrawer(offset: 0)
+        lineDrawer = generateLineDrawer(offset: 0)
         
-        let labelsOffset = self.settings.labelsToAxisSpacingY + self.settings.axisStrokeWidth
-        self.labelDrawers = self.generateLabelDrawers(offset: labelsOffset)
-        let axisTitleLabelsOffset = labelsOffset + self.labelsMaxWidth + self.settings.axisTitleLabelsToLabelsSpacing
-        self.axisTitleLabelDrawers = self.generateAxisTitleLabelsDrawers(offset: axisTitleLabelsOffset)
+        let labelsOffset = settings.labelsToAxisSpacingY + settings.axisStrokeWidth
+        labelDrawers = generateLabelDrawers(offset: labelsOffset)
+        let axisTitleLabelsOffset = labelsOffset + labelsMaxWidth + settings.axisTitleLabelsToLabelsSpacing
+        axisTitleLabelDrawers = generateAxisTitleLabelsDrawers(offset: axisTitleLabelsOffset)
     }
     
     override func generateLineDrawer(offset: CGFloat) -> ChartLineDrawer {
-        let halfStrokeWidth = self.settings.axisStrokeWidth / 2 // we want that the stroke begins at the beginning of the frame, not in the middle of it
-        let x = self.origin.x + offset + halfStrokeWidth
-        let p1 = CGPoint(x: x, y: self.axis.firstVisibleScreen)
-        let p2 = CGPoint(x: x, y: self.axis.lastVisibleScreen)
-        return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
+        let halfStrokeWidth = settings.axisStrokeWidth / 2 // we want that the stroke begins at the beginning of the frame, not in the middle of it
+        let x = origin.x + offset + halfStrokeWidth
+        let p1 = CGPoint(x: x, y: axis.firstVisibleScreen)
+        let p2 = CGPoint(x: x, y: axis.lastVisibleScreen)
+        return ChartLineDrawer(p1: p1, p2: p2, color: settings.lineColor, strokeWidth: settings.axisStrokeWidth)
     }
     
     override func labelsX(offset: CGFloat, labelWidth: CGFloat, textAlignment: ChartLabelTextAlignment) -> CGFloat {
         var labelsX: CGFloat
         switch textAlignment {
         case .left, .default:
-            labelsX = self.origin.x + offset
+            labelsX = origin.x + offset
         case .right:
-            labelsX = self.origin.x + offset + self.labelsMaxWidth - labelWidth
+            labelsX = origin.x + offset + labelsMaxWidth - labelWidth
         }
         return labelsX
     }

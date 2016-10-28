@@ -62,8 +62,8 @@ class StackedBarsExample: UIViewController {
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
         
-        let frame = ExamplesDefaults.chartFrame(self.view.bounds)
-        let chartFrame = self.chart?.frame ?? CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height - sideSelectorHeight)
+        let frame = ExamplesDefaults.chartFrame(view.bounds)
+        let chartFrame = chart?.frame ?? CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height - sideSelectorHeight)
         
         let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
 
@@ -101,16 +101,16 @@ class StackedBarsExample: UIViewController {
         self.chart?.clearView()
         
         let chart = self.chart(horizontal: horizontal)
-        self.view.addSubview(chart.view)
+        view.addSubview(chart.view)
         self.chart = chart
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.showChart(horizontal: true)
-        if let chart = self.chart {
-            let sideSelector = DirSelector(frame: CGRect(x: 0, y: chart.frame.origin.y + chart.frame.size.height, width: self.view.frame.size.width, height: self.sideSelectorHeight), controller: self)
-            self.view.addSubview(sideSelector)
+        showChart(horizontal: true)
+        if let chart = chart {
+            let sideSelector = DirSelector(frame: CGRect(x: 0, y: chart.frame.origin.y + chart.frame.size.height, width: view.frame.size.width, height: sideSelectorHeight), controller: self)
+            view.addSubview(sideSelector)
         }
     }
     
@@ -132,14 +132,14 @@ class StackedBarsExample: UIViewController {
             self.vertical = UIButton()
             self.vertical.setTitle("Vertical", for: UIControlState())
             
-            self.buttonDirs = [self.horizontal : true, self.vertical : false]
+            self.buttonDirs = [horizontal: true, vertical: false]
             
             super.init(frame: frame)
             
-            self.addSubview(self.horizontal)
-            self.addSubview(self.vertical)
+            addSubview(horizontal)
+            addSubview(vertical)
             
-            for button in [self.horizontal, self.vertical] {
+            for button in [horizontal, vertical] {
                 button.titleLabel?.font = ExamplesDefaults.fontWithSize(14)
                 button.setTitleColor(UIColor.blue, for: UIControlState())
                 button.addTarget(self, action: #selector(DirSelector.buttonTapped(_:)), for: .touchUpInside)
@@ -152,7 +152,7 @@ class StackedBarsExample: UIViewController {
         }
         
         override func didMoveToSuperview() {
-            let views = [self.horizontal, self.vertical]
+            let views = [horizontal, vertical]
             for v in views {
                 v.translatesAutoresizingMaskIntoConstraints = false
             }
@@ -174,7 +174,7 @@ class StackedBarsExample: UIViewController {
             
             let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraints(withVisualFormat: "V:|[\($0.0)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
             
-            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
+            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
                 + vConstraits)
         }
         

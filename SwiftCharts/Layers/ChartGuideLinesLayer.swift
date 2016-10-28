@@ -55,28 +55,28 @@ open class ChartGuideLinesLayerAbstract<T: ChartGuideLinesLayerSettings>: ChartC
     
     override open func chartViewDrawing(context: CGContext, chart: Chart) {
         let originScreenLoc = chart.containerFrame.origin
-        let xScreenLocs = self.xAxisLayer.axisValuesScreenLocs
-        let yScreenLocs = self.yAxisLayer.axisValuesScreenLocs
+        let xScreenLocs = xAxisLayer.axisValuesScreenLocs
+        let yScreenLocs = yAxisLayer.axisValuesScreenLocs
         
-        if self.axis == .x || self.axis == .xAndY {
+        if axis == .x || axis == .xAndY {
             for xScreenLoc in xScreenLocs {
                 guard (!yAxisLayer.low || xScreenLoc > yAxisLayer.frame.maxX) && (yAxisLayer.low || xScreenLoc < yAxisLayer.frame.minX) else {continue}
                 let x1 = xScreenLoc
                 let y1 = originScreenLoc.y
                 let x2 = x1
                 let y2 = originScreenLoc.y + chart.containerFrame.height
-                self.drawGuideline(context, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
+                drawGuideline(context, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
             }
         }
         
-        if self.axis == .y || self.axis == .xAndY {
+        if axis == .y || axis == .xAndY {
             for yScreenLoc in yScreenLocs {
                 guard (xAxisLayer.low || yScreenLoc > xAxisLayer.frame.maxY) && (!xAxisLayer.low || yScreenLoc < xAxisLayer.frame.minY) else {continue}
                 let x1 = originScreenLoc.x
                 let y1 = yScreenLoc
                 let x2 = originScreenLoc.x + chart.containerFrame.width
                 let y2 = y1
-                self.drawGuideline(context, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
+                drawGuideline(context, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
             }
         }
     }
@@ -90,7 +90,7 @@ open class ChartGuideLinesLayer_<N>: ChartGuideLinesLayerAbstract<ChartGuideLine
     }
     
     override fileprivate func drawGuideline(_ context: CGContext, p1: CGPoint, p2: CGPoint) {
-        ChartDrawLine(context: context, p1: p1, p2: p2, width: self.settings.linesWidth, color: self.settings.linesColor)
+        ChartDrawLine(context: context, p1: p1, p2: p2, width: settings.linesWidth, color: settings.linesColor)
     }
 }
 
@@ -102,7 +102,7 @@ open class ChartGuideLinesDottedLayer_<N>: ChartGuideLinesLayerAbstract<ChartGui
     }
     
     override fileprivate func drawGuideline(_ context: CGContext, p1: CGPoint, p2: CGPoint) {
-        ChartDrawDottedLine(context: context, p1: p1, p2: p2, width: self.settings.linesWidth, color: self.settings.linesColor, dotWidth: self.settings.dotWidth, dotSpacing: self.settings.dotSpacing)
+        ChartDrawDottedLine(context: context, p1: p1, p2: p2, width: settings.linesWidth, color: settings.linesColor, dotWidth: settings.dotWidth, dotSpacing: settings.dotSpacing)
     }
 }
 
@@ -131,23 +131,23 @@ open class ChartGuideLinesForValuesLayerAbstract<T: ChartGuideLinesLayerSettings
     override open func chartViewDrawing(context: CGContext, chart: Chart) {
         let originScreenLoc = chart.containerFrame.origin
         
-        for axisValue in self.axisValuesX {
-            let screenLoc = self.xAxis.screenLocForScalar(axisValue.scalar)
+        for axisValue in axisValuesX {
+            let screenLoc = xAxis.screenLocForScalar(axisValue.scalar)
             let x1 = screenLoc
             let y1 = originScreenLoc.y
             let x2 = x1
             let y2 = originScreenLoc.y + chart.containerFrame.height
-            self.drawGuideline(context, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
+            drawGuideline(context, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
 
         }
         
-        for axisValue in self.axisValuesY {
-            let screenLoc = self.yAxis.screenLocForScalar(axisValue.scalar)
+        for axisValue in axisValuesY {
+            let screenLoc = yAxis.screenLocForScalar(axisValue.scalar)
             let x1 = originScreenLoc.x
             let y1 = screenLoc
             let x2 = originScreenLoc.x + chart.containerFrame.width
             let y2 = y1
-            self.drawGuideline(context, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
+            drawGuideline(context, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
 
         }
     }
@@ -162,7 +162,7 @@ open class ChartGuideLinesForValuesLayer_<N>: ChartGuideLinesForValuesLayerAbstr
     }
     
     override fileprivate func drawGuideline(_ context: CGContext, p1: CGPoint, p2: CGPoint) {
-        ChartDrawLine(context: context, p1: p1, p2: p2, width: self.settings.linesWidth, color: self.settings.linesColor)
+        ChartDrawLine(context: context, p1: p1, p2: p2, width: settings.linesWidth, color: settings.linesColor)
     }
 }
 
@@ -174,7 +174,7 @@ open class ChartGuideLinesForValuesDottedLayer_<N>: ChartGuideLinesForValuesLaye
     }
     
     override fileprivate func drawGuideline(_ context: CGContext, p1: CGPoint, p2: CGPoint) {
-        ChartDrawDottedLine(context: context, p1: p1, p2: p2, width: self.settings.linesWidth, color: self.settings.linesColor, dotWidth: self.settings.dotWidth, dotSpacing: self.settings.dotSpacing)
+        ChartDrawDottedLine(context: context, p1: p1, p2: p2, width: settings.linesWidth, color: settings.linesColor, dotWidth: settings.dotWidth, dotSpacing: settings.dotSpacing)
     }
 }
 

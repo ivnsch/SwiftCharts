@@ -21,8 +21,8 @@ open class ChartAxisValue: Equatable, Hashable, CustomStringConvertible {
 
     /// The labels that will be displayed in the chart
     open var labels: [ChartAxisLabel] {
-        let axisLabel = ChartAxisLabel(text: self.description, settings: self.labelSettings)
-        axisLabel.hidden = self.hidden
+        let axisLabel = ChartAxisLabel(text: description, settings: labelSettings)
+        axisLabel.hidden = hidden
         return [axisLabel]
     }
 
@@ -32,11 +32,11 @@ open class ChartAxisValue: Equatable, Hashable, CustomStringConvertible {
     }
     
     open var copy: ChartAxisValue {
-        return self.copy(self.scalar)
+        return copy(scalar)
     }
     
     open func copy(_ scalar: Double) -> ChartAxisValue {
-        return ChartAxisValue(scalar: scalar, labelSettings: self.labelSettings)
+        return ChartAxisValue(scalar: scalar, labelSettings: labelSettings)
     }
 
     // MARK: CustomStringConvertible

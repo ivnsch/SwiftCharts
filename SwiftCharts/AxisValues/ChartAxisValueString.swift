@@ -20,6 +20,6 @@ open class ChartAxisValueString: ChartAxisValue {
     // MARK: CustomStringConvertible
 
     override open var description: String {
-        return self.string
+        return string
     }
 }

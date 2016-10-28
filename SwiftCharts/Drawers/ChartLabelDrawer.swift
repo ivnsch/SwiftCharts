@@ -43,7 +43,7 @@ open class ChartLabelSettings {
 
 public extension ChartLabelSettings {
     public func defaultVertical() -> ChartLabelSettings {
-        return self.copy(rotation: -90)
+        return copy(rotation: -90)
     }
 }
 
@@ -82,16 +82,16 @@ open class ChartLabelDrawer: ChartContextDrawer {
     }
 
     override func draw(context: CGContext, chart: Chart) {
-        let labelSize = self.size
+        let labelSize = size
         
-        let labelX = self.screenLoc.x
-        let labelY = self.screenLoc.y
+        let labelX = screenLoc.x
+        let labelY = screenLoc.y
         
         func drawLabel() {
             self.drawLabel(x: labelX, y: labelY, text: label.text)
         }
         
-        if let transform = self.transform {
+        if let transform = transform {
             context.saveGState()
             context.concatenate(transform)
             drawLabel()
@@ -103,7 +103,7 @@ open class ChartLabelDrawer: ChartContextDrawer {
     }
     
     fileprivate func transform(_ screenLoc: CGPoint, settings: ChartLabelSettings) -> CGAffineTransform? {
-        let labelSize = self.size
+        let labelSize = size
         
         let labelX = screenLoc.x
         let labelY = screenLoc.y
@@ -113,13 +113,11 @@ open class ChartLabelDrawer: ChartContextDrawer {
         
         if settings.rotation != 0 {
 
-
             let centerX = labelX + labelHalfWidth
             let centerY = labelY + labelHalfHeight
             
             let rotation = settings.rotation * CGFloat(M_PI) / CGFloat(180)
 
-            
             var transform = CGAffineTransform.identity
             
             if settings.rotationKeep == .center {

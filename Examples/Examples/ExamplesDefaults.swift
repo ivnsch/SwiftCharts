@@ -13,17 +13,17 @@ struct ExamplesDefaults {
     
     static var chartSettings: ChartSettings {
         if Env.iPad {
-            return self.iPadChartSettings
+            return iPadChartSettings
         } else {
-            return self.iPhoneChartSettings
+            return iPhoneChartSettings
         }
     }
 
     static var chartSettingsWithPanZoom: ChartSettings {
         if Env.iPad {
-            return self.iPadChartSettingsWithPanZoom
+            return iPadChartSettingsWithPanZoom
         } else {
-            return self.iPhoneChartSettingsWithPanZoom
+            return iPhoneChartSettingsWithPanZoom
         }
     }
     

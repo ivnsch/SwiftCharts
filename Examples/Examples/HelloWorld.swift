@@ -32,7 +32,7 @@ class HelloWorld: UIViewController {
         
         let yModel = ChartAxisModel(firstModelValue: 0, lastModelValue: 16, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical())], axisValuesGenerator: generator, labelsGenerator: labelsGenerator)
         
-        let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
+        let chartFrame = ExamplesDefaults.chartFrame(view.bounds)
         
         let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
         
@@ -72,7 +72,7 @@ class HelloWorld: UIViewController {
             ]
         )
         
-        self.view.addSubview(chart.view)
+        view.addSubview(chart.view)
         self.chart = chart
     }
 }

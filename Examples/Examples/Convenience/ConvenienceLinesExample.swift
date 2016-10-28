@@ -25,7 +25,7 @@ class ConvenienceLinesExample: UIViewController {
         )
         
         let chart = LineChart(
-            frame: ExamplesDefaults.chartFrame(self.view.bounds),
+            frame: ExamplesDefaults.chartFrame(view.bounds),
             chartConfig: chartConfig,
             xTitle: "X axis",
             yTitle: "Y axis",
@@ -35,7 +35,7 @@ class ConvenienceLinesExample: UIViewController {
             ]
         )
         
-        self.view.addSubview(chart.view)
+        view.addSubview(chart.view)
         self.chart = chart
     }
 }

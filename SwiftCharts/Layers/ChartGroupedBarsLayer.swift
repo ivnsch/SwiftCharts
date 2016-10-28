@@ -85,10 +85,10 @@ open class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: ChartC
     }
     
     func calculateConstantScreenLoc(_ screenLocCalculator: (Double) -> CGFloat, index: Int, group: ChartPointsBarGroup<T>, barWidth: CGFloat, maxBarCountInGroup: CGFloat) -> CGFloat {
-        let totalWidth = CGFloat(group.bars.count) * barWidth + ((self.barSpacing ?? 0) * (maxBarCountInGroup - 1))
+        let totalWidth = CGFloat(group.bars.count) * barWidth + ((barSpacing ?? 0) * (maxBarCountInGroup - 1))
         let groupCenter = screenLocCalculator(group.constant.scalar)
         let origin = groupCenter - totalWidth / 2
-        return origin + CGFloat(index) * (barWidth + (self.barSpacing ?? 0)) + barWidth / 2
+        return origin + CGFloat(index) * (barWidth + (barSpacing ?? 0)) + barWidth / 2
     }
     
     func mooh(_ screenLocCalculator: (Double) -> CGFloat, index: Int, group: ChartPointsBarGroup<T>, barWidth: CGFloat, maxBarCountInGroup: CGFloat, horizontal: Bool) -> CGFloat {
@@ -97,21 +97,21 @@ open class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: ChartC
     
     func calculateConstantScreenLocDir(_ screenLocCalculator: (Double) -> CGFloat, index: Int, group: ChartPointsBarGroup<T>, barWidth: CGFloat, maxBarCountInGroup: CGFloat, horizontal: Bool) -> CGFloat {
         if horizontal {
-            return calculateConstantScreenLoc({self.modelLocToScreenLoc(y: $0)}, index: index, group: group, barWidth: barWidth, maxBarCountInGroup: maxBarCountInGroup)
+            return calculateConstantScreenLoc({modelLocToScreenLoc(y: $0)}, index: index, group: group, barWidth: barWidth, maxBarCountInGroup: maxBarCountInGroup)
         } else {
-            return calculateConstantScreenLoc({self.modelLocToScreenLoc(x: $0)}, index: index, group: group, barWidth: barWidth, maxBarCountInGroup: maxBarCountInGroup)
+            return calculateConstantScreenLoc({modelLocToScreenLoc(x: $0)}, index: index, group: group, barWidth: barWidth, maxBarCountInGroup: maxBarCountInGroup)
         }
     }
     
     fileprivate func calculateDimensions(_ chart: Chart, onCalculate: (_ maxBarCountInGroup: CGFloat, _ barWidth: CGFloat) -> Void) {
         
-        let axis = self.horizontal ? self.yAxis : self.xAxis
-        let groupAvailableLength = (axis.screenLength  - (self.groupSpacing ?? 0) * CGFloat(self.groups.count)) / CGFloat(groups.count + 1)
-        let maxBarCountInGroup = self.groups.reduce(CGFloat(0)) {maxCount, group in
+        let axis = horizontal ? yAxis : xAxis
+        let groupAvailableLength = (axis.screenLength  - (groupSpacing ?? 0) * CGFloat(groups.count)) / CGFloat(groups.count + 1)
+        let maxBarCountInGroup = groups.reduce(CGFloat(0)) {maxCount, group in
             max(maxCount, CGFloat(group.bars.count))
         }
         
-        let barWidth = self.barWidth ?? (((groupAvailableLength - ((self.barSpacing ?? 0) * (maxBarCountInGroup - 1))) / CGFloat(maxBarCountInGroup)))
+        let barWidth = self.barWidth ?? (((groupAvailableLength - ((barSpacing ?? 0) * (maxBarCountInGroup - 1))) / CGFloat(maxBarCountInGroup)))
   
         onCalculate(maxBarCountInGroup, barWidth)
     }
@@ -119,7 +119,6 @@ open class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: ChartC
     func configBarView(_ group: ChartPointsBarGroup<T>, groupIndex: Int, barIndex: Int, bar: T, barView: U) {
 //        barView.selectionViewUpdater = selectionViewUpdater
     }
-    
     
     func addSubview(_ chart: Chart, view: UIView) {
         mode == .scaleAndTranslate ? chart.addSubview(view) : chart.addSubviewNoTransform(view)

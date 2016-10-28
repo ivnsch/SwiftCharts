@@ -219,16 +219,16 @@ open class Chart: Pannable, Zoomable {
      - parameter view: The subview to add to the chart's content view
      */
     open func addSubview(_ view: UIView) {
-        self.contentView.addSubview(view)
+        contentView.addSubview(view)
     }
 
     open func addSubviewNoTransform(_ view: UIView) {
-        self.containerView.addSubview(view)
+        containerView.addSubview(view)
     }
     
     /// The frame of the chart's view
     open var frame: CGRect {
-        return self.view.frame
+        return view.frame
     }
 
     open var containerFrame: CGRect {
@@ -241,18 +241,18 @@ open class Chart: Pannable, Zoomable {
     
     /// The bounds of the chart's view
     open var bounds: CGRect {
-        return self.view.bounds
+        return view.bounds
     }
 
     /**
      Removes the chart's view from its superview
      */
     open func clearView() {
-        self.view.removeFromSuperview()
+        view.removeFromSuperview()
     }
 
     open func update() {
-        for layer in self.layers {
+        for layer in layers {
             layer.update()
         }
         self.view.setNeedsDisplay()
@@ -379,13 +379,13 @@ open class Chart: Pannable, Zoomable {
             for layer in layers {
                 layer.chartContentViewDrawing(context: context, chart: self)
             }
-            self.drawersContentView.setNeedsDisplay()
+            drawersContentView.setNeedsDisplay()
         }
     }
     
     func allowPan(location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool {
         var someLayerProcessedPan = false
-        for layer in self.layers {
+        for layer in layers {
             if layer.processPan(location: location, deltaX: deltaX, deltaY: deltaY, isGesture: isGesture, isDeceleration: isDeceleration) {
                 someLayerProcessedPan = true
             }
@@ -395,7 +395,7 @@ open class Chart: Pannable, Zoomable {
     
     func allowZoom(deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool {
         var someLayerProcessedZoom = false
-        for layer in self.layers {
+        for layer in layers {
             if layer.processZoom(deltaX: deltaX, deltaY: deltaY, anchorX: anchorX, anchorY: anchorY) {
                 someLayerProcessedZoom = true
             }
@@ -436,12 +436,12 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        self.sharedInit()
+        sharedInit()
     }
 
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.sharedInit()
+        sharedInit()
     }
     
     func initRecognizers(_ settings: ChartSettings) {
@@ -470,14 +470,14 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
      Initialization code shared between all initializers
      */
     func sharedInit() {
-        self.backgroundColor = UIColor.clear
+        backgroundColor = UIColor.clear
     }
 
     fileprivate var zoomCenter: CGPoint?
     
     @objc func onPinch(_ sender: UIPinchGestureRecognizer) {
         
-        guard let chartSettings = chart?.settings , chartSettings.zoomPan.zoomEnabled else {return}
+        guard let chartSettings = chart?.settings, chartSettings.zoomPan.zoomEnabled else {return}
 
         switch sender.state {
         case .began:

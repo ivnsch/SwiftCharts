@@ -18,12 +18,12 @@ open class ChartAxisValueInt: ChartAxisValue {
     }
     
     override open func copy(_ scalar: Double) -> ChartAxisValueInt {
-        return ChartAxisValueInt(self.int, labelSettings: self.labelSettings)
+        return ChartAxisValueInt(int, labelSettings: labelSettings)
     }
 
     // MARK: CustomStringConvertible
     
     override open var description: String {
-        return String(self.int)
+        return String(int)
     }
 }

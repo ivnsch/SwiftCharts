@@ -190,8 +190,8 @@ open class ChartAxis: CustomStringConvertible {
     /// NOTE: this changes the model domain, which means that after this, view based chart points should be (re)generated using the updated ratio. For rendering layers this is not an issue since they request the position from the axis on each update. View based layers / content view children only update according to the transform of the parent, which is derived directly from the gestures and doesn't take into account the axes. This means in praxis that currently it's not possible to use view based layers together with padding and inner frame with varying size. Either the inner frame size has to be fixed, by setting fixed label size for all axes, or it must not have padding, or use a rendering based layer. TODO re-regenerate views on model domain update? This can lead though to stuterring when panning between labels of different sizes. Doing this at the end of the gesture would mean that during the gesture the chart points and axes can be not aligned correctly. Don't resize inner frame during the gesture (at least for view based layers)? In this case long labels would have to be cut during the gesture, and resize the frame / re-generate the chart points when the gesture ends.
     fileprivate func adjustModelBoundariesForPadding() {
         if paddingFirstScreen != 0 || paddingLastScreen != 0 {
-            self.first = toModelInner(firstScreenInit)
-            self.last = toModelInner(lastScreenInit)
+            first = toModelInner(firstScreenInit)
+            last = toModelInner(lastScreenInit)
         }
     }
     

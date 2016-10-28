@@ -44,9 +44,7 @@ class ChartBarsViewGenerator<T: ChartBarModel, U: ChartPointViewBar> {
     }
     
     func viewPoints(_ barModel: T, constantScreenLoc: CGFloat) -> (p1: CGPoint, p2: CGPoint) {
-
-        
-        switch self.horizontal {
+        switch horizontal {
         case true:
             return (
                 CGPoint(x: layer.modelLocToScreenLoc(x: barModel.axisValue1.scalar), y: constantScreenLoc),
@@ -64,13 +62,13 @@ class ChartBarsViewGenerator<T: ChartBarModel, U: ChartPointViewBar> {
     
     func viewPoints(_ barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil) -> (p1: CGPoint, p2: CGPoint) {
         let constantScreenLoc = constantScreenLocMaybe ?? self.constantScreenLoc(barModel)
-        return self.viewPoints(barModel, constantScreenLoc: constantScreenLoc)
+        return viewPoints(barModel, constantScreenLoc: constantScreenLoc)
     }
     
     func generateView(_ barModel: T, constantScreenLoc constantScreenLocMaybe: CGFloat? = nil, bgColor: UIColor?, settings: ChartBarViewSettings, model: ChartBarModel, index: Int, groupIndex: Int, chart: Chart? = nil) -> U {
         let viewPoints = self.viewPoints(barModel, constantScreenLoc: constantScreenLocMaybe)
-        return viewGenerator?(viewPoints.p1, viewPoints.p2, self.barWidth, bgColor, settings, model, index) ??
-            U(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, bgColor: bgColor, settings: settings)
+        return viewGenerator?(viewPoints.p1, viewPoints.p2, barWidth, bgColor, settings, model, index) ??
+            U(p1: viewPoints.p1, p2: viewPoints.p2, width: barWidth, bgColor: bgColor, settings: settings)
     }
 }
 
@@ -112,7 +110,7 @@ open class ChartBarsLayer<T: ChartPointViewBar>: ChartCoordsSpaceLayer {
         
         super.init(xAxis: xAxis, yAxis: yAxis)
         
-        self.barsGenerator = ChartBarsViewGenerator(horizontal: horizontal, layer: self, barWidth: barWidth, viewGenerator: viewGenerator)
+        barsGenerator = ChartBarsViewGenerator(horizontal: horizontal, layer: self, barWidth: barWidth, viewGenerator: viewGenerator)
     }
     
     open override func chartInitialized(chart: Chart) {

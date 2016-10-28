@@ -50,26 +50,26 @@ open class ChartDividersLayer: ChartCoordsSpaceLayer {
     }
     
     override open func chartViewDrawing(context: CGContext, chart: Chart) {
-        let xScreenLocs = self.xAxisLayer.axisValuesScreenLocs
-        let yScreenLocs = self.yAxisLayer.axisValuesScreenLocs
+        let xScreenLocs = xAxisLayer.axisValuesScreenLocs
+        let yScreenLocs = yAxisLayer.axisValuesScreenLocs
         
-        if self.axis == .x || self.axis == .xAndY {
+        if axis == .x || axis == .xAndY {
             for xScreenLoc in xScreenLocs {
                 let x1 = xScreenLoc
-                let y1 = self.xAxisLayer.lineP1.y + (self.xAxisLayer.low ? -self.settings.end : self.settings.end)
+                let y1 = xAxisLayer.lineP1.y + (xAxisLayer.low ? -settings.end : settings.end)
                 let x2 = xScreenLoc
-                let y2 = self.xAxisLayer.lineP1.y + (self.xAxisLayer.low ? self.settings.start : -self.settings.start)
-                self.drawLine(context: context, color: self.settings.linesColor, width: self.settings.linesWidth, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
+                let y2 = xAxisLayer.lineP1.y + (xAxisLayer.low ? settings.start : -settings.start)
+                drawLine(context: context, color: settings.linesColor, width: settings.linesWidth, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
             }
         }
         
-        if self.axis == .y || self.axis == .xAndY {
+        if axis == .y || axis == .xAndY {
             for yScreenLoc in yScreenLocs {
-                let x1 = self.yAxisLayer.lineP1.x + (self.yAxisLayer.low ? -self.settings.start : self.settings.start)
+                let x1 = yAxisLayer.lineP1.x + (yAxisLayer.low ? -settings.start : settings.start)
                 let y1 = yScreenLoc
-                let x2 = self.yAxisLayer.lineP1.x + (self.yAxisLayer.low ? self.settings.end : self.settings.end)
+                let x2 = yAxisLayer.lineP1.x + (yAxisLayer.low ? settings.end : settings.end)
                 let y2 = yScreenLoc
-                self.drawLine(context: context, color: self.settings.linesColor, width: self.settings.linesWidth, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
+                drawLine(context: context, color: settings.linesColor, width: settings.linesWidth, p1: CGPoint(x: x1, y: y1), p2: CGPoint(x: x2, y: y2))
             }
         }
     }

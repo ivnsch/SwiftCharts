@@ -47,8 +47,8 @@ open class CubicLinePathGenerator: ChartLinesViewPathGenerator {
             p1 = points[i]
             p2 = points[i + 1]
             
-            tensionBezier1 = self.tension1
-            tensionBezier2 = self.tension2
+            tensionBezier1 = tension1
+            tensionBezier2 = tension2
             
             if i > 0 {  // Exception for first line because there is no previous point
                 p0 = previousPoint1

@@ -70,7 +70,7 @@ open class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     open let displayDelay: Float
     
     open var chartPointScreenLocs: [CGPoint] {
-        return self.chartPointsModels.map{$0.screenLoc}
+        return chartPointsModels.map{$0.screenLoc}
     }
     
     fileprivate let chartPoints: [T]
@@ -112,10 +112,10 @@ open class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         
         initChartPointModels()
         
-        if self.isTransform || self.displayDelay == 0 {
-            self.display(chart: chart)
+        if isTransform || displayDelay == 0 {
+            display(chart: chart)
         } else {
-            DispatchQueue.main.asyncAfter(deadline: ChartTimeUtils.toDispatchTime(self.displayDelay)) {() -> Void in
+            DispatchQueue.main.asyncAfter(deadline: ChartTimeUtils.toDispatchTime(displayDelay)) {
                 self.display(chart: chart)
             }
         }
@@ -142,19 +142,19 @@ open class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }
     
     open func chartPointScreenLoc(_ chartPoint: ChartPoint) -> CGPoint {
-        return self.modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
+        return modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
     }
     
     open func chartPointsForScreenLoc(_ screenLoc: CGPoint) -> [T] {
-        return self.filterChartPoints { $0 == screenLoc }
+        return filterChartPoints { $0 == screenLoc }
     }
     
     open func chartPointsForScreenLocX(_ x: CGFloat) -> [T] {
-        return self.filterChartPoints { $0.x =~ x }
+        return filterChartPoints { $0.x =~ x }
     }
     
     open func chartPointsForScreenLocY(_ y: CGFloat) -> [T] {
-        return self.filterChartPoints { $0.y =~ y }
+        return filterChartPoints { $0.y =~ y }
 
     }
 
@@ -169,7 +169,7 @@ open class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }()
     
     fileprivate func minAxisScreenSpace(dimPicker: (CGPoint) -> CGFloat) -> CGFloat {
-        return self.chartPointsModels.reduce((CGFloat.greatestFiniteMagnitude, -CGFloat.greatestFiniteMagnitude)) {tuple, viewWithChartPoint in
+        return chartPointsModels.reduce((CGFloat.greatestFiniteMagnitude, -CGFloat.greatestFiniteMagnitude)) {tuple, viewWithChartPoint in
             let minSpace = tuple.0
             let previousScreenLoc = tuple.1
             return (min(minSpace, abs(dimPicker(viewWithChartPoint.screenLoc) - previousScreenLoc)), dimPicker(viewWithChartPoint.screenLoc))
@@ -177,9 +177,9 @@ open class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }
     
     fileprivate func filterChartPoints(_ includePoint: (CGPoint) -> Bool) -> [T] {
-        return self.chartPointsModels.reduce(Array<T>()) { includedPoints, chartPointModel in
+        return chartPointsModels.reduce(Array<T>()) {includedPoints, chartPointModel in
             let chartPoint = chartPointModel.chartPoint
-            if includePoint(self.chartPointScreenLoc(chartPoint)) {
+            if includePoint(chartPointScreenLoc(chartPoint)) {
                 return includedPoints + [chartPoint]
             } else {
                 return includedPoints

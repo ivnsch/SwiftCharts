@@ -27,14 +27,14 @@ open class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }
     
     override open func display(chart: Chart) {
-        var points = self.chartPointScreenLocs
+        var points = chartPointScreenLocs
         
         let origin = chart.contentView.frame.origin
         let xLength = modelLocToScreenLoc(x: xAxis.last) - modelLocToScreenLoc(x: xAxis.first)
 
         let bottomY = modelLocToScreenLoc(y: yAxis.first)
         
-        if self.addContainerPoints {
+        if addContainerPoints {
             points.append(CGPoint(x: origin.x + xLength, y: bottomY))
             points.append(CGPoint(x: origin.x, y: bottomY))
         }

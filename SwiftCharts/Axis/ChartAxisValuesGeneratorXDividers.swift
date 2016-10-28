@@ -62,9 +62,9 @@ open class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
     open func calculateFittingRangeAndFactor(_ axis: ChartAxis) -> (min: Double, max: Double, factor: Double)? {
         
         if nice {
-            let niceMinMax = self.nice(minValue: Double(minValue), maxValue: Double(maxValue))
-            self.minValue = niceMinMax.minValue
-            self.maxValue = niceMinMax.maxValue
+            let niceMinMax = nice(minValue: Double(minValue), maxValue: Double(maxValue))
+            minValue = niceMinMax.minValue
+            maxValue = niceMinMax.maxValue
         }
         
         let growDelta = floor(pow(10, round(log10(Double(min(abs(minValue), abs(maxValue)))))))
@@ -129,14 +129,14 @@ open class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
         func defaultInit() {
             let maxDividers = Int((axis.screenLength + minSpace) / (maxTextSize + minSpace))
             let dividers = min(preferredDividers, maxDividers)
-            self.multiplier = axis.length / Double(dividers)
+            multiplier = axis.length / Double(dividers)
         }
         
         if nice {
             if let rangeAndMultiplier = calculateFittingRangeAndFactor(axis) {
-                self.minValue = rangeAndMultiplier.min
-                self.maxValue = rangeAndMultiplier.max
-                self.multiplier = Double(maxValue - minValue) / Double(rangeAndMultiplier.factor)
+                minValue = rangeAndMultiplier.min
+                maxValue = rangeAndMultiplier.max
+                multiplier = Double(maxValue - minValue) / Double(rangeAndMultiplier.factor)
                 
             } else {
                 defaultInit()

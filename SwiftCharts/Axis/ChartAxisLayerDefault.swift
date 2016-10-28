@@ -153,7 +153,7 @@ open class ChartAxisLayerDefault: ChartAxisLayer {
     }
     
     open var axisValuesScreenLocs: [CGFloat] {
-        return self.currentAxisValues.map{self.axis.screenLocForScalar($0)}
+        return self.currentAxisValues.map{axis.screenLocForScalar($0)}
     }
     
     open var axisValuesWithFrames: [(axisValue: Double, frames: [CGRect])] {
@@ -163,14 +163,14 @@ open class ChartAxisLayerDefault: ChartAxisLayer {
     }
     
     var visibleAxisValuesScreenLocs: [CGFloat] {
-        return self.currentAxisValues.reduce(Array<CGFloat>()) {u, scalar in
-            return u + [self.axis.screenLocForScalar(scalar)]
+        return currentAxisValues.reduce(Array<CGFloat>()) {u, scalar in
+            return u + [axis.screenLocForScalar(scalar)]
         }
     }
     
     // smallest screen space between axis values
     open var minAxisScreenSpace: CGFloat {
-        return self.axisValuesScreenLocs.reduce((CGFloat.greatestFiniteMagnitude, -CGFloat.greatestFiniteMagnitude)) {tuple, screenLoc in
+        return axisValuesScreenLocs.reduce((CGFloat.greatestFiniteMagnitude, -CGFloat.greatestFiniteMagnitude)) {tuple, screenLoc in
             let minSpace = tuple.0
             let previousScreenLoc = tuple.1
             return (min(minSpace, abs(screenLoc - previousScreenLoc)), screenLoc)
@@ -235,27 +235,27 @@ open class ChartAxisLayerDefault: ChartAxisLayer {
     }
     
     open func update() {
-        self.prepareUpdate()
-        self.updateInternal()
-        self.postUpdate()
+        prepareUpdate()
+        updateInternal()
+        postUpdate()
     }
     
     fileprivate func clearDrawers() {
-        self.lineDrawer = nil
-        self.labelDrawers = []
-        self.axisTitleLabelDrawers = []
+        lineDrawer = nil
+        labelDrawers = []
+        axisTitleLabelDrawers = []
     }
     
     func prepareUpdate() {
-        self.clearDrawers()
+        clearDrawers()
     }
     
     func updateInternal() {
-        self.initDrawers()
+        initDrawers()
     }
     
     func postUpdate() {
-        self.lastFrame = frame
+        lastFrame = frame
     }
     
     open func handleAxisInnerFrameChange(_ xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
@@ -264,7 +264,7 @@ open class ChartAxisLayerDefault: ChartAxisLayer {
     open func chartInitialized(chart: Chart) {
         self.chart = chart
         
-        self.update()
+        update()
     }
 
     /**
@@ -275,19 +275,19 @@ open class ChartAxisLayerDefault: ChartAxisLayer {
      */
     open func chartViewDrawing(context: CGContext, chart: Chart) {
         func draw() {
-            if self.settings.isAxisLineVisible {
-                if let lineDrawer = self.lineDrawer {
-                    context.setLineWidth(CGFloat(self.settings.axisStrokeWidth))
+            if settings.isAxisLineVisible {
+                if let lineDrawer = lineDrawer {
+                    context.setLineWidth(CGFloat(settings.axisStrokeWidth))
                     lineDrawer.triggerDraw(context: context, chart: chart)
                 }
             }
             
-            for (_, labelDrawers) in self.labelDrawers {
+            for (_, labelDrawers) in labelDrawers {
                 for labelDrawer in labelDrawers {
                     labelDrawer.triggerDraw(context: context, chart: chart)
                 }
             }
-            for axisTitleLabelDrawer in self.axisTitleLabelDrawers {
+            for axisTitleLabelDrawer in axisTitleLabelDrawers {
                 axisTitleLabelDrawer.triggerDraw(context: context, chart: chart)
             }
         }

@@ -54,8 +54,8 @@ class BarsExample: UIViewController {
             return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: UIColor.blue.withAlphaComponent(0.6), settings: settings)
         }
         
-        let frame = ExamplesDefaults.chartFrame(self.view.bounds)
-        let chartFrame = self.chart?.frame ?? CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height - sideSelectorHeight)
+        let frame = ExamplesDefaults.chartFrame(view.bounds)
+        let chartFrame = chart?.frame ?? CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height - sideSelectorHeight)
         
         let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
 
@@ -83,16 +83,16 @@ class BarsExample: UIViewController {
     fileprivate func showChart(horizontal: Bool) {
         self.chart?.clearView()
         
-        let chart = self.barsChart(horizontal: horizontal)
-        self.view.addSubview(chart.view)
+        let chart = barsChart(horizontal: horizontal)
+        view.addSubview(chart.view)
         self.chart = chart
     }
     
     override func viewDidLoad() {
-        self.showChart(horizontal: false)
-        if let chart = self.chart {
-            let sideSelector = DirSelector(frame: CGRect(x: 0, y: chart.frame.origin.y + chart.frame.size.height, width: self.view.frame.size.width, height: self.sideSelectorHeight), controller: self)
-            self.view.addSubview(sideSelector)
+        showChart(horizontal: false)
+        if let chart = chart {
+            let sideSelector = DirSelector(frame: CGRect(x: 0, y: chart.frame.origin.y + chart.frame.size.height, width: view.frame.size.width, height: sideSelectorHeight), controller: self)
+            view.addSubview(sideSelector)
         }
     }
     
@@ -110,19 +110,19 @@ class BarsExample: UIViewController {
             
             self.controller = controller
             
-            self.horizontal = UIButton()
-            self.horizontal.setTitle("Horizontal", for: UIControlState())
-            self.vertical = UIButton()
-            self.vertical.setTitle("Vertical", for: UIControlState())
+            horizontal = UIButton()
+            horizontal.setTitle("Horizontal", for: UIControlState())
+            vertical = UIButton()
+            vertical.setTitle("Vertical", for: UIControlState())
             
-            self.buttonDirs = [self.horizontal : true, self.vertical : false]
+            buttonDirs = [horizontal : true, vertical : false]
             
             super.init(frame: frame)
             
-            self.addSubview(self.horizontal)
-            self.addSubview(self.vertical)
+            addSubview(horizontal)
+            addSubview(vertical)
             
-            for button in [self.horizontal, self.vertical] {
+            for button in [horizontal, vertical] {
                 button.titleLabel?.font = ExamplesDefaults.fontWithSize(14)
                 button.setTitleColor(UIColor.blue, for: UIControlState())
                 button.addTarget(self, action: #selector(DirSelector.buttonTapped(_:)), for: .touchUpInside)
@@ -135,7 +135,7 @@ class BarsExample: UIViewController {
         }
         
         override func didMoveToSuperview() {
-            let views = [self.horizontal, self.vertical]
+            let views = [horizontal, vertical]
             for v in views {
                 v.translatesAutoresizingMaskIntoConstraints = false
             }
@@ -157,7 +157,7 @@ class BarsExample: UIViewController {
             
             let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraints(withVisualFormat: "V:|[\($0.0)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
             
-            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
+            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
                 + vConstraits)
         }
         

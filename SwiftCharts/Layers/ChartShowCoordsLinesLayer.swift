@@ -28,7 +28,7 @@ open class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 v.removeFromSuperview()
             }
             
-            let screenLoc = self.chartPointScreenLoc(chartPoint)
+            let screenLoc = chartPointScreenLoc(chartPoint)
             
             let hLine = UIView(frame: CGRect(x: screenLoc.x, y: screenLoc.y, width: 0, height: 1))
             let vLine = UIView(frame: CGRect(x: screenLoc.x, y: screenLoc.y, width: 0, height: 1))

@@ -21,8 +21,8 @@ open class ChartAreasView: UIView {
         
         super.init(frame: frame)
 
-        self.backgroundColor = UIColor.clear
-        self.show(path: self.generateAreaPath(points: points))
+        backgroundColor = UIColor.clear
+        show(path: generateAreaPath(points: points))
     }
     
     required public init(coder aDecoder: NSCoder) {
@@ -53,15 +53,15 @@ open class ChartAreasView: UIView {
     fileprivate func show(path: UIBezierPath) {
         let areaLayer = CAShapeLayer()
         areaLayer.lineJoin = kCALineJoinBevel
-        areaLayer.fillColor   = self.color.cgColor
+        areaLayer.fillColor   = color.cgColor
         areaLayer.lineWidth   = 2.0
         areaLayer.strokeEnd   = 0.0
-        self.layer.addSublayer(areaLayer)
+        layer.addSublayer(areaLayer)
         
         areaLayer.path = path.cgPath
-        areaLayer.strokeColor = self.color.cgColor
+        areaLayer.strokeColor = color.cgColor
         
-        if self.animDuration > 0 {
+        if animDuration > 0 {
             let maskLayer = CAGradientLayer()
             maskLayer.anchorPoint = CGPoint.zero
             
@@ -69,24 +69,24 @@ open class ChartAreasView: UIView {
                 UIColor(white: 0, alpha: 0).cgColor,
                 UIColor(white: 0, alpha: 1).cgColor]
             maskLayer.colors = colors
-            maskLayer.bounds = CGRect(x: 0, y: 0, width: 0, height: self.layer.bounds.size.height)
+            maskLayer.bounds = CGRect(x: 0, y: 0, width: 0, height: layer.bounds.size.height)
             maskLayer.startPoint = CGPoint(x: 1, y: 0)
             maskLayer.endPoint = CGPoint(x: 0, y: 0)
-            self.layer.mask = maskLayer
+            layer.mask = maskLayer
         
             let revealAnimation = CABasicAnimation(keyPath: "bounds")
-            revealAnimation.fromValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 0, height: self.layer.bounds.size.height))
+            revealAnimation.fromValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 0, height: layer.bounds.size.height))
             
-            let target = CGRect(x: self.layer.bounds.origin.x, y: self.layer.bounds.origin.y, width: self.layer.bounds.size.width + 2000, height: self.layer.bounds.size.height);
+            let target = CGRect(x: layer.bounds.origin.x, y: layer.bounds.origin.y, width: layer.bounds.size.width + 2000, height: layer.bounds.size.height)
             
             revealAnimation.toValue = NSValue(cgRect: target)
-            revealAnimation.duration = CFTimeInterval(self.animDuration)
+            revealAnimation.duration = CFTimeInterval(animDuration)
             
             revealAnimation.isRemovedOnCompletion = false
             revealAnimation.fillMode = kCAFillModeForwards
             
-            revealAnimation.beginTime = CACurrentMediaTime() + CFTimeInterval(self.animDelay)
-            self.layer.mask?.add(revealAnimation, forKey: "revealAnimation")
+            revealAnimation.beginTime = CACurrentMediaTime() + CFTimeInterval(animDelay)
+            layer.mask?.add(revealAnimation, forKey: "revealAnimation")
         }
     }
 }

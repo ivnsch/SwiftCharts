@@ -99,7 +99,7 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
     fileprivate func toScreenLine(lineModel: ChartLineModel<T>, chart: Chart) -> ScreenLine<T> {
         return ScreenLine(
-            points: lineModel.chartPoints.map{self.chartPointScreenLoc($0)},
+            points: lineModel.chartPoints.map{chartPointScreenLoc($0)},
             color: lineModel.lineColor,
             lineWidth: lineModel.lineWidth,
             lineJoin: lineModel.lineJoin,
@@ -120,11 +120,11 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }
     
     open func initScreenLines(_ chart: Chart) {
-        let screenLines = self.lineModels.map{self.toScreenLine(lineModel: $0, chart: chart)}
+        let screenLines = lineModels.map{toScreenLine(lineModel: $0, chart: chart)}
         
         for screenLine in screenLines {
             let lineView = generateLineView(screenLine, chart: chart)
-            self.lineViews.append(lineView)
+            lineViews.append(lineView)
             lineView.isUserInteractionEnabled = false
             chart.addSubviewNoTransform(lineView)
             self.screenLines.append((screenLine, lineView))
@@ -133,14 +133,14 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
     open func generateLineView(_ screenLine: ScreenLine<T>, chart: Chart) -> ChartLinesView {
         return ChartLinesView(
-            path: self.pathGenerator.generatePath(points: screenLine.points, lineWidth: screenLine.lineWidth),
+            path: pathGenerator.generatePath(points: screenLine.points, lineWidth: screenLine.lineWidth),
             frame: chart.contentView.bounds,
             lineColor: screenLine.color,
             lineWidth: screenLine.lineWidth,
             lineJoin: screenLine.lineJoin,
             lineCap: screenLine.lineCap,
-            animDuration: self.isTransform ? 0 : screenLine.animDuration,
-            animDelay: self.isTransform ? 0 : screenLine.animDelay,
+            animDuration: isTransform ? 0 : screenLine.animDuration,
+            animDelay: isTransform ? 0 : screenLine.animDelay,
             dashPattern: screenLine.dashPattern
         )
     }

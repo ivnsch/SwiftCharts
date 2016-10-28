@@ -63,22 +63,22 @@ class CustomUnitsExample: UIViewController {
         yValues.first?.hidden = true
 
         let xValues = [
-            self.createDateAxisValue("01.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
-            self.createDateAxisValue("03.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
-            self.createDateAxisValue("05.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
-            self.createDateAxisValue("07.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
-            self.createDateAxisValue("09.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
-            self.createDateAxisValue("11.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
-            self.createDateAxisValue("13.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
-            self.createDateAxisValue("15.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
-            self.createDateAxisValue("17.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
-            self.createDateAxisValue("19.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
-            self.createDateAxisValue("21.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter)
+            createDateAxisValue("01.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
+            createDateAxisValue("03.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
+            createDateAxisValue("05.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
+            createDateAxisValue("07.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
+            createDateAxisValue("09.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
+            createDateAxisValue("11.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
+            createDateAxisValue("13.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
+            createDateAxisValue("15.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
+            createDateAxisValue("17.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
+            createDateAxisValue("19.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
+            createDateAxisValue("21.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter)
         ]
         
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
-        let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
+        let chartFrame = ExamplesDefaults.chartFrame(view.bounds)
         let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
         chartSettings.trailing = 80
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
@@ -101,12 +101,12 @@ class CustomUnitsExample: UIViewController {
                 chartPointsLineLayer]
         )
         
-        self.view.addSubview(chart.view)
+        view.addSubview(chart.view)
         self.chart = chart
     }
     
     func createChartPoint(dateStr: String, percent: Double, readFormatter: DateFormatter, displayFormatter: DateFormatter) -> ChartPoint {
-        return ChartPoint(x: self.createDateAxisValue(dateStr, readFormatter: readFormatter, displayFormatter: displayFormatter), y: ChartAxisValuePercent(percent))
+        return ChartPoint(x: createDateAxisValue(dateStr, readFormatter: readFormatter, displayFormatter: displayFormatter), y: ChartAxisValuePercent(percent))
     }
     
     func createDateAxisValue(_ dateStr: String, readFormatter: DateFormatter, displayFormatter: DateFormatter) -> ChartAxisValue {
@@ -117,7 +117,7 @@ class CustomUnitsExample: UIViewController {
     
     class ChartAxisValuePercent: ChartAxisValueDouble {
         override var description: String {
-            return "\(self.formatter.string(from: NSNumber(value: self.scalar))!)%"
+            return "\(formatter.string(from: NSNumber(value: scalar))!)%"
         }
     }
 }

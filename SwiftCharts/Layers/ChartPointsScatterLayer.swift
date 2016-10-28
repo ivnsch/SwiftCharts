@@ -111,8 +111,8 @@ open class ChartPointsScatterTrianglesLayer<T: ChartPoint>: ChartPointsScatterLa
     
     override open func drawChartPointModel(_ context: CGContext, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
         
-        let w = self.itemSize.width
-        let h = self.itemSize.height
+        let w = itemSize.width
+        let h = itemSize.height
         
         let screenLoc = modelLocToScreenLoc(x: chartPointModel.chartPoint.x.scalar, y: chartPointModel.chartPoint.y.scalar)
         
@@ -122,7 +122,7 @@ open class ChartPointsScatterTrianglesLayer<T: ChartPoint>: ChartPointsScatterLa
         path.addLine(to: CGPoint(x: screenLoc.x - w / 2, y: screenLoc.y + h / 2))
         path.closeSubpath()
         
-        context.setFillColor(self.itemFillColor.cgColor)
+        context.setFillColor(itemFillColor.cgColor)
         context.addPath(path)
         context.fillPath()
     }
@@ -139,12 +139,12 @@ open class ChartPointsScatterSquaresLayer<T: ChartPoint>: ChartPointsScatterLaye
     
     override open func drawChartPointModel(_ context: CGContext, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
         
-        let w = self.itemSize.width
-        let h = self.itemSize.height
+        let w = itemSize.width
+        let h = itemSize.height
 
         let screenLoc = modelLocToScreenLoc(x: chartPointModel.chartPoint.x.scalar, y: chartPointModel.chartPoint.y.scalar)
         
-        context.setFillColor(self.itemFillColor.cgColor)
+        context.setFillColor(itemFillColor.cgColor)
         context.fill(CGRect(x: screenLoc.x - w / 2, y: screenLoc.y - h / 2, width: w, height: h))
     }
     
@@ -167,12 +167,12 @@ open class ChartPointsScatterCirclesLayer<T: ChartPoint>: ChartPointsScatterLaye
     }
     
     override open func drawChartPointModel(_ context: CGContext, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
-        let w = self.itemSize.width
-        let h = self.itemSize.height
+        let w = itemSize.width
+        let h = itemSize.height
         
         let screenLoc = modelLocToScreenLoc(x: chartPointModel.chartPoint.x.scalar, y: chartPointModel.chartPoint.y.scalar)
         
-        context.setFillColor(self.itemFillColor.cgColor)
+        context.setFillColor(itemFillColor.cgColor)
         context.fillEllipse(in: CGRect(x: screenLoc.x - w / 2, y: screenLoc.y - h / 2, width: w, height: h))
     }
     
@@ -207,14 +207,14 @@ open class ChartPointsScatterCrossesLayer<T: ChartPoint>: ChartPointsScatterLaye
     }
     
     override open func drawChartPointModel(_ context: CGContext, chartPointModel: ChartPointLayerModel<T>, view: UIView) {
-        let w = self.itemSize.width
-        let h = self.itemSize.height
+        let w = itemSize.width
+        let h = itemSize.height
 
         let screenLoc = modelLocToScreenLoc(x: chartPointModel.chartPoint.x.scalar, y: chartPointModel.chartPoint.y.scalar)
         
         func drawLine(_ p1X: CGFloat, p1Y: CGFloat, p2X: CGFloat, p2Y: CGFloat) {
-            context.setStrokeColor(self.itemFillColor.cgColor)
-            context.setLineWidth(self.strokeWidth)
+            context.setStrokeColor(itemFillColor.cgColor)
+            context.setLineWidth(strokeWidth)
             context.move(to: CGPoint(x: p1X, y: p1Y))
             context.addLine(to: CGPoint(x: p2X, y: p2Y))
             context.strokePath()

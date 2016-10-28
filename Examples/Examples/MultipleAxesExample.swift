@@ -22,44 +22,44 @@ class MultipleAxesExample: UIViewController {
         
         func createChartPoints0(_ color: UIColor) -> [ChartPoint] {
             return [
-                self.createChartPoint(0, 0, color),
-                self.createChartPoint(2, 2, color),
-                self.createChartPoint(5, 2, color),
-                self.createChartPoint(8, 11, color),
-                self.createChartPoint(10, 2, color),
-                self.createChartPoint(12, 3, color),
-                self.createChartPoint(16, 22, color),
-                self.createChartPoint(20, 5, color)
+                createChartPoint(0, 0, color),
+                createChartPoint(2, 2, color),
+                createChartPoint(5, 2, color),
+                createChartPoint(8, 11, color),
+                createChartPoint(10, 2, color),
+                createChartPoint(12, 3, color),
+                createChartPoint(16, 22, color),
+                createChartPoint(20, 5, color)
             ]
         }
         
         func createChartPoints1(_ color: UIColor) -> [ChartPoint] {
             return [
-                self.createChartPoint(0, 7, color),
-                self.createChartPoint(1, 10, color),
-                self.createChartPoint(3, 9, color),
-                self.createChartPoint(9, 2, color),
-                self.createChartPoint(10, -5, color),
-                self.createChartPoint(13, -12, color)
+                createChartPoint(0, 7, color),
+                createChartPoint(1, 10, color),
+                createChartPoint(3, 9, color),
+                createChartPoint(9, 2, color),
+                createChartPoint(10, -5, color),
+                createChartPoint(13, -12, color)
             ]
         }
         
         func createChartPoints2(_ color: UIColor) -> [ChartPoint] {
             return [
-                self.createChartPoint(-200, -10, color),
-                self.createChartPoint(-160, -30, color),
-                self.createChartPoint(-110, -10, color),
-                self.createChartPoint(-40, -80, color),
-                self.createChartPoint(-10, -50, color),
-                self.createChartPoint(20, 10, color)
+                createChartPoint(-200, -10, color),
+                createChartPoint(-160, -30, color),
+                createChartPoint(-110, -10, color),
+                createChartPoint(-40, -80, color),
+                createChartPoint(-10, -50, color),
+                createChartPoint(20, 10, color)
             ]
         }
         
         func createChartPoints3(_ color: UIColor) -> [ChartPoint] {
             return [
-                self.createChartPoint(10000, 70, color),
-                self.createChartPoint(20000, 100, color),
-                self.createChartPoint(30000, 160, color)
+                createChartPoint(10000, 70, color),
+                createChartPoint(20000, 100, color),
+                createChartPoint(30000, 160, color)
             ]
         }
         
@@ -77,7 +77,7 @@ class MultipleAxesExample: UIViewController {
         
         
         let top: CGFloat = 80
-        let viewFrame = CGRect(x: 0, y: top, width: self.view.frame.size.width, height: self.view.frame.size.height - top - 10)
+        let viewFrame = CGRect(x: 0, y: top, width: view.frame.size.width, height: view.frame.size.height - top - 10)
         
         let yValues1 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[0]))}, addPaddingSegmentIfEdge: false)
         

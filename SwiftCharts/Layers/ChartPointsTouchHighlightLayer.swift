@@ -87,11 +87,11 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
                 UIView.animate(withDuration: 0.5,
                     delay: hideDelay,
                     options: [],
-                    animations: { () -> Void in
+                    animations: {
                         for subview in view.subviews {
                             subview.alpha = 0
                         }
-                    }, completion: { (completed) -> Void in
+                    }, completion: {completed in
                         if completed {
                             self.highlightedModel = nil
                         }

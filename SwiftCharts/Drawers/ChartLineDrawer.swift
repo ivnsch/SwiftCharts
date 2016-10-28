@@ -22,6 +22,6 @@ class ChartLineDrawer: ChartContextDrawer {
     }
 
     override func draw(context: CGContext, chart: Chart) {
-        ChartDrawLine(context: context, p1: self.p1, p2: self.p2, width: self.strokeWidth, color: self.color)
+        ChartDrawLine(context: context, p1: p1, p2: p2, width: strokeWidth, color: color)
     }
 }

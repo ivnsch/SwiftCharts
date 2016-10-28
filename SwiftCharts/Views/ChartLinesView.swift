@@ -33,8 +33,8 @@ open class ChartLinesView: UIView {
         
         super.init(frame: frame)
 
-        self.backgroundColor = UIColor.clear
-        self.show(path: path)
+        backgroundColor = UIColor.clear
+        show(path: path)
     }
 
     required public init(coder aDecoder: NSCoder) {
@@ -67,10 +67,10 @@ open class ChartLinesView: UIView {
             lineLayer.lineDashPattern = dashPattern as [NSNumber]?
         }
         
-        if self.animDuration > 0 {
+        if animDuration > 0 {
             lineLayer.strokeEnd = 0.0
             let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
-            pathAnimation.duration = CFTimeInterval(self.animDuration)
+            pathAnimation.duration = CFTimeInterval(animDuration)
             pathAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             pathAnimation.fromValue = NSNumber(value: 0 as Float)
             pathAnimation.toValue = NSNumber(value: 1 as Float)
@@ -78,7 +78,7 @@ open class ChartLinesView: UIView {
             pathAnimation.isRemovedOnCompletion = false
             pathAnimation.fillMode = kCAFillModeForwards
             
-            pathAnimation.beginTime = CACurrentMediaTime() + CFTimeInterval(self.animDelay)
+            pathAnimation.beginTime = CACurrentMediaTime() + CFTimeInterval(animDelay)
             lineLayer.add(pathAnimation, forKey: "strokeEndAnimation")
             
         } else {
@@ -89,6 +89,6 @@ open class ChartLinesView: UIView {
     }
     
     fileprivate func show(path: UIBezierPath) {
-        self.layer.addSublayer(self.generateLayer(path: path))
+        layer.addSublayer(generateLayer(path: path))
     }
  }

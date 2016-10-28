@@ -42,7 +42,7 @@ extension CGRect {
      - returns: The bounding rectangle of the rotated rectangle
      */
     public func boundingRectAfterRotating(radians: CGFloat) -> CGRect {
-        return self.applying(CGAffineTransform(rotationAngle: radians))
+        return applying(CGAffineTransform(rotationAngle: radians))
     }
 
 }

@@ -11,7 +11,7 @@ import UIKit
 extension String {
     
     subscript (i: Int) -> Character {
-        return self[self.characters.index(self.startIndex, offsetBy: i)]
+        return self[characters.index(startIndex, offsetBy: i)]
     }
     
     subscript (i: Int) -> String {
@@ -38,7 +38,7 @@ extension String {
     }
     
     func trim() -> String {
-        return self.trimmingCharacters(in: CharacterSet.whitespaces)
+        return trimmingCharacters(in: CharacterSet.whitespaces)
     }
     
     func fittingSubstring(_ width: CGFloat, font: UIFont) -> String {
@@ -54,7 +54,7 @@ extension String {
     func truncate(_ width: CGFloat, font: UIFont) -> String {
         let ellipsis = "..."
         let substr = fittingSubstring(width - ellipsis.width(font), font: font)
-        if substr.characters.count != self.characters.count {
+        if substr.characters.count != characters.count {
             return "\(substr.trim())\(ellipsis)"
         } else {
             return self

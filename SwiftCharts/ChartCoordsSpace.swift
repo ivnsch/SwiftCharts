@@ -158,32 +158,32 @@ open class ChartCoordsSpace {
         self.xLowGenerator = xLowGenerator
         self.xHighGenerator = xHighGenerator
         
-        self.chartInnerFrame = self.calculateChartInnerFrame()
+        chartInnerFrame = calculateChartInnerFrame()
         
-        self.yLowAxesLayers = self.generateYLowAxes()
-        self.yHighAxesLayers = self.generateYHighAxes()
-        self.xLowAxesLayers = self.generateXLowAxes()
-        self.xHighAxesLayers = self.generateXHighAxes()
+        self.yLowAxesLayers = generateYLowAxes()
+        self.yHighAxesLayers = generateYHighAxes()
+        self.xLowAxesLayers = generateXLowAxes()
+        self.xHighAxesLayers = generateXHighAxes()
     }
     
     
     fileprivate func generateYLowAxes() -> [ChartAxisLayer] {
-        return generateYAxisShared(axisModels: self.yLowModels, offset: chartSettings.leading, generator: self.yLowGenerator)
+        return generateYAxisShared(axisModels: yLowModels, offset: chartSettings.leading, generator: yLowGenerator)
     }
     
     fileprivate func generateYHighAxes() -> [ChartAxisLayer] {
-        let chartFrame = self.chartInnerFrame
-        return generateYAxisShared(axisModels: self.yHighModels, offset: chartFrame.origin.x + chartFrame.width, generator: self.yHighGenerator)
+        let chartFrame = chartInnerFrame
+        return generateYAxisShared(axisModels: yHighModels, offset: chartFrame.origin.x + chartFrame.width, generator: yHighGenerator)
     }
     
     fileprivate func generateXLowAxes() -> [ChartAxisLayer] {
-        let chartFrame = self.chartInnerFrame
+        let chartFrame = chartInnerFrame
         let y = chartFrame.origin.y + chartFrame.height
-        return self.generateXAxesShared(axisModels: self.xLowModels, offset: y, generator: self.xLowGenerator)
+        return self.generateXAxesShared(axisModels: xLowModels, offset: y, generator: xLowGenerator)
     }
     
     fileprivate func generateXHighAxes() -> [ChartAxisLayer] {
-        return self.generateXAxesShared(axisModels: self.xHighModels, offset: chartSettings.top, generator: self.xHighGenerator)
+        return generateXAxesShared(axisModels: xHighModels, offset: chartSettings.top, generator: xHighGenerator)
     }
 
     /**
@@ -196,14 +196,14 @@ open class ChartCoordsSpace {
      - returns: An array of ChartAxisLayers
      */
     fileprivate func generateXAxesShared(axisModels: [ChartAxisModel], offset: CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
-        let chartFrame = self.chartInnerFrame
+        let chartFrame = chartInnerFrame
         let chartSettings = self.chartSettings
         let x = chartFrame.origin.x
         let length = chartFrame.width
         
-        return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: { offset in
+        return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: {offset in
             (p1: CGPoint(x: x, y: offset), p2: CGPoint(x: x + length, y: offset))
-            }, nextLayerOffset: { layer in
+            }, nextLayerOffset: {layer in
                 layer.frameWithoutLabels.height + chartSettings.spacingBetweenAxesX
             }, generator: generator)
     }
@@ -218,14 +218,14 @@ open class ChartCoordsSpace {
      - returns: An array of ChartAxisLayers
      */
     fileprivate func generateYAxisShared(axisModels: [ChartAxisModel], offset: CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
-        let chartFrame = self.chartInnerFrame
+        let chartFrame = chartInnerFrame
         let chartSettings = self.chartSettings
         let y = chartFrame.origin.y
         let length = chartFrame.height
         
-        return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: { offset in
+        return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: {offset in
             (p1: CGPoint(x: offset, y: y + length), p2: CGPoint(x: offset, y: y))
-            }, nextLayerOffset: { layer in
+            }, nextLayerOffset: {layer in
                 layer.frameWithoutLabels.width + chartSettings.spacingBetweenAxesY
             }, generator: generator)
     }
@@ -274,28 +274,28 @@ open class ChartCoordsSpace {
         }
 
         func totalWidth(_ axisLayers: [ChartAxisLayer]) -> CGFloat {
-            return totalDim(axisLayers, {$0.frame.width}, self.chartSettings.spacingBetweenAxesY)
+            return totalDim(axisLayers, {$0.frame.width}, chartSettings.spacingBetweenAxesY)
         }
         
         func totalHeight(_ axisLayers: [ChartAxisLayer]) -> CGFloat {
-            return totalDim(axisLayers, {$0.frame.height}, self.chartSettings.spacingBetweenAxesX)
+            return totalDim(axisLayers, {$0.frame.height}, chartSettings.spacingBetweenAxesX)
         }
         
-        let yLowWidth = totalWidth(self.generateYLowAxes())
-        let yHighWidth = totalWidth(self.generateYHighAxes())
-        let xLowHeight = totalHeight(self.generateXLowAxes())
-        let xHighHeight = totalHeight(self.generateXHighAxes())
+        let yLowWidth = totalWidth(generateYLowAxes())
+        let yHighWidth = totalWidth(generateYHighAxes())
+        let xLowHeight = totalHeight(generateXLowAxes())
+        let xHighHeight = totalHeight(generateXHighAxes())
         
-        let leftWidth = yLowWidth + self.chartSettings.leading
-        let topHeigth = xHighHeight + self.chartSettings.top
-        let rightWidth = yHighWidth + self.chartSettings.trailing
-        let bottomHeight = xLowHeight + self.chartSettings.bottom
+        let leftWidth = yLowWidth + chartSettings.leading
+        let topHeigth = xHighHeight + chartSettings.top
+        let rightWidth = yHighWidth + chartSettings.trailing
+        let bottomHeight = xLowHeight + chartSettings.bottom
         
         return CGRect(
             x: leftWidth,
             y: topHeigth,
-            width: self.chartSize.width - leftWidth - rightWidth,
-            height: self.chartSize.height - topHeigth - bottomHeight
+            width: chartSize.width - leftWidth - rightWidth,
+            height: chartSize.height - topHeigth - bottomHeight
         )
     }
 }

@@ -18,14 +18,14 @@ open class ChartPointsBubbleLayer<T: ChartPointBubble>: ChartPointsLayer<T> {
             (min: min(tuple.min, chartPoint.diameterScalar), max: max(tuple.max, chartPoint.diameterScalar))
         }
         
-        self.diameterFactor = (maxBubbleDiameter - minBubbleDiameter) / (maxDiameterScalar - minDiameterScalar)
+        diameterFactor = (maxBubbleDiameter - minBubbleDiameter) / (maxDiameterScalar - minDiameterScalar)
 
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
     override open func chartViewDrawing(context: CGContext, chart: Chart) {
 
-        for chartPointModel in self.chartPointsModels {
+        for chartPointModel in chartPointsModels {
 
             context.setLineWidth(1.0)
             context.setStrokeColor(chartPointModel.chartPoint.borderColor.cgColor)
