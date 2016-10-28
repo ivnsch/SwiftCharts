@@ -94,7 +94,7 @@ class MasterViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad {
-            let example = self.examples[(indexPath as NSIndexPath).row]
+            let example = self.examples[indexPath.row]
             self.detailViewController?.detailItem = example.0
             self.detailViewController?.title = example.1
             
@@ -114,7 +114,7 @@ class MasterViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell
-        cell.textLabel!.text = examples[(indexPath as NSIndexPath).row].1
+        cell.textLabel!.text = examples[indexPath.row].1
         cell.textLabel!.font = ExamplesDefaults.fontWithSize(Env.iPad ? 22 : 16)
         return cell
     }

@@ -48,12 +48,12 @@ class HelloWorld: UIViewController {
         let viewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart, isTransform: Bool) -> UIView? in
             let viewSize: CGFloat = Env.iPad ? 30 : 20
             let center = chartPointModel.screenLoc
-            let view = UIView(frame: CGRect(x: center.x - viewSize / 2, y: center.y - viewSize / 2, width: viewSize, height: viewSize))
-            view.backgroundColor = UIColor.cyan
-            let dot = UIView(frame: CGRect(x: view.bounds.midX - 1, y: view.bounds.midY - 1, width: 2, height: 2))
-            dot.backgroundColor = UIColor.blue
-            view.addSubview(dot)
-            return view
+            let label = UILabel(frame: CGRect(x: center.x - viewSize / 2, y: center.y - viewSize / 2, width: viewSize, height: viewSize))
+            label.backgroundColor = UIColor.green
+            label.textAlignment = NSTextAlignment.center
+            label.text = chartPointModel.chartPoint.y.description
+            label.font = ExamplesDefaults.labelFont
+            return label
         }
         
         // create layer that uses viewGenerator to display chartpoints

@@ -158,7 +158,6 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
         // TODO: The segment/multiple values are unit-specific
         let yAxisValues = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(allPoints, minSegmentCount: 2, maxSegmentCount: 4, multiple: 25, axisValueGenerator: { ChartAxisValueDouble($0, labelSettings: self.axisLabelSettings) }, addPaddingSegmentIfEdge: true)
 
-//                chartSettings.labelsWidthY = 30
         let yAxisModel = ChartAxisModel(axisValues: yAxisValues, lineColor: axisLineColor)
 
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: frame, xModel: xAxisModel, yModel: yAxisModel)

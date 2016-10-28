@@ -60,21 +60,21 @@ open class ChartCandleStickView: UIView {
     }
     
     override open func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
+        guard let context = UIGraphicsGetCurrentContext() else {return}
 
         let wHalf = self.frame.width / 2
         
-        context!.setLineWidth(self.strokeWidth)
-        context!.setStrokeColor(self.currentStrokeColor.cgColor)
-        context!.move(to: CGPoint(x: wHalf, y: 0))
-        context!.addLine(to: CGPoint(x: wHalf, y: self.frame.height))
+        context.setLineWidth(self.strokeWidth)
+        context.setStrokeColor(self.currentStrokeColor.cgColor)
+        context.move(to: CGPoint(x: wHalf, y: 0))
+        context.addLine(to: CGPoint(x: wHalf, y: self.frame.height))
         
-        context!.strokePath()
+        context.strokePath()
         
-        context!.setFillColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.0)
-        context!.setFillColor(self.currentFillColor.cgColor)
-        context!.fill(self.innerRect)
-        context!.stroke(self.innerRect)
+        context.setFillColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.0)
+        context.setFillColor(self.currentFillColor.cgColor)
+        context.fill(self.innerRect)
+        context.stroke(self.innerRect)
     }
    
 

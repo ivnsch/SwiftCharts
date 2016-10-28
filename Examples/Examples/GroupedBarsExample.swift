@@ -15,7 +15,7 @@ class GroupedBarsExample: UIViewController {
 
     fileprivate let dirSelectorHeight: CGFloat = 50
 
-    fileprivate func barsChart(_ horizontal: Bool) -> Chart {
+    fileprivate func barsChart(horizontal: Bool) -> Chart {
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
         
         let groupsData: [(title: String, [(min: Double, max: Double)])] = [
@@ -121,16 +121,16 @@ class GroupedBarsExample: UIViewController {
     }
     
     
-    fileprivate func showChart(_ horizontal: Bool) {
+    fileprivate func showChart(horizontal: Bool) {
         self.chart?.clearView()
         
-        let chart = self.barsChart(horizontal)
+        let chart = self.barsChart(horizontal: horizontal)
         self.view.addSubview(chart.view)
         self.chart = chart
     }
     
     override func viewDidLoad() {
-        self.showChart(false)
+        self.showChart(horizontal: false)
         if let chart = self.chart {
             let dirSelector = DirSelector(frame: CGRect(x: 0, y: chart.frame.origin.y + chart.frame.size.height, width: self.view.frame.size.width, height: self.dirSelectorHeight), controller: self)
             self.view.addSubview(dirSelector)
@@ -171,7 +171,7 @@ class GroupedBarsExample: UIViewController {
         
         func buttonTapped(_ sender: UIButton) {
             let horizontal = sender == self.horizontal ? true : false
-            controller?.showChart(horizontal)
+            controller?.showChart(horizontal: horizontal)
         }
         
         override func didMoveToSuperview() {

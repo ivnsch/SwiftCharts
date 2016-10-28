@@ -56,18 +56,18 @@ open class ChartPointEllipseView: UIView {
     }
     
     override open func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
+        guard let context = UIGraphicsGetCurrentContext() else {return}
 
         let borderOffset = self.borderWidth ?? 0
         let circleRect = (CGRect(x: borderOffset, y: borderOffset, width: self.frame.size.width - (borderOffset * 2), height: self.frame.size.height - (borderOffset * 2)))
         
         if let borderWidth = self.borderWidth, let borderColor = self.borderColor {
-            context!.setLineWidth(borderWidth)
-            context!.setStrokeColor(borderColor.cgColor)
-            context!.strokeEllipse(in: circleRect)
+            context.setLineWidth(borderWidth)
+            context.setStrokeColor(borderColor.cgColor)
+            context.strokeEllipse(in: circleRect)
         }
-        context!.setFillColor(self.fillColor.cgColor)
-        context!.fillEllipse(in: circleRect)
+        context.setFillColor(self.fillColor.cgColor)
+        context.fillEllipse(in: circleRect)
     }
     
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

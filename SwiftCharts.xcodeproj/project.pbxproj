@@ -182,7 +182,6 @@
 		22E702171BF5B96200C19675 /* SwiftCharts.h in Headers */ = {isa = PBXBuildFile; fileRef = 06405DAB1B8AA74700A689FF /* SwiftCharts.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		43649A691C7AC7E300523D7F /* ChartPointsTouchHighlightLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43649A681C7AC7E300523D7F /* ChartPointsTouchHighlightLayer.swift */; };
 		437C78521D1EF923003C19C3 /* MultiTrackerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437C78511D1EF923003C19C3 /* MultiTrackerExample.swift */; };
-		580AFD3C1DC2396B007AF8E6 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580AFD3B1DC2396B007AF8E6 /* Globals.swift */; };
 		EB08E2331B93A15E0030081C /* ChartAxisValueDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB08E2321B93A15E0030081C /* ChartAxisValueDouble.swift */; };
 		EB093E5F1D2141EF001157BD /* ChartAxisValuesGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB093E5E1D2141EF001157BD /* ChartAxisValuesGenerator.swift */; };
 		EB093E611D21421D001157BD /* ChartAxisValuesGeneratorFixed.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB093E601D21421D001157BD /* ChartAxisValuesGeneratorFixed.swift */; };
@@ -928,7 +927,6 @@
 				TargetAttributes = {
 					06342AC01B8AAD7F001C9F5D = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = UVC8J7YZXP;
 						LastSwiftMigration = 0800;
 					};
 					06405DA51B8AA74700A689FF = {
@@ -1462,6 +1460,7 @@
 				PRODUCT_NAME = SwiftCharts;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -1484,6 +1483,7 @@
 				PRODUCT_NAME = SwiftCharts;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};

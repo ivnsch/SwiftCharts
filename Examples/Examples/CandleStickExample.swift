@@ -38,8 +38,8 @@ class CandleStickExample: UIViewController {
             return calendar.date(from: components)!
         }
         
-        func filler(_ date: NSDate) -> ChartAxisValueDate {
-            let filler = ChartAxisValueDate(date: date as Date, formatter: displayFormatter)
+        func filler(_ date: Date) -> ChartAxisValueDate {
+            let filler = ChartAxisValueDate(date: date, formatter: displayFormatter)
             filler.hidden = true
             return filler
         }

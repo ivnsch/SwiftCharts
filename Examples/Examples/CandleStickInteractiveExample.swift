@@ -38,8 +38,8 @@ class CandleStickInteractiveExample: UIViewController {
             return calendar.date(from: components)!
         }
         
-        func filler(_ date: NSDate) -> ChartAxisValueDate {
-            let filler = ChartAxisValueDate(date: date as Date, formatter: displayFormatter)
+        func filler(_ date: Date) -> ChartAxisValueDate {
+            let filler = ChartAxisValueDate(date: date, formatter: displayFormatter)
             filler.hidden = true
             return filler
         }
@@ -77,7 +77,10 @@ class CandleStickInteractiveExample: UIViewController {
             let date = dateWithComponents(1, month, year)
             let calendar = Calendar.current
             let monthDays = calendar.range(of: .day, in: .month, for: date)!
-            return [Int](monthDays.lowerBound..<monthDays.upperBound).map {day in
+
+            let arr = CountableRange<Int>(monthDays)
+
+            return arr.map {day in
                 let date = dateWithComponents(day, month, year)
                 let axisValue = ChartAxisValueDate(date: date, formatter: displayFormatter, labelSettings: labelSettings)
                 axisValue.hidden = !(day % 5 == 0)
