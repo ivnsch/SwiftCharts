@@ -199,6 +199,7 @@ open class Chart: Pannable, Zoomable {
         
         self.view.setNeedsDisplay()
         
+        view.initRecognizers(settings)
         configZoomPan(settings.zoomPan)
     }
     
@@ -443,17 +444,20 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
         self.sharedInit()
     }
     
-    func initRecognizers() {
-        let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(ChartView.onPinch(_:)))
-        pinchRecognizer.delegate = self
-        addGestureRecognizer(pinchRecognizer)
-        self.pinchRecognizer = pinchRecognizer
+    func initRecognizers(_ settings: ChartSettings) {
+        if settings.zoomPan.zoomEnabled {
+            let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(ChartView.onPinch(_:)))
+            pinchRecognizer.delegate = self
+            addGestureRecognizer(pinchRecognizer)
+            self.pinchRecognizer = pinchRecognizer
+        }
     
-        
-        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(ChartView.onPan(_:)))
-        panRecognizer.delegate = self
-        addGestureRecognizer(panRecognizer)
-        self.panRecognizer = panRecognizer
+        if settings.zoomPan.panEnabled {
+            let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(ChartView.onPan(_:)))
+            panRecognizer.delegate = self
+            addGestureRecognizer(panRecognizer)
+            self.panRecognizer = panRecognizer
+        }
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ChartView.onTap(_:)))
         tapRecognizer.delegate = self
@@ -467,7 +471,6 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
      */
     func sharedInit() {
         self.backgroundColor = UIColor.clear
-        initRecognizers()
     }
 
     fileprivate var zoomCenter: CGPoint?
