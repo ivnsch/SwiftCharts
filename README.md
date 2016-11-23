@@ -57,7 +57,7 @@ Add to your Podfile:
 Swift 3.0:
 ```ruby
 use_frameworks!
-pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
+pod 'SwiftCharts', '~> 0.5'
 ```
 Note: To use Swift 3.x / master, you need Xcode 8+
 

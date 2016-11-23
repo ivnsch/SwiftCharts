@@ -2,12 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [0.5] - 2016.11.23
 - Add multi-chart tracker layer
 - Add dashed line support
 - Migrate to Swift 2.3
 - Migrate to Swift 3.0
 - Fix division by 0 in axis layer
+- Fix not being able to use reversed axis values
 
 ## [0.4] - 2016.05.29
 - Fix tracker showing NaN on constant coordinate
