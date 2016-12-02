@@ -61,7 +61,7 @@ pod 'SwiftCharts', '~> 0.5'
 ```
 Note: To use Swift 3.x / master, you need Xcode 8+
 
-Swift 2.x:
+Swift 2.3 (not actively maintained):
 ```ruby
 use_frameworks!
 pod 'SwiftCharts', '~> 0.4'
@@ -97,12 +97,12 @@ Swift 3.0:
 github "i-schuetz/SwiftCharts" ~> 0.5
 ```
 
-Swift 2.x:
+Swift 2.3 (not actively maintained):
 ```
 github "i-schuetz/SwiftCharts" ~> 0.4
 ```
 
-Swift 1.2:
+Swift 1.2 (not actively maintained):
 ```
 github "i-schuetz/SwiftCharts" ~> 0.2
 ```
