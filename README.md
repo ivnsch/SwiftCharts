@@ -6,7 +6,7 @@
 
 Easy to use and highly customizable charts library for iOS
 
-##### Features:
+## Features:
 - Bars - plain, stacked, grouped, horizontal, vertical
 - Scatter
 - Line / Multiple lines
@@ -16,23 +16,18 @@ Easy to use and highly customizable charts library for iOS
 - Multiple labels (x axis)
 - Candlestick
 - Cubic line
-- Everything is customizable - views (user can generate arbitrary UIViews for each chartpoint, so everything is possible), animations, units, axis, etc.
+- Custom views, units, animations, axes, etc.
 - Charts can be combined with each other (e.g. lines + bars + circles)
 - Complex interactivity support
-- Choice to use core graphics (directly on chart's context) or UIViews, or combine both.
+- [Pie chart*](https://github.com/i-schuetz/PieCharts)
+- [Legends*](https://github.com/i-schuetz/ChartLegends)
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
-##### Additionally:
-- [Pie chart](https://github.com/i-schuetz/PieCharts)
-- [Legends](https://github.com/i-schuetz/ChartLegends)
-
-These repos are separate only for better focus and reusability. They share the same author, overall style, support the same dependency managers and of course work well with SwiftCharts.
+<sub>*These are separate repos for better focus and reusability.</sub>
 
 Swift 3.0, 2.x, 1.2, iOS 10, 9, 8, 7
 
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM)
-
-##### Screenshots:
 
 ![ScreenShot](Screenshots/IMG_0102.jpeg)
 ![ScreenShot](Screenshots/IMG_0022.jpeg)
@@ -54,9 +49,9 @@ Swift 3.0, 2.x, 1.2, iOS 10, 9, 8, 7
 ![ScreenShot](Screenshots/IMG_0041.jpeg)
 
 
-##### Installation
+## Installation
 
-##### CocoaPods
+### CocoaPods
 
 Add to your Podfile:
 
@@ -94,7 +89,7 @@ Import the framework in your code:
 import SwiftCharts
 ```
 
-##### Carthage
+### Carthage
 
 Add to your Cartfile:
 
@@ -113,7 +108,7 @@ Swift 1.2 (not actively maintained):
 github "i-schuetz/SwiftCharts" ~> 0.2
 ```
 
-##### Quick start 
+## Quick start 
 
 Multiline chart:
 
@@ -165,15 +160,15 @@ self.view.addSubview(chart.view)
 self.chart = chart
 ```
 
-##### Concept:
+## Concept:
 
 - Layer architecture, which makes it extremely easy to customize charts, create new types, combine existing ones and add interactive elements.
 
 - Creation of views via a generator function, which makes it easy to use custom views in any layer.
 
-##### Main Components:
+### Main Components:
 
-##### 1. Layers:
+#### 1. Layers:
 
 A chart is the result of composing layers together. Everything is a layer - axis, guidelines, dividers, line, circles, etc. The idea is to have losely coupled components that can be easily changed and combined. This is for example the structure of a basic chart, which shows a line with circles:
 
@@ -246,11 +241,11 @@ self.chart = chart
 
 Layers are semantic units that can add views to the chart, or can simply draw in the chart's context for a better performance. Which makes more sense depends on the requirements.
 
-##### 2. View generators:
+#### 2. View generators:
 
 View based layers will use a generator function to generate chart point views. This function receives the complete state of each chartpoint (model data, screen location) and produces an UIView, allowing any type of customization.
 
-##### Hello world:
+### Hello world:
 
 There's a [hello world](Examples/Examples/HelloWorld.swift) included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the snippet above, and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!
 
@@ -263,17 +258,17 @@ There's a [hello world](Examples/Examples/HelloWorld.swift) included in the exam
 ###### [More documentation coming soon!](https://github.com/i-schuetz/SwiftCharts/wiki/Wiki)
 
 
-##### Contributing
+## Contributing
 
 1. Fork
 2. Commit changes to a branch in your fork
 3. Push your code and make a pull request
 
-##### Created By:
+## Created By:
 
 Ivan Schütz
 
-##### License
+## License
 
 SwiftCharts is Copyright (c) 2015 Ivan Schütz and released as open source under the attached [Apache 2.0 license](LICENSE).
 
