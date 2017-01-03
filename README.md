@@ -22,6 +22,12 @@ Easy to use and highly customizable charts library for iOS
 - Choice to use core graphics (directly on chart's context) or UIViews, or combine both.
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
+##### Additionally:
+- [Pie chart](https://github.com/i-schuetz/PieCharts)
+- [Legends](https://github.com/i-schuetz/ChartLegends)
+
+These repos are separate only for better focus and reusability. They share the same author, overall style, support the same dependency managers and of course work well with SwiftCharts.
+
 Swift 3.0, 2.x, 1.2, iOS 10, 9, 8, 7
 
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM)
