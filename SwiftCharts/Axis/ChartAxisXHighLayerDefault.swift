@@ -49,11 +49,15 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
     /// ───────  ▼
     /// ````
     fileprivate lazy var lineOffset: CGFloat = {
-        return self.labelsOffset + (self.settings.axisStrokeWidth / 2) + self.settings.labelsToAxisSpacingX + self.labelsTotalHeight
+        return self.labelsOffset + self.settings.labelsToAxisSpacingX + self.labelsTotalHeight
     }()
     
     override func chartViewDrawing(context: CGContext, chart: Chart) {
         super.chartViewDrawing(context: context, chart: chart)
+    }
+    
+    override func axisLineY(offset: CGFloat) -> CGFloat {
+        return lineP1.y + settings.axisStrokeWidth / 2
     }
     
     override func initDrawers() {

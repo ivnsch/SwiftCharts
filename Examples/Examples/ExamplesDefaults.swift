@@ -31,6 +31,7 @@ struct ExamplesDefaults {
         chartSettings.axisStrokeWidth = 1
         chartSettings.spacingBetweenAxesX = 15
         chartSettings.spacingBetweenAxesY = 15
+        chartSettings.labelsSpacing = 0
         return chartSettings
     }
     
@@ -46,6 +47,7 @@ struct ExamplesDefaults {
         chartSettings.axisStrokeWidth = 0.2
         chartSettings.spacingBetweenAxesX = 8
         chartSettings.spacingBetweenAxesY = 8
+        chartSettings.labelsSpacing = 0
         return chartSettings
     }
     

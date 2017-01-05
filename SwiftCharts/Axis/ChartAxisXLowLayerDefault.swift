@@ -27,9 +27,13 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
         super.chartViewDrawing(context: context, chart: chart)
     }
     
+    override func axisLineY(offset: CGFloat) -> CGFloat {
+        return self.p1.y + offset + settings.axisStrokeWidth / 2
+    }
+    
     override func initDrawers() {
         self.lineDrawer = self.generateLineDrawer(offset: 0)
-        let labelsOffset = (self.settings.axisStrokeWidth / 2) + self.settings.labelsToAxisSpacingX
+        let labelsOffset = self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingX
         let labelDrawers = self.generateLabelDrawers(offset: labelsOffset)
         let definitionLabelsOffset = labelsOffset + self.labelsTotalHeight + self.settings.axisTitleLabelsToLabelsSpacing
         self.axisTitleLabelDrawers = self.generateAxisTitleLabelsDrawers(offset: definitionLabelsOffset)
