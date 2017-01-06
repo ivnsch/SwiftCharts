@@ -64,7 +64,7 @@ class ScrollExample: UIViewController {
         let chartFrame = CGRect(x: 0, y: 0, width: 1400, height: scrollViewFrame.size.height)
         
         // calculate coords space in the background to keep UI smooth
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+        DispatchQueue.global(qos: .background).async {
             let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
             
             DispatchQueue.main.async {
