@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+- Fix guidelines overlap with axis lines
+- Fix axis line minor irregularities (fixes #151)
+- Make ChartPointsLayer.display(Chart) open
+
 ## [0.5] - 2016.11.23
 - Add multi-chart tracker layer
 - Add dashed line support
