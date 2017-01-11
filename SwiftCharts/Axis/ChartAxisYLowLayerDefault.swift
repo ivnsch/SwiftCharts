@@ -80,4 +80,8 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
         }
         return labelsX
     }
+    
+    override func axisLineX(offset: CGFloat) -> CGFloat {
+        return p1.x + offset - settings.axisStrokeWidth / 2
+    }
 }

@@ -76,7 +76,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
         let chartFrame = ExamplesDefaults.chartFrame(self.view.bounds)
         
         // calculate coords space in the background to keep UI smooth
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+        DispatchQueue.global(qos: .background).async {
             
             let coordsSpace = ChartCoordsSpaceLeftTopSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
             

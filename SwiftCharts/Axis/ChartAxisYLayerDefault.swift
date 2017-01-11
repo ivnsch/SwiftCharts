@@ -113,4 +113,15 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             return max(maxWidth, self.maxLabelWidth(axisValue.labels))
         }
     }
+    
+    func axisLineX(offset: CGFloat) -> CGFloat {
+        fatalError("Override")
+    }
+    
+    override func generateLineDrawer(offset: CGFloat) -> ChartLineDrawer {
+        let x = axisLineX(offset: offset)
+        let p1 = CGPoint(x: x, y: self.p1.y)
+        let p2 = CGPoint(x: x, y: self.p2.y)
+        return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
+    }
 }

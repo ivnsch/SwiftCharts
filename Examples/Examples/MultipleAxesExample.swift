@@ -107,7 +107,7 @@ class MultipleAxesExample: UIViewController {
         ]
         
         // calculate coords space in the background to keep UI smooth
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+        DispatchQueue.global(qos: .background).async {
             
             let coordsSpace = ChartCoordsSpace(chartSettings: chartSettings, chartSize: viewFrame.size, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels)
             

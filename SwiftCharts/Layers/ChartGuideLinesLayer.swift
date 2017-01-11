@@ -59,6 +59,8 @@ open class ChartGuideLinesLayerAbstract<T: ChartGuideLinesLayerSettings>: ChartC
         
         if self.axis == .x || self.axis == .xAndY {
             for xScreenLoc in xScreenLocs {
+                guard xScreenLoc != innerFrame.minX, xScreenLoc != innerFrame.maxX else {continue}
+                
                 let x1 = xScreenLoc
                 let y1 = originScreenLoc.y
                 let x2 = x1
@@ -69,6 +71,8 @@ open class ChartGuideLinesLayerAbstract<T: ChartGuideLinesLayerSettings>: ChartC
         
         if self.axis == .y || self.axis == .xAndY {
             for yScreenLoc in yScreenLocs {
+                guard yScreenLoc != innerFrame.minY, yScreenLoc != innerFrame.maxY else {continue}
+                
                 let x1 = originScreenLoc.x
                 let y1 = yScreenLoc
                 let x2 = originScreenLoc.x + self.innerFrame.width
