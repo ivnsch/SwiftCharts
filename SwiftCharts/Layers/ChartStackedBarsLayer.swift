@@ -37,7 +37,17 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
     
     fileprivate typealias FrameBuilder = (_ barModel: ChartStackedBarModel, _ item: ChartStackedBarItemModel, _ currentTotalQuantity: Double) -> (frame: ChartPointViewBarStackedFrame, length: CGFloat)
     
-    override init(horizontal: Bool, xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, barWidth barWidthMaybe: CGFloat?, barSpacing barSpacingMaybe: CGFloat?) {
+    private let cornerRadius: CGFloat
+    
+    init(horizontal: Bool,
+         xAxis: ChartAxisLayer,
+         yAxis: ChartAxisLayer,
+         chartInnerFrame: CGRect,
+         barWidth barWidthMaybe: CGFloat?,
+         barSpacing barSpacingMaybe: CGFloat?,
+         cornerRadius: CGFloat) {
+        self.cornerRadius = cornerRadius
+        
         super.init(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: chartInnerFrame, barWidth: barWidthMaybe, barSpacing: barSpacingMaybe)
     }
     
@@ -86,7 +96,13 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
         
         let viewPoints = self.viewPoints(barModel, constantScreenLoc: constantScreenLoc)
         
-        return ChartPointViewBarStacked(p1: viewPoints.p1, p2: viewPoints.p2, width: self.barWidth, stackFrames: stackFrames.frames, animDuration: animDuration)
+        return ChartPointViewBarStacked(p1: viewPoints.p1,
+                                        p2: viewPoints.p2,
+                                        width: self.barWidth,
+                                        stackFrames: stackFrames.frames,
+                                        direction: self.direction,
+                                        animDuration: animDuration,
+                                        cornerRadius: self.cornerRadius)
     }
     
 }
@@ -101,27 +117,30 @@ open class ChartStackedBarsLayer: ChartCoordsSpaceLayer {
     
     fileprivate let animDuration: Float
     
-    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float) {
-        self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, barModels: barModels, horizontal: horizontal, barWidth: barWidth, barSpacing: nil, animDuration: animDuration)
+    fileprivate let cornerRadius: CGFloat
+    
+    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barWidth: CGFloat, animDuration: Float, cornerRadius: CGFloat = 0) {
+        self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, barModels: barModels, horizontal: horizontal, barWidth: barWidth, barSpacing: nil, animDuration: animDuration, cornerRadius: cornerRadius)
     }
 
-    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barSpacing: CGFloat, animDuration: Float) {
-        self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, barModels: barModels, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, animDuration: animDuration)
+    public convenience init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barSpacing: CGFloat, animDuration: Float, cornerRadius: CGFloat = 0) {
+        self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, barModels: barModels, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, animDuration: animDuration, cornerRadius: cornerRadius)
     }
     
-    fileprivate init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barWidth: CGFloat? = nil, barSpacing: CGFloat?, animDuration: Float) {
+    fileprivate init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, barModels: [ChartStackedBarModel], horizontal: Bool = false, barWidth: CGFloat? = nil, barSpacing: CGFloat?, animDuration: Float, cornerRadius: CGFloat) {
         self.barModels = barModels
         self.horizontal = horizontal
         self.barWidth = barWidth
         self.barSpacing = barSpacing
         self.animDuration = animDuration
+        self.cornerRadius = cornerRadius
         
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
     }
     
     open override func chartInitialized(chart: Chart) {
 
-        let barsGenerator = ChartStackedBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: self.barWidth, barSpacing: self.barSpacing)
+        let barsGenerator = ChartStackedBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: self.barWidth, barSpacing: self.barSpacing, cornerRadius: self.cornerRadius)
         
         for barModel in self.barModels {
             chart.addSubview(barsGenerator.generateView(barModel, animDuration: self.animDuration))

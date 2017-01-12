@@ -97,11 +97,15 @@ open class ChartGroupedPlainBarsLayer_<N>: ChartGroupedBarsLayer<ChartBarModel> 
 public typealias ChartGroupedStackedBarsLayer = ChartGroupedStackedBarsLayer_<Any>
 open class ChartGroupedStackedBarsLayer_<N>: ChartGroupedBarsLayer<ChartStackedBarModel> {
     
-    public override init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
+    private let cornerRadius: CGFloat
+    
+    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float, cornerRadius: CGFloat = 0) {
+        self.cornerRadius = cornerRadius
+        
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barSpacing: barSpacing, groupSpacing: groupSpacing, animDuration: animDuration)
     }
     
     override func barsGenerator(barWidth: CGFloat) -> ChartBarsViewGenerator<ChartStackedBarModel> {
-        return ChartStackedBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, barWidth: barWidth, barSpacing: barSpacing)
+        return ChartStackedBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, barWidth: barWidth, barSpacing: barSpacing, cornerRadius: self.cornerRadius)
     }
 }
