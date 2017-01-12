@@ -15,19 +15,23 @@ public struct ChartBarViewSettings {
     
     let selectionViewUpdater: ChartViewSelector?
     
+    let cornerRadius: CGFloat
+    
     let delayInit: Bool
     
-    public init(animDuration: Float = 0.5, animDelay: Float = 0, selectionViewUpdater: ChartViewSelector? = nil, delayInit: Bool = false) {
+    public init(animDuration: Float = 0.5, animDelay: Float = 0, cornerRadius: CGFloat = 0, selectionViewUpdater: ChartViewSelector? = nil, delayInit: Bool = false) {
         self.animDuration = animDuration
         self.animDelay = animDelay
+        self.cornerRadius = cornerRadius
         self.selectionViewUpdater = selectionViewUpdater
         self.delayInit = delayInit
     }
     
-    public func copy(animDuration: Float? = nil, animDelay: Float? = nil, selectionViewUpdater: ChartViewSelector? = nil) -> ChartBarViewSettings {
+    public func copy(animDuration: Float? = nil, animDelay: Float? = nil, cornerRadius: CGFloat? = nil, selectionViewUpdater: ChartViewSelector? = nil) -> ChartBarViewSettings {
         return ChartBarViewSettings(
             animDuration: animDuration ?? self.animDuration,
             animDelay: animDelay ?? self.animDelay,
+            cornerRadius: cornerRadius ?? self.cornerRadius,
             selectionViewUpdater: selectionViewUpdater ?? self.selectionViewUpdater
         )
     }
@@ -70,8 +74,12 @@ open class ChartPointViewBar: UIView {
         super.init(frame: firstFrame)
         
         backgroundColor = bgColor
+        
+        if settings.cornerRadius > 0 {
+            layer.cornerRadius = settings.cornerRadius
+        }
     }
-
+    
     static func frame(_ p1: CGPoint, p2: CGPoint, width: CGFloat) -> CGRect {
         if p1.y - p2.y =~ 0 { // horizontal
             return CGRect(x: p1.x, y: p1.y - width / 2, width: p2.x - p1.x, height: width)

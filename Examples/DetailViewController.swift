@@ -63,10 +63,6 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
             case .combination:
                 setSplitSwipeEnabled(true)
                 showExampleController(BarsPlusMinusAndLinesExample())
-            case .scroll:
-                setSplitSwipeEnabled(false)
-                automaticallyAdjustsScrollViewInsets = false
-                showExampleController(ScrollExample())
             case .coords:
                 setSplitSwipeEnabled(true)
                 showExampleController(CoordsExample())

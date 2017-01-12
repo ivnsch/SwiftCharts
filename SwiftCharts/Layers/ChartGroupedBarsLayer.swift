@@ -232,7 +232,6 @@ public struct ChartTappedGroupBarStacked {
 
 public typealias ChartGroupedStackedBarsLayer = ChartGroupedStackedBarsLayer_<Any>
 open class ChartGroupedStackedBarsLayer_<N>: ChartGroupedBarsLayer<ChartStackedBarModel, ChartPointViewBarStacked> {
-    
     fileprivate let stackFrameSelectionViewUpdater: ChartViewSelector?
     let tapHandler: ((ChartTappedGroupBarStacked) -> Void)?
     

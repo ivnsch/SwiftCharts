@@ -76,4 +76,8 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
         }
         return labelsX
     }
+    
+    override func axisLineX(offset: CGFloat) -> CGFloat {
+        return self.offset + offset + settings.axisStrokeWidth / 2
+    }
 }

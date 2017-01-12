@@ -30,6 +30,7 @@ public typealias ChartPointViewBarStackedFrame = (rect: CGRect, color: UIColor)
 
 open class ChartPointViewBarStacked: ChartPointViewBar {
     
+
     fileprivate var stackViews: [(index: Int, view: ChartBarStackFrameView, targetFrame: CGRect)] = []
     
     var stackFrameSelectionViewUpdater: ChartViewSelector?
@@ -44,12 +45,12 @@ open class ChartPointViewBarStacked: ChartPointViewBar {
     
     public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, stackFrames: [ChartPointViewBarStackedFrame], settings: ChartBarViewSettings, stackFrameSelectionViewUpdater: ChartViewSelector? = nil) {
         self.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
-        
+
         super.init(p1: p1, p2: p2, width: width, bgColor: bgColor, settings: settings)
         
         for (index, stackFrame) in stackFrames.enumerated() {
             let (targetFrame, firstFrame): (CGRect, CGRect) = {
-                if p1.y - p2.y =~ 0 { // horizontal
+                if isHorizontal {
                     let initFrame = CGRect(x: 0, y: stackFrame.rect.origin.y, width: 0, height: stackFrame.rect.size.height)
                     return (stackFrame.rect, initFrame)
                     
@@ -62,8 +63,43 @@ open class ChartPointViewBarStacked: ChartPointViewBar {
             let v = ChartBarStackFrameView(frame: firstFrame)
             v.backgroundColor = stackFrame.color
             
-            stackViews.append((index, v, targetFrame))
+            if settings.cornerRadius > 0 {
+                let corners: UIRectCorner
+                
+                if (stackFrames.count == 1) {
+                    corners = UIRectCorner.allCorners
+                } else {
+                    switch (index, isHorizontal) {
+                    case (0, true):
+                        corners = [.bottomLeft, .topLeft]
+                    case (0, false):
+                        corners = [.bottomLeft, .bottomRight]
+                    case (stackFrames.count - 1, true):
+                        corners = [.topRight, .bottomRight]
+                    case (stackFrames.count - 1, false):
+                        corners = [.topLeft, .topRight]
+                    default:
+                        corners = []
+                    }
+                }
+                
+                let bounds = CGRect(x: 0, y: 0, width: stackFrame.rect.width, height: stackFrame.rect.height)
+                
+                let path = UIBezierPath(
+                    roundedRect: bounds,
+                    byRoundingCorners: corners,
+                    cornerRadii: CGSize(width: settings.cornerRadius, height: settings.cornerRadius)
+                )
+                
+                if !corners.isEmpty {
+                    let maskLayer = CAShapeLayer()
+                    maskLayer.frame = bounds
+                    maskLayer.path = path.cgPath
+                    v.layer.mask = maskLayer
+                }
+            }
             
+            stackViews.append((index, v, targetFrame))
             addSubview(v)
         }
     }
@@ -92,6 +128,7 @@ open class ChartPointViewBarStacked: ChartPointViewBar {
         super.init(p1: p1, p2: p2, width: width, bgColor: bgColor, settings: settings)
     }
     
+    
     override open func didMoveToSuperview() {
         
         func targetState() {
@@ -109,6 +146,6 @@ open class ChartPointViewBarStacked: ChartPointViewBar {
                 targetState()
             }, completion: nil)
         }
-
+        
     }
 }

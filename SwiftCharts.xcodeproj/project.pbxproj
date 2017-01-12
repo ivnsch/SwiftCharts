@@ -31,7 +31,6 @@
 		062D23A31B8AAE5D0017ABB8 /* NotificationsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062D23861B8AAE5D0017ABB8 /* NotificationsExample.swift */; };
 		062D23A41B8AAE5D0017ABB8 /* NotNumericExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062D23871B8AAE5D0017ABB8 /* NotNumericExample.swift */; };
 		062D23A51B8AAE5D0017ABB8 /* ScatterExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062D23881B8AAE5D0017ABB8 /* ScatterExample.swift */; };
-		062D23A61B8AAE5D0017ABB8 /* ScrollExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062D23891B8AAE5D0017ABB8 /* ScrollExample.swift */; };
 		062D23A71B8AAE5D0017ABB8 /* StackedBarsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062D238A1B8AAE5D0017ABB8 /* StackedBarsExample.swift */; };
 		062D23A81B8AAE5D0017ABB8 /* TargetExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062D238B1B8AAE5D0017ABB8 /* TargetExample.swift */; };
 		062D23A91B8AAE5D0017ABB8 /* TrackerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062D238C1B8AAE5D0017ABB8 /* TrackerExample.swift */; };
@@ -286,7 +285,6 @@
 		062D23861B8AAE5D0017ABB8 /* NotificationsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsExample.swift; sourceTree = "<group>"; };
 		062D23871B8AAE5D0017ABB8 /* NotNumericExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotNumericExample.swift; sourceTree = "<group>"; };
 		062D23881B8AAE5D0017ABB8 /* ScatterExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScatterExample.swift; sourceTree = "<group>"; };
-		062D23891B8AAE5D0017ABB8 /* ScrollExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollExample.swift; sourceTree = "<group>"; };
 		062D238A1B8AAE5D0017ABB8 /* StackedBarsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackedBarsExample.swift; sourceTree = "<group>"; };
 		062D238B1B8AAE5D0017ABB8 /* TargetExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetExample.swift; sourceTree = "<group>"; };
 		062D238C1B8AAE5D0017ABB8 /* TrackerExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackerExample.swift; sourceTree = "<group>"; };
@@ -491,7 +489,6 @@
 				062D23861B8AAE5D0017ABB8 /* NotificationsExample.swift */,
 				062D23871B8AAE5D0017ABB8 /* NotNumericExample.swift */,
 				062D23881B8AAE5D0017ABB8 /* ScatterExample.swift */,
-				062D23891B8AAE5D0017ABB8 /* ScrollExample.swift */,
 				062D238A1B8AAE5D0017ABB8 /* StackedBarsExample.swift */,
 				062D238B1B8AAE5D0017ABB8 /* TargetExample.swift */,
 				062D238C1B8AAE5D0017ABB8 /* TrackerExample.swift */,
@@ -927,6 +924,7 @@
 				TargetAttributes = {
 					06342AC01B8AAD7F001C9F5D = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = UVC8J7YZXP;
 						LastSwiftMigration = 0800;
 					};
 					06405DA51B8AA74700A689FF = {
@@ -1003,7 +1001,6 @@
 				062D23A01B8AAE5D0017ABB8 /* MultipleAxesExample.swift in Sources */,
 				062D239D1B8AAE5D0017ABB8 /* GroupedAndStackedBarsExample.swift in Sources */,
 				062D238F1B8AAE5D0017ABB8 /* BarsExample.swift in Sources */,
-				062D23A61B8AAE5D0017ABB8 /* ScrollExample.swift in Sources */,
 				062D238E1B8AAE5D0017ABB8 /* AreasExample.swift in Sources */,
 				EBA012D51D5F73DB0064175C /* String.swift in Sources */,
 				062D23A31B8AAE5D0017ABB8 /* NotificationsExample.swift in Sources */,
@@ -1120,7 +1117,6 @@
 				06405E1B1B8AA81D00A689FF /* ChartAxisValueFloat.swift in Sources */,
 				EB66F7CE1D5498EE00168EE0 /* NSDate.swift in Sources */,
 				06405E461B8AA81D00A689FF /* ChartPointEllipseView.swift in Sources */,
-				580AFD3C1DC2396B007AF8E6 /* Globals.swift in Sources */,
 				EBA012CE1D57FF340064175C /* ChartNiceNumberCalculator.swift in Sources */,
 				EBA012D21D5F6D600064175C /* String.swift in Sources */,
 				06405E211B8AA81D00A689FF /* ChartLineModel.swift in Sources */,

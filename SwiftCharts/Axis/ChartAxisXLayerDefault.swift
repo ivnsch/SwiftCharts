@@ -84,9 +84,16 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
         }
     }
     
+    func axisLineY(offset: CGFloat) -> CGFloat {
+        fatalError("Override")
+    }
+
     override func generateLineDrawer(offset: CGFloat) -> ChartLineDrawer {
-        let p1 = CGPoint(x: axis.firstVisibleScreen, y: self.offset + offset)
-        let p2 = CGPoint(x: axis.lastVisibleScreen, y: self.offset + offset)
+        let y = axisLineY(offset: offset)
+        
+        // (-/+ axisStrokeWidth): Expand the line a little to the sides to form rect angle with y lines
+        let p1 = CGPoint(x: axis.firstVisibleScreen - settings.axisStrokeWidth, y: y)
+        let p2 = CGPoint(x: axis.lastVisibleScreen + settings.axisStrokeWidth, y: y)
         return ChartLineDrawer(p1: p1, p2: p2, color: settings.lineColor, strokeWidth: settings.axisStrokeWidth)
     }
     

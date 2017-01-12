@@ -10,7 +10,7 @@ import UIKit
 
 
 enum Example {
-    case helloWorld, bars, stackedBars, barsPlusMinus, groupedBars, barsStackedGrouped, scatter, areas, bubble, coords, target, multival, notifications, combination, scroll, equalSpacing, tracker, multiTracker, multiAxis, multiAxisInteractive, candleStick, cubiclines, notNumeric, candleStickInteractive, customUnits, trendline
+    case helloWorld, bars, stackedBars, barsPlusMinus, groupedBars, barsStackedGrouped, scatter, areas, bubble, coords, target, multival, notifications, combination, equalSpacing, tracker, multiTracker, multiAxis, multiAxisInteractive, candleStick, cubiclines, notNumeric, candleStickInteractive, customUnits, trendline
 }
 
 class MasterViewController: UITableViewController {
@@ -30,7 +30,6 @@ class MasterViewController: UITableViewController {
         (.areas, "Areas, lines, circles (interactive)"),
         (.bubble, "Bubble, gradient bar mapping"),
         (.notNumeric, "Not numeric values"),
-        (.scroll, "Multiline, Scroll"),
         (.coords, "Show touch coords (interactive)"),
         (.tracker, "Track touch (interactive)"),
         (.multiTracker, "Multi-chart touch tracking"),
@@ -69,6 +68,9 @@ class MasterViewController: UITableViewController {
             detailViewController?.detailItem = example.0
             detailViewController?.title = example.1
         }
+        
+        
+        performSegue(withIdentifier: "showDetail", sender: self)
     }
     
     // MARK: - Segues
@@ -87,7 +89,7 @@ class MasterViewController: UITableViewController {
             if let indexPath = tableView.indexPathForSelectedRow {
                 showExample((indexPath as NSIndexPath).row)
             } else {
-                showExample(0)
+                showExample(2)
             }
         }
     }

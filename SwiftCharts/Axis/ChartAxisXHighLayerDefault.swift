@@ -49,7 +49,7 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
     /// ───────  ▼
     /// ````
     fileprivate var lineOffset: CGFloat {
-        return labelsOffset + (settings.axisStrokeWidth / 2) + settings.labelsToAxisSpacingX + labelsTotalHeight
+        return labelsOffset + settings.labelsToAxisSpacingX + labelsTotalHeight
     }
     
     override func chartViewDrawing(context: CGContext, chart: Chart) {
@@ -77,6 +77,10 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
         }
     }
     
+    override func axisLineY(offset: CGFloat) -> CGFloat {
+        return lineP1.y + settings.axisStrokeWidth / 2
+    }
+
     override func initDrawers() {
         axisTitleLabelDrawers = generateAxisTitleLabelsDrawers(offset: 0)
         labelDrawers = generateLabelDrawers(offset: labelsOffset)

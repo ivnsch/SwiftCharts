@@ -26,7 +26,7 @@ open class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
     }
     
-    override open func display(chart: Chart) {
+    open override func display(chart: Chart) {
         var points = chartPointScreenLocs
         
         let origin = chart.contentView.frame.origin

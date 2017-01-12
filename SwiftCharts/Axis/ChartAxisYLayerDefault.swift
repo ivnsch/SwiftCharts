@@ -165,4 +165,15 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
         update()
         chart?.view.setNeedsDisplay()
     }
+
+    func axisLineX(offset: CGFloat) -> CGFloat {
+        fatalError("Override")
+    }
+    
+    override func generateLineDrawer(offset: CGFloat) -> ChartLineDrawer {
+        let x = axisLineX(offset: offset)
+        let p1 = CGPoint(x: x, y: axis.firstVisibleScreen)
+        let p2 = CGPoint(x: x, y: axis.lastVisibleScreen)
+        return ChartLineDrawer(p1: p1, p2: p2, color: settings.lineColor, strokeWidth: settings.axisStrokeWidth)
+    }
 }
