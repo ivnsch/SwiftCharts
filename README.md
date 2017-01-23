@@ -21,6 +21,8 @@ Easy to use and highly customizable charts library for iOS
 - Complex interactivity support
 - [Pie chart*](https://github.com/i-schuetz/PieCharts)
 - [Legends*](https://github.com/i-schuetz/ChartLegends)
+- Zooming & panning (unreleased)
+- Extensible dynamic axis values / label generators for numbers, dates, etc. (unreleased).
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
 <sub>*These are separate repos for better focus and reusability.</sub>
@@ -264,9 +266,31 @@ There's a [hello world](Examples/Examples/HelloWorld.swift) included in the exam
 2. Commit changes to a branch in your fork
 3. Push your code and make a pull request
 
+## Todos:
+
+There are quite a lot of things that can be done, but here the main prios:
+
+- Dynamic adding/removing of chart points.
+- Lazy loading.
+- Electrocardiogram.
+- Improve autolayout support.  
+- Performance improvements.
+- Allow to set initial content view size that exceeds the chart's boundaries without having to use zoom.
+- Nice api - allow to create chart with as little code as possible and granular, well documented settings. The current "low level" api should of course still be possible to use.
+- macOS support.
+- Add documentation.
+- Write a tutorial.
+- Objective-C support? I have gotten out of touch with Obj-C and don't even remember what exactly has to be done to add compatibility. If it doesn't require any major structural changes, it's also welcome. 
+
+If you want to help with any of these, feel free to open an issue to request for assistance. Happy to give an introduction to the internals and explain any parts of the library that may not be clear. It would be also possible to e.g. open a Slack channel for real time cooperation.
+
 ## Created By:
 
 Ivan Schütz
+
+## Credits:
+
+A big thank you to the awesome [grafiti.io](https://grafiti.io/) for having been sponsoring this project in the last months, and of course also to all the [contributors](https://github.com/i-schuetz/SwiftCharts/graphs/contributors)! 
 
 ## License
 
