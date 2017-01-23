@@ -13,7 +13,7 @@ open class ChartAxisValueDate: ChartAxisValue {
     fileprivate let formatter: (Date) -> String
 
     open var date: Date {
-        return ChartAxisValueDate.dateFromScalar(self.scalar)
+        return ChartAxisValueDate.dateFromScalar(scalar)
     }
 
     public init(date: Date, formatter: @escaping (Date) -> String, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
@@ -36,7 +36,11 @@ open class ChartAxisValueDate: ChartAxisValue {
     // MARK: CustomStringConvertible
 
     override open var description: String {
-        return self.formatter(self.date)
+        return formatter(date)
+    }
+    
+    open override func copy(_ scalar: Double) -> ChartAxisValue {
+        return ChartAxisValueDate(date: ChartAxisValueDate.dateFromScalar(scalar), formatter: formatter, labelSettings: labelSettings)
     }
 }
 

@@ -9,8 +9,8 @@
 import UIKit
 
 public final class ChartPointsBarGroup<T: ChartBarModel> {
-    let constant: ChartAxisValue
-    let bars: [T]
+    public let constant: ChartAxisValue
+    public let bars: [T]
     
     public init(constant: ChartAxisValue, bars: [T]) {
         self.constant = constant
@@ -19,93 +19,247 @@ public final class ChartPointsBarGroup<T: ChartBarModel> {
 }
 
 
-open class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
+open class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: ChartCoordsSpaceLayer {
 
     fileprivate let groups: [ChartPointsBarGroup<T>]
     
+    fileprivate let barWidth: CGFloat?
     fileprivate let barSpacing: CGFloat?
     fileprivate let groupSpacing: CGFloat?
     
     fileprivate let horizontal: Bool
     
-    fileprivate let animDuration: Float
-
-    init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<T>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
-        self.groups = groups
-        self.horizontal = horizontal
-        self.barSpacing = barSpacing
-        self.groupSpacing = groupSpacing
-        self.animDuration = animDuration
-        
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame)
+    fileprivate let settings: ChartBarViewSettings
+    
+    open fileprivate(set) var groupViews: [(ChartPointsBarGroup<T>, [ChartPointViewBar])] = []
+    
+    fileprivate let mode: ChartPointsViewsLayerMode
+    
+    fileprivate let viewGenerator: ChartBarsLayer<U>.ChartBarViewGenerator?
+    
+    convenience init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<T>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, mode: ChartPointsViewsLayerMode = .scaleAndTranslate, viewGenerator: ChartBarsLayer<U>.ChartBarViewGenerator? = nil) {
+        self.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings, mode: mode, viewGenerator: viewGenerator)
     }
     
-    func barsGenerator(barWidth: CGFloat) -> ChartBarsViewGenerator<T> {
+    init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<T>], horizontal: Bool = false, barWidth: CGFloat?, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, mode: ChartPointsViewsLayerMode = .scaleAndTranslate, viewGenerator: ChartBarsLayer<U>.ChartBarViewGenerator? = nil) {
+        self.groups = groups
+        self.horizontal = horizontal
+        self.barWidth = barWidth
+        self.barSpacing = barSpacing
+        self.groupSpacing = groupSpacing
+        self.settings = settings
+        self.mode = mode
+        self.viewGenerator = viewGenerator
+        
+        super.init(xAxis: xAxis, yAxis: yAxis)
+    }
+    
+    func barsGenerator(barWidth: CGFloat, chart: Chart) -> ChartBarsViewGenerator<T, U> {
         fatalError("override")
     }
     
-    override open func chartInitialized(chart: Chart) {
-
-        let axis = self.horizontal ? self.yAxis : self.xAxis
-        let groupAvailableLength = (axis.length  - (self.groupSpacing ?? 0) * CGFloat(self.groups.count)) / CGFloat(groups.count + 1)
-        let maxBarCountInGroup = self.groups.reduce(CGFloat(0)) {maxCount, group in
-            max(maxCount, CGFloat(group.bars.count))
+    open override func chartInitialized(chart: Chart) {
+        super.chartInitialized(chart: chart)
+        if !settings.delayInit {
+            initBars(chart)
         }
-        
-        let barWidth = ((groupAvailableLength - ((self.barSpacing ?? 0) * (maxBarCountInGroup - 1))) / CGFloat(maxBarCountInGroup))
-
-        let barsGenerator = self.barsGenerator(barWidth: barWidth)
-        
-        let calculateConstantScreenLoc: (_ axis: ChartAxisLayer, _ index: Int, _ group: ChartPointsBarGroup<T>) -> CGFloat = {axis, index, group in
-            let totalWidth = CGFloat(group.bars.count) * barWidth + ((self.barSpacing ?? 0) * (maxBarCountInGroup - 1))
-            let groupCenter = axis.screenLocForScalar(group.constant.scalar)
-            let origin = groupCenter - totalWidth / 2
-            return origin + CGFloat(index) * (barWidth + (self.barSpacing ?? 0)) + barWidth / 2
-        }
-        
-        for group in self.groups {
+    }
+    
+    open func initBars(_ chart: Chart) {
+        calculateDimensions(chart) {maxBarCountInGroup, barWidth in
+            let barsGenerator = self.barsGenerator(barWidth: barWidth, chart: chart)
             
-            for (index, bar) in group.bars.enumerated() {
-                
-                let constantScreenLoc: CGFloat = {
-                    if barsGenerator.direction == .leftToRight {
-                        return calculateConstantScreenLoc(self.yAxis, index, group)
-                    } else {
-                        return calculateConstantScreenLoc(self.xAxis, index, group)
-                    }
-                }()
-                chart.addSubview(barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, animDuration: self.animDuration))
+            for (groupIndex, group) in self.groups.enumerated() {
+                var groupBars = [ChartPointViewBar]()
+                for (barIndex, bar) in group.bars.enumerated() {
+                    
+                    let constantScreenLoc = self.calculateConstantScreenLocDir({self.modelLocToScreenLoc(y: $0)}, index: barIndex, group: group, barWidth: barWidth, maxBarCountInGroup: maxBarCountInGroup, horizontal: barsGenerator.horizontal)
+                    let barView = barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, settings: self.isTransform ? self.settings.copy(animDuration: 0, animDelay: 0) : self.settings, model: bar, index: barIndex, groupIndex: groupIndex)
+                    self.configBarView(group, groupIndex: groupIndex, barIndex: barIndex, bar: bar, barView: barView)
+                    groupBars.append(barView)
+                    self.addSubview(chart, view: barView)
+                }
+                self.groupViews.append((group, groupBars))
             }
         }
     }
+    
+    func calculateConstantScreenLoc(_ screenLocCalculator: (Double) -> CGFloat, index: Int, group: ChartPointsBarGroup<T>, barWidth: CGFloat, maxBarCountInGroup: CGFloat) -> CGFloat {
+        let totalWidth = CGFloat(group.bars.count) * barWidth + ((barSpacing ?? 0) * (maxBarCountInGroup - 1))
+        let groupCenter = screenLocCalculator(group.constant.scalar)
+        let origin = groupCenter - totalWidth / 2
+        return origin + CGFloat(index) * (barWidth + (barSpacing ?? 0)) + barWidth / 2
+    }
+    
+    func mooh(_ screenLocCalculator: (Double) -> CGFloat, index: Int, group: ChartPointsBarGroup<T>, barWidth: CGFloat, maxBarCountInGroup: CGFloat, horizontal: Bool) -> CGFloat {
+        return 1
+    }
+    
+    func calculateConstantScreenLocDir(_ screenLocCalculator: (Double) -> CGFloat, index: Int, group: ChartPointsBarGroup<T>, barWidth: CGFloat, maxBarCountInGroup: CGFloat, horizontal: Bool) -> CGFloat {
+        if horizontal {
+            return calculateConstantScreenLoc({modelLocToScreenLoc(y: $0)}, index: index, group: group, barWidth: barWidth, maxBarCountInGroup: maxBarCountInGroup)
+        } else {
+            return calculateConstantScreenLoc({modelLocToScreenLoc(x: $0)}, index: index, group: group, barWidth: barWidth, maxBarCountInGroup: maxBarCountInGroup)
+        }
+    }
+    
+    fileprivate func calculateDimensions(_ chart: Chart, onCalculate: (_ maxBarCountInGroup: CGFloat, _ barWidth: CGFloat) -> Void) {
+        
+        let axis = horizontal ? yAxis : xAxis
+        let groupAvailableLength = (axis.screenLength  - (groupSpacing ?? 0) * CGFloat(groups.count)) / CGFloat(groups.count + 1)
+        let maxBarCountInGroup = groups.reduce(CGFloat(0)) {maxCount, group in
+            max(maxCount, CGFloat(group.bars.count))
+        }
+        
+        let barWidth = self.barWidth ?? (((groupAvailableLength - ((barSpacing ?? 0) * (maxBarCountInGroup - 1))) / CGFloat(maxBarCountInGroup)))
+  
+        onCalculate(maxBarCountInGroup, barWidth)
+    }
+    
+    func configBarView(_ group: ChartPointsBarGroup<T>, groupIndex: Int, barIndex: Int, bar: T, barView: U) {
+//        barView.selectionViewUpdater = selectionViewUpdater
+    }
+    
+    func addSubview(_ chart: Chart, view: UIView) {
+        mode == .scaleAndTranslate ? chart.addSubview(view) : chart.addSubviewNoTransform(view)
+    }
+    
+    open override func zoom(_ x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        super.zoom(x, y: y, centerX: centerX, centerY: centerY)
+        updateForTransform()
+    }
+    
+    open override func pan(_ deltaX: CGFloat, deltaY: CGFloat) {
+        super.pan(deltaX, deltaY: deltaY)
+        updateForTransform()
+    }
+    
+    fileprivate func updatePanZoomTranslateMode() {
+        guard let chart = chart else {return}
+        
+        calculateDimensions(chart) {maxBarCountInGroup, barWidth in
+            let barsGenerator = self.barsGenerator(barWidth: barWidth, chart: chart)
+            for (groupIndex, group) in self.groups.enumerated() {
+                for (barIndex, bar) in group.bars.enumerated() {
+                    let constantScreenLoc = self.calculateConstantScreenLocDir({self.modelLocToScreenLoc(y: $0)}, index: barIndex, group: group, barWidth: barWidth, maxBarCountInGroup: maxBarCountInGroup, horizontal: barsGenerator.horizontal)
+                    
+                    if groupIndex < self.groupViews.count {
+                        let groupViews = self.groupViews[groupIndex].1
+                        if barIndex < groupViews.count {
+                            let barView = groupViews[barIndex]
+                            let (p1, p2) = barsGenerator.viewPoints(bar, constantScreenLoc: constantScreenLoc)
+                            barView.updateFrame(p1, p2: p2)
+                            barView.setNeedsDisplay()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func updateForTransform() {
+        switch mode {
+        case .scaleAndTranslate: break
+        case .translate: updatePanZoomTranslateMode()
+        }
+    }
+    
+    open override func modelLocToScreenLoc(x: Double) -> CGFloat {
+        switch mode {
+        case .scaleAndTranslate:
+            return super.modelLocToScreenLoc(x: x)
+        case .translate:
+            return super.modelLocToContainerScreenLoc(x: x)
+        }
+    }
+    
+    open override func modelLocToScreenLoc(y: Double) -> CGFloat {
+        switch mode {
+        case .scaleAndTranslate:
+            return super.modelLocToScreenLoc(y: y)
+        case .translate:
+            return super.modelLocToContainerScreenLoc(y: y)
+        }
+    }
+
 }
 
 
+public struct ChartTappedGroupBar {
+    public let tappedBar: ChartTappedBar
+    public let group: ChartPointsBarGroup<ChartBarModel>
+    public let groupIndex: Int
+    public let barIndex: Int // in group
+    public let layer: ChartGroupedBarsLayer<ChartBarModel, ChartPointViewBar>
+}
 
 public typealias ChartGroupedPlainBarsLayer = ChartGroupedPlainBarsLayer_<Any>
-open class ChartGroupedPlainBarsLayer_<N>: ChartGroupedBarsLayer<ChartBarModel> {
-
-    public override init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float) {
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barSpacing: barSpacing, groupSpacing: groupSpacing, animDuration: animDuration)
+open class ChartGroupedPlainBarsLayer_<N>: ChartGroupedBarsLayer<ChartBarModel, ChartPointViewBar> {
+    
+    let tapHandler: ((ChartTappedGroupBar) -> Void)?
+    
+    public convenience init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, mode: ChartPointsViewsLayerMode = .scaleAndTranslate, tapHandler: ((ChartTappedGroupBar) -> Void)? = nil, viewGenerator: ChartBarsLayer<ChartPointViewBar>.ChartBarViewGenerator? = nil) {
+        self.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings, mode: mode, tapHandler: tapHandler, viewGenerator: viewGenerator)
     }
     
-    override func barsGenerator(barWidth: CGFloat) -> ChartBarsViewGenerator<ChartBarModel> {
-        return ChartBarsViewGenerator(horizontal: self.horizontal, xAxis: self.xAxis, yAxis: self.yAxis, chartInnerFrame: self.innerFrame, barWidth: barWidth, barSpacing: self.barSpacing)
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartBarModel>], horizontal: Bool, barWidth: CGFloat?, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, mode: ChartPointsViewsLayerMode = .scaleAndTranslate, tapHandler: ((ChartTappedGroupBar) -> Void)? = nil, viewGenerator: ChartBarsLayer<ChartPointViewBar>.ChartBarViewGenerator? = nil) {
+        self.tapHandler = tapHandler
+        super.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: barWidth, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings, mode: mode, viewGenerator: viewGenerator)
     }
+    
+    override func barsGenerator(barWidth: CGFloat, chart: Chart) -> ChartBarsViewGenerator<ChartBarModel, ChartPointViewBar> {
+        return ChartBarsViewGenerator(horizontal: self.horizontal, layer: self, barWidth: barWidth, viewGenerator: viewGenerator)
+    }
+    
+    override func configBarView(_ group: ChartPointsBarGroup<ChartBarModel>, groupIndex: Int, barIndex: Int, bar: ChartBarModel, barView: ChartPointViewBar) {
+        super.configBarView(group, groupIndex: groupIndex, barIndex: barIndex, bar: bar, barView: barView)
+        
+        barView.tapHandler = {[weak self] _ in guard let weakSelf = self else {return}
+            let tappedBar = ChartTappedBar(model: bar, view: barView, layer: weakSelf)
+            let tappedGroupBar = ChartTappedGroupBar(tappedBar: tappedBar, group: group, groupIndex: groupIndex, barIndex: barIndex, layer: weakSelf)
+            weakSelf.tapHandler?(tappedGroupBar)
+        }
+    }
+}
+
+
+public struct ChartTappedGroupBarStacked {
+    public let tappedBar: ChartTappedBarStacked
+    public let group: ChartPointsBarGroup<ChartStackedBarModel>
+    public let groupIndex: Int
+    public let barIndex: Int // in group
 }
 
 public typealias ChartGroupedStackedBarsLayer = ChartGroupedStackedBarsLayer_<Any>
-open class ChartGroupedStackedBarsLayer_<N>: ChartGroupedBarsLayer<ChartStackedBarModel> {
+open class ChartGroupedStackedBarsLayer_<N>: ChartGroupedBarsLayer<ChartStackedBarModel, ChartPointViewBarStacked> {
+    fileprivate let stackFrameSelectionViewUpdater: ChartViewSelector?
+    let tapHandler: ((ChartTappedGroupBarStacked) -> Void)?
     
-    private let cornerRadius: CGFloat
+    fileprivate let stackedViewGenerator: ChartStackedBarsLayer<ChartPointViewBarStacked>.ChartBarViewGenerator?
     
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool, barSpacing: CGFloat?, groupSpacing: CGFloat?, animDuration: Float, cornerRadius: CGFloat = 0) {
-        self.cornerRadius = cornerRadius
-        
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, groups: groups, horizontal: horizontal, barSpacing: barSpacing, groupSpacing: groupSpacing, animDuration: animDuration)
+    public convenience init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool = false, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, mode: ChartPointsViewsLayerMode = .scaleAndTranslate, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, tapHandler: ((ChartTappedGroupBarStacked) -> Void)? = nil, viewGenerator: ChartStackedBarsLayer<ChartPointViewBarStacked>.ChartBarViewGenerator? = nil) {
+        self.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: nil, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings, mode: mode, stackFrameSelectionViewUpdater: stackFrameSelectionViewUpdater, tapHandler: tapHandler, viewGenerator: viewGenerator)
     }
     
-    override func barsGenerator(barWidth: CGFloat) -> ChartBarsViewGenerator<ChartStackedBarModel> {
-        return ChartStackedBarsViewGenerator(horizontal: horizontal, xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, barWidth: barWidth, barSpacing: barSpacing, cornerRadius: self.cornerRadius)
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, groups: [ChartPointsBarGroup<ChartStackedBarModel>], horizontal: Bool, barWidth: CGFloat?, barSpacing: CGFloat?, groupSpacing: CGFloat?, settings: ChartBarViewSettings, mode: ChartPointsViewsLayerMode = .scaleAndTranslate, stackFrameSelectionViewUpdater: ChartViewSelector? = nil, tapHandler: ((ChartTappedGroupBarStacked) -> Void)? = nil, viewGenerator: ChartStackedBarsLayer<ChartPointViewBarStacked>.ChartBarViewGenerator? = nil) {
+        self.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
+        self.tapHandler = tapHandler
+        self.stackedViewGenerator = viewGenerator
+        super.init(xAxis: xAxis, yAxis: yAxis, groups: groups, horizontal: horizontal, barWidth: barWidth, barSpacing: barSpacing, groupSpacing: groupSpacing, settings: settings, mode: mode)
+    }
+    
+    override func barsGenerator(barWidth: CGFloat, chart: Chart) -> ChartBarsViewGenerator<ChartStackedBarModel, ChartPointViewBarStacked> {
+        return ChartStackedBarsViewGenerator(horizontal: horizontal, layer: self, barWidth: barWidth, viewGenerator: stackedViewGenerator)
+    }
+    
+    override func configBarView(_ group: ChartPointsBarGroup<ChartStackedBarModel>, groupIndex: Int, barIndex: Int, bar: ChartStackedBarModel, barView: ChartPointViewBarStacked) {
+        barView.stackedTapHandler = {[weak self] tappedStackedBar in guard let weakSelf = self else {return}
+            let stackFrameIndex = tappedStackedBar.stackFrame.index
+            let itemModel = bar.items[stackFrameIndex]
+            let tappedStacked = ChartTappedBarStacked(model: bar, barView: barView, stackedItemModel: itemModel, stackedItemView: tappedStackedBar.stackFrame.view, stackedItemViewFrameRelativeToBarParent: tappedStackedBar.stackFrame.viewFrameRelativeToBarSuperview, stackedItemIndex: stackFrameIndex, layer: weakSelf)
+            let tappedGroupBar = ChartTappedGroupBarStacked(tappedBar: tappedStacked, group: group, groupIndex: groupIndex, barIndex: barIndex)
+            weakSelf.tapHandler?(tappedGroupBar)
+        }
+        barView.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
     }
 }

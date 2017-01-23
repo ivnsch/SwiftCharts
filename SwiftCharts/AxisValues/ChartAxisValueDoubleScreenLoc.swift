@@ -13,7 +13,7 @@ open class ChartAxisValueDoubleScreenLoc: ChartAxisValueDouble {
     fileprivate let actualDouble: Double
     
     var screenLocDouble: Double {
-        return self.scalar
+        return scalar
     }
 
     // screenLocFloat: model value which will be used to calculate screen position
@@ -26,6 +26,6 @@ open class ChartAxisValueDoubleScreenLoc: ChartAxisValueDouble {
     // MARK: CustomStringConvertible
     
     override open var description: String {
-        return self.formatter.string(from: NSNumber(value: self.actualDouble))!
+        return formatter.string(from: NSNumber(value: actualDouble))!
     }
 }

@@ -24,14 +24,14 @@ open class ChartCandleStickView: UIView {
     
     var highlighted: Bool = false {
         didSet {
-            if self.highlighted {
-                self.currentFillColor = self.highlightColor
-                self.currentStrokeColor = self.highlightColor
+            if highlighted {
+                currentFillColor = highlightColor
+                currentStrokeColor = highlightColor
             } else {
-                self.currentFillColor = self.fillColor
-                self.currentStrokeColor = self.strokeColor
+                currentFillColor = fillColor
+                currentStrokeColor = strokeColor
             }
-            self.setNeedsDisplay()
+            setNeedsDisplay()
         }
     }
     
@@ -41,7 +41,7 @@ open class ChartCandleStickView: UIView {
         let frame = CGRect(x: frameX, y: top, width: width, height: bottom - top)
         let t = innerRectTop - top
         let hsw = strokeWidth / 2
-        self.innerRect = CGRect(x: hsw, y: t + hsw, width: width - strokeWidth, height: innerRectBottom - top - t - strokeWidth)
+        innerRect = CGRect(x: hsw, y: t + hsw, width: width - strokeWidth, height: innerRectBottom - top - t - strokeWidth)
 
         self.fillColor = fillColor
         self.strokeColor = strokeColor
@@ -52,7 +52,7 @@ open class ChartCandleStickView: UIView {
         
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor.clear
+        backgroundColor = UIColor.clear
     }
 
     required public init(coder aDecoder: NSCoder) {
@@ -60,23 +60,21 @@ open class ChartCandleStickView: UIView {
     }
     
     override open func draw(_ rect: CGRect) {
-        guard let context = UIGraphicsGetCurrentContext() else {
-            return
-        }
+        guard let context = UIGraphicsGetCurrentContext() else {return}
 
-        let wHalf = self.frame.width / 2
+        let wHalf = frame.width / 2
         
-        context.setLineWidth(self.strokeWidth)
-        context.setStrokeColor(self.currentStrokeColor.cgColor)
+        context.setLineWidth(strokeWidth)
+        context.setStrokeColor(currentStrokeColor.cgColor)
         context.move(to: CGPoint(x: wHalf, y: 0))
-        context.addLine(to: CGPoint(x: wHalf, y: self.frame.height))
+        context.addLine(to: CGPoint(x: wHalf, y: frame.height))
         
         context.strokePath()
         
         context.setFillColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.0)
-        context.setFillColor(self.currentFillColor.cgColor)
-        context.fill(self.innerRect)
-        context.stroke(self.innerRect)
+        context.setFillColor(currentFillColor.cgColor)
+        context.fill(innerRect)
+        context.stroke(innerRect)
     }
    
 

@@ -14,7 +14,7 @@ open class ChartAxisValueFloatScreenLoc: ChartAxisValueFloat {
     fileprivate let actualFloat: CGFloat
     
     var screenLocFloat: CGFloat {
-        return CGFloat(self.scalar)
+        return CGFloat(scalar)
     }
     
     // screenLocFloat: model value which will be used to calculate screen position
@@ -27,6 +27,6 @@ open class ChartAxisValueFloatScreenLoc: ChartAxisValueFloat {
     // MARK: CustomStringConvertible
 
     override open var description: String {
-        return self.formatter.string(from: NSNumber(value: self.actualFloat.native))!
+        return self.formatter.string(from: NSNumber(value: Float(actualFloat)))!
     }
 }

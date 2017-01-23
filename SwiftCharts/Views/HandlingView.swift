@@ -15,10 +15,10 @@ open class HandlingView: UIView {
     open var touchHandler: (() -> ())?
 
     override open func didMoveToSuperview() {
-        self.movedToSuperViewHandler?()
+        movedToSuperViewHandler?()
     }
     
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.touchHandler?()
+        touchHandler?()
     }
 }

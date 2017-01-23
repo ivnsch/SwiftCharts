@@ -21,10 +21,10 @@ class BubbleExample: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let frame = ExamplesDefaults.chartFrame(self.view.bounds)
+        let frame = ExamplesDefaults.chartFrame(view.bounds)
         let chartFrame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height - colorBarHeight)
-        let colorBar = ColorBar(frame: CGRect(x: 0, y: chartFrame.origin.y + chartFrame.size.height, width: self.view.frame.size.width, height: self.colorBarHeight), c1: UIColor.red, c2: UIColor.green)
-        self.view.addSubview(colorBar)
+        let colorBar = ColorBar(frame: CGRect(x: 0, y: chartFrame.origin.y + chartFrame.size.height, width: view.frame.size.width, height: colorBarHeight), c1: UIColor.red, c2: UIColor.green)
+        view.addSubview(colorBar)
         
         
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
@@ -62,45 +62,49 @@ class BubbleExample: UIViewController {
 
         let chartPoints: [ChartPointBubble] = rawData.map{ChartPointBubble(x: ChartAxisValueDouble($0, labelSettings: labelSettings), y: ChartAxisValueDouble($1), diameterScalar: $2, bgColor: $3)}
 
-        let xValues = stride(from: (-2), through: 14, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
-        let yValues = stride(from: (-2), through: 12, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+        let xValues = stride(from: -2, through: 14, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
+        let yValues = stride(from: -2, through: 12, by: 2).map {ChartAxisValueInt($0, labelSettings: labelSettings)}
 
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
 
-        let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: ExamplesDefaults.chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
-        let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
+        let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
+
+        let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
+        let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
-        let bubbleLayer = self.bubblesLayer(xAxis: xAxis, yAxis: yAxis, chartInnerFrame: innerFrame, chartPoints: chartPoints)
+        let bubbleLayer = bubblesLayer(xAxisLayer, yAxisLayer: yAxisLayer, chartInnerFrame: innerFrame, chartPoints: chartPoints)
         
         let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesLayerSettings)
+        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: guidelinesLayerSettings)
 
         let guidelinesHighlightLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.red, linesWidth: 1, dotWidth: 4, dotSpacing: 4)
-        let guidelinesHighlightLayer = ChartGuideLinesForValuesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: guidelinesHighlightLayerSettings, axisValuesX: [ChartAxisValueDouble(0)], axisValuesY: [ChartAxisValueDouble(0)])
+        let guidelinesHighlightLayer = ChartGuideLinesForValuesDottedLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, settings: guidelinesHighlightLayerSettings, axisValuesX: [ChartAxisValueDouble(0)], axisValuesY: [ChartAxisValueDouble(0)])
         
         let chart = Chart(
             frame: chartFrame,
+            innerFrame: innerFrame,
+            settings: chartSettings,
             layers: [
-                xAxis,
-                yAxis,
+                xAxisLayer,
+                yAxisLayer,
                 guidelinesLayer,
                 guidelinesHighlightLayer,
                 bubbleLayer
             ]
         )
         
-        self.view.addSubview(chart.view)
+        view.addSubview(chart.view)
         self.chart = chart
     }
     
     // We can use a view based layer for easy animation (or interactivity), in which case we use the default chart points layer with a generator to create bubble views.
     // On the other side, if we don't need animation or want a better performance, we use ChartPointsBubbleLayer, which instead of creating views, renders directly to the chart's context.
-    fileprivate func bubblesLayer(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, chartInnerFrame: CGRect, chartPoints: [ChartPointBubble]) -> ChartLayer {
+    fileprivate func bubblesLayer(_ xAxisLayer: ChartAxisLayer, yAxisLayer: ChartAxisLayer, chartInnerFrame: CGRect, chartPoints: [ChartPointBubble]) -> ChartLayer {
         
         let maxBubbleDiameter: Double = 30, minBubbleDiameter: Double = 2
         
-        if self.useViewsLayer == true {
+        if useViewsLayer == true {
                 
             let (minDiameterScalar, maxDiameterScalar): (Double, Double) = chartPoints.reduce((min: 0, max: 0)) {tuple, chartPoint in
                 (min: min(tuple.min, chartPoint.diameterScalar), max: max(tuple.max, chartPoint.diameterScalar))
@@ -108,7 +112,7 @@ class BubbleExample: UIViewController {
             
             let diameterFactor = (maxBubbleDiameter - minBubbleDiameter) / (maxDiameterScalar - minDiameterScalar)
 
-            return ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: chartInnerFrame, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
+            return ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
 
                 let diameter = CGFloat(chartPointModel.chartPoint.diameterScalar * diameterFactor)
                 
@@ -116,15 +120,19 @@ class BubbleExample: UIViewController {
                 circleView.fillColor = chartPointModel.chartPoint.bgColor
                 circleView.borderColor = UIColor.black.withAlphaComponent(0.6)
                 circleView.borderWidth = 1
-                circleView.animDelay = Float(chartPointModel.index) * 0.2
-                circleView.animDuration = 1.2
-                circleView.animDamping = 0.4
-                circleView.animInitSpringVelocity = 0.5
+                
+                if !isTransform {
+                    circleView.animDelay = Float(chartPointModel.index) * 0.2
+                    circleView.animDuration = 1.2
+                    circleView.animDamping = 0.4
+                    circleView.animInitSpringVelocity = 0.5
+                }
+
                 return circleView
             })
             
         } else {
-            return ChartPointsBubbleLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: chartInnerFrame, chartPoints: chartPoints)
+            return ChartPointsBubbleLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints)
         }
     }
 
@@ -174,11 +182,11 @@ class BubbleExample: UIViewController {
             self.gradientImg = gradientImg
             
             let segmentSize = gradient.frame.size.width / 6
-            self.dividers = Array(stride(from: segmentSize, through: gradient.frame.size.width, by: segmentSize))
+            dividers = Array(stride(from: segmentSize, through: gradient.frame.size.width, by: segmentSize))
 
             super.init(frame: frame)
 
-            self.layer.insertSublayer(gradient, at: 0)
+            layer.insertSublayer(gradient, at: 0)
             
             let numberFormatter = NumberFormatter()
             numberFormatter.maximumFractionDigits = 2
@@ -188,25 +196,25 @@ class BubbleExample: UIViewController {
                 let dividerW: CGFloat = 1
                 let divider = UIView(frame: CGRect(x: x - dividerW / 2, y: 25, width: dividerW, height: 5))
                 divider.backgroundColor = UIColor.black
-                self.addSubview(divider)
+                addSubview(divider)
                 
-                let text = "\(numberFormatter.string(from: NSNumber(value: (x / gradient.frame.size.width).native))!)"
-                let labelWidth = ChartUtils.textSize(text, font: ExamplesDefaults.labelFont).width
+                let text = "\(numberFormatter.string(from: NSNumber(value: Float(x / gradient.frame.size.width)))!)"
+                let labelWidth = text.width(ExamplesDefaults.labelFont)
                 let label = UILabel()
                 label.center = CGPoint(x: x - labelWidth / 2, y: 30)
                 label.font = ExamplesDefaults.labelFont
                 label.text = text
                 label.sizeToFit()
 
-                self.addSubview(label)
+                addSubview(label)
             }
         }
         
         func colorForPercentage(_ percentage: Double) -> UIColor {
 
-            let data = self.imgData
+            let data = imgData
             
-            let xNotRounded = self.gradientImg.size.width * CGFloat(percentage)
+            let xNotRounded = gradientImg.size.width * CGFloat(percentage)
             let x = 4 * (floor(abs(xNotRounded / 4)))
             let pixelIndex = Int(x * 4)
             

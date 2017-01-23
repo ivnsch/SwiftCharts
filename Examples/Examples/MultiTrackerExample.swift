@@ -24,16 +24,16 @@ private let dateFormatter: DateFormatter = {
     let timeFormatter = DateFormatter()
     timeFormatter.dateStyle = .none
     timeFormatter.timeStyle = .short
-
+    
     return timeFormatter
 }()
 
 private let localDateFormatter: DateFormatter = {
     let dateFormatter = DateFormatter()
-
+    
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
     dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-
+    
     return dateFormatter
 }()
 
@@ -46,7 +46,7 @@ private let decimalFormatter: NumberFormatter = {
     return numberFormatter
 }()
 
-// MARK – Fixture data
+// MARK – Fixture data
 
 private let glucosePoints: [ChartPoint] = [("2016-02-28T07:26:38", 95), ("2016-02-28T07:31:38", 93), ("2016-02-28T07:41:39", 92), ("2016-02-28T07:51:42", 92), ("2016-02-28T07:56:38", 94), ("2016-02-28T08:01:39", 94), ("2016-02-28T08:06:38", 95), ("2016-02-28T08:11:37", 95), ("2016-02-28T08:16:40", 100), ("2016-02-28T08:21:39", 99), ("2016-02-28T08:26:39", 99), ("2016-02-28T08:31:38", 97), ("2016-02-28T08:51:43", 101), ("2016-02-28T08:56:39", 105), ("2016-02-28T09:01:43", 101), ("2016-02-28T09:06:37", 102), ("2016-02-28T09:11:37", 107), ("2016-02-28T09:16:38", 109), ("2016-02-28T09:21:37", 113), ("2016-02-28T09:26:41", 114), ("2016-02-28T09:31:37", 112), ("2016-02-28T09:36:39", 111), ("2016-02-28T09:41:40", 111), ("2016-02-28T09:46:43", 112), ("2016-02-28T09:51:38", 113), ("2016-02-28T09:56:43", 112), ("2016-02-28T10:01:38", 111), ("2016-02-28T10:06:42", 112), ("2016-02-28T10:11:37", 115), ("2016-02-28T10:16:42", 119), ("2016-02-28T10:21:42", 121), ("2016-02-28T10:26:38", 127), ("2016-02-28T10:31:36", 129), ("2016-02-28T10:36:37", 132), ("2016-02-28T10:41:38", 135), ("2016-02-28T10:46:37", 138), ("2016-02-28T10:51:36", 137), ("2016-02-28T10:56:38", 141), ("2016-02-28T11:01:37", 146), ("2016-02-28T11:06:40", 151), ("2016-02-28T11:16:37", 163), ("2016-02-28T11:21:36", 169), ("2016-02-28T11:26:37", 177), ("2016-02-28T11:31:37", 183), ("2016-02-28T11:36:37", 187), ("2016-02-28T11:41:36", 190), ("2016-02-28T11:46:36", 192), ("2016-02-28T11:51:36", 194), ("2016-02-28T11:56:36", 194), ("2016-02-28T12:01:37", 192), ("2016-02-28T12:06:41", 192), ("2016-02-28T12:11:36", 183), ("2016-02-28T12:16:38", 176), ("2016-02-28T12:21:39", 165), ("2016-02-28T12:26:38", 156), ("2016-02-28T12:31:37", 144), ("2016-02-28T12:36:36", 138), ("2016-02-28T12:41:37", 131), ("2016-02-28T12:46:37", 125), ("2016-02-28T12:51:36", 118), ("2016-02-28T13:01:43", 104), ("2016-02-28T13:06:45", 97), ("2016-02-28T13:11:39", 92), ("2016-02-28T13:16:37", 88), ("2016-02-28T13:21:36", 88)].map {
     return ChartPoint(
@@ -71,15 +71,15 @@ private let IOBPoints: [ChartPoint] = [("2016-02-28T07:25:00", 0.0), ("2016-02-2
 
 
 class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
-
+    
     fileprivate var topChart: Chart?
-
+    
     fileprivate var bottomChart: Chart?
-
+    
     fileprivate lazy var chartPanGestureRecognizer = UIPanGestureRecognizer()
-
-    // MARK: – Chart configuration
-
+    
+    // MARK: – Chart configuration
+    
     fileprivate lazy var chartSettings: ChartSettings = {
         let chartSettings = ChartSettings()
         chartSettings.top = 12
@@ -87,17 +87,15 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
         chartSettings.trailing = 8
         chartSettings.axisTitleLabelsToLabelsSpacing = 0
         chartSettings.labelsToAxisSpacingX = 6
-        chartSettings.labelsWidthY = 30
-
         return chartSettings
     }()
-
+    
     private let axisLabelSettings: ChartLabelSettings = ChartLabelSettings()
-
+    
     private let guideLinesLayerSettings: ChartGuideLinesLayerSettings = ChartGuideLinesLayerSettings()
-
+    
     fileprivate lazy var axisLineColor = UIColor.clear
-
+    
     fileprivate var xAxisValues: [ChartAxisValue]? {
         didSet {
             if let xAxisValues = xAxisValues {
@@ -107,9 +105,9 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
             }
         }
     }
-
+    
     fileprivate var xAxisModel: ChartAxisModel?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -118,11 +116,11 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
 
         generateXAxisValues()
 
-        let fullFrame = ExamplesDefaults.chartFrame(self.view.bounds)
+        let fullFrame = ExamplesDefaults.chartFrame(view.bounds)
         let (topFrame, bottomFrame) = fullFrame.divided(atDistance: fullFrame.height / 2, from: .minYEdge)
 
         topChart = generateGlucoseChartWithFrame(topFrame)
-        bottomChart = generateIOBChartWithFrame(bottomFrame)
+        bottomChart = generateIOBChartWithFrame(frame: bottomFrame)
 
         for chart in [topChart, bottomChart] {
             if let view = chart?.view {
@@ -130,7 +128,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
             }
         }
     }
-
+    
     fileprivate func generateXAxisValues() {
         let points = glucosePoints + predictedGlucosePoints
 
@@ -142,14 +140,14 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "h a"
 
-        let xAxisValues = ChartAxisValuesGenerator.generateXAxisValuesWithChartPoints(points, minSegmentCount: 5, maxSegmentCount: 10, multiple: TimeInterval(60 * 60), axisValueGenerator: { ChartAxisValueDate(date: ChartAxisValueDate.dateFromScalar($0), formatter: timeFormatter, labelSettings: self.axisLabelSettings)
+        let xAxisValues = ChartAxisValuesStaticGenerator.generateXAxisValuesWithChartPoints(points, minSegmentCount: 5, maxSegmentCount: 10, multiple: TimeInterval(60 * 60), axisValueGenerator: { ChartAxisValueDate(date: ChartAxisValueDate.dateFromScalar($0), formatter: timeFormatter, labelSettings: axisLabelSettings)
             }, addPaddingSegmentIfEdge: false)
         xAxisValues.first?.hidden = true
         xAxisValues.last?.hidden = true
 
         self.xAxisValues = xAxisValues
     }
-
+    
     fileprivate func generateGlucoseChartWithFrame(_ frame: CGRect) -> Chart? {
         guard glucosePoints.count > 1, let xAxisModel = xAxisModel else {
             return nil
@@ -158,28 +156,27 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
         let allPoints = glucosePoints + predictedGlucosePoints
 
         // TODO: The segment/multiple values are unit-specific
-        let yAxisValues = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(allPoints, minSegmentCount: 2, maxSegmentCount: 4, multiple: 25, axisValueGenerator: { ChartAxisValueDouble($0, labelSettings: self.axisLabelSettings) }, addPaddingSegmentIfEdge: true)
+        let yAxisValues = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(allPoints, minSegmentCount: 2, maxSegmentCount: 4, multiple: 25, axisValueGenerator: { ChartAxisValueDouble($0, labelSettings: axisLabelSettings)}, addPaddingSegmentIfEdge: true)
 
         let yAxisModel = ChartAxisModel(axisValues: yAxisValues, lineColor: axisLineColor)
 
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: frame, xModel: xAxisModel, yModel: yAxisModel)
 
-        let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
+        let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
 
-        let gridLayer = ChartGuideLinesLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, axis: .xAndY, settings: guideLinesLayerSettings, onlyVisibleX: true, onlyVisibleY: false)
+        let gridLayer = ChartGuideLinesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, axis: .x, settings: guideLinesLayerSettings)
 
-        let circles = ChartPointsScatterCirclesLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: glucosePoints, displayDelay: 0, itemSize: CGSize(width: 4, height: 4), itemFillColor: UIColor.glucoseTintColor)
+        let circles = ChartPointsScatterCirclesLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: glucosePoints, displayDelay: 0, itemSize: CGSize(width: 4, height: 4), itemFillColor: UIColor.glucoseTintColor)
 
         var prediction: ChartLayer?
 
         if predictedGlucosePoints.count > 1 {
-            prediction = ChartPointsScatterCirclesLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: predictedGlucosePoints, displayDelay: 0, itemSize: CGSize(width: 2, height: 2), itemFillColor: UIColor.glucoseTintColor.withAlphaComponent(0.75))
+            prediction = ChartPointsScatterCirclesLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: predictedGlucosePoints, displayDelay: 0, itemSize: CGSize(width: 2, height: 2), itemFillColor: UIColor.glucoseTintColor.withAlphaComponent(0.75))
         }
 
         let highlightLayer = ChartPointsTouchHighlightLayer(
-            xAxis: xAxis,
-            yAxis: yAxis,
-            innerFrame: innerFrame,
+            xAxisLayer: xAxisLayer,
+            yAxisLayer: yAxisLayer,
             chartPoints: allPoints,
             tintColor: UIColor.glucoseTintColor,
             labelCenterY: chartSettings.top,
@@ -188,17 +185,17 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
 
         let layers: [ChartLayer?] = [
             gridLayer,
-            xAxis,
-            yAxis,
+            xAxisLayer,
+            yAxisLayer,
             highlightLayer,
             prediction,
             circles
         ]
         
-        return Chart(frame: frame, layers: layers.flatMap { $0 })
+        return Chart(frame: frame, innerFrame: innerFrame, settings: chartSettings, layers: layers.flatMap { $0 })
     }
 
-    fileprivate func generateIOBChartWithFrame(_ frame: CGRect) -> Chart? {
+    private func generateIOBChartWithFrame(frame: CGRect) -> Chart? {
         guard IOBPoints.count > 1, let xAxisModel = xAxisModel else {
             return nil
         }
@@ -214,26 +211,27 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
             containerPoints.append(ChartPoint(x: last.x, y: ChartAxisValueInt(0)))
         }
 
-        let yAxisValues = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(IOBPoints, minSegmentCount: 2, maxSegmentCount: 3, multiple: 0.5, axisValueGenerator: { ChartAxisValueDouble($0, labelSettings: self.axisLabelSettings) }, addPaddingSegmentIfEdge: false)
+        let yAxisValues = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(IOBPoints, minSegmentCount: 2, maxSegmentCount: 3, multiple: 0.5, axisValueGenerator: { ChartAxisValueDouble($0, labelSettings: axisLabelSettings)}, addPaddingSegmentIfEdge: false)
 
-        let yAxisModel = ChartAxisModel(axisValues: yAxisValues, lineColor: axisLineColor)
+        let yAxisModel = ChartAxisModel(axisValues: yAxisValues, lineColor: axisLineColor, labelSpaceReservationMode: .fixed(30))
 
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: frame, xModel: xAxisModel, yModel: yAxisModel)
 
-        let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
+        let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
+        let (xAxis, yAxis) = (xAxisLayer.axis, yAxisLayer.axis)
 
         // The IOB area
         let lineModel = ChartLineModel(chartPoints: IOBPoints, lineColor: UIColor.IOBTintColor, lineWidth: 2, animDuration: 0, animDelay: 0)
-        let IOBLine = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
+        let IOBLine = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, lineModels: [lineModel])
 
-        let IOBArea = ChartPointsAreaLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: containerPoints, areaColor: UIColor.IOBTintColor.withAlphaComponent(0.5), animDuration: 0, animDelay: 0, addContainerPoints: false)
+        let IOBArea = ChartPointsAreaLayer(xAxis: xAxis, yAxis: yAxis, chartPoints: containerPoints, areaColor: UIColor.IOBTintColor.withAlphaComponent(0.5), animDuration: 0, animDelay: 0, addContainerPoints: false)
 
         // Grid lines
-        let gridLayer = ChartGuideLinesLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, axis: .xAndY, settings: guideLinesLayerSettings, onlyVisibleX: true, onlyVisibleY: false)
+        let gridLayer = ChartGuideLinesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, axis: .xAndY, settings: guideLinesLayerSettings)
 
         // 0-line
         let dummyZeroChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
-        let zeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: [dummyZeroChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
+        let zeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, chartPoints: [dummyZeroChartPoint], viewGenerator: {(chartPointModel, layer, chart, _) -> UIView? in
             let width: CGFloat = 0.5
             let viewFrame = CGRect(x: innerFrame.origin.x, y: chartPointModel.screenLoc.y - width / 2, width: innerFrame.size.width, height: width)
 
@@ -243,9 +241,8 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
         })
 
         let highlightLayer = ChartPointsTouchHighlightLayer(
-            xAxis: xAxis,
-            yAxis: yAxis,
-            innerFrame: innerFrame,
+            xAxisLayer: xAxisLayer,
+            yAxisLayer: yAxisLayer,
             chartPoints: IOBPoints,
             tintColor: UIColor.IOBTintColor,
             labelCenterY: chartSettings.top,
@@ -254,15 +251,15 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
 
         let layers: [ChartLayer?] = [
             gridLayer,
-            xAxis,
-            yAxis,
+            xAxisLayer,
+            yAxisLayer,
             zeroGuidelineLayer,
             highlightLayer,
             IOBArea,
             IOBLine,
         ]
 
-        return Chart(frame: frame, layers: layers.flatMap { $0 })
+        return Chart(frame: frame, innerFrame: innerFrame, settings: chartSettings, layers: layers.flatMap { $0 })
     }
 }
 
@@ -273,73 +270,72 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
 private extension ChartPointsTouchHighlightLayer {
 
     convenience init(
-        xAxis: ChartAxisLayer,
-        yAxis: ChartAxisLayer,
-        innerFrame: CGRect,
+        xAxisLayer: ChartAxisLayer,
+        yAxisLayer: ChartAxisLayer,
         chartPoints: [T],
         tintColor: UIColor,
         labelCenterY: CGFloat = 0,
         gestureRecognizer: UIPanGestureRecognizer? = nil
     ) {
-        self.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, gestureRecognizer: gestureRecognizer,
-            modelFilter: { (screenLoc, chartPointModels) -> ChartPointLayerModel<T>? in
-                if let index = chartPointModels.map({ $0.screenLoc.x }).findClosestElementIndexToValue(screenLoc.x) {
-                    return chartPointModels[index]
-                } else {
-                    return nil
-                }
-            },
-            viewGenerator: { (chartPointModel, layer, chart) -> U? in
-                let containerView = U(frame: chart.view.bounds)
-
-                let xAxisOverlayView = UIView(frame: xAxis.rect.offsetBy(dx: 0, dy: 1))
-                xAxisOverlayView.backgroundColor = UIColor.white
-                xAxisOverlayView.isOpaque = true
-                containerView.addSubview(xAxisOverlayView)
-
-                let point = ChartPointEllipseView(center: chartPointModel.screenLoc, diameter: 16)
-                point.fillColor = tintColor.withAlphaComponent(0.5)
-                containerView.addSubview(point)
-
-                if let text = chartPointModel.chartPoint.y.labels.first?.text {
-                    let label = UILabel()
-                    if #available(iOS 9.0, *) {
-                        label.font = UIFont.monospacedDigitSystemFont(ofSize: 15, weight: UIFontWeightBold)
+        self.init(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, gestureRecognizer: gestureRecognizer,
+                  modelFilter: { (screenLoc, chartPointModels) -> ChartPointLayerModel<T>? in
+                    if let index = chartPointModels.map({ $0.screenLoc.x }).findClosestElementIndexToValue(screenLoc.x) {
+                        return chartPointModels[index]
                     } else {
-                        label.font = UIFont.systemFont(ofSize: 15)
+                        return nil
                     }
-
-                    label.text = text
-                    label.textColor = tintColor
-                    label.textAlignment = .center
-                    label.sizeToFit()
-                    label.frame.size.height += 4
-                    label.frame.size.width += label.frame.size.height / 2
-                    label.center.y = innerFrame.origin.y - 1
-                    label.center.x = chartPointModel.screenLoc.x
-                    label.frame.origin.x = min(max(label.frame.origin.x, innerFrame.origin.x), innerFrame.maxX - label.frame.size.width)
-                    label.frame.origin.makeIntegralInPlaceWithDisplayScale(chart.view.traitCollection.displayScale)
-                    label.layer.borderColor = tintColor.cgColor
-                    label.layer.borderWidth = 1 / chart.view.traitCollection.displayScale
-                    label.layer.cornerRadius = label.frame.size.height / 2
-                    label.backgroundColor = UIColor.white
-
-                    containerView.addSubview(label)
-                }
-
-                if let text = chartPointModel.chartPoint.x.labels.first?.text {
-                    let label = UILabel()
-                    label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
-                    label.text = text
-                    label.textColor = UIColor.secondaryLabelColor
-                    label.sizeToFit()
-                    label.center = CGPoint(x: chartPointModel.screenLoc.x, y: xAxisOverlayView.center.y)
-                    label.frame.origin.makeIntegralInPlaceWithDisplayScale(chart.view.traitCollection.displayScale)
-
-                    containerView.addSubview(label)
-                }
-                
-                return containerView
+            },
+                  viewGenerator: { (chartPointModel, layer, chart, isTransform) -> U? in
+                    let containerView = U(frame: chart.view.bounds)
+                    
+                    let xAxisOverlayView = UIView(frame: xAxisLayer.frame.offsetBy(dx: 0, dy: 1))
+                    xAxisOverlayView.backgroundColor = UIColor.white
+                    xAxisOverlayView.isOpaque = true
+                    containerView.addSubview(xAxisOverlayView)
+                    
+                    let point = ChartPointEllipseView(center: chartPointModel.screenLoc, diameter: 16)
+                    point.fillColor = tintColor.withAlphaComponent(0.5)
+                    containerView.addSubview(point)
+                    
+                    if let text = chartPointModel.chartPoint.y.labels.first?.text {
+                        let label = UILabel()
+                        if #available(iOS 9.0, *) {
+                            label.font = UIFont.monospacedDigitSystemFont(ofSize: 15, weight: UIFontWeightBold)
+                        } else {
+                            label.font = UIFont.systemFont(ofSize: 15)
+                        }
+                        
+                        label.text = text
+                        label.textColor = tintColor
+                        label.textAlignment = .center
+                        label.sizeToFit()
+                        label.frame.size.height += 4
+                        label.frame.size.width += label.frame.size.height / 2
+                        label.center.y = chart.containerView.frame.origin.y - 1
+                        label.center.x = chartPointModel.screenLoc.x
+                        label.frame.origin.x = min(max(label.frame.origin.x, chart.containerView.frame.origin.x), chart.containerView.frame.maxX - label.frame.size.width)
+                        label.frame.origin.makeIntegralInPlaceWithDisplayScale(chart.view.traitCollection.displayScale)
+                        label.layer.borderColor = tintColor.cgColor
+                        label.layer.borderWidth = 1 / chart.view.traitCollection.displayScale
+                        label.layer.cornerRadius = label.frame.size.height / 2
+                        label.backgroundColor = UIColor.white
+                        
+                        containerView.addSubview(label)
+                    }
+                    
+                    if let text = chartPointModel.chartPoint.x.labels.first?.text {
+                        let label = UILabel()
+                        label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+                        label.text = text
+                        label.textColor = UIColor.secondaryLabelColor
+                        label.sizeToFit()
+                        label.center = CGPoint(x: chartPointModel.screenLoc.x, y: xAxisOverlayView.center.y)
+                        label.frame.origin.makeIntegralInPlaceWithDisplayScale(chart.view.traitCollection.displayScale)
+                        
+                        containerView.addSubview(label)
+                    }
+                    
+                    return containerView
             }
         )
     }
@@ -366,14 +362,14 @@ private extension CGPoint {
 
 
 private extension BidirectionalCollection where Index: Strideable, Iterator.Element: Comparable, Index.Stride == Int {
-
+    
     /**
      Returns the insertion index of a new value in a sorted collection
 
      Based on some helpful responses found at [StackOverflow](http://stackoverflow.com/a/33674192)
-     
-     - parameter value: The value to insert
 
+     - parameter value: The value to insert
+     
      - returns: The appropriate insertion index, between `startIndex` and `endIndex`
      */
     func findInsertionIndexForValue(_ value: Iterator.Element) -> Index {
@@ -382,7 +378,7 @@ private extension BidirectionalCollection where Index: Strideable, Iterator.Elem
 
         while low != high {
             let mid = low.advanced(by: low.distance(to: high) / 2)
-
+            
             if self[mid] < value {
                 low = mid.advanced(by: 1)
             } else {

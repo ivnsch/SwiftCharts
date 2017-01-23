@@ -11,44 +11,97 @@ import UIKit
 /// A ChartAxisLayer for Y axes
 class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
+    fileprivate var minCalculatedLabelWidth: CGFloat?
+    fileprivate var maxCalculatedLabelWidth: CGFloat?
+    
+    override var origin: CGPoint {
+        return CGPoint(x: offset, y: axis.lastScreen)
+    }
+    
+    override var end: CGPoint {
+        return CGPoint(x: offset, y: axis.firstScreen)
+    }
+    
     override var height: CGFloat {
-        return self.p2.y - self.p1.y
+        return axis.screenLength
+    }
+    
+    override var visibleFrame: CGRect {
+        return CGRect(x: offset, y: axis.lastVisibleScreen, width: width, height: axis.visibleScreenLength)
     }
     
     var labelsMaxWidth: CGFloat {
-        if let labelsWidthY = settings.labelsWidthY {
-            return labelsWidthY
-        } else if self.labelDrawers.isEmpty {
-            return self.maxLabelWidth(self.axisValues)
-        } else {
-            return self.labelDrawers.reduce(0) {maxWidth, labelDrawer in
-                max(maxWidth, labelDrawer.size.width)
+        
+        let currentWidth: CGFloat = {
+            if self.labelDrawers.isEmpty {
+                return self.maxLabelWidth(self.currentAxisValues)
+            } else {
+                return self.labelDrawers.reduce(0) {maxWidth, labelDrawer in
+                    return max(maxWidth, labelDrawer.drawers.reduce(0) {maxWidth, drawer in
+                        max(maxWidth, drawer.size.width)
+                    })
+                }
             }
+        }()
+        
+        
+        let width: CGFloat = {
+            switch labelSpaceReservationMode {
+            case .minPresentedSize: return minCalculatedLabelWidth.maxOpt(currentWidth)
+            case .maxPresentedSize: return maxCalculatedLabelWidth.maxOpt(currentWidth)
+            case .fixed(let value): return value
+            case .current: return currentWidth
+            }
+        }()
+        
+        if !currentAxisValues.isEmpty {
+            let (min, max): (CGFloat, CGFloat) = (minCalculatedLabelWidth.minOpt(currentWidth), maxCalculatedLabelWidth.maxOpt(currentWidth))
+            minCalculatedLabelWidth = min
+            maxCalculatedLabelWidth = max
         }
+        
+        return width
     }
     
     override var width: CGFloat {
-        return self.labelsMaxWidth + self.settings.axisStrokeWidth + self.settings.labelsToAxisSpacingY + self.settings.axisTitleLabelsToLabelsSpacing + self.axisTitleLabelsWidth
+        return labelsMaxWidth + settings.axisStrokeWidth + settings.labelsToAxisSpacingY + settings.axisTitleLabelsToLabelsSpacing + axisTitleLabelsWidth
     }
     
-    override var length: CGFloat {
-        return p1.y - p2.y
+    override var widthWithoutLabels: CGFloat {
+        return settings.axisStrokeWidth + settings.labelsToAxisSpacingY + settings.axisTitleLabelsToLabelsSpacing + axisTitleLabelsWidth
     }
-
+    
+    override var heightWithoutLabels: CGFloat {
+        return height
+    }
+    
+    override func handleAxisInnerFrameChange(_ xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        
+        if let xLow = xLow {
+            axis.offsetFirstScreen(-xLow.delta)
+            initDrawers()
+        }
+        
+        if let xHigh = xHigh {
+            axis.offsetLastScreen(xHigh.delta)
+            initDrawers()
+        }
+        
+    }
+    
     override func generateAxisTitleLabelsDrawers(offset: CGFloat) -> [ChartLabelDrawer] {
         
-        if let firstTitleLabel = self.axisTitleLabels.first {
+        if let firstTitleLabel = axisTitleLabels.first {
             
-            if self.axisTitleLabels.count > 1 {
+            if axisTitleLabels.count > 1 {
                 print("WARNING: No support for multiple definition labels on vertical axis. Using only first one.")
             }
             let axisLabel = firstTitleLabel
-            let labelSize = ChartUtils.textSize(axisLabel.text, font: axisLabel.settings.font)
-            let settings = axisLabel.settings
-            let newSettings = ChartLabelSettings(font: settings.font, fontColor: settings.fontColor, rotation: settings.rotation, rotationKeep: settings.rotationKeep)
-            let axisLabelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPoint(
-                x: self.p1.x + offset,
-                y: self.p2.y + ((self.p1.y - self.p2.y) / 2) - (labelSize.height / 2)), settings: newSettings)
+            let labelSize = axisLabel.text.size(axisLabel.settings.font)
+            let axisLabelDrawer = ChartLabelDrawer(label: axisLabel, screenLoc: CGPoint(
+                x: self.offset + offset,
+                y: axis.lastScreenInit + ((axis.firstScreenInit - axis.lastScreenInit) / 2) - (labelSize.height / 2)))
             
             return [axisLabelDrawer]
             
@@ -56,43 +109,24 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
             return []
         }
     }
-
     
-    override func screenLocForScalar(_ scalar: Double, firstAxisScalar: Double) -> CGFloat {
-        return self.p1.y - self.innerScreenLocForScalar(scalar, firstAxisScalar: firstAxisScalar)
-    }
-    
-    
-    override func generateLabelDrawers(offset: CGFloat) -> [ChartLabelDrawer] {
-
-        var drawers: [ChartLabelDrawer] = []
+    override func generateDirectLabelDrawers(offset: CGFloat) -> [ChartAxisValueLabelDrawers] {
         
-        var lastDrawerWithRect: (drawer: ChartLabelDrawer, rect: CGRect)?
+        var drawers: [ChartAxisValueLabelDrawers] = []
         
-        for i in 0..<axisValues.count {
-            let axisValue = axisValues[i]
-            let scalar = axisValue.scalar
-            let y = self.screenLocForScalar(scalar)
-            if let axisLabel = axisValue.labels.first { // for now y axis supports only one label x value
-                let labelSize = ChartUtils.textSize(axisLabel.text, font: axisLabel.settings.font)
+        let scalars = valuesGenerator.generate(axis)
+        currentAxisValues = scalars
+        for scalar in scalars {
+            let labels = labelsGenerator.generate(scalar, axis: axis)
+            let y = axis.screenLocForScalar(scalar)
+            if let axisLabel = labels.first { // for now y axis supports only one label x value
+                let labelSize = axisLabel.text.size(axisLabel.settings.font)
                 let labelY = y - (labelSize.height / 2)
-                let labelX = self.labelsX(offset: offset, labelWidth: labelSize.width, textAlignment: axisLabel.settings.textAlignment)
-                let labelDrawer = ChartLabelDrawer(text: axisLabel.text, screenLoc: CGPoint(x: labelX, y: labelY), settings: axisLabel.settings)
-                labelDrawer.hidden = axisValue.hidden
+                let labelX = labelsX(offset: offset, labelWidth: labelSize.width, textAlignment: axisLabel.settings.textAlignment)
+                let labelDrawer = ChartLabelDrawer(label: axisLabel, screenLoc: CGPoint(x: labelX, y: labelY))
 
-                let rect = CGRect(x: labelX, y: labelY, width: labelSize.width, height: labelSize.height)
-                drawers.append(labelDrawer)
-                
-                // move overlapping labels. This is for now a very simple algorithm and doesn't take into account possible overlappings resulting of moving the labels
-                if let (lastDrawer, lastRect) = lastDrawerWithRect {
-                    let intersection = rect.intersection(lastRect)
-                    if intersection != CGRect.null {
-                        labelDrawer.screenLoc = CGPoint(x: labelDrawer.screenLoc.x, y: labelDrawer.screenLoc.y - intersection.height / 2)
-                        lastDrawer.screenLoc = CGPoint(x: lastDrawer.screenLoc.x, y: lastDrawer.screenLoc.y + intersection.height / 2)
-                    }
-                }
-                
-                lastDrawerWithRect = (labelDrawer, rect)
+                let labelDrawers = ChartAxisValueLabelDrawers(scalar, [labelDrawer])
+                drawers.append(labelDrawers)
             }
         }
         return drawers
@@ -104,24 +138,42 @@ class ChartAxisYLayerDefault: ChartAxisLayerDefault {
     
     fileprivate func maxLabelWidth(_ axisLabels: [ChartAxisLabel]) -> CGFloat {
         return axisLabels.reduce(CGFloat(0)) {maxWidth, label in
-            return max(maxWidth, ChartUtils.textSize(label.text, font: label.settings.font).width)
+            return max(maxWidth, label.text.width(label.settings.font))
+        }
+    }
+    fileprivate func maxLabelWidth(_ axisValues: [Double]) -> CGFloat {
+        return axisValues.reduce(CGFloat(0)) {maxWidth, value in
+            let labels = labelsGenerator.generate(value, axis: axis)
+            return max(maxWidth, maxLabelWidth(labels))
         }
     }
     
-    fileprivate func maxLabelWidth(_ axisValues: [ChartAxisValue]) -> CGFloat {
-        return axisValues.reduce(CGFloat(0)) {maxWidth, axisValue in
-            return max(maxWidth, self.maxLabelWidth(axisValue.labels))
-        }
+    override func zoom(_ x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        axis.zoom(x, y: y, centerX: centerX, centerY: centerY, elastic: chart?.zoomPanSettings.elastic ?? false)
+        update()
+        chart?.view.setNeedsDisplay()
     }
     
+    override func pan(_ deltaX: CGFloat, deltaY: CGFloat) {
+        axis.pan(deltaX, deltaY: deltaY, elastic: chart?.zoomPanSettings.elastic ?? false)
+        update()
+        chart?.view.setNeedsDisplay()
+    }
+    
+    override func zoom(_ scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        axis.zoom(scaleX, scaleY: scaleY, centerX: centerX, centerY: centerY, elastic: chart?.zoomPanSettings.elastic ?? false)
+        update()
+        chart?.view.setNeedsDisplay()
+    }
+
     func axisLineX(offset: CGFloat) -> CGFloat {
         fatalError("Override")
     }
     
     override func generateLineDrawer(offset: CGFloat) -> ChartLineDrawer {
         let x = axisLineX(offset: offset)
-        let p1 = CGPoint(x: x, y: self.p1.y)
-        let p2 = CGPoint(x: x, y: self.p2.y)
-        return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
+        let p1 = CGPoint(x: x, y: axis.firstVisibleScreen)
+        let p2 = CGPoint(x: x, y: axis.lastVisibleScreen)
+        return ChartLineDrawer(p1: p1, p2: p2, color: settings.lineColor, strokeWidth: settings.axisStrokeWidth)
     }
 }

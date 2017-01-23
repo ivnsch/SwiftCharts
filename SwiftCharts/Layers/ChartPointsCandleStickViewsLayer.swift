@@ -10,13 +10,13 @@ import UIKit
 
 open class ChartPointsCandleStickViewsLayer<T: ChartPointCandleStick, U: ChartCandleStickView>: ChartPointsViewsLayer<ChartPointCandleStick, ChartCandleStickView> {
 
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], viewGenerator: @escaping ChartPointViewGenerator) {
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: viewGenerator)
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], viewGenerator: @escaping ChartPointViewGenerator) {
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
     
     open func highlightChartpointView(screenLoc: CGPoint) {
         let  x = screenLoc.x
-        for viewWithChartPoint in self.viewsWithChartPoints {
+        for viewWithChartPoint in viewsWithChartPoints {
             let view = viewWithChartPoint.view
             let originX = view.frame.origin.x
             view.highlighted = x > originX && x < originX + view.frame.width

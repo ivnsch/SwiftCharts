@@ -14,11 +14,25 @@ open class HandlingLabel: UILabel {
     open var movedToSuperViewHandler: (() -> ())?
     open var touchHandler: (() -> ())?
     
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        sharedInit()
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        sharedInit()
+    }
+    
+    fileprivate func sharedInit() {
+        isUserInteractionEnabled = true
+    }
+    
     override open func didMoveToSuperview() {
-        self.movedToSuperViewHandler?()
+        movedToSuperViewHandler?()
     }
     
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.touchHandler?()
+        touchHandler?()
     }
 }

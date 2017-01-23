@@ -10,7 +10,7 @@ import UIKit
 
 open class ChartAxisValueString: ChartAxisValue {
    
-    let string: String
+    open let string: String
     
     public init(_ string: String = "", order: Int, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.string = string
@@ -20,6 +20,6 @@ open class ChartAxisValueString: ChartAxisValue {
     // MARK: CustomStringConvertible
 
     override open var description: String {
-        return self.string
+        return string
     }
 }

@@ -15,44 +15,69 @@ class ChartAxisYHighLayerDefault: ChartAxisYLayerDefault {
 
     /// The start point of the axis line.
     override var lineP1: CGPoint {
-        return self.p1
+        return CGPoint(x: origin.x, y: axis.firstVisibleScreen)
     }
 
     /// The end point of the axis line.
     override var lineP2: CGPoint {
-        return self.p2
+        return CGPoint(x: end.x, y: axis.lastVisibleScreen)
+    }
+    
+    override func updateInternal() {
+        guard let chart = chart else {return}
+        super.updateInternal()
+        if lastFrame.width != frame.width {
+            
+            // Move drawers by delta
+            let delta = frame.width - lastFrame.width
+            offset -= delta
+            initDrawers()
+            
+            chart.notifyAxisInnerFrameChange(yHigh: ChartAxisLayerWithFrameDelta(layer: self, delta: delta))
+        }
+    }
+    
+    
+    override func handleAxisInnerFrameChange(_ xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
+        super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
+        
+        // Handle resizing of other high y axes
+        if let yHigh = yHigh , yHigh.layer.frame.maxX > frame.maxX {
+            offset = offset - yHigh.delta
+            initDrawers()
+        }
     }
     
     override func initDrawers() {
         
-        self.lineDrawer = self.generateLineDrawer(offset: 0)
+        lineDrawer = generateLineDrawer(offset: 0)
         
-        let labelsOffset = self.settings.labelsToAxisSpacingY + self.settings.axisStrokeWidth
-        self.labelDrawers = self.generateLabelDrawers(offset: labelsOffset)
-        let axisTitleLabelsOffset = labelsOffset + self.labelsMaxWidth + self.settings.axisTitleLabelsToLabelsSpacing
-        self.axisTitleLabelDrawers = self.generateAxisTitleLabelsDrawers(offset: axisTitleLabelsOffset)
+        let labelsOffset = settings.labelsToAxisSpacingY + settings.axisStrokeWidth
+        labelDrawers = generateLabelDrawers(offset: labelsOffset)
+        let axisTitleLabelsOffset = labelsOffset + labelsMaxWidth + settings.axisTitleLabelsToLabelsSpacing
+        axisTitleLabelDrawers = generateAxisTitleLabelsDrawers(offset: axisTitleLabelsOffset)
     }
     
     override func generateLineDrawer(offset: CGFloat) -> ChartLineDrawer {
-        let halfStrokeWidth = self.settings.axisStrokeWidth / 2 // we want that the stroke begins at the beginning of the frame, not in the middle of it
-        let x = self.p1.x + offset + halfStrokeWidth
-        let p1 = CGPoint(x: x, y: self.p1.y)
-        let p2 = CGPoint(x: x, y: self.p2.y)
-        return ChartLineDrawer(p1: p1, p2: p2, color: self.settings.lineColor, strokeWidth: self.settings.axisStrokeWidth)
+        let halfStrokeWidth = settings.axisStrokeWidth / 2 // we want that the stroke begins at the beginning of the frame, not in the middle of it
+        let x = origin.x + offset + halfStrokeWidth
+        let p1 = CGPoint(x: x, y: axis.firstVisibleScreen)
+        let p2 = CGPoint(x: x, y: axis.lastVisibleScreen)
+        return ChartLineDrawer(p1: p1, p2: p2, color: settings.lineColor, strokeWidth: settings.axisStrokeWidth)
     }
     
     override func labelsX(offset: CGFloat, labelWidth: CGFloat, textAlignment: ChartLabelTextAlignment) -> CGFloat {
         var labelsX: CGFloat
         switch textAlignment {
         case .left, .default:
-            labelsX = self.p1.x + offset
+            labelsX = origin.x + offset
         case .right:
-            labelsX = self.p1.x + offset + self.labelsMaxWidth - labelWidth
+            labelsX = origin.x + offset + labelsMaxWidth - labelWidth
         }
         return labelsX
     }
     
     override func axisLineX(offset: CGFloat) -> CGFloat {
-        return p1.x + offset + settings.axisStrokeWidth / 2
+        return self.offset + offset + settings.axisStrokeWidth / 2
     }
 }

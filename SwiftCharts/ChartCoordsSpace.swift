@@ -37,7 +37,7 @@ import UIKit
  */
 open class ChartCoordsSpace {
     
-    public typealias ChartAxisLayerModel = (p1: CGPoint, p2: CGPoint, axisValues: [ChartAxisValue], axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings)
+    public typealias ChartAxisLayerModel = (p1: CGPoint, p2: CGPoint, firstModelValue: Double, lastModelValue: Double, axisValuesGenerator: ChartAxisValuesGenerator, labelsGenerator: ChartAxisLabelsGenerator, axisTitleLabels: [ChartAxisLabel], settings: ChartAxisSettings, labelsConflictSolver: ChartAxisLabelsConflictSolver?, leadingPadding: ChartAxisPadding, trailingPadding: ChartAxisPadding, labelSpaceReservationMode: AxisLabelsSpaceReservationMode, clipContents: Bool)
     public typealias ChartAxisLayerGenerator = (ChartAxisLayerModel) -> ChartAxisLayer
     
     fileprivate let chartSettings: ChartSettings
@@ -54,11 +54,11 @@ open class ChartCoordsSpace {
     fileprivate let yHighGenerator: ChartAxisLayerGenerator
     fileprivate let xLowGenerator: ChartAxisLayerGenerator
     fileprivate let xHighGenerator: ChartAxisLayerGenerator
-
-    open fileprivate(set) var yLowAxes: [ChartAxisLayer] = []
-    open fileprivate(set) var yHighAxes: [ChartAxisLayer] = []
-    open fileprivate(set) var xLowAxes: [ChartAxisLayer] = []
-    open fileprivate(set) var xHighAxes: [ChartAxisLayer] = []
+    
+    open fileprivate(set) var yLowAxesLayers: [ChartAxisLayer] = []
+    open fileprivate(set) var yHighAxesLayers: [ChartAxisLayer] = []
+    open fileprivate(set) var xLowAxesLayers: [ChartAxisLayer] = []
+    open fileprivate(set) var xHighAxesLayers: [ChartAxisLayer] = []
 
     /**
      A convenience initializer with default axis layer generators
@@ -74,17 +74,71 @@ open class ChartCoordsSpace {
      */
     public convenience init(chartSettings: ChartSettings, chartSize: CGSize, yLowModels: [ChartAxisModel] = [], yHighModels: [ChartAxisModel] = [], xLowModels: [ChartAxisModel] = [], xHighModels: [ChartAxisModel] = []) {
         
+        func calculatePaddingValues(_ axis: ChartAxis, model: ChartAxisLayerModel, dimensionExtractor: @escaping (CGSize) -> CGFloat) -> (CGFloat, CGFloat) {
+
+            func paddingForAxisValue(_ axisValueMaybe: Double?) -> CGFloat {
+                return axisValueMaybe.map{model.labelsGenerator.generate($0, axis: axis)}?.first.map{dimensionExtractor($0.textSize) / 2} ?? 0
+            }
+            
+            func calculatePadding(_ padding: ChartAxisPadding, axisValueMaybe: Double?) -> CGFloat {
+                switch padding {
+                case .label: return paddingForAxisValue(axisValueMaybe)
+                case .labelPlus(let plus): return paddingForAxisValue(axisValueMaybe) + plus
+                case .maxLabelFixed(let length): return max(paddingForAxisValue(axisValueMaybe), length)
+                case .fixed(let length): return length
+                case .none: return 0
+                }
+            }
+            
+            let axisValues: [Double] = {
+                switch (model.leadingPadding, model.trailingPadding) {
+                case (.label, _): fallthrough
+                case (_, .label): fallthrough
+                case (.labelPlus, _): fallthrough
+                case (_, .labelPlus): fallthrough
+                case (.maxLabelFixed(_), _): fallthrough
+                case (_, .maxLabelFixed(_)): return model.axisValuesGenerator.generate(axis)
+                default: return []
+                }
+            }()
+
+            return (
+                calculatePadding(model.leadingPadding, axisValueMaybe: axisValues.first),
+                calculatePadding(model.trailingPadding, axisValueMaybe: axisValues.last)
+            )
+        }
+        
         let yLowGenerator: ChartAxisLayerGenerator = {model in
-            ChartAxisYLowLayerDefault(p1: model.p1, p2: model.p2, axisValues: model.axisValues, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
+            let tmpAxis = ChartAxisY(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
+            model.axisValuesGenerator.axisInitialized(tmpAxis)
+            let tmpAxis2 = ChartAxisY(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
+            let (firstPadding, lastPadding) = calculatePaddingValues(tmpAxis2, model: model, dimensionExtractor: {$0.height})
+            let axis = ChartAxisY(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
+            return ChartAxisYLowLayerDefault(axis: axis, offset: model.p1.x, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver, labelSpaceReservationMode: model.labelSpaceReservationMode, clipContents: model.clipContents)
         }
         let yHighGenerator: ChartAxisLayerGenerator = {model in
-            ChartAxisYHighLayerDefault(p1: model.p1, p2: model.p2, axisValues: model.axisValues, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
+            let tmpAxis = ChartAxisY(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
+            model.axisValuesGenerator.axisInitialized(tmpAxis)
+            let tmpAxis2 = ChartAxisY(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y)
+            let (firstPadding, lastPadding) = calculatePaddingValues(tmpAxis2, model: model, dimensionExtractor: {$0.height})
+            let axis = ChartAxisY(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.y, lastScreen: model.p2.y, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
+            return ChartAxisYHighLayerDefault(axis: axis, offset: model.p1.x, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver, labelSpaceReservationMode: model.labelSpaceReservationMode, clipContents: model.clipContents)
         }
         let xLowGenerator: ChartAxisLayerGenerator = {model in
-            ChartAxisXLowLayerDefault(p1: model.p1, p2: model.p2, axisValues: model.axisValues, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
+            let tmpAxis = ChartAxisX(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
+            model.axisValuesGenerator.axisInitialized(tmpAxis)
+            let tmpAxis2 = ChartAxisX(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
+            let (firstPadding, lastPadding) = calculatePaddingValues(tmpAxis2, model: model, dimensionExtractor: {$0.width})
+            let axis = ChartAxisX(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
+            return ChartAxisXLowLayerDefault(axis: axis, offset: model.p1.y, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver, labelSpaceReservationMode: model.labelSpaceReservationMode, clipContents: model.clipContents)
         }
         let xHighGenerator: ChartAxisLayerGenerator = {model in
-            ChartAxisXHighLayerDefault(p1: model.p1, p2: model.p2, axisValues: model.axisValues, axisTitleLabels: model.axisTitleLabels, settings: model.settings)
+            let tmpAxis = ChartAxisX(first: model.firstModelValue, last: model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
+            model.axisValuesGenerator.axisInitialized(tmpAxis)
+            let tmpAxis2 = ChartAxisX(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x)
+            let (firstPadding, lastPadding) = calculatePaddingValues(tmpAxis2, model: model, dimensionExtractor: {$0.width})
+            let axis = ChartAxisX(first: model.axisValuesGenerator.first ?? model.firstModelValue, last: model.axisValuesGenerator.last ?? model.lastModelValue, firstScreen: model.p1.x, lastScreen: model.p2.x, paddingFirstScreen: firstPadding, paddingLastScreen: lastPadding)
+            return ChartAxisXHighLayerDefault(axis: axis, offset: model.p1.y, valuesGenerator: model.axisValuesGenerator, labelsGenerator: model.labelsGenerator, axisTitleLabels: model.axisTitleLabels, settings: model.settings, labelsConflictSolver: model.labelsConflictSolver, labelSpaceReservationMode: model.labelSpaceReservationMode, clipContents: model.clipContents)
         }
         
         self.init(chartSettings: chartSettings, chartSize: chartSize, yLowModels: yLowModels, yHighModels: yHighModels, xLowModels: xLowModels, xHighModels: xHighModels, yLowGenerator: yLowGenerator, yHighGenerator: yHighGenerator, xLowGenerator: xLowGenerator, xHighGenerator: xHighGenerator)
@@ -104,31 +158,32 @@ open class ChartCoordsSpace {
         self.xLowGenerator = xLowGenerator
         self.xHighGenerator = xHighGenerator
         
-        self.chartInnerFrame = self.calculateChartInnerFrame()
+        chartInnerFrame = calculateChartInnerFrame()
         
-        self.yLowAxes = self.generateYLowAxes()
-        self.yHighAxes = self.generateYHighAxes()
-        self.xLowAxes = self.generateXLowAxes()
-        self.xHighAxes = self.generateXHighAxes()
+        self.yLowAxesLayers = generateYLowAxes()
+        self.yHighAxesLayers = generateYHighAxes()
+        self.xLowAxesLayers = generateXLowAxes()
+        self.xHighAxesLayers = generateXHighAxes()
     }
     
+    
     fileprivate func generateYLowAxes() -> [ChartAxisLayer] {
-        return generateYAxisShared(axisModels: self.yLowModels, offset: chartSettings.leading, generator: self.yLowGenerator)
+        return generateYAxisShared(axisModels: yLowModels, offset: chartSettings.leading, generator: yLowGenerator)
     }
     
     fileprivate func generateYHighAxes() -> [ChartAxisLayer] {
-        let chartFrame = self.chartInnerFrame
-        return generateYAxisShared(axisModels: self.yHighModels, offset: chartFrame.origin.x + chartFrame.width, generator: self.yHighGenerator)
+        let chartFrame = chartInnerFrame
+        return generateYAxisShared(axisModels: yHighModels, offset: chartFrame.origin.x + chartFrame.width, generator: yHighGenerator)
     }
     
     fileprivate func generateXLowAxes() -> [ChartAxisLayer] {
-        let chartFrame = self.chartInnerFrame
+        let chartFrame = chartInnerFrame
         let y = chartFrame.origin.y + chartFrame.height
-        return self.generateXAxesShared(axisModels: self.xLowModels, offset: y, generator: self.xLowGenerator)
+        return self.generateXAxesShared(axisModels: xLowModels, offset: y, generator: xLowGenerator)
     }
     
     fileprivate func generateXHighAxes() -> [ChartAxisLayer] {
-        return self.generateXAxesShared(axisModels: self.xHighModels, offset: chartSettings.top, generator: self.xHighGenerator)
+        return generateXAxesShared(axisModels: xHighModels, offset: chartSettings.top, generator: xHighGenerator)
     }
 
     /**
@@ -141,15 +196,15 @@ open class ChartCoordsSpace {
      - returns: An array of ChartAxisLayers
      */
     fileprivate func generateXAxesShared(axisModels: [ChartAxisModel], offset: CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
-        let chartFrame = self.chartInnerFrame
+        let chartFrame = chartInnerFrame
         let chartSettings = self.chartSettings
         let x = chartFrame.origin.x
         let length = chartFrame.width
         
-        return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: { offset in
+        return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: {offset in
             (p1: CGPoint(x: x, y: offset), p2: CGPoint(x: x + length, y: offset))
-            }, nextLayerOffset: { layer in
-                layer.rect.height + chartSettings.spacingBetweenAxesX
+            }, nextLayerOffset: {layer in
+                layer.frameWithoutLabels.height + chartSettings.spacingBetweenAxesX
             }, generator: generator)
     }
     
@@ -163,15 +218,15 @@ open class ChartCoordsSpace {
      - returns: An array of ChartAxisLayers
      */
     fileprivate func generateYAxisShared(axisModels: [ChartAxisModel], offset: CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
-        let chartFrame = self.chartInnerFrame
+        let chartFrame = chartInnerFrame
         let chartSettings = self.chartSettings
         let y = chartFrame.origin.y
         let length = chartFrame.height
         
-        return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: { offset in
+        return generateAxisShared(axisModels: axisModels, offset: offset, boundingPointsCreator: {offset in
             (p1: CGPoint(x: offset, y: y + length), p2: CGPoint(x: offset, y: y))
-            }, nextLayerOffset: { layer in
-                layer.rect.width + chartSettings.spacingBetweenAxesY
+            }, nextLayerOffset: {layer in
+                layer.frameWithoutLabels.width + chartSettings.spacingBetweenAxesY
             }, generator: generator)
     }
 
@@ -196,7 +251,7 @@ open class ChartCoordsSpace {
             let axisSettings = ChartAxisSettings(chartSettings)
             axisSettings.lineColor = chartAxisModel.lineColor
             let points = boundingPointsCreator(x)
-            let layer = generator(p1: points.p1, p2: points.p2, axisValues: chartAxisModel.axisValues, axisTitleLabels: chartAxisModel.axisTitleLabels, settings: axisSettings)
+            let layer = generator(p1: points.p1, p2: points.p2, firstModelValue: chartAxisModel.firstModelValue, lastModelValue: chartAxisModel.lastModelValue, axisValuesGenerator: chartAxisModel.axisValuesGenerator, labelsGenerator: chartAxisModel.labelsGenerator, axisTitleLabels: chartAxisModel.axisTitleLabels, settings: axisSettings, labelsConflictSolver: chartAxisModel.labelsConflictSolver, leadingPadding: chartAxisModel.leadingPadding, trailingPadding: chartAxisModel.trailingPadding, labelSpaceReservationMode: chartAxisModel.labelSpaceReservationMode, clipContents: chartAxisModel.clipContents)
             return (
                 axes: layers + [layer],
                 x: x + nextLayerOffset(layer)
@@ -219,28 +274,28 @@ open class ChartCoordsSpace {
         }
 
         func totalWidth(_ axisLayers: [ChartAxisLayer]) -> CGFloat {
-            return totalDim(axisLayers, {$0.rect.width}, self.chartSettings.spacingBetweenAxesY)
+            return totalDim(axisLayers, {$0.frame.width}, chartSettings.spacingBetweenAxesY)
         }
         
         func totalHeight(_ axisLayers: [ChartAxisLayer]) -> CGFloat {
-            return totalDim(axisLayers, {$0.rect.height}, self.chartSettings.spacingBetweenAxesX)
+            return totalDim(axisLayers, {$0.frame.height}, chartSettings.spacingBetweenAxesX)
         }
         
-        let yLowWidth = totalWidth(self.generateYLowAxes())
-        let yHighWidth = totalWidth(self.generateYHighAxes())
-        let xLowHeight = totalHeight(self.generateXLowAxes())
-        let xHighHeight = totalHeight(self.generateXHighAxes())
+        let yLowWidth = totalWidth(generateYLowAxes())
+        let yHighWidth = totalWidth(generateYHighAxes())
+        let xLowHeight = totalHeight(generateXLowAxes())
+        let xHighHeight = totalHeight(generateXHighAxes())
         
-        let leftWidth = yLowWidth + self.chartSettings.leading
-        let topHeigth = xHighHeight + self.chartSettings.top
-        let rightWidth = yHighWidth + self.chartSettings.trailing
-        let bottomHeight = xLowHeight + self.chartSettings.bottom
+        let leftWidth = yLowWidth + chartSettings.leading
+        let topHeigth = xHighHeight + chartSettings.top
+        let rightWidth = yHighWidth + chartSettings.trailing
+        let bottomHeight = xLowHeight + chartSettings.bottom
         
         return CGRect(
             x: leftWidth,
             y: topHeigth,
-            width: self.chartSize.width - leftWidth - rightWidth,
-            height: self.chartSize.height - topHeigth - bottomHeight
+            width: chartSize.width - leftWidth - rightWidth,
+            height: chartSize.height - topHeigth - bottomHeight
         )
     }
 }
@@ -248,63 +303,63 @@ open class ChartCoordsSpace {
 /// A ChartCoordsSpace subclass specifically for a chart with axes along the left and bottom edges
 open class ChartCoordsSpaceLeftBottomSingleAxis {
 
-    open let yAxis: ChartAxisLayer
-    open let xAxis: ChartAxisLayer
+    open let yAxisLayer: ChartAxisLayer
+    open let xAxisLayer: ChartAxisLayer
     open let chartInnerFrame: CGRect
     
     public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
         let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yLowModels: [yModel], xLowModels: [xModel])
         self.chartInnerFrame = coordsSpaceInitializer.chartInnerFrame
         
-        self.yAxis = coordsSpaceInitializer.yLowAxes[0]
-        self.xAxis = coordsSpaceInitializer.xLowAxes[0]
+        self.yAxisLayer = coordsSpaceInitializer.yLowAxesLayers[0]
+        self.xAxisLayer = coordsSpaceInitializer.xLowAxesLayers[0]
     }
 }
 
 /// A ChartCoordsSpace subclass specifically for a chart with axes along the left and top edges
 open class ChartCoordsSpaceLeftTopSingleAxis {
     
-    open let yAxis: ChartAxisLayer
-    open let xAxis: ChartAxisLayer
+    open let yAxisLayer: ChartAxisLayer
+    open let xAxisLayer: ChartAxisLayer
     open let chartInnerFrame: CGRect
     
     public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
         let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yLowModels: [yModel], xHighModels: [xModel])
         self.chartInnerFrame = coordsSpaceInitializer.chartInnerFrame
         
-        self.yAxis = coordsSpaceInitializer.yLowAxes[0]
-        self.xAxis = coordsSpaceInitializer.xHighAxes[0]
+        self.yAxisLayer = coordsSpaceInitializer.yLowAxesLayers[0]
+        self.xAxisLayer = coordsSpaceInitializer.xHighAxesLayers[0]
     }
 }
 
 /// A ChartCoordsSpace subclass specifically for a chart with axes along the right and bottom edges
 open class ChartCoordsSpaceRightBottomSingleAxis {
     
-    open let yAxis: ChartAxisLayer
-    open let xAxis: ChartAxisLayer
+    open let yAxisLayer: ChartAxisLayer
+    open let xAxisLayer: ChartAxisLayer
     open let chartInnerFrame: CGRect
     
     public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
         let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yHighModels: [yModel], xLowModels: [xModel])
         self.chartInnerFrame = coordsSpaceInitializer.chartInnerFrame
         
-        self.yAxis = coordsSpaceInitializer.yHighAxes[0]
-        self.xAxis = coordsSpaceInitializer.xLowAxes[0]
+        self.yAxisLayer = coordsSpaceInitializer.yHighAxesLayers[0]
+        self.xAxisLayer = coordsSpaceInitializer.xLowAxesLayers[0]
     }
 }
 
 /// A ChartCoordsSpace subclass specifically for a chart with axes along the right and top edges
 open class ChartCoordsSpaceRightTopSingleAxis {
     
-    open let yAxis: ChartAxisLayer
-    open let xAxis: ChartAxisLayer
+    open let yAxisLayer: ChartAxisLayer
+    open let xAxisLayer: ChartAxisLayer
     open let chartInnerFrame: CGRect
     
     public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
         let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yHighModels: [yModel], xHighModels: [xModel])
         self.chartInnerFrame = coordsSpaceInitializer.chartInnerFrame
         
-        self.yAxis = coordsSpaceInitializer.yHighAxes[0]
-        self.xAxis = coordsSpaceInitializer.xHighAxes[0]
+        self.yAxisLayer = coordsSpaceInitializer.yHighAxesLayers[0]
+        self.xAxisLayer = coordsSpaceInitializer.xHighAxesLayers[0]
     }
 }

@@ -22,18 +22,17 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
     /// The delay after touches end before the highlighted point fades out. Set to `nil` to keep the highlight until the next touch.
     open var hideDelay: TimeInterval? = 1.0
 
-    weak var chart: Chart?
-
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], gestureRecognizer: UIPanGestureRecognizer? = nil, modelFilter: @escaping ChartPointLayerModelForScreenLocFilter, viewGenerator: @escaping ChartPointViewGenerator) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], gestureRecognizer: UIPanGestureRecognizer? = nil, modelFilter: @escaping ChartPointLayerModelForScreenLocFilter, viewGenerator: @escaping ChartPointViewGenerator) {
         chartPointLayerModelForScreenLocFilter = modelFilter
         panGestureRecognizer = gestureRecognizer ?? UIPanGestureRecognizer()
 
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: viewGenerator)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
 
-    open override func display(chart: Chart) {
-        let view = UIView(frame: chart.bounds)
+    override open func display(chart: Chart) {
         self.chart = chart
+        
+        let view = UIView(frame: chart.bounds)
 
         panGestureRecognizer.addTarget(self, action: #selector(handlePan(_:)))
 
@@ -65,7 +64,7 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
                     subview.removeFromSuperview()
                 }
 
-                if let model = highlightedModel, let pointView = viewGenerator(model, self, chart) {
+                if let model = highlightedModel, let pointView = viewGenerator(model, self, chart, false) {
                     view.addSubview(pointView)
                 }
             }
@@ -88,11 +87,11 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
                 UIView.animate(withDuration: 0.5,
                     delay: hideDelay,
                     options: [],
-                    animations: { () -> Void in
+                    animations: {
                         for subview in view.subviews {
                             subview.alpha = 0
                         }
-                    }, completion: { (completed) -> Void in
+                    }, completion: {completed in
                         if completed {
                             self.highlightedModel = nil
                         }

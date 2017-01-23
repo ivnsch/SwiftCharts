@@ -10,12 +10,48 @@ import UIKit
 
 public protocol ChartLayer {
     
+    var chart: Chart? {get set}
+
     // Execute actions after chart initialisation, e.g. add subviews
-     func chartInitialized(chart: Chart)
+    func chartInitialized(chart: Chart)
     
-    // Use this to draw directly in chart's context.
-    // Don't do anything processor intensive here - this is executed as part of draw(rect) thus has to be quick.
-    // Note that everything drawn here will appear behind subviews added by any layer (regardless of position in layers array)
-    // Everything done here can also be done adding a subview in chartInialized and drawing on that. The reason this method exists is only performance - as long as we know the layers will appear always behind (e.g. axis lines, guidelines) there's no reason to create new views.
+    // Draw directly in chart's context
+    // Everything drawn here will appear behind subviews added by any layer (regardless of position in layers array)
     func chartViewDrawing(context: CGContext, chart: Chart)
+    
+    func chartContentViewDrawing(context: CGContext, chart: Chart)
+
+    func chartDrawersContentViewDrawing(context: CGContext, chart: Chart, view: UIView)
+    
+    /// Trigger views update, to match updated model data
+    func update()
+    
+    /// Handle a change of the available inner space caused by an axis change of size in a direction orthogonal to the axis.
+    func handleAxisInnerFrameChange(_ xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?)
+    
+    func zoom(_ x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat)
+    
+    func zoom(_ scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat)
+
+    func pan(_ deltaX: CGFloat, deltaY: CGFloat)
+    
+    func handlePanStart(_ location: CGPoint)
+    
+    func handlePanFinish()
+    
+    func handleZoomFinish()
+    
+    func handlePanEnd()
+    
+    func handleZoomEnd()
+    
+    func handleGlobalTap(_ location: CGPoint) -> Any?
+    
+    /// Return true to disable chart panning
+    func processPan(location: CGPoint, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) -> Bool
+    
+    /// Return true to disable chart zooming
+    func processZoom(deltaX: CGFloat, deltaY: CGFloat, anchorX: CGFloat, anchorY: CGFloat) -> Bool
+    
+    func keepInBoundaries()
 }

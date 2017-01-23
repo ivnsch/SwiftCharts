@@ -23,11 +23,11 @@ open class ChartPointsTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }()
     
     
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], locChangedFunc: @escaping (CGPoint) -> (), lineColor: UIColor = UIColor.black, lineWidth: CGFloat = 1) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], locChangedFunc: @escaping (CGPoint) -> (), lineColor: UIColor = UIColor.black, lineWidth: CGFloat = 1) {
         self.locChangedFunc = locChangedFunc
         self.lineColor = lineColor
         self.lineWidth = lineWidth
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
     }
     
     open override func display(chart: Chart) {
@@ -39,8 +39,9 @@ open class ChartPointsTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         chart.addSubview(view)
         self.view = view
         
-        view.addSubview(self.currentPositionLineOverlay)
-        self.currentPositionLineOverlay.frame = CGRect(x: self.innerFrame.origin.x + 200 - self.lineWidth / 2, y: self.innerFrame.origin.y, width: self.lineWidth, height: self.innerFrame.height)
+        view.addSubview(currentPositionLineOverlay)
+        
+        currentPositionLineOverlay.frame = CGRect(x: chart.containerFrame.origin.x + 200 - lineWidth / 2, y: modelLocToScreenLoc(y: yAxis.last), width: lineWidth, height: modelLocToScreenLoc(y: yAxis.first))
     }
 }
 

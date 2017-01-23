@@ -26,6 +26,9 @@ open class CubicLinePathGenerator: ChartLinesViewPathGenerator {
     open func generatePath(points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
         
         let path = UIBezierPath()
+        
+        guard !points.isEmpty else {return path}
+        
         var p0: CGPoint
         var p1: CGPoint
         var p2: CGPoint
@@ -44,13 +47,13 @@ open class CubicLinePathGenerator: ChartLinesViewPathGenerator {
             p1 = points[i]
             p2 = points[i + 1]
             
-            tensionBezier1 = self.tension1
-            tensionBezier2 = self.tension2
+            tensionBezier1 = tension1
+            tensionBezier2 = tension2
             
             if i > 0 {  // Exception for first line because there is no previous point
                 p0 = previousPoint1
                 
-                if p2.y - p1.y == p2.y - p0.y {
+                if p2.y - p1.y =~ p2.y - p0.y {
                     tensionBezier1 = 0
                 }
                 
@@ -61,7 +64,7 @@ open class CubicLinePathGenerator: ChartLinesViewPathGenerator {
             
             if i < points.count - 2 { // Exception for last line because there is no next point
                 p3 = points[i + 2]
-                if p3.y - p2.y == p2.y - p1.y {
+                if p3.y - p2.y =~ p2.y - p1.y {
                     tensionBezier2 = 0
                 }
             } else {

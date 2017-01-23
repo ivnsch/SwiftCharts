@@ -36,15 +36,15 @@ open class ChartPointEllipseView: UIView {
     }
    
     override open func didMoveToSuperview() {
-        if self.animDuration != 0 {
-            if self.animateSize {
-                self.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        if animDuration != 0 {
+            if animateSize {
+                transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
             }
-            if self.animateAlpha {
-                self.alpha = 0
+            if animateAlpha {
+                alpha = 0
             }
             
-            UIView.animate(withDuration: TimeInterval(self.animDuration), delay: TimeInterval(self.animDelay), usingSpringWithDamping: self.animDamping, initialSpringVelocity: self.animInitSpringVelocity, options: UIViewAnimationOptions(), animations: { () -> Void in
+            UIView.animate(withDuration: TimeInterval(animDuration), delay: TimeInterval(animDelay), usingSpringWithDamping: animDamping, initialSpringVelocity: animInitSpringVelocity, options: UIViewAnimationOptions(), animations: {
                 if self.animateSize {
                     self.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }
@@ -56,23 +56,21 @@ open class ChartPointEllipseView: UIView {
     }
     
     override open func draw(_ rect: CGRect) {
-        guard let context = UIGraphicsGetCurrentContext() else {
-            return
-        }
+        guard let context = UIGraphicsGetCurrentContext() else {return}
 
-        let borderOffset = self.borderWidth ?? 0
-        let circleRect = (CGRect(x: borderOffset, y: borderOffset, width: self.frame.size.width - (borderOffset * 2), height: self.frame.size.height - (borderOffset * 2)))
+        let borderOffset = borderWidth ?? 0
+        let circleRect = (CGRect(x: borderOffset, y: borderOffset, width: frame.size.width - (borderOffset * 2), height: frame.size.height - (borderOffset * 2)))
         
-        if let borderWidth = self.borderWidth, let borderColor = self.borderColor {
+        if let borderWidth = borderWidth, let borderColor = borderColor {
             context.setLineWidth(borderWidth)
             context.setStrokeColor(borderColor.cgColor)
             context.strokeEllipse(in: circleRect)
         }
-        context.setFillColor(self.fillColor.cgColor)
+        context.setFillColor(fillColor.cgColor)
         context.fillEllipse(in: circleRect)
     }
     
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.touchHandler?()
+        touchHandler?()
     }
 }

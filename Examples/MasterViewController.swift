@@ -10,7 +10,7 @@ import UIKit
 
 
 enum Example {
-    case helloWorld, bars, stackedBars, barsPlusMinus, groupedBars, barsStackedGrouped, scatter, areas, bubble, coords, target, multival, notifications, combination, scroll, equalSpacing, tracker, multiTracker, multiAxis, multiAxisInteractive, candleStick, cubiclines, notNumeric, candleStickInteractive, customUnits, trendline
+    case helloWorld, bars, stackedBars, barsPlusMinus, groupedBars, barsStackedGrouped, scatter, areas, bubble, coords, target, multival, notifications, combination, equalSpacing, tracker, multiTracker, multiAxis, multiAxisInteractive, candleStick, cubiclines, notNumeric, candleStickInteractive, customUnits, trendline
 }
 
 class MasterViewController: UITableViewController {
@@ -30,7 +30,6 @@ class MasterViewController: UITableViewController {
         (.areas, "Areas, lines, circles (interactive)"),
         (.bubble, "Bubble, gradient bar mapping"),
         (.notNumeric, "Not numeric values"),
-        (.scroll, "Multiline, Scroll"),
         (.coords, "Show touch coords (interactive)"),
         (.tracker, "Track touch (interactive)"),
         (.multiTracker, "Multi-chart touch tracking"),
@@ -48,27 +47,30 @@ class MasterViewController: UITableViewController {
     override func awakeFromNib() {
         super.awakeFromNib()
         if UIDevice.current.userInterfaceIdiom == .pad {
-            self.clearsSelectionOnViewWillAppear = false
-            self.preferredContentSize = CGSize(width: 320.0, height: 600.0)
+            clearsSelectionOnViewWillAppear = false
+            preferredContentSize = CGSize(width: 320.0, height: 600.0)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.titleTextAttributes = ["NSFontAttributeName" : ExamplesDefaults.fontWithSize(22)]
+        navigationController?.navigationBar.titleTextAttributes = ["NSFontAttributeName" : ExamplesDefaults.fontWithSize(22)]
         UIBarButtonItem.appearance().setTitleTextAttributes(["NSFontAttributeName" : ExamplesDefaults.fontWithSize(22)], for: UIControlState())
         
-        if let split = self.splitViewController {
+        if let split = splitViewController {
             
             let controllers = split.viewControllers
             
-            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
             
-            let example = self.examples[1]
-            self.detailViewController?.detailItem = example.0
-            self.detailViewController?.title = example.1
+            let example = examples[1]
+            detailViewController?.detailItem = example.0
+            detailViewController?.title = example.1
         }
+        
+        
+        performSegue(withIdentifier: "showDetail", sender: self)
     }
     
     // MARK: - Segues
@@ -77,28 +79,28 @@ class MasterViewController: UITableViewController {
         if segue.identifier == "showDetail" {
             
             func showExample(_ index: Int) {
-                let example = self.examples[index]
+                let example = examples[index]
                 let controller = segue.destination as! DetailViewController
                 controller.detailItem = example.0
                 controller.title = example.1
                 
             }
             
-            if let indexPath = self.tableView.indexPathForSelectedRow {
-                showExample(indexPath.row)
+            if let indexPath = tableView.indexPathForSelectedRow {
+                showExample((indexPath as NSIndexPath).row)
             } else {
-                showExample(0)
+                showExample(2)
             }
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad {
-            let example = self.examples[indexPath.row]
-            self.detailViewController?.detailItem = example.0
-            self.detailViewController?.title = example.1
+            let example = examples[indexPath.row]
+            detailViewController?.detailItem = example.0
+            detailViewController?.title = example.1
             
-            self.splitViewController?.toggleMasterView()
+            splitViewController?.toggleMasterView()
         }
     }
     

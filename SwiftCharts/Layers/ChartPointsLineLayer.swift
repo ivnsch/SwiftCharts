@@ -8,67 +8,212 @@
 
 import UIKit
 
-private struct ScreenLine {
-    let points: [CGPoint]
-    let color: UIColor
-    let lineWidth: CGFloat
-    let animDuration: Float
-    let animDelay: Float
-    let dashPattern: [Double]?
+public enum LineJoin {
+    case miter
+    case round
+    case bevel
     
-    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
+    var CALayerString: String {
+        switch self {
+        case .miter: return kCALineJoinMiter
+        case .round: return kCALineCapRound
+        case .bevel: return kCALineJoinBevel
+        }
+    }
+    
+    var CGValue: CGLineJoin {
+        switch self {
+        case .miter: return .miter
+        case .round: return .round
+        case .bevel: return .bevel
+        }
+    }
+}
+
+public enum LineCap {
+    case butt
+    case round
+    case square
+    
+    var CALayerString: String {
+        switch self {
+        case .butt: return kCALineCapButt
+        case .round: return kCALineCapRound
+        case .square: return kCALineCapSquare
+        }
+    }
+    
+    var CGValue: CGLineCap {
+        switch self {
+        case .butt: return .butt
+        case .round: return .round
+        case .square: return .square
+        }
+    }
+}
+
+public struct ScreenLine<T: ChartPoint> {
+    public internal(set) var points: [CGPoint]
+    public let color: UIColor
+    public let lineWidth: CGFloat
+    public let lineJoin: LineJoin
+    public let lineCap: LineCap
+    public let animDuration: Float
+    public let animDelay: Float
+    public let lineModel: ChartLineModel<T>
+    public let dashPattern: [Double]?
+    
+    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>, dashPattern: [Double]?) {
         self.points = points
         self.color = color
         self.lineWidth = lineWidth
+        self.lineJoin = lineJoin
+        self.lineCap = lineCap
         self.animDuration = animDuration
         self.animDelay = animDelay
+        self.lineModel = lineModel
         self.dashPattern = dashPattern
     }
 }
 
 open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
-    fileprivate let lineModels: [ChartLineModel<T>]
-    fileprivate var lineViews: [ChartLinesView] = []
-    fileprivate let pathGenerator: ChartLinesViewPathGenerator
+    open fileprivate(set) var lineModels: [ChartLineModel<T>]
+    open fileprivate(set) var lineViews: [ChartLinesView] = []
+    open let pathGenerator: ChartLinesViewPathGenerator
+    open fileprivate(set) var screenLines: [(screenLine: ScreenLine<T>, view: ChartLinesView)] = []
     
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0) {
-        
+    fileprivate let useView: Bool
+    
+    fileprivate let delayInit: Bool
+    
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0, useView: Bool = true, delayInit: Bool = false) {
         self.lineModels = lineModels
         self.pathGenerator = pathGenerator
+        self.useView = useView
+        self.delayInit = delayInit
         
         let chartPoints: [T] = lineModels.flatMap{$0.chartPoints}
         
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, displayDelay: displayDelay)
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
-    fileprivate func toScreenLine(lineModel: ChartLineModel<T>, chart: Chart) -> ScreenLine {
+    fileprivate func toScreenLine(lineModel: ChartLineModel<T>, chart: Chart) -> ScreenLine<T> {
         return ScreenLine(
-            points: lineModel.chartPoints.map{self.chartPointScreenLoc($0)},
+            points: lineModel.chartPoints.map{chartPointScreenLoc($0)},
             color: lineModel.lineColor,
             lineWidth: lineModel.lineWidth,
+            lineJoin: lineModel.lineJoin,
+            lineCap: lineModel.lineCap,
             animDuration: lineModel.animDuration,
             animDelay: lineModel.animDelay,
+            lineModel: lineModel,
             dashPattern: lineModel.dashPattern
         )
     }
     
-    open override func display(chart: Chart) {
-        let screenLines = self.lineModels.map{self.toScreenLine(lineModel: $0, chart: chart)}
-        
-        for screenLine in screenLines {
-            let lineView = ChartLinesView(
-                path: self.pathGenerator.generatePath(points: screenLine.points, lineWidth: screenLine.lineWidth),
-                frame: chart.bounds,
-                lineColor: screenLine.color,
-                lineWidth: screenLine.lineWidth,
-                animDuration: screenLine.animDuration,
-                animDelay: screenLine.animDelay,
-                dashPattern: screenLine.dashPattern)
-            
-            self.lineViews.append(lineView)
-            lineView.isUserInteractionEnabled = false
-            chart.addSubview(lineView)
+    override open func display(chart: Chart) {
+        if !delayInit {
+            if useView {
+                initScreenLines(chart)
+            }
         }
     }
     
+    open func initScreenLines(_ chart: Chart) {
+        let screenLines = lineModels.map{toScreenLine(lineModel: $0, chart: chart)}
+        
+        for screenLine in screenLines {
+            let lineView = generateLineView(screenLine, chart: chart)
+            lineViews.append(lineView)
+            lineView.isUserInteractionEnabled = false
+            chart.addSubviewNoTransform(lineView)
+            self.screenLines.append((screenLine, lineView))
+        }
+    }
+    
+    open func generateLineView(_ screenLine: ScreenLine<T>, chart: Chart) -> ChartLinesView {
+        return ChartLinesView(
+            path: pathGenerator.generatePath(points: screenLine.points, lineWidth: screenLine.lineWidth),
+            frame: chart.contentView.bounds,
+            lineColor: screenLine.color,
+            lineWidth: screenLine.lineWidth,
+            lineJoin: screenLine.lineJoin,
+            lineCap: screenLine.lineCap,
+            animDuration: isTransform ? 0 : screenLine.animDuration,
+            animDelay: isTransform ? 0 : screenLine.animDelay,
+            dashPattern: screenLine.dashPattern
+        )
+    }
+    
+    override open func chartDrawersContentViewDrawing(context: CGContext, chart: Chart, view: UIView) {
+        if !useView {
+            for lineModel in lineModels {
+                context.setStrokeColor(lineModel.lineColor.cgColor)
+                context.setLineWidth(lineModel.lineWidth)
+                context.setLineJoin(lineModel.lineJoin.CGValue)
+                context.setLineCap(lineModel.lineCap.CGValue)
+                for i in 0..<lineModel.chartPoints.count {
+                    let chartPoint = lineModel.chartPoints[i]
+                    let p1 = modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
+                    context.move(to: CGPoint(x: p1.x, y: p1.y))
+                    if i < lineModel.chartPoints.count - 1 {
+                        let nextChartPoint = lineModel.chartPoints[i + 1]
+                        let p2 = modelLocToScreenLoc(x: nextChartPoint.x.scalar, y: nextChartPoint.y.scalar)
+                        context.addLine(to: CGPoint(x: p2.x, y: p2.y))
+                    }
+                }
+                context.strokePath()
+            }
+        }
+    }
+    
+    open override func modelLocToScreenLoc(x: Double) -> CGFloat {
+        return xAxis.screenLocForScalar(x) - (chart?.containerFrame.origin.x ?? 0)
+    }
+    
+    open override func modelLocToScreenLoc(y: Double) -> CGFloat {
+        return yAxis.screenLocForScalar(y) - (chart?.containerFrame.origin.y ?? 0)
+    }
+    
+    open override func zoom(_ scaleX: CGFloat, scaleY: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        if !useView {
+            chart?.drawersContentView.setNeedsDisplay()
+        }
+    }
+    
+    open override func zoom(_ x: CGFloat, y: CGFloat, centerX: CGFloat, centerY: CGFloat) {
+        if !useView {
+            chart?.drawersContentView.setNeedsDisplay()
+        } else {
+            updateScreenLines()
+        }
+    }
+    
+    open override func pan(_ deltaX: CGFloat, deltaY: CGFloat) {
+        if !useView {
+            chart?.drawersContentView.setNeedsDisplay()
+        } else {
+            updateScreenLines()
+        }
+    }
+
+    fileprivate func updateScreenLines() {
+
+        guard let chart = chart else {return}
+        
+        isTransform = true
+        
+        for i in 0..<screenLines.count {
+            for j in 0..<screenLines[i].screenLine.points.count {
+                let chartPoint = screenLines[i].screenLine.lineModel.chartPoints[j]
+                screenLines[i].screenLine.points[j] = modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
+            }
+            
+            screenLines[i].view.removeFromSuperview()
+            screenLines[i].view = generateLineView(screenLines[i].screenLine, chart: chart)
+            chart.addSubviewNoTransform(screenLines[i].view)
+        }
+        
+        isTransform = false
+    }
 }

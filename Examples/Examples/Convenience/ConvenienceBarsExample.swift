@@ -17,14 +17,14 @@ class ConvenienceBarsExample: UIViewController {
         super.viewDidLoad()
         
         let chartConfig = BarsChartConfig(
-            chartSettings: ExamplesDefaults.chartSettings,
+            chartSettings: ExamplesDefaults.chartSettingsWithPanZoom,
             valsAxisConfig: ChartAxisConfig(from: 0, to: 8, by: 2),
             xAxisLabelSettings: ExamplesDefaults.labelSettings,
             yAxisLabelSettings: ExamplesDefaults.labelSettings.defaultVertical()
         )
         
         let chart = BarsChart(
-            frame: ExamplesDefaults.chartFrame(self.view.bounds),
+            frame: ExamplesDefaults.chartFrame(view.bounds),
             chartConfig: chartConfig,
             xTitle: "X axis",
             yTitle: "Y axis",
@@ -40,7 +40,7 @@ class ConvenienceBarsExample: UIViewController {
             barWidth: Env.iPad ? 40 : 20
         )
         
-        self.view.addSubview(chart.view)
+        view.addSubview(chart.view)
         self.chart = chart
     }
 }

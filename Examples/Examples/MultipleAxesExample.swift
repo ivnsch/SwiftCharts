@@ -10,56 +10,56 @@ import UIKit
 import SwiftCharts
 
 class MultipleAxesExample: UIViewController {
-
+    
     fileprivate var chart: Chart? // arc
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFontSmall)
-
+        
         let bgColors = [UIColor.red, UIColor.blue, UIColor(red: 0, green: 0.7, blue: 0, alpha: 1), UIColor(red: 1, green: 0.5, blue: 0, alpha: 1)]
         
         func createChartPoints0(_ color: UIColor) -> [ChartPoint] {
             return [
-                self.createChartPoint(0, 0, color),
-                self.createChartPoint(2, 2, color),
-                self.createChartPoint(5, 2, color),
-                self.createChartPoint(8, 11, color),
-                self.createChartPoint(10, 2, color),
-                self.createChartPoint(12, 3, color),
-                self.createChartPoint(16, 22, color),
-                self.createChartPoint(20, 5, color)
+                createChartPoint(0, 0, color),
+                createChartPoint(2, 2, color),
+                createChartPoint(5, 2, color),
+                createChartPoint(8, 11, color),
+                createChartPoint(10, 2, color),
+                createChartPoint(12, 3, color),
+                createChartPoint(16, 22, color),
+                createChartPoint(20, 5, color)
             ]
         }
         
         func createChartPoints1(_ color: UIColor) -> [ChartPoint] {
             return [
-                self.createChartPoint(0, 7, color),
-                self.createChartPoint(1, 10, color),
-                self.createChartPoint(3, 9, color),
-                self.createChartPoint(9, 2, color),
-                self.createChartPoint(10, -5, color),
-                self.createChartPoint(13, -12, color)
+                createChartPoint(0, 7, color),
+                createChartPoint(1, 10, color),
+                createChartPoint(3, 9, color),
+                createChartPoint(9, 2, color),
+                createChartPoint(10, -5, color),
+                createChartPoint(13, -12, color)
             ]
         }
         
         func createChartPoints2(_ color: UIColor) -> [ChartPoint] {
             return [
-                self.createChartPoint(-200, -10, color),
-                self.createChartPoint(-160, -30, color),
-                self.createChartPoint(-110, -10, color),
-                self.createChartPoint(-40, -80, color),
-                self.createChartPoint(-10, -50, color),
-                self.createChartPoint(20, 10, color)
+                createChartPoint(-200, -10, color),
+                createChartPoint(-160, -30, color),
+                createChartPoint(-110, -10, color),
+                createChartPoint(-40, -80, color),
+                createChartPoint(-10, -50, color),
+                createChartPoint(20, 10, color)
             ]
         }
         
         func createChartPoints3(_ color: UIColor) -> [ChartPoint] {
             return [
-                self.createChartPoint(10000, 70, color),
-                self.createChartPoint(20000, 100, color),
-                self.createChartPoint(30000, 160, color)
+                createChartPoint(10000, 70, color),
+                createChartPoint(20000, 100, color),
+                createChartPoint(30000, 160, color)
             ]
         }
         
@@ -77,15 +77,15 @@ class MultipleAxesExample: UIViewController {
         
         
         let top: CGFloat = 80
-        let viewFrame = CGRect(x: 0, y: top, width: self.view.frame.size.width, height: self.view.frame.size.height - top - 10)
+        let viewFrame = CGRect(x: 0, y: top, width: view.frame.size.width, height: view.frame.size.height - top - 10)
         
-        let yValues1 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[0]))}, addPaddingSegmentIfEdge: false)
+        let yValues1 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints0, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[0]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues2 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints1, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[1]))}, addPaddingSegmentIfEdge: false)
+        let yValues2 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints1, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[1]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues4 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints2, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[2]))}, addPaddingSegmentIfEdge: false)
+        let yValues4 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints2, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[2]))}, addPaddingSegmentIfEdge: false)
         
-        let yValues5 = ChartAxisValuesGenerator.generateYAxisValuesWithChartPoints(chartPoints3, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[3]))}, addPaddingSegmentIfEdge: false)
+        let yValues5 = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints3, minSegmentCount: 10, maxSegmentCount: 20, multiple: 2, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: ChartLabelSettings(font: ExamplesDefaults.labelFontSmall, fontColor: bgColors[3]))}, addPaddingSegmentIfEdge: false)
         
         let axisTitleFont = ExamplesDefaults.labelFontSmall
         
@@ -116,10 +116,10 @@ class MultipleAxesExample: UIViewController {
                 let chartInnerFrame = coordsSpace.chartInnerFrame
                 
                 // create axes
-                let yLowAxes = coordsSpace.yLowAxes
-                let yHighAxes = coordsSpace.yHighAxes
-                let xLowAxes = coordsSpace.xLowAxes
-                let xHighAxes = coordsSpace.xHighAxes
+                let yLowAxes = coordsSpace.yLowAxesLayers
+                let yHighAxes = coordsSpace.yHighAxesLayers
+                let xLowAxes = coordsSpace.xLowAxesLayers
+                let xHighAxes = coordsSpace.xHighAxesLayers
                 
                 // create layers with references to axes
                 let lineModel0 = ChartLineModel(chartPoints: chartPoints0, lineColor: bgColors[0], animDuration: 1, animDelay: 0)
@@ -127,10 +127,10 @@ class MultipleAxesExample: UIViewController {
                 let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: bgColors[2], animDuration: 1, animDelay: 0)
                 let lineModel3 = ChartLineModel(chartPoints: chartPoints3, lineColor: bgColors[3], animDuration: 1, animDelay: 0)
                 
-                let chartPointsLineLayer0 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[0], yAxis: yLowAxes[1], innerFrame: chartInnerFrame, lineModels: [lineModel0])
-                let chartPointsLineLayer1 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[1], yAxis: yLowAxes[0], innerFrame: chartInnerFrame, lineModels: [lineModel1])
-                let chartPointsLineLayer3 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[1], yAxis: yHighAxes[0], innerFrame: chartInnerFrame, lineModels: [lineModel2])
-                let chartPointsLineLayer4 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[0], yAxis: yHighAxes[1], innerFrame: chartInnerFrame, lineModels: [lineModel3])
+                let chartPointsLineLayer0 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[0].axis, yAxis: yLowAxes[1].axis, lineModels: [lineModel0])
+                let chartPointsLineLayer1 = ChartPointsLineLayer<ChartPoint>(xAxis: xLowAxes[1].axis, yAxis: yLowAxes[0].axis, lineModels: [lineModel1])
+                let chartPointsLineLayer3 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[1].axis, yAxis: yHighAxes[0].axis, lineModels: [lineModel2])
+                let chartPointsLineLayer4 = ChartPointsLineLayer<ChartPoint>(xAxis: xHighAxes[0].axis, yAxis: yHighAxes[1].axis, lineModels: [lineModel3])     
                 
                 let lineLayers = [chartPointsLineLayer0, chartPointsLineLayer1, chartPointsLineLayer3, chartPointsLineLayer4]
                 
@@ -143,6 +143,8 @@ class MultipleAxesExample: UIViewController {
                 
                 let chart = Chart(
                     frame: viewFrame,
+                    innerFrame: chartInnerFrame,
+                    settings: chartSettings,
                     layers: layers
                 )
                 

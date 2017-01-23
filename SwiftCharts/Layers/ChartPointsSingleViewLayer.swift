@@ -12,27 +12,31 @@ import UIKit
 open class ChartPointsSingleViewLayer<T: ChartPoint, U: UIView>: ChartPointsViewsLayer<T, U> {
     
     fileprivate var addedViews: [UIView] = []
+
+    fileprivate var activeChartPoint: T?
     
-    public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], viewGenerator: @escaping ChartPointViewGenerator) {
-        super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: viewGenerator)
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, innerFrame: CGRect, chartPoints: [T], viewGenerator: @escaping ChartPointViewGenerator, mode: ChartPointsViewsLayerMode = .scaleAndTranslate, keepOnFront: Bool = true) {
+        super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, viewGenerator: viewGenerator, mode: mode, keepOnFront: keepOnFront)
     }
 
-    open override func display(chart: Chart) {
+    override open func display(chart: Chart) {
         // skip adding views - this layer manages its own list
     }
     
     open func showView(chartPoint: T, chart: Chart) {
+    
+        activeChartPoint = chartPoint
         
-        for view in self.addedViews {
+        for view in addedViews {
             view.removeFromSuperview()
         }
         
-        let screenLoc = self.chartPointScreenLoc(chartPoint)
-        let index = self.chartPointsModels.map{$0.chartPoint}.index(of: chartPoint)!
+        let screenLoc = chartPointScreenLoc(chartPoint)
+        let index = chartPointsModels.map{$0.chartPoint}.index(of: chartPoint)!
         let model: ChartPointLayerModel = ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: screenLoc)
-        if let view = self.viewGenerator(model, self, chart) {
-            self.addedViews.append(view)
-            chart.addSubview(view)
+        if let view = viewGenerator(model, self, chart, isTransform) {
+            addedViews.append(view)
+            addSubview(chart, view: view)
         }
     }
 }
