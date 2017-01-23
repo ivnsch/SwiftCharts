@@ -6,6 +6,27 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix guidelines overlap with axis lines
 - Fix axis line minor irregularities (fixes #151)
 - Make ChartPointsLayer.display(Chart) open
+- Allow to retrieve frames of axis labels
+- Separate axis from layer with related UI elements (refactoring)
+- Implement dynamic axis values and labels generators (multiplier, fixed, non-overapping, nice numbers, suffix, date)
+- Zooming & panning
+- Allow to set line join/cap
+- Allow to set padding in points for axis values
+- Implement global tap handling
+- Allow to set fixed bar width for grouped bars
+- Improve info bubble
+- Implement axis tap handling
+- Add multiline support to tracker, modify gesture handling work well with zoom & pan
+- Implement tap handling for bars and stack frames
+- Implement animators
+- Implement catmull rom path generator
+- Add modes to views layer to add subviews to scale&translate subviews as part of own transform or only translate by updating their positions individually
+- Allow to generate custom views in bars(plain, grouped, stacked) and line layer
+-	Implement elastic zoom/pan
+- Fix dashed path not showing when line is not animated
+- Implement grouped bars companion layer (to add e.g. labels to individual grouped bars).
+-	Remove unnecessary use of self, improve formatting
+-	Don't force unwrap context
 
 ## [0.5] - 2016.11.23
 - Add multi-chart tracker layer
