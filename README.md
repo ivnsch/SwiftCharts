@@ -284,6 +284,8 @@ There are quite a lot of things that can be done, but here the main prios:
 
 If you want to help with any of these, feel free to open an issue to request for assistance. Happy to give an introduction to the internals and explain any parts of the library that may not be clear. It would be also possible to e.g. open a Slack channel for real time cooperation.
 
+Nice to have also, a zooming & panning refactoring to use a global transformation matrix instead of the current separate axes / content view transforms. This is only to improve code quality. It may sound easy but due to some implementation details of SwiftCharts it is a bit complicated. More details [here](http://stackoverflow.com/questions/41337146/apply-transform-matrix-to-core-graphics-drawing-and-subview). 
+
 ## Created By:
 
 Ivan Schütz
