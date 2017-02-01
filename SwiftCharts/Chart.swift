@@ -560,6 +560,7 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
                 }
             }
             
+            @discardableResult
             func adjustBounds() -> Bool {
                 let (xOffset, yOffset) = outOfBoundsOffsets(true)
                 
@@ -714,6 +715,7 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
                 }
             }
             
+            @discardableResult
             func adjustBounds() -> Bool {
                 let (xOffset, yOffset) = outOfBoundsOffsets(true)
                 
@@ -725,7 +727,7 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
             
             let initFriction: CGFloat = 50
             
-            if (chart.allowPan(location: location, deltaX: finalDeltaX, deltaY: finalDeltaY, isGesture: true, isDeceleration: false)) ?? false {
+            if (chart.allowPan(location: location, deltaX: finalDeltaX, deltaY: finalDeltaY, isGesture: true, isDeceleration: false)) {
                 if (chart.zoomPanSettings.elastic && !adjustBounds()) || !chart.zoomPanSettings.elastic {
                     next(finalDeltaX / initFriction, velocityY: finalDeltaY / initFriction)
                 }
