@@ -45,6 +45,7 @@ public protocol ChartLayer {
     
     func handleZoomEnd()
     
+    @discardableResult
     func handleGlobalTap(_ location: CGPoint) -> Any?
     
     /// Return true to disable chart panning
