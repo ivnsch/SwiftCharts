@@ -32,6 +32,18 @@ open class ChartStackedBarModel: ChartBarModel {
     }()
 }
 
+extension ChartStackedBarModel: CustomDebugStringConvertible {
+    open var debugDescription: String {
+        return [
+            "items": items,
+            "constant": constant,
+            "axisValue1": axisValue1,
+            "axisValue2": axisValue2
+            ]
+            .debugDescription
+    }
+}
+
 class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGenerator<T, ChartPointViewBarStacked> {
     
     fileprivate typealias FrameBuilder = (_ barModel: ChartStackedBarModel, _ item: ChartStackedBarItemModel, _ currentTotalQuantity: Double) -> (frame: ChartPointViewBarStackedFrame, length: CGFloat)
