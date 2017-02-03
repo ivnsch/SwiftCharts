@@ -25,7 +25,7 @@ open class ChartStackedBarModel: ChartBarModel {
         super.init(constant: constant, axisValue1: start, axisValue2: axisValue2)
     }
     
-    lazy var totalQuantity: Double = {
+    lazy private(set) var totalQuantity: Double = {
         return self.items.reduce(0) {total, item in
             total + item.quantity
         }

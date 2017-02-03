@@ -142,7 +142,7 @@ class BubbleExample: UIViewController {
         
         let gradientImg: UIImage
         
-        lazy var imgData: UnsafePointer<UInt8> = {
+        lazy private(set) var imgData: UnsafePointer<UInt8> = {
             let provider = self.gradientImg.cgImage!.dataProvider
             let pixelData = provider!.data
             return CFDataGetBytePtr(pixelData)

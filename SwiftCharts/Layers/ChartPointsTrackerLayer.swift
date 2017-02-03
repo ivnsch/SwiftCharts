@@ -16,7 +16,7 @@ open class ChartPointsTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
     fileprivate let lineColor: UIColor
     fileprivate let lineWidth: CGFloat
     
-    fileprivate lazy var currentPositionLineOverlay: UIView = {
+    fileprivate lazy private(set) var currentPositionLineOverlay: UIView = {
         let currentPositionLineOverlay = UIView()
         currentPositionLineOverlay.backgroundColor = self.lineColor
         return currentPositionLineOverlay

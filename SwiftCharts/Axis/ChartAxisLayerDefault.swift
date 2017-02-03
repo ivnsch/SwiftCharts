@@ -177,13 +177,13 @@ open class ChartAxisLayerDefault: ChartAxisLayer {
         }.0
     }
     
-    lazy var axisTitleLabelsHeight: CGFloat = {
+    lazy private(set) var axisTitleLabelsHeight: CGFloat = {
         return self.axisTitleLabels.reduce(0) { sum, label in
             sum + label.textSize.height
         }
     }()
 
-    lazy var axisTitleLabelsWidth: CGFloat = {
+    lazy private(set) var axisTitleLabelsWidth: CGFloat = {
         return self.axisTitleLabels.reduce(0) { sum, label in
             sum + label.textSize.width
         }

@@ -12,7 +12,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
     
     @IBOutlet weak var detailDescriptionLabel: UILabel!
     
-    lazy var chartFrame: CGRect! = {
+    lazy private(set) var chartFrame: CGRect! = {
         CGRect(x: 0, y: 80, width: self.view.frame.size.width, height: self.view.frame.size.height - 80)
     }()
     

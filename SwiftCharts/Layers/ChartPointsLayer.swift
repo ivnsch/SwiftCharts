@@ -159,12 +159,12 @@ open class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }
 
     // smallest screen space between chartpoints on x axis
-    open lazy var minXScreenSpace: CGFloat = {
+    open lazy private(set) var minXScreenSpace: CGFloat = {
         return self.minAxisScreenSpace{$0.x}
     }()
     
     // smallest screen space between chartpoints on y axis
-    open lazy var minYScreenSpace: CGFloat = {
+    open lazy private(set) var minYScreenSpace: CGFloat = {
         return self.minAxisScreenSpace{$0.y}
     }()
     
