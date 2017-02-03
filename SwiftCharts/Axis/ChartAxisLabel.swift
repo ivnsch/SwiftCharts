@@ -46,3 +46,13 @@ open class ChartAxisLabel {
         return label
     }
 }
+
+extension ChartAxisLabel: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return [
+            "text": text,
+            "settings": settings
+        ]
+            .debugDescription
+    }
+}
