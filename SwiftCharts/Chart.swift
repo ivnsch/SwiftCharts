@@ -132,8 +132,8 @@ open class Chart: Pannable, Zoomable {
     
     open var zoomPanSettings: ChartSettingsZoomPan {
         set {
-            settings.zoomPan = zoomPanSettings
-            configZoomPan(zoomPanSettings)
+            settings.zoomPan = newValue
+            configZoomPan(newValue)
         } get {
             return settings.zoomPan
         }
