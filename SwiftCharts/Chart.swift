@@ -9,60 +9,60 @@
 import UIKit
 
 /// ChartSettings allows configuration of the visual layout of a chart
-open class ChartSettings {
+public struct ChartSettings {
 
     /// Empty space in points added to the leading edge of the chart
-    open var leading: CGFloat = 0
+    public var leading: CGFloat = 0
 
     /// Empty space in points added to the top edge of the chart
-    open var top: CGFloat = 0
+    public var top: CGFloat = 0
 
     /// Empty space in points added to the trailing edge of the chart
-    open var trailing: CGFloat = 0
+    public var trailing: CGFloat = 0
 
     /// Empty space in points added to the bottom edge of the chart
-    open var bottom: CGFloat = 0
+    public var bottom: CGFloat = 0
 
     /// The spacing in points between axis labels when using multiple labels for each axis value. This is currently only supported with an X axis.
-    open var labelsSpacing: CGFloat = 5
+    public var labelsSpacing: CGFloat = 5
 
     /// The spacing in points between X axis labels and the X axis line
-    open var labelsToAxisSpacingX: CGFloat = 5
+    public var labelsToAxisSpacingX: CGFloat = 5
 
     /// The spacing in points between Y axis labels and the Y axis line
-    open var labelsToAxisSpacingY: CGFloat = 5
+    public var labelsToAxisSpacingY: CGFloat = 5
 
-    open var spacingBetweenAxesX: CGFloat = 15
+    public var spacingBetweenAxesX: CGFloat = 15
 
-    open var spacingBetweenAxesY: CGFloat = 15
+    public var spacingBetweenAxesY: CGFloat = 15
 
     /// The spacing in points between axis title labels and axis labels
-    open var axisTitleLabelsToLabelsSpacing: CGFloat = 5
+    public var axisTitleLabelsToLabelsSpacing: CGFloat = 5
 
     /// The stroke width in points of the axis lines
-    open var axisStrokeWidth: CGFloat = 1.0
+    public var axisStrokeWidth: CGFloat = 1.0
     
-    open var zoomPan = ChartSettingsZoomPan()
+    public var zoomPan = ChartSettingsZoomPan()
     
     public init() {}
 }
 
-open class ChartSettingsZoomPan {
-    open var panEnabled = false
+public struct ChartSettingsZoomPan {
+    public var panEnabled = false
     
-    open var zoomEnabled = false
+    public var zoomEnabled = false
 
-    open var minZoomX: CGFloat?
+    public var minZoomX: CGFloat?
     
-    open var minZoomY: CGFloat?
+    public var minZoomY: CGFloat?
     
-    open var maxZoomX: CGFloat?
+    public var maxZoomX: CGFloat?
     
-    open var maxZoomY: CGFloat?
+    public var maxZoomY: CGFloat?
     
-    open var gestureMode: ChartZoomPanGestureMode = .max
+    public var gestureMode: ChartZoomPanGestureMode = .max
     
-    open var elastic: Bool = false
+    public var elastic: Bool = false
 }
 
 public enum ChartZoomPanGestureMode {
@@ -128,7 +128,7 @@ open class Chart: Pannable, Zoomable {
         return settings.zoomPan.minZoomY
     }
     
-    fileprivate let settings: ChartSettings
+    fileprivate var settings: ChartSettings
     
     open var zoomPanSettings: ChartSettingsZoomPan {
         set {

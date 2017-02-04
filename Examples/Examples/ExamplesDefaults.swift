@@ -28,7 +28,7 @@ struct ExamplesDefaults {
     }
     
     fileprivate static var iPadChartSettings: ChartSettings {
-        let chartSettings = ChartSettings()
+        var chartSettings = ChartSettings()
         chartSettings.leading = 20
         chartSettings.top = 20
         chartSettings.trailing = 20
@@ -44,7 +44,7 @@ struct ExamplesDefaults {
     }
     
     fileprivate static var iPhoneChartSettings: ChartSettings {
-        let chartSettings = ChartSettings()
+        var chartSettings = ChartSettings()
         chartSettings.leading = 10
         chartSettings.top = 10
         chartSettings.trailing = 10
@@ -60,14 +60,14 @@ struct ExamplesDefaults {
     }
 
     fileprivate static var iPadChartSettingsWithPanZoom: ChartSettings {
-        let chartSettings = iPadChartSettings
+        var chartSettings = iPadChartSettings
         chartSettings.zoomPan.panEnabled = true
         chartSettings.zoomPan.zoomEnabled = true
         return chartSettings
     }
 
     fileprivate static var iPhoneChartSettingsWithPanZoom: ChartSettings {
-        let chartSettings = iPhoneChartSettings
+        var chartSettings = iPhoneChartSettings
         chartSettings.zoomPan.panEnabled = true
         chartSettings.zoomPan.zoomEnabled = true
         return chartSettings

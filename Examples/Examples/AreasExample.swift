@@ -30,7 +30,7 @@ class AreasExample: UIViewController {
         let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
         let chartFrame = ExamplesDefaults.chartFrame(view.bounds)
-        let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
+        var chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
         chartSettings.trailing = 20
         chartSettings.labelsToAxisSpacingX = 20
         chartSettings.labelsToAxisSpacingY = 20
