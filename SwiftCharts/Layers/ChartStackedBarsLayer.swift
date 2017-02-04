@@ -25,11 +25,23 @@ open class ChartStackedBarModel: ChartBarModel {
         super.init(constant: constant, axisValue1: start, axisValue2: axisValue2)
     }
     
-    lazy var totalQuantity: Double = {
+    lazy private(set) var totalQuantity: Double = {
         return self.items.reduce(0) {total, item in
             total + item.quantity
         }
     }()
+}
+
+extension ChartStackedBarModel: CustomDebugStringConvertible {
+    open var debugDescription: String {
+        return [
+            "items": items,
+            "constant": constant,
+            "axisValue1": axisValue1,
+            "axisValue2": axisValue2
+            ]
+            .debugDescription
+    }
 }
 
 class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGenerator<T, ChartPointViewBarStacked> {

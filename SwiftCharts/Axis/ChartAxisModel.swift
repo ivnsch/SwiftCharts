@@ -92,3 +92,15 @@ open class ChartAxisModel {
         self.clipContents = clipContents
     }
 }
+
+extension ChartAxisModel: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return [
+            "firstModelValue": firstModelValue,
+            "lastModelValue": lastModelValue,
+            "axisTitleLabels": axisTitleLabels,
+            
+        ]
+            .debugDescription
+    }
+}

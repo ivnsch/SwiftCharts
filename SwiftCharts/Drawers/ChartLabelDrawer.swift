@@ -47,6 +47,20 @@ public extension ChartLabelSettings {
     }
 }
 
+extension ChartLabelSettings: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return [
+            "font": font,
+            "fontColor": fontColor,
+            "rotation": rotation,
+            "rotationKeep": rotationKeep,
+            "shiftXOnRotation": shiftXOnRotation,
+            "textAlignment": textAlignment
+            ]
+                .debugDescription
+    }
+}
+
 // coordinate of original label which will be preserved after the rotation
 public enum ChartLabelDrawerRotationKeep {
     case center, top, bottom
