@@ -81,7 +81,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
     // MARK: – Chart configuration
     
     fileprivate lazy private(set) var chartSettings: ChartSettings = {
-        let chartSettings = ChartSettings()
+        var chartSettings = ChartSettings()
         chartSettings.top = 12
         chartSettings.bottom = 0
         chartSettings.trailing = 8
