@@ -12,13 +12,13 @@ public enum ChartLabelTextAlignment {
     case left, right, `default`
 }
 
-open class ChartLabelSettings {
-    open let font: UIFont
-    open let fontColor: UIColor
-    open let rotation: CGFloat
-    open let rotationKeep: ChartLabelDrawerRotationKeep
-    open let shiftXOnRotation: Bool
-    open let textAlignment: ChartLabelTextAlignment
+public struct ChartLabelSettings {
+    public var font: UIFont
+    public var fontColor: UIColor
+    public var rotation: CGFloat
+    public var rotationKeep: ChartLabelDrawerRotationKeep
+    public var shiftXOnRotation: Bool
+    public var textAlignment: ChartLabelTextAlignment
     
     public init(font: UIFont = UIFont.systemFont(ofSize: 14), fontColor: UIColor = UIColor.black, rotation: CGFloat = 0, rotationKeep: ChartLabelDrawerRotationKeep = .center, shiftXOnRotation: Bool = true, textAlignment: ChartLabelTextAlignment = .default) {
         self.font = font
@@ -28,22 +28,14 @@ open class ChartLabelSettings {
         self.shiftXOnRotation = shiftXOnRotation
         self.textAlignment = textAlignment
     }
-    
-    open func copy(_ font: UIFont? = nil, fontColor: UIColor? = nil, rotation: CGFloat? = nil, rotationKeep: ChartLabelDrawerRotationKeep? = nil, shiftXOnRotation: Bool? = nil, textAlignment: ChartLabelTextAlignment? = nil) -> ChartLabelSettings {
-        return ChartLabelSettings(
-            font: font ?? self.font,
-            fontColor: fontColor ?? self.fontColor,
-            rotation: rotation ?? self.rotation,
-            rotationKeep: rotationKeep ?? self.rotationKeep,
-            shiftXOnRotation: shiftXOnRotation ?? self.shiftXOnRotation,
-            textAlignment: textAlignment ?? self.textAlignment
-        )
-    }
 }
 
 public extension ChartLabelSettings {
     public func defaultVertical() -> ChartLabelSettings {
-        return copy(rotation: -90)
+        var copy = self
+        copy.rotation = -90
+        
+        return copy
     }
 }
 
