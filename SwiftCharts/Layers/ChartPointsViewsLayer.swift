@@ -9,7 +9,7 @@
 import UIKit
 
 public enum ChartPointsViewsLayerMode {
-    case scaleAndTranslate, translate
+    case scaleAndTranslate, translate, custom
 }
 
 open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> {
@@ -33,12 +33,17 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
     
     fileprivate let delayInit: Bool
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints:[T], viewGenerator: @escaping ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0, mode: ChartPointsViewsLayerMode = .scaleAndTranslate, keepOnFront: Bool = true, delayInit: Bool = false) {
+    public var customTransformer: ((ChartPointLayerModel<T>, UIView, ChartPointsViewsLayer<T, U>) -> Void)?
+    
+    fileprivate let clipViews: Bool
+    
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints:[T], viewGenerator: @escaping ChartPointViewGenerator, conflictSolver: ChartViewsConflictSolver<T, U>? = nil, displayDelay: Float = 0, delayBetweenItems: Float = 0, mode: ChartPointsViewsLayerMode = .scaleAndTranslate, keepOnFront: Bool = true, delayInit: Bool = false, clipViews: Bool = true) {
         self.viewGenerator = viewGenerator
         self.conflictSolver = conflictSolver
         self.mode = mode
         self.keepOnFront = keepOnFront
         self.delayInit = delayInit
+        self.clipViews = clipViews
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, displayDelay: displayDelay)
     }
     
@@ -64,7 +69,18 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
     }
     
     func addSubview(_ chart: Chart, view: UIView) {
-        mode == .scaleAndTranslate ? chart.addSubview(view) : chart.addSubviewNoTransform(view)
+        switch mode {
+        case .scaleAndTranslate:
+            chart.addSubview(view)
+        case .translate: fallthrough
+        case .custom:
+            if !clipViews {
+                chart.addSubviewNoTransformUnclipped(view)
+            } else {
+                chart.addSubviewNoTransform(view)
+            }
+            
+        }
     }
     
     func reloadViews() {
@@ -144,6 +160,11 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
                 viewsWithChartPoints[i].chartPointModel.screenLoc = modelLocToScreenLoc(x: viewsWithChartPoints[i].chartPointModel.chartPoint.x.scalar, y: viewsWithChartPoints[i].chartPointModel.chartPoint.y.scalar)
                 viewsWithChartPoints[i].view.center = viewsWithChartPoints[i].chartPointModel.screenLoc
             }
+            
+        case .custom:
+            for i in 0..<viewsWithChartPoints.count {
+                customTransformer?(viewsWithChartPoints[i].chartPointModel, viewsWithChartPoints[i].view, self)
+            }
         }
         
         if keepOnFront {
@@ -155,7 +176,8 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
         switch mode {
         case .scaleAndTranslate:
             return super.modelLocToScreenLoc(x: x, y: y)
-        case .translate:
+        case .translate: fallthrough
+        case .custom:
             return super.modelLocToContainerScreenLoc(x: x, y: y)
         }
     }

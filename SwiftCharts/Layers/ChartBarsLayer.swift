@@ -154,6 +154,7 @@ open class ChartBarsLayer<T: ChartPointViewBar>: ChartCoordsSpaceLayer {
                 let (p1, p2) = barsGenerator.viewPoints(barModel)
                 barView.updateFrame(p1, p2: p2)
             }
+        case .custom: fatalError("Not supported")
         }
     }
     
@@ -163,6 +164,7 @@ open class ChartBarsLayer<T: ChartPointViewBar>: ChartCoordsSpaceLayer {
             return super.modelLocToScreenLoc(x: x)
         case .translate:
             return super.modelLocToContainerScreenLoc(x: x)
+        case .custom: fatalError("Not supported")
         }
     }
     
@@ -172,6 +174,7 @@ open class ChartBarsLayer<T: ChartPointViewBar>: ChartCoordsSpaceLayer {
             return super.modelLocToScreenLoc(y: y)
         case .translate:
             return super.modelLocToContainerScreenLoc(y: y)
+        case .custom: fatalError("Not supported")
         }
     }
 

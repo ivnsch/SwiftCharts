@@ -22,11 +22,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Implement catmull rom path generator
 - Add modes to views layer to add subviews to scale&translate subviews as part of own transform or only translate by updating their positions individually
 - Allow to generate custom views in bars(plain, grouped, stacked) and line layer
--	Implement elastic zoom/pan
+- Implement elastic zoom/pan
 - Fix dashed path not showing when line is not animated
 - Implement grouped bars companion layer (to add e.g. labels to individual grouped bars).
--	Remove unnecessary use of self, improve formatting
--	Don't force unwrap context
+- Remove unnecessary use of self, improve formatting
+- Don't force unwrap context
+- Add custom transtorm mode to ChartPointsViewsLayer
 
 ## [0.5] - 2016.11.23
 - Add multi-chart tracker layer

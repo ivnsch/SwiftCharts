@@ -161,6 +161,7 @@ open class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: ChartC
         switch mode {
         case .scaleAndTranslate: break
         case .translate: updatePanZoomTranslateMode()
+        case .custom: fatalError("Not supported")
         }
     }
     
@@ -170,6 +171,7 @@ open class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: ChartC
             return super.modelLocToScreenLoc(x: x)
         case .translate:
             return super.modelLocToContainerScreenLoc(x: x)
+        case .custom: fatalError("Not supported")
         }
     }
     
@@ -179,6 +181,7 @@ open class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: ChartC
             return super.modelLocToScreenLoc(y: y)
         case .translate:
             return super.modelLocToContainerScreenLoc(y: y)
+        case .custom: fatalError("Not supported")
         }
     }
 
