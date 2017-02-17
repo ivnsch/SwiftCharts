@@ -61,7 +61,7 @@ class ChartAxisXHighLayerDefault: ChartAxisXLayerDefault {
         
         super.updateInternal()
 
-        if lastFrame.height != frame.height {
+        if lastFrame.height != frame.height, canChangeFrameSize {
             chart.notifyAxisInnerFrameChange(xHigh: ChartAxisLayerWithFrameDelta(layer: self, delta: frame.height - lastFrame.height))
         }
     }

@@ -28,6 +28,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Remove unnecessary use of self, improve formatting
 - Don't force unwrap context
 - Add custom transtorm mode to ChartPointsViewsLayer
+- Allow to disable axis layer modification of chart's frame
+
 
 ## [0.5] - 2016.11.23
 - Add multi-chart tracker layer

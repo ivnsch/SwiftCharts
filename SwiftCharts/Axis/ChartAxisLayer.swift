@@ -39,4 +39,7 @@ public protocol ChartAxisLayer: ChartLayer {
 
     var lineP1: CGPoint {get}
     var lineP2: CGPoint {get}
+    
+    /// If the axis frame should (incrementally) affect the inner frame size of the chart
+    var canChangeFrameSize: Bool {set get}
 }

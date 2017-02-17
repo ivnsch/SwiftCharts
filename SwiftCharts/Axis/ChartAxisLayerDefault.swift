@@ -144,6 +144,8 @@ open class ChartAxisLayerDefault: ChartAxisLayer {
     
     open var tapSettings: ChartAxisLayerTapSettings?
     
+    public var canChangeFrameSize: Bool = true
+    
     var widthWithoutLabels: CGFloat {
         return width
     }

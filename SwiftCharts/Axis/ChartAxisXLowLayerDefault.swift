@@ -37,7 +37,10 @@ class ChartAxisXLowLayerDefault: ChartAxisXLayerDefault {
             offset -= delta
             initDrawers()
             
-            chart.notifyAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta(layer: self, delta: delta))
+            if canChangeFrameSize {
+                chart.notifyAxisInnerFrameChange(xLow: ChartAxisLayerWithFrameDelta(layer: self, delta: delta))
+            }
+            
         }
     }
 

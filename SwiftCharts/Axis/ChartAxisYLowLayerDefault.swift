@@ -69,7 +69,7 @@ class ChartAxisYLowLayerDefault: ChartAxisYLayerDefault {
     override func updateInternal() {
         guard let chart = chart else {return}
         super.updateInternal()
-        if lastFrame.width != frame.width {
+        if lastFrame.width != frame.width, canChangeFrameSize {
             chart.notifyAxisInnerFrameChange(yLow: ChartAxisLayerWithFrameDelta(layer: self, delta: frame.width - lastFrame.width))
         }
     }
