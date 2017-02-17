@@ -67,6 +67,12 @@ pod 'SwiftCharts', '~> 0.5'
 ```
 Note: To use Swift 3.x / master, you need Xcode 8+
 
+To use master directly (it's usually stable):
+```ruby
+pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
+```
+This is particularly useful if you see features listed or examples that are not released yet! 
+
 Swift 2.3 (not actively maintained):
 ```ruby
 use_frameworks!
