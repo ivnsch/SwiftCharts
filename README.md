@@ -35,6 +35,9 @@ Swift 3.0, 2.x, 1.2, iOS 10, 9, 8, 7
 ![ScreenShot](Screenshots/IMG_0022.jpeg)
 ![ScreenShot](Screenshots/IMG_0023.jpeg)
 ![ScreenShot of Multi-chart touch tracking](Screenshots/multi-chart-touch.jpg)
+
+![ScreenShot](Screenshots/IMG_1328.PNG)
+
 ![ScreenShot](Screenshots/IMG_0025.jpeg)
 ![ScreenShot](Screenshots/IMG_0026.jpeg)
 ![ScreenShot](Screenshots/IMG_0101.jpeg)

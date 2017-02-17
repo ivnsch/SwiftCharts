@@ -10,7 +10,7 @@ import UIKit
 
 
 enum Example {
-    case helloWorld, bars, stackedBars, barsPlusMinus, groupedBars, barsStackedGrouped, scatter, areas, bubble, coords, target, multival, notifications, combination, equalSpacing, tracker, multiTracker, multiAxis, multiAxisInteractive, candleStick, cubiclines, notNumeric, candleStickInteractive, customUnits, trendline
+    case helloWorld, bars, stackedBars, barsPlusMinus, groupedBars, barsStackedGrouped, scatter, areas, rangedAxis, bubble, coords, target, multival, notifications, combination, equalSpacing, tracker, multiTracker, multiAxis, multiAxisInteractive, candleStick, cubiclines, notNumeric, candleStickInteractive, customUnits, trendline
 }
 
 class MasterViewController: UITableViewController {
@@ -28,6 +28,7 @@ class MasterViewController: UITableViewController {
         (.notifications, "Notifications (interactive)"),
         (.target, "Target point animation"),
         (.areas, "Areas, lines, circles (interactive)"),
+        (.rangedAxis, "Ranged axis, rotation"),
         (.bubble, "Bubble, gradient bar mapping"),
         (.notNumeric, "Not numeric values"),
         (.coords, "Show touch coords (interactive)"),
@@ -89,7 +90,7 @@ class MasterViewController: UITableViewController {
             if let indexPath = tableView.indexPathForSelectedRow {
                 showExample((indexPath as NSIndexPath).row)
             } else {
-                showExample(2)
+                showExample(11)
             }
         }
     }

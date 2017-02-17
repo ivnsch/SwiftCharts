@@ -57,6 +57,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
             case .areas:
                 setSplitSwipeEnabled(true)
                 showExampleController(AreasExample())
+            case .rangedAxis:
+                setSplitSwipeEnabled(true)
+                showExampleController(RangedAxisExample())
             case .bubble:
                 setSplitSwipeEnabled(true)
                 showExampleController(BubbleExample())
