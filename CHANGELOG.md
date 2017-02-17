@@ -29,7 +29,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Don't force unwrap context
 - Add custom transtorm mode to ChartPointsViewsLayer
 - Allow to disable axis layer modification of chart's frame
-
+- Allow to show chart points outside of the chart's inner frame 
 
 ## [0.5] - 2016.11.23
 - Add multi-chart tracker layer

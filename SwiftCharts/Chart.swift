@@ -44,6 +44,10 @@ public struct ChartSettings {
     
     public var zoomPan = ChartSettingsZoomPan()
     
+    /// Define a custom clipping rect for chart layers that use containerViewUnclipped to display chart points.
+    // TODO (review): this probably should be moved to ChartPointsViewsLayer
+    public var customClipRect: CGRect? = nil
+    
     public init() {}
 }
 
@@ -90,6 +94,7 @@ open class Chart: Pannable, Zoomable {
     open let containerView: UIView
     open let contentView: UIView
     open let drawersContentView: UIView
+    open let containerViewUnclipped: UIView
 
     /// The layers of the chart that are drawn in the view
     fileprivate let layers: [ChartLayer]
@@ -174,6 +179,7 @@ open class Chart: Pannable, Zoomable {
         
         let containerView = UIView(frame: innerFrame ?? view.bounds)
         
+
         let drawersContentView = ChartContentView(frame: containerView.bounds)
         drawersContentView.backgroundColor = UIColor.clear
         containerView.addSubview(drawersContentView)
@@ -185,6 +191,13 @@ open class Chart: Pannable, Zoomable {
         containerView.clipsToBounds = true
         view.addSubview(containerView)
 
+        // TODO It may be better to move this view to ChartPointsViewsLayer (together with customClipRect setting) and create it on demand.
+        containerViewUnclipped = UIView(frame: containerView.bounds)
+        view.addSubview(containerViewUnclipped)
+        let shape = CAShapeLayer()
+        shape.path = UIBezierPath(rect: settings.customClipRect ?? CGRect.zero).cgPath
+        containerViewUnclipped.layer.mask = shape
+        
         self.contentView = contentView
         self.drawersContentView = drawersContentView
         self.containerView = containerView
@@ -224,6 +237,10 @@ open class Chart: Pannable, Zoomable {
 
     open func addSubviewNoTransform(_ view: UIView) {
         containerView.addSubview(view)
+    }
+    
+    open func addSubviewNoTransformUnclipped(_ view: UIView) {
+        containerViewUnclipped.addSubview(view)
     }
     
     /// The frame of the chart's view
@@ -271,6 +288,8 @@ open class Chart: Pannable, Zoomable {
         
         // Resize container view
         containerView.frame = containerView.frame.insetBy(dx: yLow.deltaDefault0, dy: xHigh.deltaDefault0, dw: yHigh.deltaDefault0, dh: xLow.deltaDefault0)
+        containerViewUnclipped.frame = containerView.frame
+        
         // Change dimensions of content view by total delta of container view
         contentView.frame = CGRect(x: contentView.frame.origin.x, y: contentView.frame.origin.y, width: contentView.frame.width - (yLow.deltaDefault0 + yHigh.deltaDefault0), height: contentView.frame.height - (xLow.deltaDefault0 + xHigh.deltaDefault0))
 
