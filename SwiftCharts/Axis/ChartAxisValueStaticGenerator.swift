@@ -95,6 +95,7 @@ public struct ChartAxisValuesStaticGenerator {
      - returns: An array of axis values
      */
     fileprivate static func generateAxisValuesWithChartPoints(_ first: Double, last lastPar: Double, minSegmentCount: Double, maxSegmentCount: Double, multiple: Double, axisValueGenerator: ChartAxisValueStaticGenerator, addPaddingSegmentIfEdge: Bool) -> [ChartAxisValue] {
+        precondition(multiple > 0, "Invalid multiple: \(multiple)")
         
         guard lastPar >=~ first else {fatalError("Invalid range generating axis values")}
         
