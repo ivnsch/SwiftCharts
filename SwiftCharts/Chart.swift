@@ -179,7 +179,6 @@ open class Chart: Pannable, Zoomable {
         
         let containerView = UIView(frame: innerFrame ?? view.bounds)
         
-
         let drawersContentView = ChartContentView(frame: containerView.bounds)
         drawersContentView.backgroundColor = UIColor.clear
         containerView.addSubview(drawersContentView)
@@ -188,16 +187,16 @@ open class Chart: Pannable, Zoomable {
         contentView.backgroundColor = UIColor.clear
         containerView.addSubview(contentView)
         
-        containerView.clipsToBounds = true
-        view.addSubview(containerView)
-
         // TODO It may be better to move this view to ChartPointsViewsLayer (together with customClipRect setting) and create it on demand.
         containerViewUnclipped = UIView(frame: containerView.bounds)
         view.addSubview(containerViewUnclipped)
         let shape = CAShapeLayer()
         shape.path = UIBezierPath(rect: settings.customClipRect ?? CGRect.zero).cgPath
         containerViewUnclipped.layer.mask = shape
-        
+
+        containerView.clipsToBounds = true
+        view.addSubview(containerView)
+
         self.contentView = contentView
         self.drawersContentView = drawersContentView
         self.containerView = containerView
