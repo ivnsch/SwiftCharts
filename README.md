@@ -9,20 +9,20 @@ Easy to use and highly customizable charts library for iOS
 ## Features:
 - Bars - plain, stacked, grouped, horizontal, vertical
 - Scatter
-- Line / Multiple lines
+- Lines (straight/cubic/custom path generator)
 - Areas
 - Bubble
-- Multiple axis
-- Multiple labels (x axis)
+- Multiple axes
 - Candlestick
-- Cubic line
-- Custom views, units, animations, axes, etc.
-- Charts can be combined with each other (e.g. lines + bars + circles)
-- Complex interactivity support
+- Multiple labels per value (x axis)
+- Everything is customizable - colors, views, units, labels, animations, interactions, axes, etc.
+- Easy creation of arbitrary markers, overlays, info views, etc., using simple UIViews!
+- Modular architecture, which allows to create new chart types or add effects to existing types externally. No library changes needed.
+- Charts can be combined with each other.
 - [Pie chart*](https://github.com/i-schuetz/PieCharts)
 - [Legends*](https://github.com/i-schuetz/ChartLegends)
-- Zooming & panning (unreleased)
-- Extensible dynamic axis values / label generators for numbers, dates, etc. (unreleased).
+- Zooming & panning, lockable to x/y axis, max delta or both. Elastic effect. (unreleased)
+- Extensible axis values and label generators for numbers, dates, etc, with customizable zooming handling (nice numbers, divide in half, etc). (unreleased).
 - **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
 <sub>*These are separate repos for better focus and reusability.</sub>
@@ -72,6 +72,7 @@ To use master directly (it's usually stable):
 pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
 ```
 This is particularly useful if you see features listed or examples that are not released yet! 
+NOTE: Some examples in master have not been updated yet with correct configuration for zooming and panning.
 
 Swift 2.3 (not actively maintained):
 ```ruby
