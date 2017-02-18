@@ -280,14 +280,10 @@ There's a [hello world](Examples/Examples/HelloWorld.swift) included in the exam
 There are quite a lot of things that can be done, but here the main prios:
 
 - Dynamic adding/removing of chart points.
-- Lazy loading.
-- Electrocardiogram.
-- Improve autolayout support.  
-- Performance improvements.
+- Lazy loading, EC.
 - Allow to set initial content view size that exceeds the chart's boundaries without having to use zoom.
-- Nice api - allow to create chart with as little code as possible and granular, well documented settings. The current "low level" api should of course still be possible to use.
 - macOS support.
-- Add documentation.
+- Improve documentation.
 - Write a tutorial.
 - Objective-C support? I have gotten out of touch with Obj-C and don't even remember what exactly has to be done to add compatibility. If it doesn't require any major structural changes, it's also welcome. 
 
