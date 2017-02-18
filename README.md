@@ -17,13 +17,12 @@ Easy to use and highly customizable charts library for iOS
 - Multiple labels per value (x axis)
 - Everything is customizable - colors, views, units, labels, animations, interactions, axes, etc.
 - Easy creation of arbitrary markers, overlays, info views, etc., using simple UIViews!
-- Modular architecture, which allows to create new chart types or add effects to existing types externally. No library changes needed.
+- Modular architecture, which allows to easily create new chart types or add effects to existing types externally (without library changes).
 - Charts can be combined with each other.
 - [Pie chart*](https://github.com/i-schuetz/PieCharts)
 - [Legends*](https://github.com/i-schuetz/ChartLegends)
 - Zooming & panning, lockable to x/y axis, max delta or both. Elastic effect. (unreleased)
 - Extensible axis values and label generators for numbers, dates, etc, with customizable zooming handling (nice numbers, divide in half, etc). (unreleased).
-- **Easy to use**: no learning curve, no complicated settings - just assemble chart using well defined components.
 
 <sub>*These are separate repos for better focus and reusability.</sub>
 
@@ -251,7 +250,7 @@ self.view.addSubview(chart.view)
 self.chart = chart
 ```
 
-Layers are semantic units that can add views to the chart, or can simply draw in the chart's context for a better performance. Which makes more sense depends on the requirements.
+Layers decide how to present their data - this can be done adding subviews, (CA)layers, with core graphics, etc.
 
 #### 2. View generators:
 
