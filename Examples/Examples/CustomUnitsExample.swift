@@ -60,7 +60,6 @@ class CustomUnitsExample: UIViewController {
         ]
         
         let yValues = stride(from: 0, through: 100, by: 10).map {ChartAxisValuePercent($0, labelSettings: labelSettings)}
-        yValues.first?.hidden = true
 
         let xValues = [
             createDateAxisValue("01.10.2015", readFormatter: readFormatter, displayFormatter: displayFormatter),
@@ -81,14 +80,23 @@ class CustomUnitsExample: UIViewController {
         let chartFrame = ExamplesDefaults.chartFrame(view.bounds)
         var chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
         chartSettings.trailing = 80
+
+        // Set a fixed (horizontal) scrollable area 2x than the original width, with zooming disabled.
+        chartSettings.zoomPan.maxZoomX = 2
+        chartSettings.zoomPan.minZoomX = 2
+        chartSettings.zoomPan.minZoomY = 1
+        chartSettings.zoomPan.maxZoomY = 1
+        
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
         
-        let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.red, animDuration: 1, animDelay: 0)
-        let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel])
+        let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.red, lineWidth: 2, animDuration: 1, animDelay: 0)
         
-        let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
-        let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)
+        // delayInit parameter is needed by some layers for initial zoom level to work correctly. Setting it to true allows to trigger drawing of layer manually (in this case, after the chart is initialized). This obviously needs improvement. For now it's necessary.
+        let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel], delayInit: true)
+        
+        let guidelinesLayerSettings = ChartGuideLinesLayerSettings(linesColor: UIColor.black, linesWidth: 0.3)
+        let guidelinesLayer = ChartGuideLinesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: guidelinesLayerSettings)
         
         let chart = Chart(
             frame: chartFrame,
@@ -102,6 +110,15 @@ class CustomUnitsExample: UIViewController {
         )
         
         view.addSubview(chart.view)
+        
+        
+        // Set scrollable area 2x than the original width, with zooming enabled. This can also be combined with e.g. minZoomX to allow only larger zooming levels.
+//        chart.zoom(scaleX: 2, scaleY: 1, centerX: 0, centerY: 0)
+        
+        // Now that the chart is zoomed (either with minZoom setting or programmatic zooming), trigger drawing of the line layer. Important: This requires delayInit paramter in line layer to be set to true.
+        chartPointsLineLayer.initScreenLines(chart)
+        
+        
         self.chart = chart
     }
     

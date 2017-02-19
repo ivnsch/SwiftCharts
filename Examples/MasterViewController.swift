@@ -35,7 +35,7 @@ class MasterViewController: UITableViewController {
         (.tracker, "Track touch (interactive)"),
         (.multiTracker, "Multi-chart touch tracking"),
         (.equalSpacing, "Fixed axis spacing"),
-        (.customUnits, "Custom units, rotated labels"),
+        (.customUnits, "Custom units, scrollable"),
         (.multival, "Multiple axis labels"),
         (.multiAxis, "Multiple axes"),
         (.multiAxisInteractive, "Multiple axes (interactive)"),

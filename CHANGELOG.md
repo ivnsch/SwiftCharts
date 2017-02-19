@@ -31,6 +31,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Allow to disable axis layer modification of chart's frame
 - Allow to show chart points outside of the chart's inner frame 
 - Add example for ranged axis and rotation handling
+- Adjust "Custom units" example to show how to set a fixed scrollable area / initial zoom.
 
 ## [0.5] - 2016.11.23
 - Add multi-chart tracker layer
