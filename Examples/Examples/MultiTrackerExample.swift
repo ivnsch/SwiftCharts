@@ -76,7 +76,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
     
     fileprivate var bottomChart: Chart?
     
-    fileprivate lazy private(set) var chartPanGestureRecognizer = UIPanGestureRecognizer()
+    fileprivate lazy private(set) var chartLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
     // MARK: – Chart configuration
     
@@ -111,8 +111,9 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        chartPanGestureRecognizer.delegate = self
-        view.addGestureRecognizer(chartPanGestureRecognizer)
+        chartLongPressGestureRecognizer.delegate = self
+        chartLongPressGestureRecognizer.minimumPressDuration = 0.01
+        view.addGestureRecognizer(chartLongPressGestureRecognizer)
 
         generateXAxisValues()
 
@@ -180,7 +181,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
             chartPoints: allPoints,
             tintColor: UIColor.glucoseTintColor,
             labelCenterY: chartSettings.top,
-            gestureRecognizer: chartPanGestureRecognizer
+            gestureRecognizer: chartLongPressGestureRecognizer
         )
 
         let layers: [ChartLayer?] = [
@@ -246,7 +247,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
             chartPoints: IOBPoints,
             tintColor: UIColor.IOBTintColor,
             labelCenterY: chartSettings.top,
-            gestureRecognizer: chartPanGestureRecognizer
+            gestureRecognizer: chartLongPressGestureRecognizer
         )
 
         let layers: [ChartLayer?] = [
@@ -275,7 +276,7 @@ private extension ChartPointsTouchHighlightLayer {
         chartPoints: [T],
         tintColor: UIColor,
         labelCenterY: CGFloat = 0,
-        gestureRecognizer: UIPanGestureRecognizer? = nil
+        gestureRecognizer: UILongPressGestureRecognizer? = nil
     ) {
         self.init(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, gestureRecognizer: gestureRecognizer,
                   modelFilter: { (screenLoc, chartPointModels) -> ChartPointLayerModel<T>? in

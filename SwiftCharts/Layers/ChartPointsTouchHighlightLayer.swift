@@ -17,14 +17,14 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
 
     fileprivate let chartPointLayerModelForScreenLocFilter: ChartPointLayerModelForScreenLocFilter
 
-    open let panGestureRecognizer: UIPanGestureRecognizer
+    open let longPressGestureRecognizer: UILongPressGestureRecognizer
 
     /// The delay after touches end before the highlighted point fades out. Set to `nil` to keep the highlight until the next touch.
     open var hideDelay: TimeInterval? = 1.0
 
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], gestureRecognizer: UIPanGestureRecognizer? = nil, modelFilter: @escaping ChartPointLayerModelForScreenLocFilter, viewGenerator: @escaping ChartPointViewGenerator) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], gestureRecognizer: UILongPressGestureRecognizer? = nil, modelFilter: @escaping ChartPointLayerModelForScreenLocFilter, viewGenerator: @escaping ChartPointViewGenerator) {
         chartPointLayerModelForScreenLocFilter = modelFilter
-        panGestureRecognizer = gestureRecognizer ?? UIPanGestureRecognizer()
+        longPressGestureRecognizer = gestureRecognizer ?? UILongPressGestureRecognizer()
 
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
@@ -34,10 +34,10 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
         
         let view = UIView(frame: chart.bounds)
 
-        panGestureRecognizer.addTarget(self, action: #selector(handlePan(_:)))
+        longPressGestureRecognizer.addTarget(self, action: #selector(handlePan(_:)))
 
-        if panGestureRecognizer.view == nil {
-            view.addGestureRecognizer(panGestureRecognizer)
+        if longPressGestureRecognizer.view == nil {
+            view.addGestureRecognizer(longPressGestureRecognizer)
         }
 
         chart.addSubview(view)
@@ -71,7 +71,7 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
         }
     }
 
-    @objc func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc func handlePan(_ gestureRecognizer: UILongPressGestureRecognizer) {
         switch gestureRecognizer.state {
         case .possible:
             // Follow your dreams!
