@@ -74,7 +74,7 @@ open class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: ChartC
                 for (barIndex, bar) in group.bars.enumerated() {
                     
                     let constantScreenLoc = self.calculateConstantScreenLocDir({self.modelLocToScreenLoc(y: $0)}, index: barIndex, group: group, barWidth: barWidth, maxBarCountInGroup: maxBarCountInGroup, horizontal: barsGenerator.horizontal)
-                    let barView = barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, settings: self.isTransform ? self.settings.copy(animDuration: 0, animDelay: 0) : self.settings, model: bar, index: barIndex, groupIndex: groupIndex)
+                    let barView = barsGenerator.generateView(bar, constantScreenLoc: constantScreenLoc, bgColor: bar.bgColor, settings: self.settings, model: bar, index: barIndex, groupIndex: groupIndex)
                     self.configBarView(group, groupIndex: groupIndex, barIndex: barIndex, bar: bar, barView: barView)
                     groupBars.append(barView)
                     self.addSubview(chart, view: barView)

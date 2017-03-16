@@ -39,7 +39,7 @@ open class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
             points.append(CGPoint(x: origin.x, y: bottomY))
         }
         
-        let areaView = ChartAreasView(points: points, frame: chart.bounds, color: areaColor, animDuration: isTransform ? 0 : animDuration, animDelay: isTransform ? 0 : animDelay)
+        let areaView = ChartAreasView(points: points, frame: chart.bounds, color: areaColor, animDuration: animDuration, animDelay: animDelay)
         areaViews.append(areaView)
         chart.addSubview(areaView)
     }

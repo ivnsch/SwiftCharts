@@ -119,7 +119,7 @@ open class ChartBarsLayer<T: ChartPointViewBar>: ChartCoordsSpaceLayer {
         guard let barsGenerator = barsGenerator else {return}
         
         for (index, barModel) in bars.enumerated() {
-            let barView = barsGenerator.generateView(barModel, bgColor: barModel.bgColor, settings: isTransform ? settings.copy(animDuration: 0, animDelay: 0) : settings, model: barModel, index: index, groupIndex: 0, chart: chart)
+            let barView = barsGenerator.generateView(barModel, bgColor: barModel.bgColor, settings: settings, model: barModel, index: index, groupIndex: 0, chart: chart)
             barView.tapHandler = {[weak self] tappedBarView in guard let weakSelf = self else {return}
                 weakSelf.tapHandler?(ChartTappedBar(model: barModel, view: tappedBarView, layer: weakSelf))
             }

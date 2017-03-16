@@ -35,11 +35,11 @@ class TargetExample: UIViewController {
        
         let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.red, animDuration: 0.5, animDelay: 0)
         
-        let targetGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart, isTransform: Bool) -> UIView? in
+        let targetGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             if chartPointModel.index != 3 {
                 return nil
             }
-            return ChartPointTargetingView(chartPoint: chartPointModel.chartPoint, screenLoc: chartPointModel.screenLoc, animDuration: isTransform ? 0 : 0.5, animDelay: isTransform ? 0 : 1, layer: layer, chart: chart)
+            return ChartPointTargetingView(chartPoint: chartPointModel.chartPoint, screenLoc: chartPointModel.screenLoc, animDuration: 0.5, animDelay: 1, layer: layer, chart: chart)
         }
         
         let chartPointsTargetLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: targetGenerator)

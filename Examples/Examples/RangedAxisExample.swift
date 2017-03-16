@@ -133,7 +133,7 @@ class RangedAxisExample: UIViewController {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Markers for the last chart points in each line, shown next to the right y-axis
         
-        let viewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart, isTransform: Bool) -> UIView? in
+        let viewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart) -> UIView? in
             let h: CGFloat = Env.iPad ? 30 : 20
             let w: CGFloat = Env.iPad ? 60 : 50
             

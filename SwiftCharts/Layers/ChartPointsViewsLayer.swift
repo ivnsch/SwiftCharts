@@ -14,7 +14,7 @@ public enum ChartPointsViewsLayerMode {
 
 open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> {
 
-    public typealias ChartPointViewGenerator = (_ chartPointModel: ChartPointLayerModel<T>, _ layer: ChartPointsViewsLayer<T, U>, _ chart: Chart, _ isTransform: Bool) -> U?
+    public typealias ChartPointViewGenerator = (_ chartPointModel: ChartPointLayerModel<T>, _ layer: ChartPointsViewsLayer<T, U>, _ chart: Chart) -> U?
     public typealias ViewWithChartPoint = (view: U, chartPointModel: ChartPointLayerModel<T>)
     
     open fileprivate(set) var viewsWithChartPoints: [ViewWithChartPoint] = []
@@ -57,7 +57,7 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
     open func initViews(_ chart: Chart) {
         viewsWithChartPoints = generateChartPointViews(chartPointModels: chartPointsModels, chart: chart)
         
-        if isTransform || delayBetweenItems =~ 0 {
+        if delayBetweenItems =~ 0 {
             for v in viewsWithChartPoints {addSubview(chart, view: v.view)}
             
         } else {
@@ -90,14 +90,12 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
             v.view.removeFromSuperview()
         }
         
-        isTransform = true
         display(chart: chart)
-        isTransform = false
     }
     
     fileprivate func generateChartPointViews(chartPointModels: [ChartPointLayerModel<T>], chart: Chart) -> [ViewWithChartPoint] {
         let viewsWithChartPoints: [ViewWithChartPoint] = chartPointsModels.flatMap {model in
-            if let view = viewGenerator(model, self, chart, isTransform) {
+            if let view = viewGenerator(model, self, chart) {
                 return (view: view, chartPointModel: model)
             } else {
                 return nil

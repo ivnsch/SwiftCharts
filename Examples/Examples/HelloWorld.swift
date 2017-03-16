@@ -45,7 +45,7 @@ class HelloWorld: UIViewController {
         let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: guidelinesLayerSettings)
         
         // view generator - this is a function that creates a view for each chartpoint
-        let viewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart, isTransform: Bool) -> UIView? in
+        let viewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart) -> UIView? in
             let viewSize: CGFloat = Env.iPad ? 30 : 20
             let center = chartPointModel.screenLoc
             let label = UILabel(frame: CGRect(x: center.x - viewSize / 2, y: center.y - viewSize / 2, width: viewSize, height: viewSize))

@@ -64,7 +64,7 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
                     subview.removeFromSuperview()
                 }
 
-                if let model = highlightedModel, let pointView = viewGenerator(model, self, chart, false) {
+                if let model = highlightedModel, let pointView = viewGenerator(model, self, chart) {
                     view.addSubview(pointView)
                 }
             }

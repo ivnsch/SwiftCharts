@@ -112,7 +112,7 @@ class BubbleExample: UIViewController {
             
             let diameterFactor = (maxBubbleDiameter - minBubbleDiameter) / (maxDiameterScalar - minDiameterScalar)
 
-            return ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
+            return ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
 
                 let diameter = CGFloat(chartPointModel.chartPoint.diameterScalar * diameterFactor)
                 
@@ -121,13 +121,11 @@ class BubbleExample: UIViewController {
                 circleView.borderColor = UIColor.black.withAlphaComponent(0.6)
                 circleView.borderWidth = 1
                 
-                if !isTransform {
-                    circleView.animDelay = Float(chartPointModel.index) * 0.2
-                    circleView.animDuration = 1.2
-                    circleView.animDamping = 0.4
-                    circleView.animInitSpringVelocity = 0.5
-                }
-
+                circleView.animDelay = Float(chartPointModel.index) * 0.2
+                circleView.animDuration = 1.2
+                circleView.animDamping = 0.4
+                circleView.animInitSpringVelocity = 0.5
+            
                 return circleView
             })
             

@@ -112,7 +112,7 @@ open class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         
         initChartPointModels()
         
-        if isTransform || displayDelay == 0 {
+        if displayDelay == 0 {
             display(chart: chart)
         } else {
             DispatchQueue.main.asyncAfter(deadline: ChartTimeUtils.toDispatchTime(displayDelay)) {

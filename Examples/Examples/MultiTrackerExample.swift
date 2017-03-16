@@ -232,7 +232,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
 
         // 0-line
         let dummyZeroChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
-        let zeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, chartPoints: [dummyZeroChartPoint], viewGenerator: {(chartPointModel, layer, chart, _) -> UIView? in
+        let zeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, chartPoints: [dummyZeroChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
             let width: CGFloat = 0.5
             let viewFrame = CGRect(x: innerFrame.origin.x, y: chartPointModel.screenLoc.y - width / 2, width: innerFrame.size.width, height: width)
 
@@ -286,7 +286,7 @@ private extension ChartPointsTouchHighlightLayer {
                         return nil
                     }
             },
-                  viewGenerator: { (chartPointModel, layer, chart, isTransform) -> U? in
+                  viewGenerator: { (chartPointModel, layer, chart) -> U? in
                     let containerView = U(frame: chart.view.bounds)
                     
                     let xAxisOverlayView = UIView(frame: xAxisLayer.frame.offsetBy(dx: 0, dy: 1))

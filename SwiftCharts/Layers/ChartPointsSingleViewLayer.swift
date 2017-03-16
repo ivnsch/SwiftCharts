@@ -34,7 +34,7 @@ open class ChartPointsSingleViewLayer<T: ChartPoint, U: UIView>: ChartPointsView
         let screenLoc = chartPointScreenLoc(chartPoint)
         let index = chartPointsModels.map{$0.chartPoint}.index(of: chartPoint)!
         let model: ChartPointLayerModel = ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: screenLoc)
-        if let view = viewGenerator(model, self, chart, isTransform) {
+        if let view = viewGenerator(model, self, chart) {
             addedViews.append(view)
             addSubview(chart, view: view)
         }
