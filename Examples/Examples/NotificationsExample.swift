@@ -25,7 +25,7 @@ class NotificationsExample: UIViewController {
         
         let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.red, animDuration: 1, animDelay: 0)
         
-        let notificationGenerator = {[weak self] (chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart, isTransform: Bool) -> UIView? in
+        let notificationGenerator = {[weak self] (chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
             if chartPoint.y.scalar <= 1 {
                 let w: CGFloat = Env.iPad ? 30 : 20
@@ -42,18 +42,10 @@ class NotificationsExample: UIViewController {
                 chartPointView.addSubview(label)
                 label.transform = CGAffineTransform(scaleX: 0, y: 0)
                 
-                
-                func targetState() {
-                    label.transform = CGAffineTransform(scaleX: 1, y: 1)
-                }
-                if isTransform {
-                    targetState()
-                } else {
-                    chartPointView.movedToSuperViewHandler = {
-                        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
-                            targetState()
-                        }, completion: nil)
-                    }
+                chartPointView.movedToSuperViewHandler = {
+                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
+                        label.transform = CGAffineTransform(scaleX: 1, y: 1)
+                    }, completion: nil)
                 }
                 
                 chartPointView.touchHandler = {

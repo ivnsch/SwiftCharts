@@ -95,7 +95,7 @@ class BarsPlusMinusWithGradientExample: UIViewController {
                 
                 // create x zero guideline as view to be in front of the bars
                 let dummyZeroXChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
-                let xZeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: [dummyZeroXChartPoint], viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
+                let xZeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: [dummyZeroXChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
                     let width: CGFloat = 2
                     let v = UIView(frame: CGRect(x: chartPointModel.screenLoc.x - width / 2, y: chart.contentView.bounds.origin.y, width: width, height: innerFrame.size.height))
                     v.backgroundColor = UIColor(red: 1, green: 69 / 255, blue: 0, alpha: 1)

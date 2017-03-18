@@ -58,12 +58,12 @@ class NotNumericExample: UIViewController {
         
         let minBarSpacing: CGFloat = ExamplesDefaults.minBarSpacing + 16
 
-        let generator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart, isTransform: Bool) -> UIView? in
+        let generator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             let bottomLeft = layer.modelLocToScreenLoc(x: -1, y: 0)
             
             let barWidth = layer.minXScreenSpace - minBarSpacing
             
-            let barViewSettings = ChartBarViewSettings(animDuration: isTransform ? 0 : 0.5)
+            let barViewSettings = ChartBarViewSettings(animDuration: 0.5)
             let (p1, p2): (CGPoint, CGPoint) = (CGPoint(x: chartPointModel.screenLoc.x, y: bottomLeft.y), CGPoint(x: chartPointModel.screenLoc.x, y: chartPointModel.screenLoc.y))
             return ChartPointViewBar(p1: p1, p2: p2, width: barWidth, bgColor: UIColor.blue.withAlphaComponent(0.6), settings: barViewSettings)
         }

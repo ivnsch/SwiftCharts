@@ -55,13 +55,9 @@ class AreasExample: UIViewController {
         var popups: [UIView] = []
         var selectedView: ChartPointTextCircleView?
         
-        let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart, isTransform: Bool) -> UIView? in
+        let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
-            
-            if isTransform {
-                for p in popups {p.removeFromSuperview()}
-            }
             
             let v = ChartPointTextCircleView(chartPoint: chartPoint, center: screenLoc, diameter: Env.iPad ? 50 : 30, cornerRadius: Env.iPad ? 24: 15, borderWidth: Env.iPad ? 2 : 1, font: ExamplesDefaults.fontWithSize(Env.iPad ? 14 : 8))
             v.viewTapped = {view in
@@ -108,22 +104,14 @@ class AreasExample: UIViewController {
                     }, completion: {finished in})
                 }
             }
-
-            func targetState() {
+            
+            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
                 let w: CGFloat = v.frame.size.width
                 let h: CGFloat = v.frame.size.height
                 let frame = CGRect(x: screenLoc.x - (w/2), y: screenLoc.y - (h/2), width: w, height: h)
                 v.frame = frame
-            }
-            
-            if isTransform {
-                targetState()
-            } else {
-                UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
-                    targetState()
-                    }, completion: nil)
-            }
-
+            }, completion: nil)
+        
             return v
         }
         

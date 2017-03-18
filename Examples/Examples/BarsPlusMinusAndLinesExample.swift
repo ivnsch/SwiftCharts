@@ -75,63 +75,57 @@ class BarsPlusMinusAndLinesExample: UIViewController {
         let barViewSettings = ChartBarViewSettings(animDuration: 0.5)
         let barsLayer = ChartBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, bars: bars, horizontal: false, barWidth: Env.iPad ? 40 : 25, settings: barViewSettings)
         
-        // labels layer
-        // create chartpoints for the top and bottom of the bars, where we will show the labels
+        /*
+        Labels layer.
+        Create chartpoints for the top and bottom of the bars, where we will show the labels.
+        There are multiple ways to do this. Here we represent the labels with chartpoints at the top/bottom of the bars. We set some space using domain coordinates, in order for this to be updated properly during zoom / pan. Note that with this the spacing is also zoomed, meaning the labels will move away from the edges of the bars when we scale up, which maybe it's not wanted. More elaborate approaches involve passing a custom transform closure to the layer, or using GroupedBarsCompanionsLayer (currently only for stacked/grouped bars, though any bar chart can be represented with this).
+         */
+        let labelToBarSpace: Double = 3 // domain units
         let labelChartPoints = bars.map {bar in
-            ChartPoint(x: bar.constant, y: bar.axisValue2)
+            ChartPoint(x: bar.constant, y: bar.axisValue2.copy(bar.axisValue2.scalar + (bar.axisValue2.scalar > 0 ? labelToBarSpace : -labelToBarSpace)))
         }
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 2
-        let labelsLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: labelChartPoints, viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
+        let labelsLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: labelChartPoints, viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
             let label = HandlingLabel()
-            let posOffset: CGFloat = 10
             
             let pos = chartPointModel.chartPoint.y.scalar > 0
             
-            let yOffset = pos ? -posOffset : posOffset
-            label.text = "\(formatter.string(from: NSNumber(value: chartPointModel.chartPoint.y.scalar))!)%"
+            label.text = "\(formatter.string(from: NSNumber(value: chartPointModel.chartPoint.y.scalar - labelToBarSpace))!)%"
             label.font = ExamplesDefaults.labelFont
             label.sizeToFit()
             label.center = CGPoint(x: chartPointModel.screenLoc.x, y: pos ? innerFrame.origin.y : innerFrame.origin.y + innerFrame.size.height)
             label.alpha = 0
-
+            
             label.movedToSuperViewHandler = {[weak label] in
-                
-                func targetState() {
+                UIView.animate(withDuration: 0.3, animations: {
                     label?.alpha = 1
-                    label?.center.y = chartPointModel.screenLoc.y + yOffset
-                }
-                
-                if isTransform {
-                    targetState()
-                } else {
-                    UIView.animate(withDuration: 0.3, animations: {
-                        targetState()
-                    })
-                }
+                    label?.center.y = chartPointModel.screenLoc.y
+                })
             }
             return label
             
-        }, displayDelay: 0.5) // show after bars animation
+        }, displayDelay: 0.5, mode: .translate) // show after bars animation
         
         // line layer
         let lineChartPoints = lineData.enumerated().map {index, tuple in ChartPoint(x: ChartAxisValueDouble(index), y: ChartAxisValueDouble(tuple.val))}
         let lineModel = ChartLineModel(chartPoints: lineChartPoints, lineColor: UIColor.black, lineWidth: 2, animDuration: 0.5, animDelay: 1)
         let lineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel])
         
-        let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart, isTransform: Bool) -> UIView? in
+        // circles layer
+        let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             let color = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1)
             let circleView = ChartPointEllipseView(center: chartPointModel.screenLoc, diameter: 6)
-            circleView.animDuration = isTransform ? 0 : 0.5
+            circleView.animDuration = 0.5
             circleView.fillColor = color
             return circleView
         }
-        let lineCirclesLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: lineChartPoints, viewGenerator: circleViewGenerator, displayDelay: 1.5, delayBetweenItems: 0.05)
+        let lineCirclesLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: lineChartPoints, viewGenerator: circleViewGenerator, displayDelay: 1.5, delayBetweenItems: 0.05, mode: .translate)
         
         
         // show a gap between positive and negative bar
         let dummyZeroYChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
-        let yZeroGapLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: [dummyZeroYChartPoint], viewGenerator: {(chartPointModel, layer, chart, isTransform) -> UIView? in
+        let yZeroGapLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: [dummyZeroYChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
             let height: CGFloat = 2
             let v = UIView(frame: CGRect(x: chart.contentView.frame.origin.x + 2, y: chartPointModel.screenLoc.y - height / 2, width: chart.contentView.frame.origin.x + chart.contentView.frame.height, height: height))
             v.backgroundColor = UIColor.white

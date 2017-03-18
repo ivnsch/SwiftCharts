@@ -38,23 +38,18 @@ open class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 view.addSubview(lineView)
             }
             
-            func finalState() {
-                
+            func animations() {
                 let axisOriginX = modelLocToScreenLoc(x: xAxis.first)
                 let axisOriginY = modelLocToScreenLoc(y: yAxis.first)
                 let axisLengthY = axisOriginY - modelLocToScreenLoc(y: yAxis.last)
                 
                 hLine.frame = CGRect(x: axisOriginX, y: screenLoc.y, width: screenLoc.x - axisOriginX, height: 1)
                 vLine.frame = CGRect(x: screenLoc.x, y: screenLoc.y, width: 1, height: axisLengthY - screenLoc.y)
-                
             }
-            if isTransform {
-                finalState()
-            } else {
-                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
-                    finalState()
-                }, completion: nil)
-            }
+
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+                animations()
+            }, completion: nil)
         }
     }
     

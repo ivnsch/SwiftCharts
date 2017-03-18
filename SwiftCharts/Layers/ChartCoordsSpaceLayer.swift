@@ -13,9 +13,6 @@ open class ChartCoordsSpaceLayer: ChartLayerBase {
     let xAxis: ChartAxis
     let yAxis: ChartAxis
     
-    /// If layer is generating views as part of a transform (e.g. panning or zooming)
-    open internal(set) var isTransform = false
-    
     public init(xAxis: ChartAxis, yAxis: ChartAxis) {
         self.xAxis = xAxis
         self.yAxis = yAxis

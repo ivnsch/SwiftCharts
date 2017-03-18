@@ -86,6 +86,8 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
     fileprivate let delayInit: Bool
     
+    fileprivate var isInTransform = false
+    
     public init(xAxis: ChartAxis, yAxis: ChartAxis, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0, useView: Bool = true, delayInit: Bool = false) {
         self.lineModels = lineModels
         self.pathGenerator = pathGenerator
@@ -139,8 +141,8 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             lineWidth: screenLine.lineWidth,
             lineJoin: screenLine.lineJoin,
             lineCap: screenLine.lineCap,
-            animDuration: isTransform ? 0 : screenLine.animDuration,
-            animDelay: isTransform ? 0 : screenLine.animDelay,
+            animDuration: isInTransform ? 0 : screenLine.animDuration,
+            animDelay: isInTransform ? 0 : screenLine.animDelay,
             dashPattern: screenLine.dashPattern
         )
     }
@@ -201,7 +203,7 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
 
         guard let chart = chart else {return}
         
-        isTransform = true
+        isInTransform = true
         
         for i in 0..<screenLines.count {
             for j in 0..<screenLines[i].screenLine.points.count {
@@ -214,6 +216,6 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             chart.addSubviewNoTransform(screenLines[i].view)
         }
         
-        isTransform = false
+        isInTransform = false
     }
 }
