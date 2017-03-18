@@ -11,11 +11,11 @@ import UIKit
 open class ChartAreasView: UIView {
 
     fileprivate let animDuration: Float
-    fileprivate let color: UIColor
+    fileprivate let colors: [UIColor]
     fileprivate let animDelay: Float
     
-    public init(points: [CGPoint], frame: CGRect, color: UIColor, animDuration: Float, animDelay: Float) {
-        self.color = color
+    public init(points: [CGPoint], frame: CGRect, colors: [UIColor], animDuration: Float, animDelay: Float) {
+        self.colors = colors
         self.animDuration = animDuration
         self.animDelay = animDelay
         
@@ -51,15 +51,51 @@ open class ChartAreasView: UIView {
     }
     
     fileprivate func show(path: UIBezierPath) {
+        guard let firstColor = colors.first else {
+            print("WARNING: No color(s) used for ChartAreasView")
+            return
+        }
         let areaLayer = CAShapeLayer()
         areaLayer.lineJoin = kCALineJoinBevel
-        areaLayer.fillColor   = color.cgColor
+        areaLayer.fillColor   = firstColor.cgColor
         areaLayer.lineWidth   = 2.0
         areaLayer.strokeEnd   = 0.0
-        layer.addSublayer(areaLayer)
+        if colors.count == 1 {
+            layer.addSublayer(areaLayer)
+        }
         
         areaLayer.path = path.cgPath
-        areaLayer.strokeColor = color.cgColor
+        areaLayer.strokeColor = firstColor.cgColor
+        
+        if colors.count > 1 {
+            let gradient = CAGradientLayer()
+            gradient.anchorPoint = CGPoint.zero
+            var CGColors: [CGColor] = []
+            for color in colors {
+                CGColors.append(color.cgColor)
+            }
+            gradient.colors = CGColors
+            gradient.bounds = layer.bounds
+            
+            let pathY = path.bounds.origin.y
+            let pathHeight = path.bounds.height
+            let maskHeight = gradient.bounds.height
+        
+            var bottomY: CGFloat?
+            var topY: CGFloat?
+            if pathY < pathHeight {
+                bottomY = (pathY/pathHeight)/2
+                topY = ((maskHeight - (pathHeight-pathY))/maskHeight)/2
+            } else {
+                bottomY = 0
+                topY = ((maskHeight-pathHeight)/maskHeight)
+            }
+            
+            gradient.startPoint = CGPoint(x: 0.5, y: 0+topY!)
+            gradient.endPoint = CGPoint(x: 0.5, y: 1.0-bottomY!)
+            gradient.mask = areaLayer
+            layer.addSublayer(gradient)
+        }
         
         if animDuration > 0 {
             let maskLayer = CAGradientLayer()

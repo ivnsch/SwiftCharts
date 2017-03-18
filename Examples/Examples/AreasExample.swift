@@ -42,9 +42,9 @@ class AreasExample: UIViewController {
         let c3 = UIColor(red: 0.1, green: 0.9, blue: 0.1, alpha: 0.4)
         
         
-        let chartPointsLayer1 = ChartPointsAreaLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints1, areaColor: c1, animDuration: 3, animDelay: 0, addContainerPoints: true)
-        let chartPointsLayer2 = ChartPointsAreaLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints2, areaColor: c2, animDuration: 3, animDelay: 0, addContainerPoints: true)
-        let chartPointsLayer3 = ChartPointsAreaLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints3, areaColor: c3, animDuration: 3, animDelay: 0, addContainerPoints: true)
+        let chartPointsLayer1 = ChartPointsAreaLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints1, areaColors: [c1], animDuration: 3, animDelay: 0, addContainerPoints: true)
+        let chartPointsLayer2 = ChartPointsAreaLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints2, areaColors: [c2], animDuration: 3, animDelay: 0, addContainerPoints: true)
+        let chartPointsLayer3 = ChartPointsAreaLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints3, areaColors: [c3], animDuration: 3, animDelay: 0, addContainerPoints: true)
         
         let lineModel1 = ChartLineModel(chartPoints: chartPoints1, lineColor: UIColor.black, animDuration: 1, animDelay: 0)
         let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: UIColor.black, animDuration: 1, animDelay: 0)
