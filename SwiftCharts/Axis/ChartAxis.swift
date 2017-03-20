@@ -135,6 +135,10 @@ open class ChartAxis: CustomStringConvertible {
         fatalError("Override")
     }
     
+    open var transform: (scale: CGFloat, translation: CGFloat) {
+        return (scale: CGFloat(zoomFactor), translation: firstScreenInit - firstScreen)
+    }
+    
     func offsetFirstScreen(_ offset: CGFloat) {
         firstScreen += offset
         firstScreenInit += offset
