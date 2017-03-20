@@ -61,11 +61,8 @@ open class ChartAxisModel {
         var scalars: [Double] = []
         var dict = [Double: [ChartAxisLabel]]()
         for axisValue in axisValues {
-            if !axisValue.hidden {
-                scalars.append(axisValue.scalar)
-                dict[axisValue.scalar] = axisValue.labels
-            }
-
+            scalars.append(axisValue.scalar)
+            dict[axisValue.scalar] = axisValue.labels
         }
         let (firstModelValue, lastModelValue) = (axisValues.first!.scalar, axisValues.last!.scalar)
         
