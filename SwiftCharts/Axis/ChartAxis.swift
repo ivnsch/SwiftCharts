@@ -41,6 +41,7 @@ open class ChartAxis: CustomStringConvertible {
     }
     
     open var zoomFactor: Double {
+        guard visibleLength != 0 else {return 1}
         return abs(length / visibleLength)
     }
     
