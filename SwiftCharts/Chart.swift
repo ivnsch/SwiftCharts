@@ -247,8 +247,13 @@ open class Chart: Pannable, Zoomable {
         return view.frame
     }
 
-    open var containerFrame: CGRect {
+    var containerFrame: CGRect {
         return containerView.frame
+    }
+    
+    // Implementation details free variable name & backwards compatibility
+    open var innerFrame: CGRect {
+        return containerFrame
     }
     
     open var contentFrame: CGRect {
