@@ -11,14 +11,16 @@ import UIKit
 public struct ChartDividersLayerSettings {
     let linesColor: UIColor
     let linesWidth: CGFloat
-    let start: CGFloat // points from start to axis, axis is 0
-    let end: CGFloat // points from axis to end, axis is 0
+    let start: CGFloat // Points from start to axis, axis is 0
+    let end: CGFloat // Points from axis to end, axis is 0
+    let show: ((Double) -> Bool)? // Set visibility of individual axis values. If nil, all axis values will be shown.
     
-    public init(linesColor: UIColor = UIColor.gray, linesWidth: CGFloat = 0.3, start: CGFloat = 5, end: CGFloat = 5) {
+    public init(linesColor: UIColor = UIColor.gray, linesWidth: CGFloat = 0.3, start: CGFloat = 5, end: CGFloat = 5, show: ((Double) -> Bool)? = nil) {
         self.linesColor = linesColor
         self.linesWidth = linesWidth
         self.start = start
         self.end = end
+        self.show = show
     }
 }
 
@@ -50,11 +52,15 @@ open class ChartDividersLayer: ChartCoordsSpaceLayer {
     }
     
     override open func chartViewDrawing(context: CGContext, chart: Chart) {
-        let xScreenLocs = xAxisLayer.axisValuesScreenLocs
-        let yScreenLocs = yAxisLayer.axisValuesScreenLocs
+        let xValues = xAxisLayer.currentAxisValues
+        let yValues = yAxisLayer.currentAxisValues
         
         if axis == .x || axis == .xAndY {
-            for xScreenLoc in xScreenLocs {
+            for xValue in xValues {
+                guard (settings.show?(xValue) ?? true) else {continue}
+                
+                let xScreenLoc = xAxisLayer.axis.screenLocForScalar(xValue)
+                
                 let x1 = xScreenLoc
                 let y1 = xAxisLayer.lineP1.y + (xAxisLayer.low ? -settings.end : settings.end)
                 let x2 = xScreenLoc
@@ -64,7 +70,11 @@ open class ChartDividersLayer: ChartCoordsSpaceLayer {
         }
         
         if axis == .y || axis == .xAndY {
-            for yScreenLoc in yScreenLocs {
+            for yValue in yValues {
+                guard (settings.show?(yValue) ?? true) else {continue}
+                
+                let yScreenLoc = yAxisLayer.axis.screenLocForScalar(yValue)
+                
                 let x1 = yAxisLayer.lineP1.x + (yAxisLayer.low ? -settings.start : settings.start)
                 let y1 = yScreenLoc
                 let x2 = yAxisLayer.lineP1.x + (yAxisLayer.low ? settings.end : settings.end)
