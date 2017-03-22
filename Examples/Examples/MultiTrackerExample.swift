@@ -181,7 +181,8 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
             chartPoints: allPoints,
             tintColor: UIColor.glucoseTintColor,
             labelCenterY: chartSettings.top,
-            gestureRecognizer: chartLongPressGestureRecognizer
+            gestureRecognizer: chartLongPressGestureRecognizer,
+            onCompleteHighlight: nil
         )
 
         let layers: [ChartLayer?] = [
@@ -247,7 +248,8 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
             chartPoints: IOBPoints,
             tintColor: UIColor.IOBTintColor,
             labelCenterY: chartSettings.top,
-            gestureRecognizer: chartLongPressGestureRecognizer
+            gestureRecognizer: chartLongPressGestureRecognizer,
+            onCompleteHighlight: nil
         )
 
         let layers: [ChartLayer?] = [
@@ -276,9 +278,10 @@ private extension ChartPointsTouchHighlightLayer {
         chartPoints: [T],
         tintColor: UIColor,
         labelCenterY: CGFloat = 0,
-        gestureRecognizer: UILongPressGestureRecognizer? = nil
+        gestureRecognizer: UILongPressGestureRecognizer? = nil,
+        onCompleteHighlight: (()->Void)? = nil
     ) {
-        self.init(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, gestureRecognizer: gestureRecognizer,
+        self.init(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, gestureRecognizer: gestureRecognizer, onCompleteHighlight: onCompleteHighlight,
                   modelFilter: { (screenLoc, chartPointModels) -> ChartPointLayerModel<T>? in
                     if let index = chartPointModels.map({ $0.screenLoc.x }).findClosestElementIndexToValue(screenLoc.x) {
                         return chartPointModels[index]
