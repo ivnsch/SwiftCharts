@@ -133,6 +133,11 @@ open class Chart: Pannable, Zoomable {
         return settings.zoomPan.minZoomY
     }
     
+    /// Max possible total pan distance with current transformation
+    open var currentMaxPan: CGFloat {
+        return contentView.frame.height - containerView.frame.height
+    }
+    
     fileprivate var settings: ChartSettings
     
     open var zoomPanSettings: ChartSettingsZoomPan {
@@ -247,8 +252,13 @@ open class Chart: Pannable, Zoomable {
         return view.frame
     }
 
-    open var containerFrame: CGRect {
+    var containerFrame: CGRect {
         return containerView.frame
+    }
+    
+    // Implementation details free variable name & backwards compatibility
+    open var innerFrame: CGRect {
+        return containerFrame
     }
     
     open var contentFrame: CGRect {

@@ -41,6 +41,7 @@ open class ChartAxis: CustomStringConvertible {
     }
     
     open var zoomFactor: Double {
+        guard visibleLength != 0 else {return 1}
         return abs(length / visibleLength)
     }
     
@@ -133,6 +134,10 @@ open class ChartAxis: CustomStringConvertible {
 
     func pan(_ deltaX: CGFloat, deltaY: CGFloat, elastic: Bool) {
         fatalError("Override")
+    }
+    
+    open var transform: (scale: CGFloat, translation: CGFloat) {
+        return (scale: CGFloat(zoomFactor), translation: firstScreenInit - firstScreen)
     }
     
     func offsetFirstScreen(_ offset: CGFloat) {
