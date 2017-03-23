@@ -16,22 +16,34 @@ public struct ChartBarViewSettings {
     let selectionViewUpdater: ChartViewSelector?
     
     let cornerRadius: CGFloat
+    let roundedCorners: UIRectCorner
     
     let delayInit: Bool
     
-    public init(animDuration: Float = 0.5, animDelay: Float = 0, cornerRadius: CGFloat = 0, selectionViewUpdater: ChartViewSelector? = nil, delayInit: Bool = false) {
+    public init(animDuration: Float = 0.5,
+                animDelay: Float = 0,
+                cornerRadius: CGFloat = 0,
+                roundedCorners: UIRectCorner = .allCorners,
+                selectionViewUpdater: ChartViewSelector? = nil,
+                delayInit: Bool = false) {
         self.animDuration = animDuration
         self.animDelay = animDelay
         self.cornerRadius = cornerRadius
+        self.roundedCorners = roundedCorners
         self.selectionViewUpdater = selectionViewUpdater
         self.delayInit = delayInit
     }
     
-    public func copy(animDuration: Float? = nil, animDelay: Float? = nil, cornerRadius: CGFloat? = nil, selectionViewUpdater: ChartViewSelector? = nil) -> ChartBarViewSettings {
+    public func copy(animDuration: Float? = nil,
+                     animDelay: Float? = nil,
+                     cornerRadius: CGFloat? = nil,
+                     roundedCorners: UIRectCorner? = nil,
+                     selectionViewUpdater: ChartViewSelector? = nil) -> ChartBarViewSettings {
         return ChartBarViewSettings(
             animDuration: animDuration ?? self.animDuration,
             animDelay: animDelay ?? self.animDelay,
             cornerRadius: cornerRadius ?? self.cornerRadius,
+            roundedCorners: roundedCorners ?? self.roundedCorners,
             selectionViewUpdater: selectionViewUpdater ?? self.selectionViewUpdater
         )
     }
