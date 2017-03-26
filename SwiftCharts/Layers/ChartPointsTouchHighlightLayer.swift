@@ -18,13 +18,16 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
     fileprivate let chartPointLayerModelForScreenLocFilter: ChartPointLayerModelForScreenLocFilter
 
     open let longPressGestureRecognizer: UILongPressGestureRecognizer
+    
+    open var onCompleteHighlight: (()->Void)?
 
     /// The delay after touches end before the highlighted point fades out. Set to `nil` to keep the highlight until the next touch.
     open var hideDelay: TimeInterval? = 1.0
 
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], gestureRecognizer: UILongPressGestureRecognizer? = nil, modelFilter: @escaping ChartPointLayerModelForScreenLocFilter, viewGenerator: @escaping ChartPointViewGenerator) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], gestureRecognizer: UILongPressGestureRecognizer? = nil, onCompleteHighlight: (()->Void)? = nil, modelFilter: @escaping ChartPointLayerModelForScreenLocFilter, viewGenerator: @escaping ChartPointViewGenerator) {
         chartPointLayerModelForScreenLocFilter = modelFilter
         longPressGestureRecognizer = gestureRecognizer ?? UILongPressGestureRecognizer()
+        self.onCompleteHighlight = onCompleteHighlight
 
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
@@ -94,6 +97,7 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
                     }, completion: {completed in
                         if completed {
                             self.highlightedModel = nil
+                            self.onCompleteHighlight?()
                         }
                     }
                 )
