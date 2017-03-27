@@ -26,7 +26,7 @@ open class ChartAxisLabel {
         if self.settings.rotation =~ 0 {
             return size
         } else {
-            return CGRect(x: 0, y: 0, width: size.width, height: size.height).boundingRectAfterRotating(radians: self.settings.rotation * CGFloat(M_PI) / 180.0).size
+            return CGRect(x: 0, y: 0, width: size.width, height: size.height).boundingRectAfterRotating(radians: self.settings.rotation * CGFloat.pi / 180.0).size
         }
     }()
     

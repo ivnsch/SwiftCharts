@@ -11,15 +11,15 @@ import Foundation
 infix operator =~ : ComparisonPrecedence
 
 func =~ (a: Float, b: Float) -> Bool {
-    return fabsf(a - b) < FLT_EPSILON
+    return fabsf(a - b) < Float.ulpOfOne
 }
 
 func =~ (a: CGFloat, b: CGFloat) -> Bool {
-    return fabs(a - b) < CGFloat(FLT_EPSILON)
+    return fabs(a - b) < CGFloat.ulpOfOne
 }
 
 func =~ (a: Double, b: Double) -> Bool {
-    return fabs(a - b) < Double(FLT_EPSILON)
+    return fabs(a - b) < Double.ulpOfOne
 }
 
 infix operator !=~ : ComparisonPrecedence

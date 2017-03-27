@@ -122,7 +122,7 @@ open class ChartLabelDrawer: ChartContextDrawer {
             let centerX = labelX + labelHalfWidth
             let centerY = labelY + labelHalfHeight
             
-            let rotation = settings.rotation * CGFloat(M_PI) / CGFloat(180)
+            let rotation = settings.rotation * CGFloat.pi / 180
 
             var transform = CGAffineTransform.identity
             

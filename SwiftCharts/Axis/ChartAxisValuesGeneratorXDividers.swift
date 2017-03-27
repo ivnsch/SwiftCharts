@@ -37,7 +37,7 @@ open class ChartAxisValuesGeneratorXDividers: ChartAxisGeneratorMultiplier {
         
         self.maxTextSize = ChartAxisValuesGeneratorXDividers.largestSize(minValue, maxValue: maxValue, formatter: formatter, font: font)
         
-        super.init(DBL_MAX, multiplierUpdateMode: multiplierUpdateMode)
+        super.init(Double.greatestFiniteMagnitude, multiplierUpdateMode: multiplierUpdateMode)
     }
     
     fileprivate static func largestSize(_ minValue: Double, maxValue: Double, formatter: NumberFormatter, font: UIFont) -> CGFloat {
