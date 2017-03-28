@@ -216,7 +216,10 @@ open class Chart: Pannable, Zoomable {
         
         self.view.setNeedsDisplay()
         
+        #if !os(tvOS)
         view.initRecognizers(settings)
+        #endif
+        
         configZoomPan(settings.zoomPan)
     }
     
@@ -458,10 +461,6 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
     fileprivate var lastPanTranslation: CGPoint?
     fileprivate var isPanningX: Bool? // true: x, false: y
     
-    fileprivate var pinchRecognizer: UIPinchGestureRecognizer?
-    fileprivate var panRecognizer: UIPanGestureRecognizer?
-    fileprivate var tapRecognizer: UITapGestureRecognizer?
-    
     override public init(frame: CGRect) {
         super.init(frame: frame)
         sharedInit()
@@ -471,6 +470,22 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
         super.init(coder: aDecoder)
         sharedInit()
     }
+    
+    /**
+     Initialization code shared between all initializers
+     */
+    func sharedInit() {
+        backgroundColor = UIColor.clear
+    }
+    
+    
+    #if !os(tvOS)
+    
+    // MARK: Interactivity
+    
+    fileprivate var pinchRecognizer: UIPinchGestureRecognizer?
+    fileprivate var panRecognizer: UIPanGestureRecognizer?
+    fileprivate var tapRecognizer: UITapGestureRecognizer?
     
     func initRecognizers(_ settings: ChartSettings) {
         if settings.zoomPan.zoomEnabled {
@@ -492,13 +507,6 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
         tapRecognizer.cancelsTouchesInView = false
         addGestureRecognizer(tapRecognizer)
         self.tapRecognizer = tapRecognizer
-    }
-    
-    /**
-     Initialization code shared between all initializers
-     */
-    func sharedInit() {
-        backgroundColor = UIColor.clear
     }
 
     fileprivate var zoomCenter: CGPoint?
@@ -774,4 +782,6 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
     @objc func onTap(_ sender: UITapGestureRecognizer) {
         chart?.onTap(sender.location(in: self))
     }
+    #endif
+
 }

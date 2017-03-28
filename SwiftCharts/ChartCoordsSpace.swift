@@ -241,7 +241,7 @@ open class ChartCoordsSpace {
 
      - returns: An array of ChartAxisLayers
      */
-    fileprivate func generateAxisShared(axisModels: [ChartAxisModel], offset: CGFloat, boundingPointsCreator: (_ offset: CGFloat) -> (p1: CGPoint, p2: CGPoint), nextLayerOffset: (ChartAxisLayer) -> CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
+    fileprivate func generateAxisShared(axisModels: [ChartAxisModel], offset: CGFloat, boundingPointsCreator: @escaping (_ offset: CGFloat) -> (p1: CGPoint, p2: CGPoint), nextLayerOffset: @escaping (ChartAxisLayer) -> CGFloat, generator: ChartAxisLayerGenerator) -> [ChartAxisLayer] {
         
         let chartSettings = self.chartSettings
         
