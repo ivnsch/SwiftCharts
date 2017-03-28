@@ -50,12 +50,6 @@ class BarsPlusMinusAndLinesExample: UIViewController {
             ]
         }
         
-        let yValues = stride(from: -80, through: 80, by: 20).map {ChartAxisValueDouble(Double($0), labelSettings: labelSettings)}
-        let xValues =
-            [ChartAxisValueString(order: -1)] +
-                barsData.enumerated().map {index, tuple in ChartAxisValueString(tuple.0, order: index, labelSettings: labelSettings)} +
-                [ChartAxisValueString(order: barsData.count)]
-        
         let xGenerator = ChartAxisGeneratorMultiplier(1)
         let yGenerator = ChartAxisGeneratorMultiplier(20)
         let labelsGenerator = ChartAxisLabelsGeneratorFunc {scalar in
