@@ -35,7 +35,7 @@ open class ChartAxisValuesGeneratorNice: ChartAxisGeneratorMultiplier {
         
         self.maxTextSize = maxTextSize
         
-        super.init(DBL_MAX, multiplierUpdateMode: multiplierUpdateMode)
+        super.init(Double.greatestFiniteMagnitude, multiplierUpdateMode: multiplierUpdateMode)
     }
     
     func niceRangeAndMultiplier(_ dividers: Int) -> (minValue: Double, maxValue: Double, multiplier: Double) {
