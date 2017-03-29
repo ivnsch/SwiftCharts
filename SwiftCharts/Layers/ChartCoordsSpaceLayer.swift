@@ -10,8 +10,8 @@ import UIKit
 
 open class ChartCoordsSpaceLayer: ChartLayerBase {
     
-    let xAxis: ChartAxis
-    let yAxis: ChartAxis
+    open let xAxis: ChartAxis
+    open let yAxis: ChartAxis
     
     public init(xAxis: ChartAxis, yAxis: ChartAxis) {
         self.xAxis = xAxis

@@ -27,7 +27,7 @@ open class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: ChartC
     fileprivate let barSpacing: CGFloat?
     fileprivate let groupSpacing: CGFloat?
     
-    fileprivate let horizontal: Bool
+    public let horizontal: Bool
     
     fileprivate let settings: ChartBarViewSettings
     
