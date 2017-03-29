@@ -63,8 +63,21 @@ open class ChartCoordsSpaceLayer: ChartLayerBase {
     }
     
     open func globalToDrawersContainerCoordinates(_ point: CGPoint) -> CGPoint? {
+        return globalToContainerCoordinates(point)
+    }
+    
+    open func globalToContainerCoordinates(_ point: CGPoint) -> CGPoint? {
         guard let chart = chart else {return nil}
         return point.substract(chart.containerView.frame.origin)
+    }
+    
+    open func globalToContentCoordinates(_ point: CGPoint) -> CGPoint? {
+        guard let chart = chart else {return nil}
+        guard let containerCoords = globalToContainerCoordinates(point) else {return nil}
+        return CGPoint(
+            x: (containerCoords.x - chart.contentView.frame.origin.x) / chart.contentView.transform.a,
+            y: (containerCoords.y - chart.contentView.frame.origin.y) / chart.contentView.transform.d
+        )
     }
     
     open func containerToGlobalCoordinates(_ point: CGPoint) -> CGPoint? {
