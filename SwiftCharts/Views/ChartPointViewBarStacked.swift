@@ -10,7 +10,7 @@ import UIKit
 
 public struct TappedChartPointViewBarStacked {
     public let barView: ChartPointViewBarStacked
-    public let stackFrame: (index: Int, view: UIView, viewFrameRelativeToBarSuperview: CGRect)
+    public let stackFrame: (index: Int, view: UIView, viewFrameRelativeToBarSuperview: CGRect)?
 }
 
 
@@ -107,7 +107,7 @@ open class ChartPointViewBarStacked: ChartPointViewBar {
     override func onTap(_ sender: UITapGestureRecognizer) {
         let loc = sender.location(in: self)
         guard let tappedStackFrame = (stackViews.filter{$0.view.frame.contains(loc)}.first) else {
-            print("Warn: no stacked frame found in stacked bar")
+            stackedTapHandler?(TappedChartPointViewBarStacked(barView: self, stackFrame: nil))
             return
         }
         

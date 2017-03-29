@@ -257,9 +257,12 @@ open class ChartGroupedStackedBarsLayer_<N>: ChartGroupedBarsLayer<ChartStackedB
     
     override func configBarView(_ group: ChartPointsBarGroup<ChartStackedBarModel>, groupIndex: Int, barIndex: Int, bar: ChartStackedBarModel, barView: ChartPointViewBarStacked) {
         barView.stackedTapHandler = {[weak self] tappedStackedBar in guard let weakSelf = self else {return}
-            let stackFrameIndex = tappedStackedBar.stackFrame.index
-            let itemModel = bar.items[stackFrameIndex]
-            let tappedStacked = ChartTappedBarStacked(model: bar, barView: barView, stackedItemModel: itemModel, stackedItemView: tappedStackedBar.stackFrame.view, stackedItemViewFrameRelativeToBarParent: tappedStackedBar.stackFrame.viewFrameRelativeToBarSuperview, stackedItemIndex: stackFrameIndex, layer: weakSelf)
+            
+            let stackFrameData = tappedStackedBar.stackFrame.map{stackFrame in
+                ChartTappedBarStackedFrame(stackedItemModel: bar.items[stackFrame.index], stackedItemView: stackFrame.view, stackedItemViewFrameRelativeToBarParent: stackFrame.viewFrameRelativeToBarSuperview, stackedItemIndex: stackFrame.index)
+            }
+            
+            let tappedStacked = ChartTappedBarStacked(model: bar, barView: barView, stackFrameData: stackFrameData, layer: weakSelf)
             let tappedGroupBar = ChartTappedGroupBarStacked(tappedBar: tappedStacked, group: group, groupIndex: groupIndex, barIndex: barIndex)
             weakSelf.tapHandler?(tappedGroupBar)
         }

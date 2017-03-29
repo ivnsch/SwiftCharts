@@ -106,13 +106,17 @@ class ChartStackedBarsViewGenerator<T: ChartStackedBarModel>: ChartBarsViewGener
     
 }
 
-public struct ChartTappedBarStacked {
-    public let model: ChartStackedBarModel
-    public let barView: ChartPointViewBarStacked
+public struct ChartTappedBarStackedFrame {
     public let stackedItemModel: ChartStackedBarItemModel
     public let stackedItemView: UIView
     public let stackedItemViewFrameRelativeToBarParent: CGRect
     public let stackedItemIndex: Int
+}
+
+public struct ChartTappedBarStacked {
+    public let model: ChartStackedBarModel
+    public let barView: ChartPointViewBarStacked
+    public let stackFrameData: ChartTappedBarStackedFrame?
     public let layer: ChartCoordsSpaceLayer
 }
 
@@ -150,9 +154,12 @@ open class ChartStackedBarsLayer<T: ChartPointViewBarStacked>: ChartCoordsSpaceL
             let barView = barsGenerator.generateView(barModel, settings: settings, model: barModel, index: index, groupIndex: 0, chart: chart)
             barView.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
             barView.stackedTapHandler = {[weak self] tappedStackedBar in guard let weakSelf = self else {return}
-                let stackFrameIndex = tappedStackedBar.stackFrame.index
-                let itemModel = barModel.items[stackFrameIndex]
-                let tappedStacked = ChartTappedBarStacked(model: barModel, barView: barView, stackedItemModel: itemModel, stackedItemView: tappedStackedBar.stackFrame.view, stackedItemViewFrameRelativeToBarParent: tappedStackedBar.stackFrame.viewFrameRelativeToBarSuperview,  stackedItemIndex: stackFrameIndex, layer: weakSelf)
+                
+                let stackFrameData = tappedStackedBar.stackFrame.map{stackFrame in
+                    ChartTappedBarStackedFrame(stackedItemModel: barModel.items[stackFrame.index], stackedItemView: stackFrame.view, stackedItemViewFrameRelativeToBarParent: stackFrame.viewFrameRelativeToBarSuperview, stackedItemIndex: stackFrame.index)
+                }
+                
+                let tappedStacked = ChartTappedBarStacked(model: barModel, barView: barView, stackFrameData: stackFrameData, layer: weakSelf)
                 weakSelf.tapHandler?(tappedStacked)
             }
             barViews.append(barView)
