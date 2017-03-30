@@ -87,6 +87,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
         chartSettings.trailing = 8
         chartSettings.axisTitleLabelsToLabelsSpacing = 0
         chartSettings.labelsToAxisSpacingX = 6
+        chartSettings.clipInnerFrame = false
         return chartSettings
     }()
     

@@ -44,6 +44,8 @@ public struct ChartSettings {
     
     public var zoomPan = ChartSettingsZoomPan()
     
+    public var clipInnerFrame = true
+    
     /// Define a custom clipping rect for chart layers that use containerViewUnclipped to display chart points.
     // TODO (review): this probably should be moved to ChartPointsViewsLayer
     public var customClipRect: CGRect? = nil
@@ -199,7 +201,7 @@ open class Chart: Pannable, Zoomable {
         shape.path = UIBezierPath(rect: settings.customClipRect ?? CGRect.zero).cgPath
         containerViewUnclipped.layer.mask = shape
 
-        containerView.clipsToBounds = true
+        containerView.clipsToBounds = settings.clipInnerFrame
         view.addSubview(containerView)
 
         self.contentView = contentView
