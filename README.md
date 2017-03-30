@@ -295,6 +295,8 @@ Nice to have also, a zooming & panning refactoring to use a global transformatio
 
 Ivan Schütz
 
+#### :fire: If you need something special or just help with your charts, you can [hire me!](http://www.ivanschuetz.com/contact-impressum.php)
+
 ## Credits:
 
 A big thank you to the awesome [grafiti.io](https://grafiti.io/) for having been sponsoring this project in the last months, and of course also to all the [contributors](https://github.com/i-schuetz/SwiftCharts/graphs/contributors)! 
