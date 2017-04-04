@@ -152,8 +152,10 @@ let chartConfig = BarsChartConfig(
     valsAxisConfig: ChartAxisConfig(from: 0, to: 8, by: 2)
 )
 
+let frame = CGRect(x: 0, y: 70, width: 300, height: 500)
+        
 let chart = BarsChart(
-    frame: CGRectMake(0, 70, 300, 500),
+    frame: frame,
     chartConfig: chartConfig,
     xTitle: "X axis",
     yTitle: "Y axis",
@@ -165,7 +167,7 @@ let chart = BarsChart(
         ("E", 6.8),
         ("F", 0.5)
     ],
-    color: UIColor.redColor(),
+    color: UIColor.red,
     barWidth: 20
 )
 
