@@ -110,7 +110,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
             
             let rowY = calculateRowY(rowHeights: rowHeights, rowIndex: index, spacing: spacingLabelBetweenAxis)
             
-            let labelWidth = label.text.width(label.settings.font)
+            let labelWidth = label.textSizeNonRotated.width
             let x = (axis.lastScreenInit - axis.firstScreenInit) / 2 + axis.firstScreenInit - labelWidth / 2
             let y = self.offset + offset + rowY
             
@@ -163,7 +163,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
                 let x = axis.screenLocForScalar(scalar)
                 let y = self.offset + offset + rowY
                 
-                let labelSize = label.text.size(label.settings.font)
+                let labelSize = label.textSizeNonRotated
                 let labelX = x - (labelSize.width / 2)
                 
                 let labelDrawer = ChartLabelDrawer(label: label, screenLoc: CGPoint(x: labelX, y: y))
