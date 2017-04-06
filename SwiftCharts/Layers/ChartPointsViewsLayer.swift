@@ -31,7 +31,7 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
     // TODO z ordering
     fileprivate let keepOnFront: Bool
     
-    fileprivate let delayInit: Bool
+    public let delayInit: Bool
     
     public var customTransformer: ((ChartPointLayerModel<T>, UIView, ChartPointsViewsLayer<T, U>) -> Void)?
     
