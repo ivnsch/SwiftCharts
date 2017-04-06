@@ -60,10 +60,8 @@ public enum ChartLabelDrawerRotationKeep {
 
 open class ChartLabelDrawer: ChartContextDrawer {
     
-    var screenLoc: CGPoint
-    
-    fileprivate var transform: CGAffineTransform?
-    
+    open var screenLoc: CGPoint
+    open var transform: CGAffineTransform?    
     open let label: ChartAxisLabel
     
     open var center: CGPoint {
@@ -78,7 +76,7 @@ open class ChartLabelDrawer: ChartContextDrawer {
         return CGRect(x: screenLoc.x, y: screenLoc.y, width: size.width, height: size.height)
     }
     
-    init(label: ChartAxisLabel, screenLoc: CGPoint) {
+    public init(label: ChartAxisLabel, screenLoc: CGPoint) {
         self.label = label
         self.screenLoc = screenLoc
         
@@ -87,7 +85,7 @@ open class ChartLabelDrawer: ChartContextDrawer {
         self.transform = self.transform(screenLoc, settings: label.settings)
     }
 
-    override func draw(context: CGContext, chart: Chart) {
+    override open func draw(context: CGContext, chart: Chart) {
         let labelSize = size
         
         let labelX = screenLoc.x

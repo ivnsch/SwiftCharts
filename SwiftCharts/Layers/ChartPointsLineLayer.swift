@@ -13,7 +13,7 @@ public enum LineJoin {
     case round
     case bevel
     
-    var CALayerString: String {
+    public var CALayerString: String {
         switch self {
         case .miter: return kCALineJoinMiter
         case .round: return kCALineCapRound
@@ -21,7 +21,7 @@ public enum LineJoin {
         }
     }
     
-    var CGValue: CGLineJoin {
+    public var CGValue: CGLineJoin {
         switch self {
         case .miter: return .miter
         case .round: return .round
@@ -35,7 +35,7 @@ public enum LineCap {
     case round
     case square
     
-    var CALayerString: String {
+    public var CALayerString: String {
         switch self {
         case .butt: return kCALineCapButt
         case .round: return kCALineCapRound
@@ -43,7 +43,7 @@ public enum LineCap {
         }
     }
     
-    var CGValue: CGLineCap {
+    public var CGValue: CGLineCap {
         switch self {
         case .butt: return .butt
         case .round: return .round
@@ -82,9 +82,8 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     open let pathGenerator: ChartLinesViewPathGenerator
     open fileprivate(set) var screenLines: [(screenLine: ScreenLine<T>, view: ChartLinesView)] = []
     
-    fileprivate let useView: Bool
-    
-    fileprivate let delayInit: Bool
+    public let useView: Bool
+    public let delayInit: Bool
     
     fileprivate var isInTransform = false
     
