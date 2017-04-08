@@ -13,7 +13,7 @@ extension Array where Element: ChartAxisValue {
     func calculateLabelsDimensions() -> (total: CGSize, max: CGSize) {
         return flatMap({
             guard let label = $0.labels.first else {return nil}
-            return label.text.size(label.settings.font)
+            return label.textSizeNonRotated
         }).reduce((total: CGSize.zero, max: CGSize.zero), {(lhs: (total: CGSize, max: CGSize), rhs: CGSize) in
             return (
                 CGSize(width: lhs.total.width + rhs.width, height: lhs.total.height + rhs.height),

@@ -71,7 +71,7 @@ open class ChartLabelDrawer: ChartContextDrawer {
     }
     
     open var size: CGSize {
-        return label.text.size(label.settings.font)
+        return label.textSizeNonRotated
     }
     
     open var frame: CGRect {
