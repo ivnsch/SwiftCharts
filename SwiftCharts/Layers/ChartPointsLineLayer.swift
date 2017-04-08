@@ -150,21 +150,18 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     override open func chartDrawersContentViewDrawing(context: CGContext, chart: Chart, view: UIView) {
         if !useView {
             for lineModel in lineModels {
-                context.setStrokeColor(lineModel.lineColor.cgColor)
+                let points = lineModel.chartPoints.map { modelLocToScreenLoc(x: $0.x.scalar, y: $0.y.scalar) }
+                let path = pathGenerator.generatePath(points: points, lineWidth: lineModel.lineWidth)
+                
+                context.saveGState()
+                context.addPath(path.cgPath)
                 context.setLineWidth(lineModel.lineWidth)
                 context.setLineJoin(lineModel.lineJoin.CGValue)
                 context.setLineCap(lineModel.lineCap.CGValue)
-                for i in 0..<lineModel.chartPoints.count {
-                    let chartPoint = lineModel.chartPoints[i]
-                    let p1 = modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)
-                    context.move(to: CGPoint(x: p1.x, y: p1.y))
-                    if i < lineModel.chartPoints.count - 1 {
-                        let nextChartPoint = lineModel.chartPoints[i + 1]
-                        let p2 = modelLocToScreenLoc(x: nextChartPoint.x.scalar, y: nextChartPoint.y.scalar)
-                        context.addLine(to: CGPoint(x: p2.x, y: p2.y))
-                    }
-                }
+                context.setLineDash(phase: 0, lengths: lineModel.dashPattern?.map { CGFloat($0) } ?? [])
+                context.setStrokeColor(lineModel.lineColor.cgColor)
                 context.strokePath()
+                context.restoreGState()
             }
         }
     }
