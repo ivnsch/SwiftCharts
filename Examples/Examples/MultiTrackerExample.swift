@@ -70,6 +70,9 @@ private let IOBPoints: [ChartPoint] = [("2016-02-28T07:25:00", 0.0), ("2016-02-2
 }
 
 
+private let axisLabelSettings: ChartLabelSettings = ChartLabelSettings()
+
+
 class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
     
     fileprivate var topChart: Chart?
@@ -91,8 +94,6 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
         return chartSettings
     }()
     
-    private let axisLabelSettings: ChartLabelSettings = ChartLabelSettings()
-    
     private let guideLinesLayerSettings: ChartGuideLinesLayerSettings = ChartGuideLinesLayerSettings()
     
     fileprivate lazy private(set) var axisLineColor = UIColor.clear
@@ -100,7 +101,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
     fileprivate var xAxisValues: [ChartAxisValue]? {
         didSet {
             if let xAxisValues = xAxisValues {
-                xAxisModel = ChartAxisModel(axisValues: xAxisValues, lineColor: axisLineColor)
+                xAxisModel = ChartAxisModel(axisValues: xAxisValues, lineColor: axisLineColor, labelSpaceReservationMode: .fixed(20))
             } else {
                 xAxisModel = nil
             }
@@ -151,7 +152,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
     }
     
     fileprivate func generateGlucoseChartWithFrame(_ frame: CGRect) -> Chart? {
-        guard glucosePoints.count > 1, let xAxisModel = xAxisModel else {
+        guard glucosePoints.count > 1, let xAxisValues = xAxisValues, let xAxisModel = xAxisModel else {
             return nil
         }
 
@@ -160,20 +161,29 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
         // TODO: The segment/multiple values are unit-specific
         let yAxisValues = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(allPoints, minSegmentCount: 2, maxSegmentCount: 4, multiple: 25, axisValueGenerator: { ChartAxisValueDouble($0, labelSettings: axisLabelSettings)}, addPaddingSegmentIfEdge: true)
 
-        let yAxisModel = ChartAxisModel(axisValues: yAxisValues, lineColor: axisLineColor)
+        let yAxisModel = ChartAxisModel(axisValues: yAxisValues, lineColor: axisLineColor, labelSpaceReservationMode: .fixed(30))
 
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: frame, xModel: xAxisModel, yModel: yAxisModel)
 
-        let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
+        let (xAxisLayer, yAxisLayer) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer)
 
-        let gridLayer = ChartGuideLinesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, axis: .x, settings: guideLinesLayerSettings)
+        let gridLayer = ChartGuideLinesForValuesLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, settings: guideLinesLayerSettings, axisValuesX: Array(xAxisValues.dropLast(1)), axisValuesY: [])
 
         let circles = ChartPointsScatterCirclesLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: glucosePoints, displayDelay: 0, itemSize: CGSize(width: 4, height: 4), itemFillColor: UIColor.glucoseTintColor)
 
         var prediction: ChartLayer?
 
         if predictedGlucosePoints.count > 1 {
-            prediction = ChartPointsScatterCirclesLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: predictedGlucosePoints, displayDelay: 0, itemSize: CGSize(width: 2, height: 2), itemFillColor: UIColor.glucoseTintColor.withAlphaComponent(0.75))
+            let lineModel = ChartLineModel(
+                chartPoints: predictedGlucosePoints,
+                lineColor: UIColor.glucoseTintColor.withAlphaComponent(0.75),
+                lineWidth: 1,
+                animDuration: 0.0001,
+                animDelay: 0,
+                dashPattern: [6, 5]
+            )
+
+            prediction = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel])
         }
 
         let highlightLayer = ChartPointsTouchHighlightLayer(
@@ -195,11 +205,11 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
             circles
         ]
         
-        return Chart(frame: frame, innerFrame: innerFrame, settings: chartSettings, layers: layers.flatMap { $0 })
+        return Chart(frame: frame, innerFrame: coordsSpace.chartInnerFrame, settings: chartSettings, layers: layers.flatMap { $0 })
     }
 
     private func generateIOBChartWithFrame(frame: CGRect) -> Chart? {
-        guard IOBPoints.count > 1, let xAxisModel = xAxisModel else {
+        guard IOBPoints.count > 1, let xAxisValues = xAxisValues, let xAxisModel = xAxisModel else {
             return nil
         }
 
@@ -220,7 +230,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
 
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: frame, xModel: xAxisModel, yModel: yAxisModel)
 
-        let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
+        let (xAxisLayer, yAxisLayer) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer)
         let (xAxis, yAxis) = (xAxisLayer.axis, yAxisLayer.axis)
 
         // The IOB area
@@ -230,13 +240,13 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
         let IOBArea = ChartPointsAreaLayer(xAxis: xAxis, yAxis: yAxis, chartPoints: containerPoints, areaColors: [UIColor.IOBTintColor.withAlphaComponent(0.75), UIColor.clear], animDuration: 0, animDelay: 0, addContainerPoints: false)
 
         // Grid lines
-        let gridLayer = ChartGuideLinesLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, axis: .xAndY, settings: guideLinesLayerSettings)
+        let gridLayer = ChartGuideLinesForValuesLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, settings: guideLinesLayerSettings, axisValuesX: Array(xAxisValues.dropLast(1)), axisValuesY: yAxisValues)
 
         // 0-line
         let dummyZeroChartPoint = ChartPoint(x: ChartAxisValueDouble(0), y: ChartAxisValueDouble(0))
         let zeroGuidelineLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, chartPoints: [dummyZeroChartPoint], viewGenerator: {(chartPointModel, layer, chart) -> UIView? in
             let width: CGFloat = 0.5
-            let viewFrame = CGRect(x: innerFrame.origin.x, y: chartPointModel.screenLoc.y - width / 2, width: innerFrame.size.width, height: width)
+            let viewFrame = CGRect(x: chart.contentView.bounds.minX, y: chartPointModel.screenLoc.y - width / 2, width: chart.contentView.bounds.size.width, height: width)
 
             let v = UIView(frame: viewFrame)
             v.backgroundColor = UIColor.IOBTintColor
@@ -263,7 +273,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
             IOBLine,
         ]
 
-        return Chart(frame: frame, innerFrame: innerFrame, settings: chartSettings, layers: layers.flatMap { $0 })
+        return Chart(frame: frame, innerFrame: coordsSpace.chartInnerFrame, settings: chartSettings, layers: layers.flatMap { $0 })
     }
 }
 
@@ -291,9 +301,9 @@ private extension ChartPointsTouchHighlightLayer {
                     }
             },
                   viewGenerator: { (chartPointModel, layer, chart) -> U? in
-                    let containerView = U(frame: chart.view.bounds)
-                    
-                    let xAxisOverlayView = UIView(frame: xAxisLayer.frame.offsetBy(dx: 0, dy: 1))
+                    let containerView = U(frame: chart.contentView.bounds)
+
+                    let xAxisOverlayView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 3 + containerView.frame.size.height), size: xAxisLayer.frame.size))
                     xAxisOverlayView.backgroundColor = UIColor.white
                     xAxisOverlayView.isOpaque = true
                     containerView.addSubview(xAxisOverlayView)
@@ -316,9 +326,9 @@ private extension ChartPointsTouchHighlightLayer {
                         label.sizeToFit()
                         label.frame.size.height += 4
                         label.frame.size.width += label.frame.size.height / 2
-                        label.center.y = chart.containerView.frame.origin.y - 1
+                        label.center.y = containerView.frame.origin.y
                         label.center.x = chartPointModel.screenLoc.x
-                        label.frame.origin.x = min(max(label.frame.origin.x, chart.containerView.frame.origin.x), chart.containerView.frame.maxX - label.frame.size.width)
+                        label.frame.origin.x = min(max(label.frame.origin.x, containerView.frame.origin.x), containerView.frame.maxX - label.frame.size.width)
                         label.frame.origin.makeIntegralInPlaceWithDisplayScale(chart.view.traitCollection.displayScale)
                         label.layer.borderColor = tintColor.cgColor
                         label.layer.borderWidth = 1 / chart.view.traitCollection.displayScale
@@ -330,9 +340,9 @@ private extension ChartPointsTouchHighlightLayer {
                     
                     if let text = chartPointModel.chartPoint.x.labels.first?.text {
                         let label = UILabel()
-                        label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+                        label.font = axisLabelSettings.font
                         label.text = text
-                        label.textColor = UIColor.secondaryLabelColor
+                        label.textColor = axisLabelSettings.fontColor
                         label.sizeToFit()
                         label.center = CGPoint(x: chartPointModel.screenLoc.x, y: xAxisOverlayView.center.y)
                         label.frame.origin.makeIntegralInPlaceWithDisplayScale(chart.view.traitCollection.displayScale)
