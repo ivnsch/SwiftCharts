@@ -9,8 +9,8 @@
 import UIKit
 
 open class ChartGuideLinesLayerSettings {
-    let linesColor: UIColor
-    let linesWidth: CGFloat
+    public let linesColor: UIColor
+    public let linesWidth: CGFloat
     
     public init(linesColor: UIColor = UIColor.gray, linesWidth: CGFloat = 0.3) {
         self.linesColor = linesColor
@@ -19,8 +19,8 @@ open class ChartGuideLinesLayerSettings {
 }
 
 open class ChartGuideLinesDottedLayerSettings: ChartGuideLinesLayerSettings {
-    let dotWidth: CGFloat
-    let dotSpacing: CGFloat
+    public let dotWidth: CGFloat
+    public let dotSpacing: CGFloat
     
     public init(linesColor: UIColor, linesWidth: CGFloat, dotWidth: CGFloat = 2, dotSpacing: CGFloat = 2) {
         self.dotWidth = dotWidth
