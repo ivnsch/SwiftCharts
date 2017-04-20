@@ -129,8 +129,6 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint, U>: ChartPointsLayer<T> {
     
     fileprivate var lineView: UIView?
     
-    private var minY: CGFloat?
-    
     public convenience init(xAxis: ChartAxis, yAxis: ChartAxis, lines: [[T]], lineColor: UIColor, animDuration: Float, animDelay: Float, settings: ChartPointsLineTrackerLayerSettings, positionUpdateHandler: (([ChartTrackerSelectedChartPoint<T, U>]) -> Void)? = nil) {
         self.init(xAxis: xAxis, yAxis: yAxis, lines: lines.map{ChartTrackerLineModel(chartPoints: $0)}, lineColor: lineColor, animDuration: animDuration, animDelay: animDelay, settings: settings, positionUpdateHandler: positionUpdateHandler)
     }
@@ -142,11 +140,6 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint, U>: ChartPointsLayer<T> {
         self.settings = settings
         self.positionUpdateHandler = positionUpdateHandler
         self.lines = lines
-        
-        minY = lineModels.map{$0.chartPointModels.max(by: { (a, b) -> Bool in
-            a.screenLoc.y < b.screenLoc.y
-        })}.flatMap{$0?.screenLoc.y}.max()
-        
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: Array(lines.map{$0.chartPoints}.joined()))
     }
 
@@ -269,10 +262,12 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint, U>: ChartPointsLayer<T> {
             
             let constantX = touchPoint.x
             
-          
+            let minY = lineModels.map{$0.chartPointModels.max(by: { (a, b) -> Bool in
+                a.screenLoc.y < b.screenLoc.y
+            })}.flatMap{$0?.screenLoc.y}.max()
+            
             let touchlineP1 = CGPoint(x: constantX, y: 0)
             let touchlineP2 = CGPoint(x: constantX, y: minY ?? view.frame.size.height)
-
             
             var intersections: [ChartTrackerIntersection<T, U>] = []
             
