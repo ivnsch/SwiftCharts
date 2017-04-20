@@ -29,8 +29,6 @@ open class StraightLinePathGenerator: ChartLinesViewPathGenerator {
                 progressline.move(to: p1)
                 progressline.addLine(to: p2)
             }
-
-            progressline.close()
         }
 
         return progressline
