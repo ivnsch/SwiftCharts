@@ -262,8 +262,12 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint, U>: ChartPointsLayer<T> {
             
             let constantX = touchPoint.x
             
+            let minY = lineModels.map{$0.chartPointModels.max(by: { (a, b) -> Bool in
+                a.screenLoc.y < b.screenLoc.y
+            })}.flatMap{$0?.screenLoc.y}.max()
+            
             let touchlineP1 = CGPoint(x: constantX, y: 0)
-            let touchlineP2 = CGPoint(x: constantX, y: view.frame.size.height)
+            let touchlineP2 = CGPoint(x: constantX, y: minY ?? view.frame.size.height)
             
             var intersections: [ChartTrackerIntersection<T, U>] = []
             
