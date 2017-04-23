@@ -79,17 +79,6 @@ use_frameworks!
 pod 'SwiftCharts', '~> 0.4'
 ```
 
-Swift 1.2 (not actively maintained):
-```ruby
-use_frameworks!
-pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git', :branch => 'swift1.2'
-```
-Alternatively:
-```ruby
-use_frameworks!
-pod 'SwiftCharts', '~> 0.2'
-```
-
 And then:
 ```ruby
 pod install
@@ -114,10 +103,6 @@ Swift 2.3 (not actively maintained):
 github "i-schuetz/SwiftCharts" ~> 0.4
 ```
 
-Swift 1.2 (not actively maintained):
-```
-github "i-schuetz/SwiftCharts" ~> 0.2
-```
 
 ## Quick start 
 
