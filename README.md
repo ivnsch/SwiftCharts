@@ -186,64 +186,62 @@ A chart is the result of composing layers together. Everything is a layer - axis
 Following a more low level example, to provide an insight into the layer system. Note that most examples are written like this, in order to provider maximal flexibility.
 
 ```swift
+let chartPoints: [ChartPoint] = [(2, 2), (4, 4), (6, 6), (8, 8), (8, 10), (15, 15)].map{ChartPoint(x: ChartAxisValueInt($0.0), y: ChartAxisValueInt($0.1))}
 
-let chartPoints: [ChartPoint] = [(2, 2), (4, 4), (6, 6), (8, 10), (12, 14)].map{ChartPoint(x: ChartAxisValueInt($0.0), y: ChartAxisValueInt($0.1))}
+let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
 
-let xValues = 0.stride(through: 16, by: 2).map {ChartAxisValueInt($0)}
-let yValues = 0.stride(through: 16, by: 2).map {ChartAxisValueInt($0)}
+let generator = ChartAxisGeneratorMultiplier(2)
+let labelsGenerator = ChartAxisLabelsGeneratorFunc {scalar in
+    return ChartAxisLabel(text: "\(scalar)", settings: labelSettings)
+}
 
-let labelSettings = ChartLabelSettings(font: UIFont.systemFontOfSize(14))
+let xGenerator = ChartAxisGeneratorMultiplier(2)
 
-// create axis models with axis values and axis title
-let xModel = ChartAxisModel(axisValues: xValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings))
-let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
+let xModel = ChartAxisModel(firstModelValue: 0, lastModelValue: 16, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings)], axisValuesGenerator: xGenerator, labelsGenerator: labelsGenerator)
 
-let chartFrame = CGRectMake(20, 100, 300, 400)
+let yModel = ChartAxisModel(firstModelValue: 0, lastModelValue: 16, axisTitleLabels: [ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical())], axisValuesGenerator: generator, labelsGenerator: labelsGenerator)
 
-let chartSettings = ChartSettings()
-chartSettings.axisStrokeWidth = 0.2
-chartSettings.top = 20
-chartSettings.trailing = 20
-// ...
+let chartFrame = ExamplesDefaults.chartFrame(view.bounds)
 
+let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
+
+// generate axes layers and calculate chart inner frame, based on the axis models
 let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
-let (xAxis, yAxis, innerFrame) = (coordsSpace.xAxis, coordsSpace.yAxis, coordsSpace.chartInnerFrame)
+let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
 
-// create layer with line
-let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor(red: 0.4, green: 0.4, blue: 1, alpha: 0.2), lineWidth: 3, animDuration: 0.7, animDelay: 0)
-let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, lineModels: [lineModel])
+// create layer with guidelines
+let guidelinesLayerSettings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
+let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: guidelinesLayerSettings)
 
-// creates custom view for each chartpoint
-let myCustomViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
+// view generator - this is a function that creates a view for each chartpoint
+let viewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsViewsLayer, chart: Chart) -> UIView? in
+    let viewSize: CGFloat = Env.iPad ? 30 : 20
     let center = chartPointModel.screenLoc
-    let label = UILabel(frame: CGRectMake(center.x - 20, center.y - 10, 40, 20))
-    label.backgroundColor = UIColor.greenColor()
-    label.textAlignment = NSTextAlignment.Center
-    label.text = chartPointModel.chartPoint.description
+    let label = UILabel(frame: CGRect(x: center.x - viewSize / 2, y: center.y - viewSize / 2, width: viewSize, height: viewSize))
+    label.backgroundColor = UIColor.green
+    label.textAlignment = NSTextAlignment.center
+    label.text = chartPointModel.chartPoint.y.description
     label.font = ExamplesDefaults.labelFont
     return label
 }
 
-// create layer that uses the view generator
-let myCustomViewLayer = ChartPointsViewsLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: myCustomViewGenerator, displayDelay: 0, delayBetweenItems: 0.05)
+// create layer that uses viewGenerator to display chartpoints
+let chartPointsLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: viewGenerator, mode: .translate)
 
-
-// create layer with guidelines
-let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.blackColor(), linesWidth: ExamplesDefaults.guidelinesWidth)
-let guidelinesLayer = ChartGuideLinesDottedLayer(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, settings: settings)
-
+// create chart instance with frame and layers
 let chart = Chart(
     frame: chartFrame,
+    innerFrame: innerFrame,
+    settings: chartSettings,
     layers: [
-        xAxis,
-        yAxis,
+        xAxisLayer,
+        yAxisLayer,
         guidelinesLayer,
-        chartPointsLineLayer,
-        myCustomViewLayer
+        chartPointsLayer
     ]
 )
 
-self.view.addSubview(chart.view)
+view.addSubview(chart.view)
 self.chart = chart
 ```
 
