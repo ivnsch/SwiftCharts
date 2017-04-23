@@ -9,9 +9,11 @@
 import UIKit
 import SwiftCharts
 
-class AreasExample: UIViewController {
+class AreasExample: UIViewController, ChartDelegate {
 
     fileprivate var chart: Chart? // arc
+
+    fileprivate var popups: [UIView] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,16 +54,15 @@ class AreasExample: UIViewController {
         
         let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel1, lineModel2, lineModel3])
         
-        var popups: [UIView] = []
         var selectedView: ChartPointTextCircleView?
         
-        let circleViewGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
+        let circleViewGenerator = {[weak self] (chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in guard let weakSelf = self else {return nil}
             
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
             
             let v = ChartPointTextCircleView(chartPoint: chartPoint, center: screenLoc, diameter: Env.iPad ? 50 : 30, cornerRadius: Env.iPad ? 24: 15, borderWidth: Env.iPad ? 2 : 1, font: ExamplesDefaults.fontWithSize(Env.iPad ? 14 : 8))
             v.viewTapped = {view in
-                for p in popups {p.removeFromSuperview()}
+                for p in weakSelf.popups {p.removeFromSuperview()}
                 selectedView?.selected = false
                 
                 let w: CGFloat = Env.iPad ? 250 : 150
@@ -94,7 +95,7 @@ class AreasExample: UIViewController {
                     infoView.textAlignment = NSTextAlignment.center
                     
                     bubbleView.addSubview(infoView)
-                    popups.append(bubbleView)
+                    weakSelf.popups.append(bubbleView)
                     
                     UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions(), animations: {
                         view.selected = true
@@ -143,8 +144,28 @@ class AreasExample: UIViewController {
             ]
         )
         
+        chart.delegate = self
+        
         view.addSubview(chart.view)
         self.chart = chart
     }
 
+    fileprivate func removePopups() {
+        for popup in popups {
+            popup.removeFromSuperview()
+        }
+    }
+    
+    // MARK: - ChartDelegate
+    
+    func onZoom(scaleX: CGFloat, scaleY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, centerX: CGFloat, centerY: CGFloat, isGesture: Bool) {
+        removePopups()
+    }
+    
+    func onPan(transX: CGFloat, transY: CGFloat, deltaX: CGFloat, deltaY: CGFloat, isGesture: Bool, isDeceleration: Bool) {
+        removePopups()
+    }
+    
+    func onTap(_ models: [TappedChartPointLayerModels<ChartPoint>]) {
+    }
 }

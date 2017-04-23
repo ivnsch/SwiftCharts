@@ -37,6 +37,8 @@ open class ChartPointsSingleViewLayer<T: ChartPoint, U: UIView>: ChartPointsView
         if let view = viewGenerator(model, self, chart) {
             addedViews.append(view)
             addSubview(chart, view: view)
+            
+            viewsWithChartPoints = [ViewWithChartPoint(view: view, chartPointModel: model)]
         }
     }
 }

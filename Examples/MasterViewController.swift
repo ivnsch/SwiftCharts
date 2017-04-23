@@ -40,7 +40,7 @@ class MasterViewController: UITableViewController {
         (.multiAxis, "Multiple axes"),
         (.multiAxisInteractive, "Multiple axes (interactive)"),
         (.candleStick, "Candlestick"),
-        (.candleStickInteractive, "Candlestick (interactive)"),
+        (.candleStickInteractive, "Candlestick (tracker, custom views)"),
         (.cubiclines, "Cubic lines"),
         (.trendline, "Trendline")
     ]

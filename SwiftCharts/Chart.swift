@@ -382,6 +382,10 @@ open class Chart: Pannable, Zoomable {
     open func resetPanZoom() {
         zoom(scaleX: minScaleX ?? 1, scaleY: minScaleY ?? 1, anchorX: 0, anchorY: 0)
         
+        // TODO exact numbers. 
+        // Chart needs unified functionality to get/set current transform matrix independently of implementation details like contentView or axes transform, which are separate.
+        // Currently the axes and the content view basically manage the transform separately
+        // For more details, see http://stackoverflow.com/questions/41337146/apply-transform-matrix-to-core-graphics-drawing-and-subview
         pan(deltaX: 10000, deltaY: 10000, isGesture: false, isDeceleration: false, elastic: false)
         
         keepInBoundaries()

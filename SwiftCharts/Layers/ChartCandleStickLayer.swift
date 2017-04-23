@@ -8,6 +8,7 @@
 
 import UIKit
 
+// TODO correct scaling mode - currently it uses default, uniform scaling with which items don't stay sharp. Needs to draw views similar to ChartPointsScatterLayer
 open class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T> {
     
     fileprivate var screenItems: [CandleStickScreenItem] = []

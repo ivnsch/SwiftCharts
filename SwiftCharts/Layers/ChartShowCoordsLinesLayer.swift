@@ -8,6 +8,7 @@
 
 import UIKit
 
+// TODO improve behaviour during zooming and panning - line has to be only translated, not scaled. Needs .translate behaviour of ChartPointsViewsLayer, maybe we can extend this layer?
 open class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
     fileprivate var view: UIView?

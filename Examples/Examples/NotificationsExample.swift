@@ -25,12 +25,15 @@ class NotificationsExample: UIViewController {
         
         let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.red, animDuration: 1, animDelay: 0)
         
+        let notificationViewWidth: CGFloat = Env.iPad ? 30 : 20
+        let notificationViewHeight: CGFloat = Env.iPad ? 30 : 20
+        
         let notificationGenerator = {[weak self] (chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
+            
             if chartPoint.y.scalar <= 1 {
-                let w: CGFloat = Env.iPad ? 30 : 20
-                let h: CGFloat = Env.iPad ? 30 : 20
-                let chartPointView = HandlingView(frame: CGRect(x: screenLoc.x + 5, y: screenLoc.y - h - 5, width: w, height: h))
+
+                let chartPointView = HandlingView(frame: CGRect(x: screenLoc.x + 5, y: screenLoc.y - notificationViewHeight - 5, width: notificationViewWidth, height: notificationViewHeight))
                 let label = UILabel(frame: chartPointView.bounds)
                 label.layer.cornerRadius = Env.iPad ? 15 : 10
                 label.clipsToBounds = true
@@ -82,7 +85,12 @@ class NotificationsExample: UIViewController {
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
 
-        let chartPointsNotificationsLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: notificationGenerator, displayDelay: 1)
+        let chartPointsNotificationsLayer = ChartPointsViewsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints, viewGenerator: notificationGenerator, displayDelay: 1, mode: .custom)
+        // To preserve the offset of the notification views from the chart point they represent, during transforms, we need to pass mode: .custom along with this custom transformer.
+        chartPointsNotificationsLayer.customTransformer = {(model, view, layer) -> Void in
+            let screenLoc = layer.modelLocToScreenLoc(x: model.chartPoint.x.scalar, y: model.chartPoint.y.scalar)
+            view.frame.origin = CGPoint(x: screenLoc.x + 5, y: screenLoc.y - notificationViewHeight - 5)
+        }
         
         let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel])
         

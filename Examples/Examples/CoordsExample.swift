@@ -27,24 +27,25 @@ class CoordsExample: UIViewController {
         let yModel = ChartAxisModel(axisValues: yValues, axisTitleLabel: ChartAxisLabel(text: "Axis title", settings: labelSettings.defaultVertical()))
         let chartFrame = ExamplesDefaults.chartFrame(view.bounds)
         
-        var chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
+        var chartSettings = ExamplesDefaults.chartSettings // for now no zooming and panning here until ChartShowCoordsLinesLayer is improved to not scale the lines during zooming.
         chartSettings.trailing = 20
         chartSettings.labelsToAxisSpacingX = 15
         chartSettings.labelsToAxisSpacingY = 15
         let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
         let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
+    
+
+        let labelWidth: CGFloat = 70
+        let labelHeight: CGFloat = 30
         
         let showCoordsTextViewsGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
-            let w: CGFloat = 70
-            let h: CGFloat = 30
-            
-            let text = "(\(chartPoint.x), \(chartPoint.y))"
+            let text = chartPoint.description
             let font = ExamplesDefaults.labelFont
             let x = min(screenLoc.x + 5, chart.bounds.width - text.width(font) - 5)
-            let view = UIView(frame: CGRect(x: x, y: screenLoc.y - h, width: w, height: h))
+            let view = UIView(frame: CGRect(x: x, y: screenLoc.y - labelHeight, width: labelWidth, height: labelHeight))
             let label = UILabel(frame: view.bounds)
-            label.text = "(\(chartPoint.x), \(chartPoint.y))"
+            label.text = text
             label.font = ExamplesDefaults.labelFont
             view.addSubview(label)
             view.alpha = 0
@@ -57,7 +58,19 @@ class CoordsExample: UIViewController {
         }
         
         let showCoordsLinesLayer = ChartShowCoordsLinesLayer<ChartPoint>(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, chartPoints: chartPoints)
-        let showCoordsTextLayer = ChartPointsSingleViewLayer<ChartPoint, UIView>(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: showCoordsTextViewsGenerator, mode: .translate, keepOnFront: true)
+        
+        let showCoordsTextLayer = ChartPointsSingleViewLayer<ChartPoint, UIView>(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: showCoordsTextViewsGenerator, mode: .custom, keepOnFront: true)
+        // To preserve the offset of the notification views from the chart point they represent, during transforms, we need to pass mode: .custom along with this custom transformer.
+        showCoordsTextLayer.customTransformer = {(model, view, layer) -> Void in
+            guard let chart = layer.chart else {return}
+            
+            let text = model.chartPoint.description
+
+            let screenLoc = layer.modelLocToScreenLoc(x: model.chartPoint.x.scalar, y: model.chartPoint.y.scalar)
+            let x = min(screenLoc.x + 5, chart.bounds.width - text.width(ExamplesDefaults.labelFont) - 5)
+            
+            view.frame.origin = CGPoint(x: x, y: screenLoc.y - labelHeight)
+        }
         
         let touchViewsGenerator = {(chartPointModel: ChartPointLayerModel, layer: ChartPointsLayer, chart: Chart) -> UIView? in
             let (chartPoint, screenLoc) = (chartPointModel.chartPoint, chartPointModel.screenLoc)
