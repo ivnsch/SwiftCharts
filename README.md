@@ -59,19 +59,17 @@ Swift 3.0, 2.x, 1.2, iOS 10, 9, 8, 7
 
 Add to your Podfile:
 
-Swift 3.0:
+Swift 3.x:
 ```ruby
 use_frameworks!
-pod 'SwiftCharts', '~> 0.5'
+pod 'SwiftCharts', '~> 0.6'
 ```
 Note: To use Swift 3.x / master, you need Xcode 8+
 
-To use master directly (it's usually stable):
+To use master directly:
 ```ruby
 pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
 ```
-This is particularly useful if you see features listed or examples that are not released yet! 
-NOTE: Some examples in master have not been updated yet with correct configuration for zooming and panning.
 
 Swift 2.3 (not actively maintained):
 ```ruby
@@ -93,16 +91,26 @@ import SwiftCharts
 
 Add to your Cartfile:
 
-Swift 3.0:
+Swift 3.x:
 ```
-github "i-schuetz/SwiftCharts" ~> 0.5
+github "i-schuetz/SwiftCharts" ~> 0.6
 ```
 
 Swift 2.3 (not actively maintained):
 ```
 github "i-schuetz/SwiftCharts" ~> 0.4
 ```
+## Migration guide 0.5.x - 0.6
 
+- Inner frame is now passed only to `Chart` instead of to the layers.
+- `ChartSettings` now have to be passed to `Chart`.
+- `ChartAxisLayer` now doesn't directly manage the logic to map between screen and domain coordinates, but delegates this to a new `ChartAxis` class. `ChartAxis` is what has to be passed now to the chart layers. Shortly, pass to the layers `axisLayer.axis` instead of `axisLayer`.
+
+If I'm forgetting something, please add it or open an issue!
+
+The best way to migrate is probably to compare an example from 0.5.1 and 0.6. For the newly added zooming and panning you may need some work to get everything working correctly, depending on the kind of functionality you use. Here also please look at the examples.
+
+Please also take a look at the [changelog](https://github.com/i-schuetz/SwiftCharts/blob/master/CHANGELOG.md) for newly added functionality and features.
 
 ## Quick start 
 

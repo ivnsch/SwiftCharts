@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.6] - 2017.04.23
 - Fix guidelines overlap with axis lines
 - Fix axis line minor irregularities (fixes #151)
 - Make ChartPointsLayer.display(Chart) open
@@ -27,11 +29,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Implement grouped bars companion layer (to add e.g. labels to individual grouped bars).
 - Remove unnecessary use of self, improve formatting
 - Don't force unwrap context
-- Add custom transtorm mode to ChartPointsViewsLayer
+- Add custom transform mode to ChartPointsViewsLayer.
 - Allow to disable axis layer modification of chart's frame
 - Allow to show chart points outside of the chart's inner frame 
 - Add example for ranged axis and rotation handling
 - Adjust "Custom units" example to show how to set a fixed scrollable area / initial zoom.
+- Allow to use gradients in ChartPointsAreaLayer
+- Allow to use bars with rounded corners
+- Diverse other improvements and fixes
 
 ## [0.5] - 2016.11.23
 - Add multi-chart tracker layer
