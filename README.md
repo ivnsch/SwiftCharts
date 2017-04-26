@@ -251,6 +251,8 @@ Layers decide how to present their data - this can be done adding subviews, (CA)
 
 View based layers will use a generator function to generate chart point views. This function receives the complete state of each chartpoint (model data, screen location) and produces an UIView, allowing any type of customization.
 
+### [Documentation](https://github.com/i-schuetz/SwiftCharts/wiki)
+
 ### Hello world:
 
 There's a [hello world](Examples/Examples/HelloWorld.swift) included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the snippet above, and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!
@@ -260,9 +262,6 @@ There's a [hello world](Examples/Examples/HelloWorld.swift) included in the exam
 * Don't forget to always keep a strong reference to the chart instance or it will be released, which leads to axis & labels not showing.
 
 * If you have a lot of axis labels in your chart it may be necessary to do the calculation of the coordinate space in the background, to avoid possible delays which are noticeable during transitions or scrolling. See ScrollExample or MultipleAxesExample example for this.
-
-###### [More documentation coming soon!](https://github.com/i-schuetz/SwiftCharts/wiki/Wiki)
-
 
 ## Contributing
 
