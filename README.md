@@ -30,6 +30,9 @@ Swift 3.0, 2.x, 1.2, iOS 10, 9, 8, 7
 
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM)
 
+[Documentation](https://github.com/i-schuetz/SwiftCharts/wiki)
+
+
 ![ScreenShot](Screenshots/IMG_0102.jpeg)
 ![ScreenShot](Screenshots/IMG_0022.jpeg)
 ![ScreenShot](Screenshots/IMG_0023.jpeg)
@@ -251,8 +254,6 @@ Layers decide how to present their data - this can be done adding subviews, (CA)
 
 View based layers will use a generator function to generate chart point views. This function receives the complete state of each chartpoint (model data, screen location) and produces an UIView, allowing any type of customization.
 
-### [Documentation](https://github.com/i-schuetz/SwiftCharts/wiki)
-
 ### Hello world:
 
 There's a [hello world](Examples/Examples/HelloWorld.swift) included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the snippet above, and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!
@@ -269,27 +270,13 @@ There's a [hello world](Examples/Examples/HelloWorld.swift) included in the exam
 2. Commit changes to a branch in your fork
 3. Push your code and make a pull request
 
-## Todos:
-
-There are quite a lot of things that can be done, but here the main prios:
-
-- Dynamic adding/removing of chart points.
-- Lazy loading, EC.
-- Allow to set initial content view size that exceeds the chart's boundaries without having to use zoom.
-- macOS support.
-- Improve documentation.
-- Write a tutorial.
-- Objective-C support? I have gotten out of touch with Obj-C and don't even remember what exactly has to be done to add compatibility. If it doesn't require any major structural changes, it's also welcome. 
-
-If you want to help with any of these, feel free to open an issue to request for assistance. Happy to give an introduction to the internals and explain any parts of the library that may not be clear. It would be also possible to e.g. open a Slack channel for real time cooperation.
-
-Nice to have also, a zooming & panning refactoring to use a global transformation matrix instead of the current separate axes / content view transforms. This is only to improve code quality. It may sound easy but due to some implementation details of SwiftCharts it is a bit complicated. More details [here](http://stackoverflow.com/questions/41337146/apply-transform-matrix-to-core-graphics-drawing-and-subview). 
+SwiftCharts has got now some [projects](https://github.com/i-schuetz/SwiftCharts/projects) to plan features and improvements. Feel free to grab any of these topics even if it's just to add feedback. You can open an issue for this. Other options like opening a Slack channel are possible.
 
 ## Created By:
 
 Ivan Schütz
 
-#### :fire: If you need something special or just help with your charts, you can [hire me!](http://www.ivanschuetz.com/contact-impressum.php)
+If you need something special or just help with your charts, you can [hire me!](http://www.ivanschuetz.com/contact-impressum.php)
 
 ## Credits:
 
