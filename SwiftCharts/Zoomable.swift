@@ -46,7 +46,7 @@ public extension Zoomable {
     }
     
     public func zoom(scaleX: CGFloat, scaleY: CGFloat, anchorX: CGFloat = 0.5, anchorY: CGFloat = 0.5) {
-        let center = calculateCenter(anchorX: anchorX, anchorY: anchorX)
+        let center = calculateCenter(anchorX: anchorX, anchorY: anchorY)
         zoom(scaleX: scaleX, scaleY: scaleY, centerX: center.x, centerY: center.y)
     }
     
