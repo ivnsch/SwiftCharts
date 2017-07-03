@@ -62,12 +62,18 @@ Swift 3.0, 2.x, 1.2, iOS 10, 9, 8, 7
 
 Add to your Podfile:
 
+Swift 4.x (master):
+```ruby
+use_frameworks!
+pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
+```
+
 Swift 3.x:
 ```ruby
 use_frameworks!
 pod 'SwiftCharts', '~> 0.6'
 ```
-Note: To use Swift 3.x / master, you need Xcode 8+
+Note: To use Swift 3.x, you need Xcode 8+
 
 To use master directly:
 ```ruby
