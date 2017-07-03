@@ -25,7 +25,7 @@ open class ChartAxisValueDouble: ChartAxisValue {
         return ChartAxisValueDouble(scalar, formatter: formatter, labelSettings: labelSettings)
     }
     
-    static var defaultFormatter: NumberFormatter = {
+    public static var defaultFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 2
         return formatter

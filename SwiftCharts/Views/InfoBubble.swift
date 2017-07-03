@@ -72,7 +72,7 @@ open class InfoBubble: UIView {
         addGestureRecognizer(tapRecognizer)
     }
     
-    func onTap(_ sender: UITapGestureRecognizer) {
+    @objc func onTap(_ sender: UITapGestureRecognizer) {
         tapHandler?()
     }
     

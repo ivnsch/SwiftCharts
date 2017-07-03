@@ -251,7 +251,7 @@ open class ChartCoordsSpace {
             let axisSettings = ChartAxisSettings(chartSettings)
             axisSettings.lineColor = chartAxisModel.lineColor
             let points = boundingPointsCreator(x)
-            let layer = generator(p1: points.p1, p2: points.p2, firstModelValue: chartAxisModel.firstModelValue, lastModelValue: chartAxisModel.lastModelValue, axisValuesGenerator: chartAxisModel.axisValuesGenerator, labelsGenerator: chartAxisModel.labelsGenerator, axisTitleLabels: chartAxisModel.axisTitleLabels, settings: axisSettings, labelsConflictSolver: chartAxisModel.labelsConflictSolver, leadingPadding: chartAxisModel.leadingPadding, trailingPadding: chartAxisModel.trailingPadding, labelSpaceReservationMode: chartAxisModel.labelSpaceReservationMode, clipContents: chartAxisModel.clipContents)
+            let layer = generator((p1: points.p1, p2: points.p2, firstModelValue: chartAxisModel.firstModelValue, lastModelValue: chartAxisModel.lastModelValue, axisValuesGenerator: chartAxisModel.axisValuesGenerator, labelsGenerator: chartAxisModel.labelsGenerator, axisTitleLabels: chartAxisModel.axisTitleLabels, settings: axisSettings, labelsConflictSolver: chartAxisModel.labelsConflictSolver, leadingPadding: chartAxisModel.leadingPadding, trailingPadding: chartAxisModel.trailingPadding, labelSpaceReservationMode: chartAxisModel.labelSpaceReservationMode, clipContents: chartAxisModel.clipContents))
             return (
                 axes: layers + [layer],
                 x: x + nextLayerOffset(layer)
