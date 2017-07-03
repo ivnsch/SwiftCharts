@@ -26,7 +26,7 @@ Easy to use and highly customizable charts library for iOS
 
 <sub>*These are separate repos for better focus and reusability.</sub>
 
-Swift 3.0, 2.x, 1.2, iOS 10, 9, 8, 7
+Swift 4 - 1.2, iOS 11 - 7
 
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM)
 
