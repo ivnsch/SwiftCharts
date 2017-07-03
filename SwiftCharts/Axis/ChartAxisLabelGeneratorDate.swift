@@ -24,7 +24,7 @@ open class ChartAxisLabelsGeneratorDate: ChartAxisLabelsGeneratorBase {
         return [ChartAxisLabel(text: text, settings: labelSettings)]
     }
     
-    static var defaultFormatter: DateFormatter = {
+    public static var defaultFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         return formatter

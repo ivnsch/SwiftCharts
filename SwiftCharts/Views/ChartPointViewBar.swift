@@ -98,7 +98,7 @@ open class ChartPointViewBar: UIView {
         addGestureRecognizer(tapRecognizer)
     }
     
-    func onTap(_ sender: UITapGestureRecognizer) {
+    @objc func onTap(_ sender: UITapGestureRecognizer) {
         toggleSelection()
         tapHandler?(self)
     }

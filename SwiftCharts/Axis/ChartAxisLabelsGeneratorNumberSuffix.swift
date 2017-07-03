@@ -70,7 +70,7 @@ open class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGeneratorBase {
         return [ChartAxisLabel(text: text, settings: labelSettings)]
     }
     
-    static var defaultFormatter: NumberFormatter = {
+    public static var defaultFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 2
         return formatter
