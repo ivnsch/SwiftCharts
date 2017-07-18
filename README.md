@@ -109,6 +109,17 @@ Swift 2.3 (not actively maintained):
 ```
 github "i-schuetz/SwiftCharts" ~> 0.4
 ```
+
+## Contribute
+
+Contributions are highly appreciated! To submit one:
+
+1. Fork
+2. Commit changes to a branch in your fork
+3. Push your code and make a pull request
+
+You also can also support this library, or simply say thanks with a donation: [![donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q3MPVLNZW896U)
+
 ## Migration guide 0.5.x - 0.6
 
 - Inner frame is now passed only to `Chart` instead of to the layers.
@@ -270,19 +281,21 @@ There's a [hello world](Examples/Examples/HelloWorld.swift) included in the exam
 
 * If you have a lot of axis labels in your chart it may be necessary to do the calculation of the coordinate space in the background, to avoid possible delays which are noticeable during transitions or scrolling. See ScrollExample or MultipleAxesExample example for this.
 
-## Contributing
-
-1. Fork
-2. Commit changes to a branch in your fork
-3. Push your code and make a pull request
+## Tasks
 
 SwiftCharts has got now some [projects](https://github.com/i-schuetz/SwiftCharts/projects) to plan features and improvements. Feel free to grab any of these topics even if it's just to add feedback. You can open an issue for this. Other options like opening a Slack channel are possible.
+
+## "Used by" 
+
+Someone gave me recently the idea to add a "this library is used by" section to SwiftCharts - if you want to be shown, please send me a [message!](http://www.ivanschuetz.com/contact-impressum.php)!
+
+(It may take a while until this is shown, as I want to collect a few first)
 
 ## Created By:
 
 Ivan Schütz
 
-If you need something special or just help with your charts, you can [hire me!](http://www.ivanschuetz.com/contact-impressum.php)
+If you need something special or are just short of time, I'm also available for [hire](http://www.ivanschuetz.com/contact-impressum.php)
 
 ## Credits:
 
