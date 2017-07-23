@@ -118,7 +118,16 @@ Contributions are highly appreciated! To submit one:
 2. Commit changes to a branch in your fork
 3. Push your code and make a pull request
 
-You also can also support this library, or simply say thanks with a donation: [![donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q3MPVLNZW896U)
+## Donate
+
+* **[$5](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4QMZ5S7LRL98G)**: Thank's for creating this project, here's a coffee (or some beer) for you!
+* **[$10](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=C2K5VNNCKHLMQ)**: Wow, I am stunned. Let me take you to the movies!
+* **[$15](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UWBBTFM4MLVF2)**: I really appreciate your work, let's grab some lunch!
+* **[$25](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TRVKQG2LBGZZA)**: That's some awesome stuff you did right there, dinner is on me!
+* **[$50](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2KZ6LZQUKD9Q)**: I really really want to support this project, great job!
+* **[$100](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B8KAP474QG97U)**: This project saved me hours (if not days) of struggle and hard work, simply awesome!
+
+Of course, you can also [choose what you want to donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q3MPVLNZW896U), all donations are awesome!
 
 ## Migration guide 0.5.x - 0.6
 
