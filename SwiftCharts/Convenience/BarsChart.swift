@@ -31,8 +31,8 @@ open class BarsChart: Chart {
             return ChartBarModel(constant: ChartAxisValueDouble(index), axisValue1: zero, axisValue2: ChartAxisValueDouble(barModel.1), bgColor: color)
         }
         
-        let valAxisValues = stride(from: chartConfig.valsAxisConfig.from, through: chartConfig.valsAxisConfig.to, by: chartConfig.valsAxisConfig.by).map{ChartAxisValueDouble($0)}
-        let labelAxisValues = [ChartAxisValueString(order: -1)] + barModels.enumerated().map{ let (index, tuple) = $0; return ChartAxisValueString(tuple.0, order: index)} + [ChartAxisValueString(order: barModels.count)]
+        let valAxisValues = stride(from: chartConfig.valsAxisConfig.from, through: chartConfig.valsAxisConfig.to, by: chartConfig.valsAxisConfig.by).map{ChartAxisValueDouble($0, labelSettings : chartConfig.xAxisLabelSettings)}
+        let labelAxisValues = [ChartAxisValueString(order: -1)] + barModels.enumerated().map{ let (index, tuple) = $0; return ChartAxisValueString(tuple.0, order: index, labelSettings : chartConfig.xAxisLabelSettings)} + [ChartAxisValueString(order: barModels.count)]
 
         let (xValues, yValues): ([ChartAxisValue], [ChartAxisValue]) = horizontal ? (valAxisValues, labelAxisValues) : (labelAxisValues, valAxisValues)
         
