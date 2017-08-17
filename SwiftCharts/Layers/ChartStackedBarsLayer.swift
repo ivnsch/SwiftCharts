@@ -153,7 +153,7 @@ open class ChartStackedBarsLayer<T: ChartPointViewBarStacked>: ChartCoordsSpaceL
         for (index, barModel) in barModels.enumerated() {
             let barView = barsGenerator.generateView(barModel, settings: settings, model: barModel, index: index, groupIndex: 0, chart: chart)
             barView.stackFrameSelectionViewUpdater = stackFrameSelectionViewUpdater
-            barView.stackedTapHandler = {[weak self] tappedStackedBar in guard let weakSelf = self else {return}
+            barView.stackedTapHandler = {[weak self, unowned barView] tappedStackedBar in guard let weakSelf = self else {return}
                 
                 let stackFrameData = tappedStackedBar.stackFrame.map{stackFrame in
                     ChartTappedBarStackedFrame(stackedItemModel: barModel.items[stackFrame.index], stackedItemView: stackFrame.view, stackedItemViewFrameRelativeToBarParent: stackFrame.viewFrameRelativeToBarSuperview, stackedItemIndex: stackFrame.index)
