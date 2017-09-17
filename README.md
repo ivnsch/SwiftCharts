@@ -118,16 +118,17 @@ Contributions are highly appreciated! To submit one:
 2. Commit changes to a branch in your fork
 3. Push your code and make a pull request
 
-## Donate
 
-* **[$5](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4QMZ5S7LRL98G)**: Thank's for creating this project, here's a coffee (or some beer) for you!
-* **[$10](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=C2K5VNNCKHLMQ)**: Wow, I am stunned. Let me take you to the movies!
-* **[$15](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UWBBTFM4MLVF2)**: I really appreciate your work, let's grab some lunch!
-* **[$25](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TRVKQG2LBGZZA)**: That's some awesome stuff you did right there, dinner is on me!
-* **[$50](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2KZ6LZQUKD9Q)**: I really really want to support this project, great job!
-* **[$100](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B8KAP474QG97U)**: This project saved me hours (if not days) of struggle and hard work, simply awesome!
+## NOTE: 
+Starting at 18.09.2017 the issues aren't meant to be used anymore for help or questions. Please use the issues only to report bugs. Or if you are going to contribute and have problems understanding the internals.
 
-Of course, you can also [choose what you want to donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q3MPVLNZW896U), all donations are awesome!
+If you need help:
+
+1. Read the wiki.
+2. Run the examples - a good start when something isn't working is first modifying one of the examples to do what you want, then move to your actual project.
+3. Search through the issues.
+4. Dig in the source code - it's fairly accessible and it shouldn't be difficult to figure out what's going on by just reading it or debugging.
+5. Ask in StackOverflow!
 
 ## Migration guide 0.5.x - 0.6
 
