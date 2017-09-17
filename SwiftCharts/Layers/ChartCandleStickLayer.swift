@@ -15,10 +15,14 @@ open class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T> 
 
     fileprivate let itemWidth: CGFloat
     fileprivate let strokeWidth: CGFloat
+    fileprivate let increasingColor: UIColor
+    fileprivate let decreasingColor: UIColor
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], itemWidth: CGFloat = 10, strokeWidth: CGFloat = 1) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], itemWidth: CGFloat = 10, strokeWidth: CGFloat = 1, increasingColor: UIColor = UIColor.black, decreasingColor: UIColor = UIColor.white) {
         self.itemWidth = itemWidth
         self.strokeWidth = strokeWidth
+        self.increasingColor = increasingColor
+        self.decreasingColor = decreasingColor
         
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
     }
@@ -30,9 +34,7 @@ open class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T> 
     }
     
     override open func chartContentViewDrawing(context: CGContext, chart: Chart) {
-        
         for screenItem in screenItems {
-            
             context.setLineWidth(strokeWidth)
             context.setStrokeColor(UIColor.black.cgColor)
             context.move(to: CGPoint(x: screenItem.x, y: screenItem.lineTop))
@@ -58,7 +60,7 @@ open class ChartCandleStickLayer<T: ChartPointCandleStick>: ChartPointsLayer<T> 
             let openScreenY = modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.open)).y
             let closeScreenY = modelLocToScreenLoc(x: Double(x), y: Double(chartPoint.close)).y
             
-            let (rectTop, rectBottom, fillColor) = closeScreenY < openScreenY ? (closeScreenY, openScreenY, UIColor.white) : (openScreenY, closeScreenY, UIColor.black)
+            let (rectTop, rectBottom, fillColor) = closeScreenY < openScreenY ? (closeScreenY, openScreenY, self.increasingColor) : (openScreenY, closeScreenY, self.decreasingColor)
             return CandleStickScreenItem(x: x, lineTop: highScreenY, lineBottom: lowScreenY, rectTop: rectTop, rectBottom: rectBottom, width: itemWidth, fillColor: fillColor)
         }
     }
