@@ -67,7 +67,7 @@ open class ChartPointViewBarStacked: ChartPointViewBar {
                 let corners: UIRectCorner
                 
                 if (stackFrames.count == 1) {
-                    corners = UIRectCorner.allCorners
+                    corners = settings.roundedCorners
                 } else {
                     switch (index, isHorizontal) {
                     case (0, true):
@@ -87,7 +87,7 @@ open class ChartPointViewBarStacked: ChartPointViewBar {
                 
                 let path = UIBezierPath(
                     roundedRect: bounds,
-                    byRoundingCorners: corners,
+                    byRoundingCorners: corners.intersection(settings.roundedCorners),
                     cornerRadii: CGSize(width: settings.cornerRadius, height: settings.cornerRadius)
                 )
                 
