@@ -14,8 +14,8 @@ public struct ChartLineModel<T: ChartPoint> {
     /// The array of chart points that the line should be drawn with. In a simple case this would be drawn as straight line segments connecting each point.
     public let chartPoints: [T]
 
-    /// The color that the line is drawn with
-    public let lineColor: UIColor
+    /// The color(s) that the line is drawn with
+    public let lineColors: [UIColor]
 
     /// The width of the line in points
     public let lineWidth: CGFloat
@@ -33,9 +33,9 @@ public struct ChartLineModel<T: ChartPoint> {
     /// The dash pattern for the line
     public let dashPattern: [Double]?
     
-    public init(chartPoints: [T], lineColor: UIColor, lineWidth: CGFloat = 1, lineJoin: LineJoin = .round, lineCap: LineCap = .round, animDuration: Float, animDelay: Float, dashPattern: [Double]? = nil) {
+    public init(chartPoints: [T], lineColors: [UIColor], lineWidth: CGFloat = 1, lineJoin: LineJoin = .round, lineCap: LineCap = .round, animDuration: Float, animDelay: Float, dashPattern: [Double]? = nil) {
         self.chartPoints = chartPoints
-        self.lineColor = lineColor
+        self.lineColors = lineColors
         self.lineWidth = lineWidth
         self.lineJoin = lineJoin
         self.lineCap = lineCap
@@ -43,7 +43,10 @@ public struct ChartLineModel<T: ChartPoint> {
         self.animDelay = animDelay
         self.dashPattern = dashPattern
     }
-
+    
+    public init(chartPoints: [T], lineColor: UIColor, lineWidth: CGFloat = 1, lineJoin: LineJoin = .round, lineCap: LineCap = .round, animDuration: Float, animDelay: Float, dashPattern: [Double]? = nil) {
+        self.init(chartPoints: chartPoints, lineColors: [lineColor], lineWidth: lineWidth, lineJoin: lineJoin, lineCap: lineCap, animDuration: animDuration, animDelay: animDelay, dashPattern: dashPattern)
+    }
     /// The number of chart points in the model
     var chartPointsCount: Int {
         return chartPoints.count

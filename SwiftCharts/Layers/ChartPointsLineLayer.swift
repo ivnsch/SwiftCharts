@@ -54,7 +54,7 @@ public enum LineCap {
 
 public struct ScreenLine<T: ChartPoint> {
     public internal(set) var points: [CGPoint]
-    public let color: UIColor
+    public let colors: [UIColor]
     public let lineWidth: CGFloat
     public let lineJoin: LineJoin
     public let lineCap: LineCap
@@ -63,9 +63,9 @@ public struct ScreenLine<T: ChartPoint> {
     public let lineModel: ChartLineModel<T>
     public let dashPattern: [Double]?
     
-    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>, dashPattern: [Double]?) {
+    init(points: [CGPoint], colors: [UIColor], lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>, dashPattern: [Double]?) {
         self.points = points
-        self.color = color
+        self.colors = colors
         self.lineWidth = lineWidth
         self.lineJoin = lineJoin
         self.lineCap = lineCap
@@ -73,6 +73,10 @@ public struct ScreenLine<T: ChartPoint> {
         self.animDelay = animDelay
         self.lineModel = lineModel
         self.dashPattern = dashPattern
+    }
+    
+    init(points: [CGPoint], color: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, lineModel: ChartLineModel<T>, dashPattern: [Double]?) {
+        self.init(points: points, colors: [color], lineWidth: lineWidth, lineJoin: lineJoin, lineCap: lineCap, animDuration: animDuration, animDelay: animDelay, lineModel: lineModel, dashPattern: dashPattern)
     }
 }
 
@@ -99,9 +103,10 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }
     
     fileprivate func toScreenLine(lineModel: ChartLineModel<T>, chart: Chart) -> ScreenLine<T> {
+
         return ScreenLine(
             points: lineModel.chartPoints.map{chartPointScreenLoc($0)},
-            color: lineModel.lineColor,
+            colors: lineModel.lineColors,
             lineWidth: lineModel.lineWidth,
             lineJoin: lineModel.lineJoin,
             lineCap: lineModel.lineCap,
@@ -136,7 +141,7 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
         return ChartLinesView(
             path: pathGenerator.generatePath(points: screenLine.points, lineWidth: screenLine.lineWidth),
             frame: chart.contentView.bounds,
-            lineColor: screenLine.color,
+            lineColors: screenLine.colors,
             lineWidth: screenLine.lineWidth,
             lineJoin: screenLine.lineJoin,
             lineCap: screenLine.lineCap,
@@ -158,7 +163,7 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 context.setLineJoin(lineModel.lineJoin.CGValue)
                 context.setLineCap(lineModel.lineCap.CGValue)
                 context.setLineDash(phase: 0, lengths: lineModel.dashPattern?.map { CGFloat($0) } ?? [])
-                context.setStrokeColor(lineModel.lineColor.cgColor)
+                context.setStrokeColor(lineModel.lineColors.first?.cgColor ?? UIColor.white.cgColor)
                 context.strokePath()
                 context.restoreGState()
             }
