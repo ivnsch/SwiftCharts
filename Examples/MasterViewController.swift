@@ -10,7 +10,7 @@ import UIKit
 
 
 enum Example {
-    case helloWorld, bars, stackedBars, barsPlusMinus, groupedBars, barsStackedGrouped, scatter, areas, rangedAxis, bubble, coords, target, multival, notifications, combination, equalSpacing, tracker, multiTracker, multiAxis, multiAxisInteractive, candleStick, cubiclines, notNumeric, candleStickInteractive, customUnits, trendline
+    case helloWorld, bars, stackedBars, barsPlusMinus, groupedBars, barsStackedGrouped, scatter, areas, rangedAxis, bubble, coords, target, multival, notifications, combination, equalSpacing, tracker, multiTracker, multiAxis, multiAxisInteractive, candleStick, cubiclines, cubiclinesWithGradient, notNumeric, candleStickInteractive, customUnits, trendline
 }
 
 class MasterViewController: UITableViewController {
@@ -42,6 +42,7 @@ class MasterViewController: UITableViewController {
         (.candleStick, "Candlestick"),
         (.candleStickInteractive, "Candlestick (tracker, custom views)"),
         (.cubiclines, "Cubic lines"),
+        (.cubiclinesWithGradient, "Cubic lines with gradient"),
         (.trendline, "Trendline")
     ]
     

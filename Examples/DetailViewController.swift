@@ -96,6 +96,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
             case .cubiclines:
                 setSplitSwipeEnabled(true)
                 showExampleController(CubicLinesExample())
+            case .cubiclinesWithGradient:
+                setSplitSwipeEnabled(true)
+                showExampleController(CubicLinesWithGradientExample())
             case .notNumeric:
                 setSplitSwipeEnabled(true)
                 showExampleController(NotNumericExample())
