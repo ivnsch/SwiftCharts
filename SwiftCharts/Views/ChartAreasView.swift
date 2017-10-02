@@ -11,12 +11,10 @@ import UIKit
 open class ChartAreasView: UIView {
 
     fileprivate let animDuration: Float
-    fileprivate var colors: [UIColor]
     fileprivate let animDelay: Float
     fileprivate let addContainerPoints: Bool
     
     public init(points: [CGPoint], frame: CGRect, colors: [UIColor], animDuration: Float, animDelay: Float, addContainerPoints: Bool, pathGenerator: ChartLinesViewPathGenerator) {
-        self.colors = colors
         self.animDuration = animDuration
         self.animDelay = animDelay
         self.addContainerPoints = addContainerPoints
@@ -24,7 +22,7 @@ open class ChartAreasView: UIView {
         super.init(frame: frame)
 
         backgroundColor = UIColor.clear
-        show(path: generateAreaPath(points: points, pathGenerator: pathGenerator))
+        show(path: generateAreaPath(points: points, pathGenerator: pathGenerator), colors: colors)
     }
     
     required public init(coder aDecoder: NSCoder) {
@@ -35,14 +33,20 @@ open class ChartAreasView: UIView {
         return pathGenerator.generateAreaPath(points: points, lineWidth: 1.0)
     }
     
-    fileprivate func show(path: UIBezierPath) {
-        guard let firstColor = colors.first else {
+    fileprivate func show(path: UIBezierPath, colors: [UIColor]) {
+        var gradientColors = colors
+        guard let firstColor = gradientColors.first else {
             print("WARNING: No color(s) used for ChartAreasView")
             return
         }
         
-        if colors.count == 1 {
-            colors.append(colors[0])
+        /*
+         * There is always the possibility to draw a single-color gradient.
+         * Since we're adding the gradient layer anyway we must ensure that there are at least 2 colors present.
+         * To handle this case we're adding the same color twice to the colors array to make sure we have at least 2 colors to fill the gradient layer with.
+         */
+        if gradientColors.count == 1 {
+            gradientColors.append(gradientColors[0])
         }
         
         let shape = CAShapeLayer()
@@ -55,7 +59,7 @@ open class ChartAreasView: UIView {
         
         let gradient = CAGradientLayer()
         gradient.frame = self.bounds
-        gradient.colors = colors.map{$0.cgColor}
+        gradient.colors = gradientColors.map{$0.cgColor}
         
         let mask = CAShapeLayer()
         mask.frame = self.bounds
@@ -70,8 +74,8 @@ open class ChartAreasView: UIView {
         mask.fillColor = UIColor.black.cgColor
         gradient.mask = mask
         
-        self.layer.addSublayer(gradient)
-        self.layer.addSublayer(shape)
+        layer.addSublayer(gradient)
+        layer.addSublayer(shape)
         
         if animDuration > 0 {
             let maskLayer = CAGradientLayer()
