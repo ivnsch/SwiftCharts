@@ -40,7 +40,7 @@ Swift 4 - 1.2, iOS 11 - 7
 
 ![ScreenShot](Screenshots/IMG_1328.PNG)
 
-![ScreenShot](Screenshots/IMG_0025.jpeg)
+![ScreenShot](Screenshots/IMG_0025.png)
 ![ScreenShot](Screenshots/IMG_0026.jpeg)
 ![ScreenShot](Screenshots/IMG_0101.jpeg)
 ![ScreenShot](Screenshots/IMG_0027.jpeg)

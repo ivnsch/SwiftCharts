@@ -11,91 +11,71 @@ import UIKit
 open class ChartAreasView: UIView {
 
     fileprivate let animDuration: Float
-    fileprivate let colors: [UIColor]
     fileprivate let animDelay: Float
+    fileprivate let addContainerPoints: Bool
     
-    public init(points: [CGPoint], frame: CGRect, colors: [UIColor], animDuration: Float, animDelay: Float) {
-        self.colors = colors
+    public init(points: [CGPoint], frame: CGRect, colors: [UIColor], animDuration: Float, animDelay: Float, addContainerPoints: Bool, pathGenerator: ChartLinesViewPathGenerator) {
         self.animDuration = animDuration
         self.animDelay = animDelay
+        self.addContainerPoints = addContainerPoints
         
         super.init(frame: frame)
 
         backgroundColor = UIColor.clear
-        show(path: generateAreaPath(points: points))
+        show(path: generateAreaPath(points: points, pathGenerator: pathGenerator), colors: colors)
     }
     
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    fileprivate func generateAreaPath(points: [CGPoint]) -> UIBezierPath {
-        
-        let progressline = UIBezierPath()
-        progressline.lineWidth = 1.0
-        progressline.lineCapStyle = .round
-        progressline.lineJoinStyle = .round
-        
-        if let p = points.first {
-            progressline.move(to: p)
-        }
-        
-        for i in 1..<points.count {
-            let p = points[i]
-            progressline.addLine(to: p)
-        }
-        
-        progressline.close()
-        
-        return progressline
+    
+    fileprivate func generateAreaPath(points: [CGPoint], pathGenerator: ChartLinesViewPathGenerator) -> UIBezierPath {
+        return pathGenerator.generateAreaPath(points: points, lineWidth: 1.0)
     }
     
-    fileprivate func show(path: UIBezierPath) {
-        guard let firstColor = colors.first else {
+    fileprivate func show(path: UIBezierPath, colors: [UIColor]) {
+        var gradientColors = colors
+        guard let firstColor = gradientColors.first else {
             print("WARNING: No color(s) used for ChartAreasView")
             return
         }
-        let areaLayer = CAShapeLayer()
-        areaLayer.lineJoin = kCALineJoinBevel
-        areaLayer.fillColor   = firstColor.cgColor
-        areaLayer.lineWidth   = 2.0
-        areaLayer.strokeEnd   = 0.0
-        if colors.count == 1 {
-            layer.addSublayer(areaLayer)
+        
+        /*
+         * There is always the possibility to draw a single-color gradient.
+         * Since we're adding the gradient layer anyway we must ensure that there are at least 2 colors present.
+         * To handle this case we're adding the same color twice to the colors array to make sure we have at least 2 colors to fill the gradient layer with.
+         */
+        if gradientColors.count == 1 {
+            gradientColors.append(gradientColors[0])
         }
         
-        areaLayer.path = path.cgPath
-        areaLayer.strokeColor = firstColor.cgColor
+        let shape = CAShapeLayer()
+        shape.frame = self.bounds
         
-        if colors.count > 1 {
-            let gradient = CAGradientLayer()
-            gradient.anchorPoint = CGPoint.zero
-            var CGColors: [CGColor] = []
-            for color in colors {
-                CGColors.append(color.cgColor)
-            }
-            gradient.colors = CGColors
-            gradient.bounds = layer.bounds
-            
-            let pathY = path.bounds.origin.y
-            let pathHeight = path.bounds.height
-            let maskHeight = gradient.bounds.height
+        shape.path = path.cgPath
+        shape.strokeColor = firstColor.cgColor
+        shape.lineWidth = 2
+        shape.fillColor = nil
         
-            var bottomY: CGFloat?
-            var topY: CGFloat?
-            if pathY < pathHeight {
-                bottomY = (pathY/pathHeight)/2
-                topY = ((maskHeight - (pathHeight-pathY))/maskHeight)/2
-            } else {
-                bottomY = 0
-                topY = ((maskHeight-pathHeight)/maskHeight)
-            }
-            
-            gradient.startPoint = CGPoint(x: 0.5, y: 0+topY!)
-            gradient.endPoint = CGPoint(x: 0.5, y: 1.0-bottomY!)
-            gradient.mask = areaLayer
-            layer.addSublayer(gradient)
+        let gradient = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.colors = gradientColors.map{$0.cgColor}
+        
+        let mask = CAShapeLayer()
+        mask.frame = self.bounds
+        
+        if addContainerPoints {
+            path.addLine(to: CGPoint(x: shape.frame.size.width, y: shape.frame.size.height))
+            path.addLine(to: CGPoint(x: 0, y: shape.frame.size.height))
+            path.close()
         }
+        
+        mask.path = path.cgPath
+        mask.fillColor = UIColor.black.cgColor
+        gradient.mask = mask
+        
+        layer.addSublayer(gradient)
+        layer.addSublayer(shape)
         
         if animDuration > 0 {
             let maskLayer = CAGradientLayer()
@@ -109,7 +89,7 @@ open class ChartAreasView: UIView {
             maskLayer.startPoint = CGPoint(x: 1, y: 0)
             maskLayer.endPoint = CGPoint(x: 0, y: 0)
             layer.mask = maskLayer
-        
+            
             let revealAnimation = CABasicAnimation(keyPath: "bounds")
             revealAnimation.fromValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 0, height: layer.bounds.size.height))
             
@@ -126,3 +106,4 @@ open class ChartAreasView: UIView {
         }
     }
 }
+

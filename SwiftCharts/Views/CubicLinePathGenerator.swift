@@ -82,4 +82,9 @@ open class CubicLinePathGenerator: ChartLinesViewPathGenerator {
         
         return path
     }
+    
+    open func generateAreaPath(points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
+        return generatePath(points: points, lineWidth: lineWidth)
+    }
 }
+

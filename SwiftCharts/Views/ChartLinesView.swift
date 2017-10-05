@@ -10,6 +10,7 @@ import UIKit
 
 public protocol ChartLinesViewPathGenerator {
     func generatePath(points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath
+    func generateAreaPath(points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath
 }
 
 open class ChartLinesView: UIView {

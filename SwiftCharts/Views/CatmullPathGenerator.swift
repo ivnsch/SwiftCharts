@@ -16,6 +16,10 @@ open class CatmullPathGenerator: ChartLinesViewPathGenerator {
         guard let last = points.last else {return UIBezierPath()}
         return UIBezierPath(catmullRomPoints: points + [last.offset(x: 1)], alpha: 0.5) ?? CubicLinePathGenerator(tension1: 0.2, tension2: 0.2).generatePath(points: points, lineWidth: lineWidth)
     }
+    
+    open func generateAreaPath(points: [CGPoint], lineWidth: CGFloat) -> UIBezierPath {
+        return generatePath(points: points, lineWidth: lineWidth)
+    }
 }
 
 // src: https://github.com/andrelind/swift-catmullrom/blob/master/CatmullRom.swift (modified)
