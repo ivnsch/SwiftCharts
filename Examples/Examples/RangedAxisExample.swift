@@ -239,7 +239,7 @@ class RangedAxisExample: UIViewController {
     }
     
     
-    func rotated() {
+    @objc func rotated() {
         let orientation = UIApplication.shared.statusBarOrientation
         guard (lastOrientation.map{$0.rawValue != orientation.rawValue} ?? true) else {return}
         

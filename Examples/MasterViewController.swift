@@ -57,8 +57,9 @@ class MasterViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.titleTextAttributes = ["NSFontAttributeName" : ExamplesDefaults.fontWithSize(22)]
-        UIBarButtonItem.appearance().setTitleTextAttributes(["NSFontAttributeName" : ExamplesDefaults.fontWithSize(22)], for: UIControlState())
+        navigationController?.navigationBar.titleTextAttributes = [.font : ExamplesDefaults.fontWithSize(22)]
+        UIBarButtonItem.appearance().setTitleTextAttributes([.font : ExamplesDefaults.fontWithSize(22)],
+                                                            for: UIControlState())
         
         if let split = splitViewController {
             

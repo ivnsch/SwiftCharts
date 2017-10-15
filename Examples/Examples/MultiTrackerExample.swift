@@ -315,7 +315,7 @@ private extension ChartPointsTouchHighlightLayer {
                     if let text = chartPointModel.chartPoint.y.labels.first?.text {
                         let label = UILabel()
                         if #available(iOS 9.0, *) {
-                            label.font = UIFont.monospacedDigitSystemFont(ofSize: 15, weight: UIFontWeightBold)
+                            label.font = UIFont.monospacedDigitSystemFont(ofSize: 15, weight: .bold)
                         } else {
                             label.font = UIFont.systemFont(ofSize: 15)
                         }
