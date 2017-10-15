@@ -17,17 +17,17 @@ open class ChartPointsAreaLayer<T: ChartPoint>: ChartPointsLayer<T> {
     fileprivate let addContainerPoints: Bool
     fileprivate var areaViews: [UIView] = []
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], areaColors: [UIColor], animDuration: Float, animDelay: Float, addContainerPoints: Bool,  lineLayer: ChartPointsLineLayer<T>) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], areaColors: [UIColor], animDuration: Float, animDelay: Float, addContainerPoints: Bool,  pathGenerator: ChartLinesViewPathGenerator) {
         self.areaColors = areaColors
         self.animDuration = animDuration
         self.animDelay = animDelay
-        self.pathGenerator = lineLayer.pathGenerator
+        self.pathGenerator = pathGenerator
         self.addContainerPoints = addContainerPoints
         super.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints)
     }
     
-    public convenience init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], areaColor: UIColor, animDuration: Float, animDelay: Float, addContainerPoints: Bool,  lineLayer: ChartPointsLineLayer<T>) {
-        self.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, areaColors: [areaColor], animDuration: animDuration, animDelay: animDelay, addContainerPoints: addContainerPoints, lineLayer: lineLayer)
+    public convenience init(xAxis: ChartAxis, yAxis: ChartAxis, chartPoints: [T], areaColor: UIColor, animDuration: Float, animDelay: Float, addContainerPoints: Bool, pathGenerator: ChartLinesViewPathGenerator) {
+        self.init(xAxis: xAxis, yAxis: yAxis, chartPoints: chartPoints, areaColors: [areaColor], animDuration: animDuration, animDelay: animDelay, addContainerPoints: addContainerPoints, pathGenerator: pathGenerator)
     }
     
     open override func display(chart: Chart) {        
