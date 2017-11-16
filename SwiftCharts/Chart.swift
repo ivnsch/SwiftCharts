@@ -193,16 +193,18 @@ open class Chart: Pannable, Zoomable {
         let contentView = ChartContentView(frame: containerView.bounds)
         contentView.backgroundColor = UIColor.clear
         containerView.addSubview(contentView)
-        
-        // TODO It may be better to move this view to ChartPointsViewsLayer (together with customClipRect setting) and create it on demand.
-        containerViewUnclipped = UIView(frame: containerView.bounds)
-        view.addSubview(containerViewUnclipped)
-        let shape = CAShapeLayer()
-        shape.path = UIBezierPath(rect: settings.customClipRect ?? CGRect.zero).cgPath
-        containerViewUnclipped.layer.mask = shape
 
         containerView.clipsToBounds = settings.clipInnerFrame
         view.addSubview(containerView)
+
+        // TODO It may be better to move this view to ChartPointsViewsLayer (together with customClipRect setting) and create it on demand.
+        containerViewUnclipped = UIView(frame: containerView.bounds)
+        view.addSubview(containerViewUnclipped)
+        if let customClipRect = settings.customClipRect {
+            let shape = CAShapeLayer()
+            shape.path = UIBezierPath(rect: customClipRect).cgPath
+            containerViewUnclipped.layer.mask = shape
+        }
 
         self.contentView = contentView
         self.drawersContentView = drawersContentView
