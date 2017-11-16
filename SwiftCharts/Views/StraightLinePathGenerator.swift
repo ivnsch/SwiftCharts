@@ -51,8 +51,6 @@ open class StraightLinePathGenerator: ChartLinesViewPathGenerator {
             }
         }
         
-        progressline.close()
-        
         return progressline
     }
 }
