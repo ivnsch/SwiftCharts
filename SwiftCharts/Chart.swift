@@ -176,7 +176,8 @@ open class Chart: Pannable, Zoomable {
 
      - returns: The new Chart
      */
-    public init(view: ChartView, innerFrame: CGRect? = nil, settings: ChartSettings, layers: [ChartLayer]) {
+    public init(view: ChartView, innerFrame: CGRect? = nil, settings: ChartSettings, layers: [ChartLayer],
+                enableTouchOnUnclippedContainer: Bool = false) {
         
         self.layers = layers
         
@@ -197,9 +198,11 @@ open class Chart: Pannable, Zoomable {
         containerView.clipsToBounds = settings.clipInnerFrame
         view.addSubview(containerView)
 
-        // TODO It may be better to move this view to ChartPointsViewsLayer (together with customClipRect setting) and create it on demand.
+        // TODO consider moving this view to ChartPointsViewsLayer (together with customClipRect setting) and create it on demand.
+        // then `enableTouchOnUnclippedContainer` can also be removed from `Chart`
         containerViewUnclipped = UIView(frame: containerView.bounds)
         view.addSubview(containerViewUnclipped)
+        containerViewUnclipped.isUserInteractionEnabled = enableTouchOnUnclippedContainer
         if let customClipRect = settings.customClipRect {
             let shape = CAShapeLayer()
             shape.path = UIBezierPath(rect: customClipRect).cgPath
