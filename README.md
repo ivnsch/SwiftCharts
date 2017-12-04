@@ -61,28 +61,21 @@ Swift 4 - 1.2, iOS 11 - 7
 
 Add to your Podfile:
 
-Swift 4.x (master):
+Swift 4.x:
 ```ruby
 use_frameworks!
-pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
+pod 'SwiftCharts', '~> 0.6.1'
 ```
 
 Swift 3.x:
 ```ruby
 use_frameworks!
-pod 'SwiftCharts', '~> 0.6'
+pod 'SwiftCharts', '0.6'
 ```
-Note: To use Swift 3.x, you need Xcode 8+
 
 To use master directly:
 ```ruby
 pod 'SwiftCharts', :git => 'https://github.com/i-schuetz/SwiftCharts.git'
-```
-
-Swift 2.3 (not actively maintained):
-```ruby
-use_frameworks!
-pod 'SwiftCharts', '~> 0.4'
 ```
 
 And then:
@@ -99,9 +92,14 @@ import SwiftCharts
 
 Add to your Cartfile:
 
+Swift 4.x:
+```
+github "i-schuetz/SwiftCharts" ~> 0.6.1
+```
+
 Swift 3.x:
 ```
-github "i-schuetz/SwiftCharts" ~> 0.6
+github "i-schuetz/SwiftCharts" == 0.6
 ```
 
 Swift 2.3 (not actively maintained):
