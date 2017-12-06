@@ -129,7 +129,7 @@ open class ChartStackedBarsLayer<T: ChartPointViewBarStacked>: ChartCoordsSpaceL
     fileprivate let barWidth: CGFloat
     fileprivate let settings: ChartBarViewSettings
     
-    fileprivate var barViews: [UIView] = []
+    open fileprivate(set) var barViews: [UIView] = []
 
     fileprivate let stackFrameSelectionViewUpdater: ChartViewSelector?
     

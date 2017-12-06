@@ -89,7 +89,7 @@ open class ChartBarsLayer<T: ChartPointViewBar>: ChartCoordsSpaceLayer {
     fileprivate let horizontal: Bool
     fileprivate let settings: ChartBarViewSettings
     
-    fileprivate var barViews: [(model: ChartBarModel, view: T)] = []
+    open fileprivate(set) var barViews: [(model: ChartBarModel, view: T)] = []
     
     fileprivate var tapHandler: ((ChartTappedBar) -> Void)?
     
