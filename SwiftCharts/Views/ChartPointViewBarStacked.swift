@@ -14,14 +14,14 @@ public struct TappedChartPointViewBarStacked {
 }
 
 
-private class ChartBarStackFrameView: UIView {
+open class ChartBarStackFrameView: UIView {
     
     var isSelected: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
@@ -30,8 +30,8 @@ public typealias ChartPointViewBarStackedFrame = (rect: CGRect, color: UIColor)
 
 open class ChartPointViewBarStacked: ChartPointViewBar {
     
-
-    fileprivate var stackViews: [(index: Int, view: ChartBarStackFrameView, targetFrame: CGRect)] = []
+    
+    open fileprivate(set) var stackViews: [(index: Int, view: ChartBarStackFrameView, targetFrame: CGRect)] = []
     
     var stackFrameSelectionViewUpdater: ChartViewSelector?
     
