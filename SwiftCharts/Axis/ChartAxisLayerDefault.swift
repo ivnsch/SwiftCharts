@@ -159,7 +159,7 @@ open class ChartAxisLayerDefault: ChartAxisLayer {
     }
     
     open var axisValuesWithFrames: [(axisValue: Double, frames: [CGRect])] {
-        return labelDrawers.map {let (axisValue, drawers) = $0; return
+        return labelDrawers.map { axisValue, drawers in
             (axisValue: axisValue, frames: drawers.map{$0.frame})
         }
     }

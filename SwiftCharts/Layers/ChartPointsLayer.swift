@@ -126,7 +126,7 @@ open class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     }
     
     func generateChartPointModels(_ chartPoints: [T]) -> [ChartPointLayerModel<T>] {
-        return chartPoints.enumerated().map { let (index, chartPoint) = $0;
+        return chartPoints.enumerated().map { index, chartPoint in
             return ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar))
         }
     }
@@ -136,7 +136,7 @@ open class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
     open override func handleAxisInnerFrameChange(_ xLow: ChartAxisLayerWithFrameDelta?, yLow: ChartAxisLayerWithFrameDelta?, xHigh: ChartAxisLayerWithFrameDelta?, yHigh: ChartAxisLayerWithFrameDelta?) {
         super.handleAxisInnerFrameChange(xLow, yLow: yLow, xHigh: xHigh, yHigh: yHigh)
 
-        chartPointsModels = chartPoints.enumerated().map { let (index, chartPoint) = $0;
+        chartPointsModels = chartPoints.enumerated().map { index, chartPoint in
             return ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar))
         }
     }
