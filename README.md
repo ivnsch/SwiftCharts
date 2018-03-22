@@ -55,7 +55,7 @@ Swift 4 - 1.2, iOS 11 - 7
 ![ScreenShot](Screenshots/IMG_0041.jpeg)
 
 
-## Installation
+## 🛠 Installation
 
 ### CocoaPods
 
@@ -107,7 +107,7 @@ Swift 2.3 (not actively maintained):
 github "i-schuetz/SwiftCharts" ~> 0.4
 ```
 
-## Contribute
+## 🤝 Contribute
 
 Contributions are highly appreciated! To submit one:
 
@@ -115,31 +115,7 @@ Contributions are highly appreciated! To submit one:
 2. Commit changes to a branch in your fork
 3. Push your code and make a pull request
 
-
-## NOTE: 
-Starting at 18.09.2017 the issues aren't meant to be used anymore for help or questions. Please use the issues only to report bugs. Or if you are going to contribute and have problems understanding the internals.
-
-If you need help:
-
-1. Read the wiki.
-2. Run the examples - a good start when something isn't working is first modifying one of the examples to do what you want, then move to your actual project.
-3. Search through the issues.
-4. Dig in the source code - it's fairly accessible and it shouldn't be difficult to figure out what's going on by just reading it or debugging.
-5. Ask in StackOverflow!
-
-## Migration guide 0.5.x - 0.6
-
-- Inner frame is now passed only to `Chart` instead of to the layers.
-- `ChartSettings` now have to be passed to `Chart`.
-- `ChartAxisLayer` now doesn't directly manage the logic to map between screen and domain coordinates, but delegates this to a new `ChartAxis` class. `ChartAxis` is what has to be passed now to the chart layers. Shortly, pass to the layers `axisLayer.axis` instead of `axisLayer`.
-
-If I'm forgetting something, please add it or open an issue!
-
-The best way to migrate is probably to compare an example from 0.5.1 and 0.6. For the newly added zooming and panning you may need some work to get everything working correctly, depending on the kind of functionality you use. Here also please look at the examples.
-
-Please also take a look at the [changelog](https://github.com/i-schuetz/SwiftCharts/blob/master/CHANGELOG.md) for newly added functionality and features.
-
-## Quick start 
+## 🏎️ Quick start 
 
 Multiline chart:
 
@@ -195,7 +171,7 @@ self.view.addSubview(chart.view)
 self.chart = chart
 ```
 
-## Concept:
+## 👩‍🏫 Concept:
 
 - Layer architecture, which makes it extremely easy to customize charts, create new types, combine existing ones and add interactive elements.
 
@@ -278,25 +254,19 @@ Layers decide how to present their data - this can be done adding subviews, (CA)
 
 View based layers will use a generator function to generate chart point views. This function receives the complete state of each chartpoint (model data, screen location) and produces an UIView, allowing any type of customization.
 
-### Hello world:
+### 🐤 Hello world:
 
 There's a [hello world](Examples/Examples/HelloWorld.swift) included in the examples, similar to the above code, with a bit more explanations. Change some properties of the generated views, copy paste the chartPointsLineLayer used in the snippet above, and pass it to the chart's layers, to display a line behind the views, and you have already mastered the main concepts!
 
-#### Important!
+#### ⚠️ Important!
 
 * Don't forget to always keep a strong reference to the chart instance or it will be released, which leads to axis & labels not showing.
 
 * If you have a lot of axis labels in your chart it may be necessary to do the calculation of the coordinate space in the background, to avoid possible delays which are noticeable during transitions or scrolling. See ScrollExample or MultipleAxesExample example for this.
 
-## Tasks
+## ✅ Tasks
 
 SwiftCharts has got now some [projects](https://github.com/i-schuetz/SwiftCharts/projects) to plan features and improvements. Feel free to grab any of these topics even if it's just to add feedback. You can open an issue for this. Other options like opening a Slack channel are possible.
-
-## "Used by" 
-
-Someone gave me recently the idea to add a "this library is used by" section to SwiftCharts - if you want to be shown, please send me a [message!](http://www.ivanschuetz.com/contact-impressum.php)!
-
-(It may take a while until this is shown, as I want to collect a few first)
 
 ## Created By:
 
