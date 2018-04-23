@@ -313,8 +313,14 @@ open class Chart: Pannable, Zoomable {
         contentView.frame = CGRect(x: contentView.frame.origin.x, y: contentView.frame.origin.y, width: contentView.frame.width - (yLow.deltaDefault0 + yHigh.deltaDefault0), height: contentView.frame.height - (xLow.deltaDefault0 + xHigh.deltaDefault0))
 
         // Scale contents of content view
-        let widthChangeFactor = contentView.frame.width / previousContentFrame.width
-        let heightChangeFactor = contentView.frame.height / previousContentFrame.height
+        var widthChangeFactor: CGFloat = 0
+        if previousContentFrame.width.isZero == false {
+            widthChangeFactor = contentView.frame.width / previousContentFrame.width
+        }
+        var heightChangeFactor: CGFloat = 0
+        if previousContentFrame.height.isZero == false {
+            heightChangeFactor = contentView.frame.height / previousContentFrame.height
+        }
         let frameBeforeScale = contentView.frame
         contentView.transform = CGAffineTransform(scaleX: contentView.transform.a * widthChangeFactor, y: contentView.transform.d * heightChangeFactor)
         contentView.frame = frameBeforeScale
