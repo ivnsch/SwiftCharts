@@ -31,7 +31,7 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
         super.init(xAxis: xAxis, yAxis: yAxis, innerFrame: innerFrame, chartPoints: chartPoints, viewGenerator: viewGenerator)
     }
 
-    override func display(chart: Chart) {
+    override open func display(chart: Chart) {
         let view = UIView(frame: chart.bounds)
         self.chart = chart
 

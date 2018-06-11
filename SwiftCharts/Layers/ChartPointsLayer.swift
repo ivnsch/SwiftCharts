@@ -52,7 +52,7 @@ open class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
         }
     }
     
-    func display(chart: Chart) {}
+    open func display(chart: Chart) {}
     
     open func chartPointScreenLoc(_ chartPoint: ChartPoint) -> CGPoint {
         return self.modelLocToScreenLoc(x: chartPoint.x.scalar, y: chartPoint.y.scalar)

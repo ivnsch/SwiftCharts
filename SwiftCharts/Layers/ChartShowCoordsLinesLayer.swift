@@ -42,7 +42,7 @@ open class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
     }
 
     
-    override func display(chart: Chart) {
+    override open func display(chart: Chart) {
         let view = UIView(frame: chart.bounds)
         view.isUserInteractionEnabled = true
         chart.addSubview(view)

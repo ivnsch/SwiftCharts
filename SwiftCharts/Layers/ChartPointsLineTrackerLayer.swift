@@ -222,7 +222,7 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
         }
     }
     
-    override func display(chart: Chart) {
+    override open func display(chart: Chart) {
         let view = TrackerView(frame: chart.bounds, updateFunc: {[weak self] location in
             self?.updateTrackerLine(touchPoint: location)
         })
