@@ -11,7 +11,7 @@ import UIKit
 extension Array where Element: ChartAxisValue {
 
     func calculateLabelsDimensions() -> (total: CGSize, max: CGSize) {
-        return flatMap({
+        return compactMap({
             guard let label = $0.labels.first else {return nil}
             return label.textSizeNonRotated
         }).reduce((total: CGSize.zero, max: CGSize.zero), {(lhs: (total: CGSize, max: CGSize), rhs: CGSize) in
