@@ -94,7 +94,7 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
     }
     
     fileprivate func generateChartPointViews(chartPointModels: [ChartPointLayerModel<T>], chart: Chart) -> [ViewWithChartPoint] {
-        let viewsWithChartPoints: [ViewWithChartPoint] = chartPointsModels.flatMap {model in
+        let viewsWithChartPoints: [ViewWithChartPoint] = chartPointsModels.compactMap {model in
             if let view = viewGenerator(model, self, chart) {
                 return (view: view, chartPointModel: model)
             } else {

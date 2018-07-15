@@ -205,7 +205,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
             circles
         ]
         
-        return Chart(frame: frame, innerFrame: coordsSpace.chartInnerFrame, settings: chartSettings, layers: layers.flatMap { $0 })
+        return Chart(frame: frame, innerFrame: coordsSpace.chartInnerFrame, settings: chartSettings, layers: layers.compactMap { $0 })
     }
 
     private func generateIOBChartWithFrame(frame: CGRect) -> Chart? {
@@ -273,7 +273,7 @@ class MultiTrackerExample: UIViewController, UIGestureRecognizerDelegate {
             IOBLine,
         ]
 
-        return Chart(frame: frame, innerFrame: coordsSpace.chartInnerFrame, settings: chartSettings, layers: layers.flatMap { $0 })
+        return Chart(frame: frame, innerFrame: coordsSpace.chartInnerFrame, settings: chartSettings, layers: layers.compactMap { $0 })
     }
 }
 
