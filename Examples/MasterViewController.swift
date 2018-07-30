@@ -72,8 +72,9 @@ class MasterViewController: UITableViewController {
             detailViewController?.title = example.1
         }
         
-        
-        performSegue(withIdentifier: "showDetail", sender: self)
+        if (UIDevice.current.userInterfaceIdiom != .pad) {
+            performSegue(withIdentifier: "showDetail", sender: self)
+        }
     }
     
     // MARK: - Segues
