@@ -73,7 +73,15 @@ class MasterViewController: UITableViewController {
         }
         
         
-        performSegue(withIdentifier: "showDetail", sender: self)
+        if (UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad)
+        {
+            // Ipad
+        }
+        else
+        {
+            // Iphone
+             performSegue(withIdentifier: "showDetail", sender: self)
+        }
     }
     
     // MARK: - Segues
