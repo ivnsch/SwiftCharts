@@ -26,7 +26,7 @@ open class ChartAxisValueFloat: ChartAxisValue {
         return ChartAxisValueFloat(CGFloat(scalar), formatter: self.formatter, labelSettings: self.labelSettings)
     }
     
-    static var defaultFormatter: NumberFormatter = {
+    static public var defaultFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 2
         return formatter

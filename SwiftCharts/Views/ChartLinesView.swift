@@ -20,7 +20,7 @@ open class ChartLinesView: UIView {
     fileprivate let animDelay: Float
     fileprivate let dashPattern: [Double]?
     
-    init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
+    public init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
         
         self.lineColor = lineColor
         self.lineWidth = lineWidth

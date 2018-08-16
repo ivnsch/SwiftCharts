@@ -20,7 +20,7 @@ open class ChartUtils {
      - returns: The size of the string if it were drawn with a given font
      */
     open class func textSize(_ text: String, font: UIFont) -> CGSize {
-        return NSAttributedString(string: text, attributes: [NSFontAttributeName: font]).size()
+        return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font]).size()
     }
 
     /**
