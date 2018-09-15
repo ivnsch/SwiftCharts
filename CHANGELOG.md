@@ -4,6 +4,27 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.2] - 2018.09.15
+- Fix iPad demo crash
+- Add missing AppIcon image sizes
+- Fix Xcode 10 compilation
+- Fix dividing by zero while calculating axis inner frame
+- Fill area width fixed: now it is equal to graph line width
+- Expose bar views, e.g. to enable highlighting by external events
+
+## [0.6.1] - 2017.12.04
+- Fix area chart broken with straight line generator
+- Fix unclipped container behind content view, don't mask if there's no clip rect
+- Implemented gradient fill for curved areas
+- Added support for gradient line charts
+- Make candle stick fill colours configurable
+- ChartPointViewBarStacked: allowing only rounding some corners
+- Make candle stick fill colours configurable, show usage in example
+- Fixed 2 leaks setting stackedTapHandler 
+- Bar chart axis labels now use provided label font and color
+- Swift 4 support
+- Fix passing incorrect parameter to Zoomable
+
 ## [0.6] - 2017.04.23
 - Fix guidelines overlap with axis lines
 - Fix axis line minor irregularities (fixes #151)
