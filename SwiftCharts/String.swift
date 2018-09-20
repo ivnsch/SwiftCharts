@@ -27,7 +27,7 @@ extension String {
 
     func size(_ font: UIFont) -> CGSize {
         #if swift(>=4)
-        return NSAttributedString(string: self, attributes: [NSAttributedStringKey.font: font]).size()
+        return NSAttributedString(string: self, attributes: [NSAttributedString.Key.font: font]).size()
         #else
         return NSAttributedString(string: self, attributes: [NSFontAttributeName: font]).size()
         #endif
