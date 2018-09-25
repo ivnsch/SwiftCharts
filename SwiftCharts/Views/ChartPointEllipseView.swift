@@ -44,7 +44,7 @@ open class ChartPointEllipseView: UIView {
                 alpha = 0
             }
             
-            UIView.animate(withDuration: TimeInterval(animDuration), delay: TimeInterval(animDelay), usingSpringWithDamping: animDamping, initialSpringVelocity: animInitSpringVelocity, options: UIViewAnimationOptions(), animations: {
+            UIView.animate(withDuration: TimeInterval(animDuration), delay: TimeInterval(animDelay), usingSpringWithDamping: animDamping, initialSpringVelocity: animInitSpringVelocity, options: UIView.AnimationOptions(), animations: {
                 if self.animateSize {
                     self.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }

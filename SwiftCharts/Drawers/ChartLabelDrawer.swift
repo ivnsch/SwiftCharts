@@ -167,7 +167,7 @@ open class ChartLabelDrawer: ChartContextDrawer {
     
     fileprivate func drawLabel(x: CGFloat, y: CGFloat, text: String) {
         #if swift(>=4)
-        let attributes = [NSAttributedStringKey.font: label.settings.font, NSAttributedStringKey.foregroundColor: label.settings.fontColor]
+        let attributes = [NSAttributedString.Key.font: label.settings.font, NSAttributedString.Key.foregroundColor: label.settings.fontColor]
         #else
         let attributes = [NSFontAttributeName: label.settings.font, NSForegroundColorAttributeName: label.settings.fontColor]
         #endif

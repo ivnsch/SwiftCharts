@@ -88,7 +88,7 @@ open class ChartViewAnimators {
     }
     
     fileprivate func animate(_ settings: ChartViewAnimatorsSettings, animations: @escaping () -> Void, onFinish: @escaping () -> Void) {
-        UIView.animate(withDuration: TimeInterval(settings.animDuration), delay: TimeInterval(settings.animDelay), usingSpringWithDamping: settings.animDamping, initialSpringVelocity: settings.animInitSpringVelocity, options: UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: TimeInterval(settings.animDuration), delay: TimeInterval(settings.animDelay), usingSpringWithDamping: settings.animDamping, initialSpringVelocity: settings.animInitSpringVelocity, options: UIView.AnimationOptions(), animations: {
             animations()
             }, completion: {finished in
                 if finished {
