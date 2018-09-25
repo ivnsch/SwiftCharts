@@ -64,7 +64,7 @@ Add to your Podfile:
 Swift 4.x:
 ```ruby
 use_frameworks!
-pod 'SwiftCharts', '~> 0.6.2'
+pod 'SwiftCharts', '~> 0.6.3'
 ```
 
 Swift 3.x:
@@ -94,7 +94,7 @@ Add to your Cartfile:
 
 Swift 4.x:
 ```
-github "i-schuetz/SwiftCharts" ~> 0.6.2
+github "i-schuetz/SwiftCharts" ~> 0.6.3
 ```
 
 Swift 3.x:
