@@ -10,8 +10,8 @@ import UIKit
 
 open class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
 
-    open let itemSize: CGSize
-    open let itemFillColor: UIColor
+    public let itemSize: CGSize
+    public let itemFillColor: UIColor
     
     fileprivate let optimized: Bool
     
@@ -187,7 +187,7 @@ open class ChartPointsScatterCirclesLayer<T: ChartPoint>: ChartPointsScatterLaye
 
 open class ChartPointsScatterCrossesLayer<T: ChartPoint>: ChartPointsScatterLayer<T> {
     
-    open let strokeWidth: CGFloat
+    public let strokeWidth: CGFloat
     
     fileprivate let line1PointsCG: [CGPoint]
     fileprivate let line2PointsCG: [CGPoint]

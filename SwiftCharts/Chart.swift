@@ -91,12 +91,12 @@ public protocol ChartDelegate {
 open class Chart: Pannable, Zoomable {
 
     /// The view that the chart is drawn in
-    open let view: ChartView
+    public let view: ChartView
 
-    open let containerView: UIView
-    open let contentView: UIView
-    open let drawersContentView: UIView
-    open let containerViewUnclipped: UIView
+    public let containerView: UIView
+    public let contentView: UIView
+    public let drawersContentView: UIView
+    public let containerViewUnclipped: UIView
 
     /// The layers of the chart that are drawn in the view
     fileprivate let layers: [ChartLayer]

@@ -10,8 +10,8 @@ import UIKit
 
 open class ChartPoint: Hashable, Equatable, CustomStringConvertible {
     
-    open let x: ChartAxisValue
-    open let y: ChartAxisValue
+    public let x: ChartAxisValue
+    public let y: ChartAxisValue
     
     required public init(x: ChartAxisValue, y: ChartAxisValue) {
         self.x = x

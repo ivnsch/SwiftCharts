@@ -11,7 +11,7 @@ import UIKit
 @available(*, deprecated: 0.2.5, message: "use ChartAxisValueDouble instead")
 open class ChartAxisValueFloat: ChartAxisValue {
     
-    open let formatter: NumberFormatter
+    public let formatter: NumberFormatter
 
     open var float: CGFloat {
         return CGFloat(scalar)

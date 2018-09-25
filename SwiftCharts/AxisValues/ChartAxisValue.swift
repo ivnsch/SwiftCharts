@@ -15,9 +15,9 @@ import UIKit
 open class ChartAxisValue: Equatable, Hashable, CustomStringConvertible {
     
     /// The backing value for all other types of axis values
-    open let scalar: Double
-    open let labelSettings: ChartLabelSettings
-    open var hidden = false
+    public let scalar: Double
+    public let labelSettings: ChartLabelSettings
+    public var hidden = false
 
     /// The labels that will be displayed in the chart
     open var labels: [ChartAxisLabel] {

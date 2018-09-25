@@ -123,7 +123,7 @@ open class ChartAxisLayerDefault: ChartAxisLayer {
     
     open var currentAxisValues: [Double] = []
     
-    open let valuesGenerator: ChartAxisValuesGenerator
+    public let valuesGenerator: ChartAxisValuesGenerator
     open var labelsGenerator: ChartAxisLabelsGenerator
     
     let axisTitleLabels: [ChartAxisLabel]

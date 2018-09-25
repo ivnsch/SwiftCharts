@@ -131,9 +131,9 @@ class StackedBarsExample: UIViewController {
             self.controller = controller
             
             self.horizontal = UIButton()
-            self.horizontal.setTitle("Horizontal", for: UIControlState())
+            self.horizontal.setTitle("Horizontal", for: UIControl.State())
             self.vertical = UIButton()
-            self.vertical.setTitle("Vertical", for: UIControlState())
+            self.vertical.setTitle("Vertical", for: UIControl.State())
             
             self.buttonDirs = [horizontal: true, vertical: false]
             
@@ -144,7 +144,7 @@ class StackedBarsExample: UIViewController {
             
             for button in [horizontal, vertical] {
                 button.titleLabel?.font = ExamplesDefaults.fontWithSize(14)
-                button.setTitleColor(UIColor.blue, for: UIControlState())
+                button.setTitleColor(UIColor.blue, for: UIControl.State())
                 button.addTarget(self, action: #selector(DirSelector.buttonTapped(_:)), for: .touchUpInside)
             }
         }
@@ -175,9 +175,9 @@ class StackedBarsExample: UIViewController {
                 "\(str)-(\(buttonsSpace))-[\(tuple.0)]"
             }
             
-            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraints(withVisualFormat: "V:|[\($0.0)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
+            let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraints(withVisualFormat: "V:|[\($0.0)]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDict)}
             
-            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
+            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: hConstraintStr, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDict)
                 + vConstraits)
         }
         

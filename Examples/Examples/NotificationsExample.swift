@@ -46,7 +46,7 @@ class NotificationsExample: UIViewController {
                 label.transform = CGAffineTransform(scaleX: 0, y: 0)
                 
                 chartPointView.movedToSuperViewHandler = {
-                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
+                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIView.AnimationOptions(), animations: {
                         label.transform = CGAffineTransform(scaleX: 1, y: 1)
                     }, completion: nil)
                 }
@@ -58,8 +58,8 @@ class NotificationsExample: UIViewController {
                     let ok = "Ok"
                     
                         if #available(iOS 8.0, *) {
-                            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-                            alert.addAction(UIAlertAction(title: ok, style: UIAlertActionStyle.default, handler: nil))
+                            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+                            alert.addAction(UIAlertAction(title: ok, style: UIAlertAction.Style.default, handler: nil))
                             self!.present(alert, animated: true, completion: nil)
 
                         } else {

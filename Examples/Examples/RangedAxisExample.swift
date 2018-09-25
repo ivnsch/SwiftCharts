@@ -22,7 +22,7 @@ class RangedAxisExample: UIViewController {
         
         view.backgroundColor = UIColor.black
         
-        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
 
     private func initChart() {

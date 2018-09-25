@@ -25,8 +25,8 @@ open class ChartAxis: CustomStringConvertible {
     open internal(set) var firstVisibleScreen: CGFloat
     open internal(set) var lastVisibleScreen: CGFloat
     
-    open let paddingFirstScreen: CGFloat
-    open let paddingLastScreen: CGFloat
+    public let paddingFirstScreen: CGFloat
+    public let paddingLastScreen: CGFloat
     
     /// Optional fixed padding value which overwrites paddingFirstScreen/paddingLastScreen when determining if model values are in bounds. This is useful e.g. when setting an initial zoom level, and scaling the padding proportionally such that it appears constant for different zoom levels. In this case it may be necessary to store the un-scaled padding in these variables to keep the bounds constant.
     open var fixedPaddingFirstScreen: CGFloat?

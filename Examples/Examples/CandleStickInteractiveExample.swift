@@ -78,9 +78,7 @@ class CandleStickInteractiveExample: UIViewController {
             let calendar = Calendar.current
             let monthDays = calendar.range(of: .day, in: .month, for: date)!
 
-            let arr = CountableRange<Int>(monthDays)
-
-            return arr.map {day in
+            return monthDays.map {day in
                 let date = dateWithComponents(day, month, year)
                 let axisValue = ChartAxisValueDate(date: date, formatter: displayFormatter, labelSettings: labelSettings)
                 axisValue.hidden = !(day % 5 == 0)
@@ -252,9 +250,9 @@ private class InfoView: UIView {
             "\(str)-(\(labelsSpace))-[\(tuple.0)]"
         }
         
-        let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraints(withVisualFormat: "V:|-(18)-[\($0.0)(\(circleDiameter))]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)}
+        let vConstraits = namedViews.flatMap {NSLayoutConstraint.constraints(withVisualFormat: "V:|-(18)-[\($0.0)(\(circleDiameter))]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDict)}
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: hConstraintStr, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: hConstraintStr, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDict)
             + vConstraits)
         
     }

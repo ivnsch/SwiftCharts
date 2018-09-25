@@ -96,7 +96,7 @@ class AreasExample: UIViewController, ChartDelegate {
                     bubbleView.addSubview(infoView)
                     weakSelf.popups.append(bubbleView)
                     
-                    UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions(), animations: {
+                    UIView.animate(withDuration: 0.2, delay: 0, options: UIView.AnimationOptions(), animations: {
                         view.selected = true
                         selectedView = view
                         
@@ -105,7 +105,7 @@ class AreasExample: UIViewController, ChartDelegate {
                 }
             }
             
-            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
+            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIView.AnimationOptions(), animations: {
                 let w: CGFloat = v.frame.size.width
                 let h: CGFloat = v.frame.size.height
                 let frame = CGRect(x: screenLoc.x - (w/2), y: screenLoc.y - (h/2), width: w, height: h)

@@ -83,7 +83,7 @@ public struct ScreenLine<T: ChartPoint> {
 open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     open fileprivate(set) var lineModels: [ChartLineModel<T>]
     open fileprivate(set) var lineViews: [ChartLinesView] = []
-    open let pathGenerator: ChartLinesViewPathGenerator
+    public let pathGenerator: ChartLinesViewPathGenerator
     open fileprivate(set) var screenLines: [(screenLine: ScreenLine<T>, view: ChartLinesView)] = []
     
     public let useView: Bool

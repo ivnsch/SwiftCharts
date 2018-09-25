@@ -10,7 +10,7 @@ import UIKit
 
 open class ChartAxisValueInt: ChartAxisValue {
 
-    open let int: Int
+    public let int: Int
 
     public init(_ int: Int, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.int = int

@@ -980,7 +980,7 @@
 					06342AC01B8AAD7F001C9F5D = {
 						CreatedOnToolsVersion = 6.4;
 						DevelopmentTeam = 37QAPDY2PR;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 1000;
 					};
 					06405DA51B8AA74700A689FF = {
 						CreatedOnToolsVersion = 6.4;
@@ -1386,7 +1386,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.schuetz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1402,7 +1402,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.schuetz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

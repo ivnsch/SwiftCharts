@@ -37,11 +37,11 @@ public enum ChartAxisLabelNumberSuffixUnit {
 
 open class ChartAxisLabelsGeneratorNumberSuffix: ChartAxisLabelsGeneratorBase {
     
-    open let labelSettings: ChartLabelSettings
+    public let labelSettings: ChartLabelSettings
     
-    open let startUnit: ChartAxisLabelNumberSuffixUnit
+    public let startUnit: ChartAxisLabelNumberSuffixUnit
     
-    open let formatter: NumberFormatter
+    public let formatter: NumberFormatter
     
     public init(labelSettings: ChartLabelSettings, startUnit: ChartAxisLabelNumberSuffixUnit = .m, formatter: NumberFormatter = ChartAxisLabelsGeneratorNumberSuffix.defaultFormatter) {
         self.labelSettings = labelSettings
