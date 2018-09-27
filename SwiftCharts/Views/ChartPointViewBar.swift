@@ -63,9 +63,9 @@ open class ChartPointViewBar: UIView {
         }
     }
     
-    open let isHorizontal: Bool
+    public let isHorizontal: Bool
     
-    open let settings: ChartBarViewSettings
+    public let settings: ChartBarViewSettings
     
     public required init(p1: CGPoint, p2: CGPoint, width: CGFloat, bgColor: UIColor?, settings: ChartBarViewSettings) {
         

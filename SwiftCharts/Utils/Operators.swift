@@ -15,7 +15,7 @@ func =~ (a: Float, b: Float) -> Bool {
 }
 
 func =~ (a: CGFloat, b: CGFloat) -> Bool {
-    return fabs(a - b) < CGFloat.ulpOfOne
+    return abs(a - b) < CGFloat.ulpOfOne
 }
 
 func =~ (a: Double, b: Double) -> Bool {

@@ -60,9 +60,9 @@ public enum ChartLabelDrawerRotationKeep {
 
 open class ChartLabelDrawer: ChartContextDrawer {
     
-    open var screenLoc: CGPoint
-    open var transform: CGAffineTransform?    
-    open let label: ChartAxisLabel
+    public var screenLoc: CGPoint
+    public var transform: CGAffineTransform?
+    public let label: ChartAxisLabel
     
     open var center: CGPoint {
         return CGPoint(x: screenLoc.x + size.width / 2, y: screenLoc.y + size.height / 2)
@@ -167,7 +167,7 @@ open class ChartLabelDrawer: ChartContextDrawer {
     
     fileprivate func drawLabel(x: CGFloat, y: CGFloat, text: String) {
         #if swift(>=4)
-        let attributes = [NSAttributedStringKey.font: label.settings.font, NSAttributedStringKey.foregroundColor: label.settings.fontColor]
+        let attributes = [NSAttributedString.Key.font: label.settings.font, NSAttributedString.Key.foregroundColor: label.settings.fontColor]
         #else
         let attributes = [NSFontAttributeName: label.settings.font, NSForegroundColorAttributeName: label.settings.fontColor]
         #endif

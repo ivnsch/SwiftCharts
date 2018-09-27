@@ -17,7 +17,7 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
 
     fileprivate let chartPointLayerModelForScreenLocFilter: ChartPointLayerModelForScreenLocFilter
 
-    open let gestureRecognizer: UIGestureRecognizer
+    public let gestureRecognizer: UIGestureRecognizer
     
     open var onCompleteHighlight: (()->Void)?
 

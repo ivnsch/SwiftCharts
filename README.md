@@ -26,7 +26,7 @@ Easy to use and highly customizable charts library for iOS
 
 <sub>*These are separate repos for better focus and reusability.</sub>
 
-Swift 4 - 1.2, iOS 11 - 7
+iOS 7+
 
 [Video](https://www.youtube.com/watch?v=bD6uDF-KckM)
 
@@ -64,7 +64,7 @@ Add to your Podfile:
 Swift 4.x:
 ```ruby
 use_frameworks!
-pod 'SwiftCharts', '~> 0.6.1'
+pod 'SwiftCharts', '~> 0.6.2'
 ```
 
 Swift 3.x:
@@ -94,7 +94,7 @@ Add to your Cartfile:
 
 Swift 4.x:
 ```
-github "i-schuetz/SwiftCharts" ~> 0.6.1
+github "i-schuetz/SwiftCharts" ~> 0.6.2
 ```
 
 Swift 3.x:

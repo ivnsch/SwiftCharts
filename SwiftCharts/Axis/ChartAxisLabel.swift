@@ -12,9 +12,9 @@ import UIKit
 open class ChartAxisLabel {
 
     /// Displayed text. Can be truncated.
-    open let text: String
+    public let text: String
     
-    open let settings: ChartLabelSettings
+    public let settings: ChartLabelSettings
 
     open fileprivate(set) var originalText: String
     

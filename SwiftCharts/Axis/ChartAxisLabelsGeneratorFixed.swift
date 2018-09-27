@@ -10,7 +10,7 @@ import Foundation
 
 open class ChartAxisLabelsGeneratorFixed: ChartAxisLabelsGeneratorBase {
     
-    open let dict: [Double: [ChartAxisLabel]]
+    public let dict: [Double: [ChartAxisLabel]]
     
     public convenience init(axisValues: [ChartAxisValue]) {
         var dict = [Double: [ChartAxisLabel]]()

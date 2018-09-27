@@ -122,7 +122,7 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint, U>: ChartPointsLayer<T> {
     
     open var positionUpdateHandler: (([ChartTrackerSelectedChartPoint<T, U>]) -> Void)?
     
-    open let lines: [ChartTrackerLineModel<T, U>]
+    public let lines: [ChartTrackerLineModel<T, U>]
     open var lineModels: [ChartTrackerLineLayerModel<T, U>] = []
     
     fileprivate var currentIntersections: [ChartTrackerIntersection<T, U>] = []

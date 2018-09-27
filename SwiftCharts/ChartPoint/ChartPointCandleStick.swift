@@ -10,11 +10,11 @@ import UIKit
 
 open class ChartPointCandleStick: ChartPoint {
     
-    open let date: Date
-    open let open: Double
-    open let close: Double
-    open let low: Double
-    open let high: Double
+    public let date: Date
+    public let open: Double
+    public let close: Double
+    public let low: Double
+    public let high: Double
     
     public init(date: Date, formatter: DateFormatter, high: Double, low: Double, open: Double, close: Double, labelHidden: Bool = false) {
         

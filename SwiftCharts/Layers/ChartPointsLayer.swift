@@ -67,7 +67,7 @@ open class ChartPointsLayer<T: ChartPoint>: ChartCoordsSpaceLayer {
 
     open internal(set) var chartPointsModels: [ChartPointLayerModel<T>] = []
     
-    open let displayDelay: Float
+    public let displayDelay: Float
     
     open var chartPointScreenLocs: [CGPoint] {
         return chartPointsModels.map{$0.screenLoc}

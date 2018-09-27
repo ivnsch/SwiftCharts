@@ -11,7 +11,7 @@ import Foundation
 /// Generates a single unformatted label for scalar
 open class ChartAxisLabelsGeneratorBasic: ChartAxisLabelsGeneratorBase {
 
-    open let labelSettings: ChartLabelSettings
+    public let labelSettings: ChartLabelSettings
     
     public init(labelSettings: ChartLabelSettings) {
         self.labelSettings = labelSettings

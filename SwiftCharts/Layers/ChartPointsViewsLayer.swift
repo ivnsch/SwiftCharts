@@ -182,7 +182,7 @@ open class ChartPointsViewsLayer<T: ChartPoint, U: UIView>: ChartPointsLayer<T> 
     
     open func bringToFront() {
         for (view, _) in viewsWithChartPoints {
-            view.superview?.bringSubview(toFront: view)
+            view.superview?.bringSubviewToFront(view)
         }
     }
 }

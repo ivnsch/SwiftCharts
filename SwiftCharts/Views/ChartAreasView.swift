@@ -99,7 +99,7 @@ open class ChartAreasView: UIView {
             revealAnimation.duration = CFTimeInterval(animDuration)
             
             revealAnimation.isRemovedOnCompletion = false
-            revealAnimation.fillMode = kCAFillModeForwards
+            revealAnimation.fillMode = CAMediaTimingFillMode.forwards
             
             revealAnimation.beginTime = CACurrentMediaTime() + CFTimeInterval(animDelay)
             layer.mask?.add(revealAnimation, forKey: "revealAnimation")

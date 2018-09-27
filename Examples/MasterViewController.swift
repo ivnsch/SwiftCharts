@@ -59,7 +59,7 @@ class MasterViewController: UITableViewController {
         
         navigationController?.navigationBar.titleTextAttributes = [.font : ExamplesDefaults.fontWithSize(22)]
         UIBarButtonItem.appearance().setTitleTextAttributes([.font : ExamplesDefaults.fontWithSize(22)],
-                                                            for: UIControlState())
+                                                            for: UIControl.State())
         
         if let split = splitViewController {
             
@@ -72,8 +72,9 @@ class MasterViewController: UITableViewController {
             detailViewController?.title = example.1
         }
         
-        
-        performSegue(withIdentifier: "showDetail", sender: self)
+        if (UIDevice.current.userInterfaceIdiom != .pad) {
+            performSegue(withIdentifier: "showDetail", sender: self)
+        }
     }
     
     // MARK: - Segues

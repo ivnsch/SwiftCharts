@@ -10,11 +10,11 @@ import UIKit
 
 open class ChartAxisValuesGeneratorFixedNonOverlapping: ChartAxisValuesGeneratorFixed {
     
-    open let axisValues: [ChartAxisValue]
+    public let axisValues: [ChartAxisValue]
     
-    open let maxLabelSize: CGSize
-    open let totalLabelSize: CGSize
-    open let spacing: CGFloat
+    public let maxLabelSize: CGSize
+    public let totalLabelSize: CGSize
+    public let spacing: CGFloat
     
     fileprivate var isX: Bool
     

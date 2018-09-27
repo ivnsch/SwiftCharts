@@ -10,18 +10,18 @@ import UIKit
 
 open class InfoBubble: UIView {
 
-    open let arrowWidth: CGFloat
-    open let arrowHeight: CGFloat
-    open let bgColor: UIColor
-    open let arrowX: CGFloat
-    open let arrowY: CGFloat
+    public let arrowWidth: CGFloat
+    public let arrowHeight: CGFloat
+    public let bgColor: UIColor
+    public let arrowX: CGFloat
+    public let arrowY: CGFloat
     
     fileprivate let contentView: UIView?
     
-    open let minSuperviewPadding: CGFloat
-    open let space: CGFloat
+    public let minSuperviewPadding: CGFloat
+    public let space: CGFloat
     
-    open let point: CGPoint
+    public let point: CGPoint
     
     open var tapHandler: (() -> Void)?
 
@@ -29,7 +29,7 @@ open class InfoBubble: UIView {
         return superview.map{inverted($0)} ?? false
     }
 
-    open let horizontal: Bool
+    public let horizontal: Bool
     
     public convenience init(point: CGPoint, size: CGSize, superview: UIView, arrowHeight: CGFloat = 15, contentView: UIView, bgColor: UIColor = UIColor.gray, minSuperviewPadding: CGFloat = 2, space: CGFloat = 12, horizontal: Bool = false) {
         
