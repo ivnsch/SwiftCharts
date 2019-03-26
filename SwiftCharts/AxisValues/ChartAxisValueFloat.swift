@@ -8,7 +8,7 @@
 
 import UIKit
 
-@available(*, deprecated: 0.2.5, message: "use ChartAxisValueDouble instead")
+@available(*, deprecated, message: "use ChartAxisValueDouble instead")
 open class ChartAxisValueFloat: ChartAxisValue {
     
     public let formatter: NumberFormatter
