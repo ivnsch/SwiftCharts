@@ -319,7 +319,7 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint, U>: ChartPointsLayer<T> {
         if lineView == nil {
             let lineView = UIView()
             lineView.frame.size = CGSize(width: 2, height: 10000000)
-            lineView.backgroundColor = UIColor.black
+            lineView.backgroundColor = self.lineColor
             chart?.addSubviewNoTransform(lineView)
             self.lineView = lineView
         }
