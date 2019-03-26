@@ -639,7 +639,8 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
             chart?.onZoomEnd()
         case .failed:
             fallthrough
-        case .possible: break
+        default:
+            break
         }
         
         sender.scale = 1.0
@@ -788,11 +789,15 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
             
             chart.onPanEnd()
             
-        case .cancelled: break;
-        case .failed: break;
+        case .cancelled:
+            fallthrough
+        case .failed:
+            fallthrough
         case .possible:
 //            sender.state = UIGestureRecognizerState.Changed
-            break;
+            fallthrough
+        default:
+            break
         }
     }
     
