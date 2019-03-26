@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.3] - 2018.09.30
+- Swift 4.2 upgrade
+
+
 ## [0.6.2] - 2018.09.15
 - Fix iPad demo crash
 - Add missing AppIcon image sizes
