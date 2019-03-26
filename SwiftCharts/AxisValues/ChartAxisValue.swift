@@ -45,8 +45,8 @@ open class ChartAxisValue: Equatable, Hashable, CustomStringConvertible {
         return String(scalar)
     }
     
-    open var hashValue: Int {
-        return scalar.hashValue
+    open func hash(into hasher: inout Hasher) {
+        hasher.combine(self.scalar.hashValue)
     }
 }
 
