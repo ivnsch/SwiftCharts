@@ -22,8 +22,9 @@ open class ChartPoint: Hashable, Equatable, CustomStringConvertible {
         return "\(x), \(y)"
     }
     
-    open var hashValue: Int {
-        return 31 &* x.hashValue &+ y.hashValue
+    open func hash(into hasher: inout Hasher) {
+        let hash = 31 &* x.hashValue &+ y.hashValue
+        hasher.combine(hash)
     }
 }
 

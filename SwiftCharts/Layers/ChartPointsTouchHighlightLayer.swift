@@ -52,7 +52,7 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
             return highlightedModel?.chartPoint
         }
         set {
-            if let index = chartPointsModels.index(where: { $0.chartPoint == newValue }) {
+            if let index = chartPointsModels.firstIndex(where: { $0.chartPoint == newValue }) {
                 highlightedModel = chartPointsModels[index]
             } else {
                 highlightedModel = nil
@@ -76,9 +76,6 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
 
     @objc func handlePan(_ gestureRecognizer: UIGestureRecognizer) {
         switch gestureRecognizer.state {
-        case .possible:
-            // Follow your dreams!
-            break
         case .began, .changed:
             if let view = view {
                 let point = gestureRecognizer.location(in: view)
@@ -102,6 +99,9 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
                     }
                 )
             }
+        case .possible: fallthrough
+        @unknown default:
+            break
         }
     }
 }
