@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		D086CB1C21615ACF0030AE25 /* SwiftChartsUniversal */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D086CB1D21615AD00030AE25 /* Build configuration list for PBXAggregateTarget "SwiftChartsUniversal" */;
+			buildPhases = (
+				D086CB2021615AD90030AE25 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = SwiftChartsUniversal;
+			productName = SwiftChartsUniversal;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		062D238E1B8AAE5D0017ABB8 /* AreasExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062D23711B8AAE5D0017ABB8 /* AreasExample.swift */; };
 		062D238F1B8AAE5D0017ABB8 /* BarsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062D23721B8AAE5D0017ABB8 /* BarsExample.swift */; };
@@ -989,6 +1003,11 @@
 					22E7020E1BF5B8EC00C19675 = {
 						CreatedOnToolsVersion = 7.1.1;
 					};
+					D086CB1C21615ACF0030AE25 = {
+						CreatedOnToolsVersion = 10.0;
+						DevelopmentTeam = 3HPBXSSCP4;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 06405DA01B8AA74700A689FF /* Build configuration list for PBXProject "SwiftCharts" */;
@@ -1007,6 +1026,7 @@
 				06405DA51B8AA74700A689FF /* SwiftCharts */,
 				06342AC01B8AAD7F001C9F5D /* Examples */,
 				22E7020E1BF5B8EC00C19675 /* SwiftCharts tvOS */,
+				D086CB1C21615ACF0030AE25 /* SwiftChartsUniversal */,
 			);
 		};
 /* End PBXProject section */
@@ -1038,6 +1058,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D086CB2021615AD90030AE25 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nBUILD_PATH=\"${SRCROOT}/build\"\nDEPLOYMENT_PATH=\"${SRCROOT}\"\nTARGET_NAME=\"SwiftCharts\"\nFRAMEWORK_NAME=\"SwiftCharts\"\nFRAMEWORK=\"${FRAMEWORK_NAME}.framework\"\nFRAMEWORK_PATH=\"${DEPLOYMENT_PATH}/${FRAMEWORK}\"\n\n# clean the build folder\nif [ -d \"${BUILD_PATH}\" ]; then\nrm -rf \"${BUILD_PATH}\"\nfi\n\n# build the framework for every architecture using xcodebuild\nxcodebuild BITCODE_GENERATION_MODE=bitcode OTHER_CFLAGS=\"-fembed-bitcode\" -target \"${TARGET_NAME}\" -configuration Release \\\n-arch arm64 -arch armv7s -arch armv7 \\\n-UseModernBuildSystem=NO \\\nOBJROOT=\"${OBJROOT}/DependantBuilds\" \\\nonly_active_arch=no defines_module=yes -sdk \"iphoneos\"\n\nxcodebuild BITCODE_GENERATION_MODE=bitcode OTHER_CFLAGS=\"-fembed-bitcode\" -target \"${TARGET_NAME}\" -configuration Release \\\n-arch x86_64 -arch i386 \\\n-UseModernBuildSystem=NO \\\nOBJROOT=\"${OBJROOT}/DependantBuilds\" \\\nonly_active_arch=no defines_module=yes -sdk \"iphonesimulator\"\n\n# remove previous version from the deployment path\nif [ -d \"${FRAMEWORK_PATH}\" ]; then\nrm -rf \"${FRAMEWORK_PATH}\"\nfi\n\n# copy freshly built version to the deployment path\ncp -r \"${BUILD_PATH}/Release-iphoneos/${FRAMEWORK}\" \"${FRAMEWORK_PATH}\"\n\n# merge all the slices and create the fat framework\nlipo -create -output \"${FRAMEWORK_PATH}/${FRAMEWORK_NAME}\" \\\n\"${BUILD_PATH}/Release-iphoneos/${FRAMEWORK}/${FRAMEWORK_NAME}\" \\\n\"${BUILD_PATH}/Release-iphonesimulator/${FRAMEWORK}/${FRAMEWORK_NAME}\"\n\n# copy Swift module mappings for the simulator\ncp -r \"${BUILD_PATH}/Release-iphonesimulator/${FRAMEWORK}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" \\\n\"${FRAMEWORK_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule\"\n\n# clean up the build folder again\nif [ -d \"${BUILD_PATH}\" ]; then\nrm -rf \"${BUILD_PATH}\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		06342ABD1B8AAD7F001C9F5D /* Sources */ = {
@@ -1382,7 +1422,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Examples/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.schuetz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1398,7 +1438,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 37QAPDY2PR;
 				INFOPLIST_FILE = "Examples/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.schuetz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1411,6 +1451,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1455,12 +1496,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 i386 armv7s armv7 x86_64";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1471,6 +1514,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1508,12 +1552,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "arm64 i386 armv7s armv7 x86_64";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1522,6 +1568,7 @@
 		06405DBD1B8AA74700A689FF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -1531,19 +1578,22 @@
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				INFOPLIST_FILE = "SwiftCharts/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.schuetz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 i386 armv7s armv7 x86_64";
 			};
 			name = Debug;
 		};
 		06405DBE1B8AA74700A689FF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -1553,12 +1603,14 @@
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				INFOPLIST_FILE = "SwiftCharts/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.schuetz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 i386 armv7s armv7 x86_64";
 			};
 			name = Release;
 		};
@@ -1609,6 +1661,28 @@
 			};
 			name = Release;
 		};
+		D086CB1E21615AD00030AE25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3HPBXSSCP4;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 i386 armv7s armv7 x86_64";
+			};
+			name = Debug;
+		};
+		D086CB1F21615AD00030AE25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3HPBXSSCP4;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 i386 armv7s armv7 x86_64";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1644,6 +1718,15 @@
 			buildConfigurations = (
 				22E702141BF5B8EC00C19675 /* Debug */,
 				22E702151BF5B8EC00C19675 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D086CB1D21615AD00030AE25 /* Build configuration list for PBXAggregateTarget "SwiftChartsUniversal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D086CB1E21615AD00030AE25 /* Debug */,
+				D086CB1F21615AD00030AE25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
