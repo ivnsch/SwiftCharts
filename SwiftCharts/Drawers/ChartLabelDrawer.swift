@@ -31,7 +31,7 @@ public struct ChartLabelSettings {
 }
 
 public extension ChartLabelSettings {
-    public func defaultVertical() -> ChartLabelSettings {
+    func defaultVertical() -> ChartLabelSettings {
         var copy = self
         copy.rotation = -90
         
