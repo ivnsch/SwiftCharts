@@ -88,7 +88,8 @@ open class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: ChartC
         let totalWidth = CGFloat(group.bars.count) * barWidth + ((barSpacing ?? 0) * (maxBarCountInGroup - 1))
         let groupCenter = screenLocCalculator(group.constant.scalar)
         let origin = groupCenter - totalWidth / 2
-        return origin + CGFloat(index) * (barWidth + (barSpacing ?? 0)) + barWidth / 2
+        let calculatedWidthWithSpacing = CGFloat(index) * (barWidth + (barSpacing ?? 0))
+        return origin + calculatedWidthWithSpacing + barWidth / 2
     }
     
     func mooh(_ screenLocCalculator: (Double) -> CGFloat, index: Int, group: ChartPointsBarGroup<T>, barWidth: CGFloat, maxBarCountInGroup: CGFloat, horizontal: Bool) -> CGFloat {
@@ -110,9 +111,15 @@ open class ChartGroupedBarsLayer<T: ChartBarModel, U: ChartPointViewBar>: ChartC
         let maxBarCountInGroup = groups.reduce(CGFloat(0)) {maxCount, group in
             max(maxCount, CGFloat(group.bars.count))
         }
-        
-        let barWidth = self.barWidth ?? (((groupAvailableLength - ((barSpacing ?? 0) * (maxBarCountInGroup - 1))) / CGFloat(maxBarCountInGroup)))
-  
+
+        let barWidth: CGFloat
+        if let selfBarWidth = self.barWidth {
+            barWidth = selfBarWidth
+        } else {
+            let calculatedWidth = (groupAvailableLength - ((barSpacing ?? 0) * (maxBarCountInGroup - 1)))
+            barWidth = calculatedWidth / CGFloat(maxBarCountInGroup)
+        }
+
         onCalculate(maxBarCountInGroup, barWidth)
     }
     
