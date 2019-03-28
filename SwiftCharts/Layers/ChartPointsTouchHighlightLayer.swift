@@ -99,7 +99,7 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
                     }
                 )
             }
-        default:
+        @unknown default:
             break
         }
     }

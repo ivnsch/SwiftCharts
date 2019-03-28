@@ -789,14 +789,12 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
             
             chart.onPanEnd()
             
-        case .cancelled:
-            fallthrough
-        case .failed:
+        case .cancelled, .failed:
             fallthrough
         case .possible:
 //            sender.state = UIGestureRecognizerState.Changed
             fallthrough
-        default:
+        @unknown default:
             break
         }
     }
