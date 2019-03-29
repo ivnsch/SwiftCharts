@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.4] - 2019.03.29
+- Swift 5.0 upgrade
+
+
 ## [0.6.3] - 2018.09.30
 - Swift 4.2 upgrade
 

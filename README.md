@@ -61,17 +61,11 @@ iOS 7+
 
 Add to your Podfile:
 
-Swift 4.x:
 ```ruby
 use_frameworks!
-pod 'SwiftCharts', '~> 0.6.3'
+pod 'SwiftCharts', '~> 0.6.4'
 ```
 
-Swift 3.x:
-```ruby
-use_frameworks!
-pod 'SwiftCharts', '0.6'
-```
 
 To use master directly:
 ```ruby
@@ -92,19 +86,8 @@ import SwiftCharts
 
 Add to your Cartfile:
 
-Swift 4.x:
 ```
-github "i-schuetz/SwiftCharts" ~> 0.6.3
-```
-
-Swift 3.x:
-```
-github "i-schuetz/SwiftCharts" == 0.6
-```
-
-Swift 2.3 (not actively maintained):
-```
-github "i-schuetz/SwiftCharts" ~> 0.4
+github "i-schuetz/SwiftCharts" ~> 0.6.4
 ```
 
 ## Contribute
