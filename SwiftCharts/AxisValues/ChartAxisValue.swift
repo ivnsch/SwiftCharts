@@ -48,6 +48,11 @@ open class ChartAxisValue: Equatable, Hashable, CustomStringConvertible {
     open var hashValue: Int {
         return scalar.hashValue
     }
+  
+    open func hash(into hasher: inout Hasher) {
+      hasher.combine(scalar)
+      hasher.combine(hidden)
+    }
 }
 
 public func ==(lhs: ChartAxisValue, rhs: ChartAxisValue) -> Bool {

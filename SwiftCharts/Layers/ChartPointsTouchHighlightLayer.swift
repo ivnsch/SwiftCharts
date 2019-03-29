@@ -52,7 +52,7 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
             return highlightedModel?.chartPoint
         }
         set {
-            if let index = chartPointsModels.index(where: { $0.chartPoint == newValue }) {
+            if let index = chartPointsModels.firstIndex(where: { $0.chartPoint == newValue }) {
                 highlightedModel = chartPointsModels[index]
             } else {
                 highlightedModel = nil

@@ -25,6 +25,11 @@ open class ChartPoint: Hashable, Equatable, CustomStringConvertible {
     open var hashValue: Int {
         return 31 &* x.hashValue &+ y.hashValue
     }
+  
+    open func hash(into hasher: inout Hasher) {
+      hasher.combine(x)
+      hasher.combine(y)
+    }
 }
 
 public func ==(lhs: ChartPoint, rhs: ChartPoint) -> Bool {
