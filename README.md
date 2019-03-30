@@ -63,7 +63,7 @@ Add to your Podfile:
 
 ```ruby
 use_frameworks!
-pod 'SwiftCharts', '~> 0.6.4'
+pod 'SwiftCharts', '~> 0.6.5'
 ```
 
 
@@ -87,7 +87,7 @@ import SwiftCharts
 Add to your Cartfile:
 
 ```
-github "i-schuetz/SwiftCharts" ~> 0.6.4
+github "i-schuetz/SwiftCharts" ~> 0.6.5
 ```
 
 ## Contribute
