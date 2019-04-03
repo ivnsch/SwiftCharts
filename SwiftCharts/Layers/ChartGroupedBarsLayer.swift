@@ -60,7 +60,8 @@ open class ChartGroupedBarsLayer<T: ChartBarModel>: ChartCoordsSpaceLayer {
             let totalWidth = CGFloat(group.bars.count) * barWidth + ((self.barSpacing ?? 0) * (maxBarCountInGroup - 1))
             let groupCenter = axis.screenLocForScalar(group.constant.scalar)
             let origin = groupCenter - totalWidth / 2
-            return origin + CGFloat(index) * (barWidth + (self.barSpacing ?? 0)) + barWidth / 2
+            let barSpacing = self.barSpacing ?? 0
+            return origin + CGFloat(index) * (barWidth + barSpacing) + barWidth / 2
         }
         
         for group in self.groups {
