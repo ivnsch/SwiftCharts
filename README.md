@@ -263,7 +263,7 @@ A big thank you to the awesome [grafiti.io](https://grafiti.io/) for having been
 
 ## License
 
-SwiftCharts is Copyright (c) 2015 Ivan Schütz and released as open source under the attached [Apache 2.0 license](LICENSE).
+SwiftCharts is Copyright (c) 2015 - 2019 Ivan Schütz and released as open source under the attached [Apache 2.0 license](LICENSE).
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
