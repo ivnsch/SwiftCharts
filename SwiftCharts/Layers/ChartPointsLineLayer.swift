@@ -88,14 +88,16 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
     
     public let useView: Bool
     public let delayInit: Bool
+    public let useMask: Bool
     
     fileprivate var isInTransform = false
     
-    public init(xAxis: ChartAxis, yAxis: ChartAxis, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0, useView: Bool = true, delayInit: Bool = false) {
+    public init(xAxis: ChartAxis, yAxis: ChartAxis, lineModels: [ChartLineModel<T>], pathGenerator: ChartLinesViewPathGenerator = StraightLinePathGenerator(), displayDelay: Float = 0, useView: Bool = true, delayInit: Bool = false, useMask: Bool = false) {
         self.lineModels = lineModels
         self.pathGenerator = pathGenerator
         self.useView = useView
         self.delayInit = delayInit
+        self.useMask = useMask
         
         let chartPoints: [T] = lineModels.flatMap{$0.chartPoints}
         
@@ -147,7 +149,8 @@ open class ChartPointsLineLayer<T: ChartPoint>: ChartPointsLayer<T> {
             lineCap: screenLine.lineCap,
             animDuration: isInTransform ? 0 : screenLine.animDuration,
             animDelay: isInTransform ? 0 : screenLine.animDelay,
-            dashPattern: screenLine.dashPattern
+            dashPattern: screenLine.dashPattern,
+            useMask: useMask
         )
     }
     

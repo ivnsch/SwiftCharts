@@ -23,7 +23,7 @@ open class ChartLinesView: UIView {
     public let animDelay: Float
     public let dashPattern: [Double]?
     
-    public init(path: UIBezierPath, frame: CGRect, lineColors: [UIColor], lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
+    public init(path: UIBezierPath, frame: CGRect, lineColors: [UIColor], lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, dashPattern: [Double]?, useMask: Bool = false) {
         self.lineColors = lineColors
         self.lineWidth = lineWidth
         self.lineJoin = lineJoin
@@ -35,7 +35,7 @@ open class ChartLinesView: UIView {
         super.init(frame: frame)
 
         backgroundColor = UIColor.clear
-        show(path: path)
+        show(path: path, useMask: useMask)
     }
     
     public convenience init(path: UIBezierPath, frame: CGRect, lineColor: UIColor, lineWidth: CGFloat, lineJoin: LineJoin, lineCap: LineCap, animDuration: Float, animDelay: Float, dashPattern: [Double]?) {
@@ -92,8 +92,11 @@ open class ChartLinesView: UIView {
         return lineLayer
     }
     
-    fileprivate func show(path: UIBezierPath) {
+    fileprivate func show(path: UIBezierPath, useMask: Bool) {
         let lineLayer = generateLayer(path: path)
+        if useMask {
+            lineLayer.mask = self.createLineMask(frame: frame)
+        }
         layer.addSublayer(lineLayer)
         addGradientForMultiColorLine(withLayer: lineLayer)
     }
