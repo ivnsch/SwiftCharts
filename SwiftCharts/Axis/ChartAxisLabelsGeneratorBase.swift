@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import CoreGraphics
+import UIKit
 
 /// Needed for common stored properties which are not possible in the extension (without workarounds)
 open class ChartAxisLabelsGeneratorBase: ChartAxisLabelsGenerator {

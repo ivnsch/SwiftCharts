@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 infix operator =~ : ComparisonPrecedence
 

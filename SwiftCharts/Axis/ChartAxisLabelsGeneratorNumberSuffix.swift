@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public enum ChartAxisLabelNumberSuffixUnit {
     case k, m, g, t, p, e
