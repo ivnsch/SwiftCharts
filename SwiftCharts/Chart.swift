@@ -677,10 +677,10 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
             
             let location = sender.location(in: self)
             
-            var deltaX = lastPanTranslation.map{trans.x - $0.x} ?? trans.x
+            let deltaX = lastPanTranslation.map{trans.x - $0.x} ?? trans.x
             let deltaY = lastPanTranslation.map{trans.y - $0.y} ?? trans.y
 
-            var (finalDeltaX, finalDeltaY) = finalPanDelta(deltaX: deltaX, deltaY: deltaY)
+            let (finalDeltaX, finalDeltaY) = finalPanDelta(deltaX: deltaX, deltaY: deltaY)
             
             lastPanTranslation = trans
             
@@ -690,7 +690,7 @@ open class ChartView: UIView, UIGestureRecognizerDelegate {
 
         case .ended:
             
-            guard let view = sender.view, let chart = chart else {print("No view or chart"); return}
+            guard let _ = sender.view, let chart = chart else {print("No view or chart"); return}
             
             
             let velocityX = sender.velocity(in: sender.view).x

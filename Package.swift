@@ -4,10 +4,10 @@ import PackageDescription
 let package = Package(
      name: "SwiftCharts",
      platforms: [
-         .iOS(.v8)
+         .iOS(.v9)
      ],
      products: [
-         .library(name: "SwiftCharts", targets: ["SwiftCharts"])
+         .library(name: "SwiftCharts", type: .dynamic, targets: ["SwiftCharts"])
      ],
      targets: [
         .target(

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Generates a single unformatted label for scalar
 open class ChartAxisLabelsGeneratorBasic: ChartAxisLabelsGeneratorBase {

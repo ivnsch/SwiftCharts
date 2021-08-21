@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import CoreGraphics
+import UIKit
 
 /// Generates labels for an axis value. Note: Supports only one label per axis value (1 element array)
 public protocol ChartAxisLabelsGenerator {
