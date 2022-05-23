@@ -41,7 +41,7 @@ open class ChartPointViewBar: UIView {
     }
     
     override open func didMoveToSuperview() {
-        UIView.animate(withDuration: CFTimeInterval(self.animDuration), delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {() -> Void in
+        UIView.animate(withDuration: CFTimeInterval(self.animDuration), delay: 0.0, options: UIView.AnimationOptions.curveEaseOut, animations: {() -> Void in
             self.frame = self.targetFrame
         }, completion: nil)
     }

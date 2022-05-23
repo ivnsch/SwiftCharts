@@ -52,7 +52,7 @@ open class ChartSettings {
 open class Chart {
 
     /// The view that the chart is drawn in
-    open let view: ChartView
+    public let view: ChartView
     
     /// The layers of the chart that are drawn in the view
     fileprivate let layers: [ChartLayer]

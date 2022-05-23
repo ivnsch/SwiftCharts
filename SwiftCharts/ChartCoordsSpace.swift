@@ -248,9 +248,9 @@ open class ChartCoordsSpace {
 /// A ChartCoordsSpace subclass specifically for a chart with axes along the left and bottom edges
 open class ChartCoordsSpaceLeftBottomSingleAxis {
 
-    open let yAxis: ChartAxisLayer
-    open let xAxis: ChartAxisLayer
-    open let chartInnerFrame: CGRect
+    public let yAxis: ChartAxisLayer
+    public let xAxis: ChartAxisLayer
+    public let chartInnerFrame: CGRect
     
     public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
         let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yLowModels: [yModel], xLowModels: [xModel])
@@ -264,9 +264,9 @@ open class ChartCoordsSpaceLeftBottomSingleAxis {
 /// A ChartCoordsSpace subclass specifically for a chart with axes along the left and top edges
 open class ChartCoordsSpaceLeftTopSingleAxis {
     
-    open let yAxis: ChartAxisLayer
-    open let xAxis: ChartAxisLayer
-    open let chartInnerFrame: CGRect
+    public let yAxis: ChartAxisLayer
+    public let xAxis: ChartAxisLayer
+    public let chartInnerFrame: CGRect
     
     public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
         let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yLowModels: [yModel], xHighModels: [xModel])
@@ -280,9 +280,9 @@ open class ChartCoordsSpaceLeftTopSingleAxis {
 /// A ChartCoordsSpace subclass specifically for a chart with axes along the right and bottom edges
 open class ChartCoordsSpaceRightBottomSingleAxis {
     
-    open let yAxis: ChartAxisLayer
-    open let xAxis: ChartAxisLayer
-    open let chartInnerFrame: CGRect
+    public let yAxis: ChartAxisLayer
+    public let xAxis: ChartAxisLayer
+    public let chartInnerFrame: CGRect
     
     public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
         let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yHighModels: [yModel], xLowModels: [xModel])
@@ -296,9 +296,9 @@ open class ChartCoordsSpaceRightBottomSingleAxis {
 /// A ChartCoordsSpace subclass specifically for a chart with axes along the right and top edges
 open class ChartCoordsSpaceRightTopSingleAxis {
     
-    open let yAxis: ChartAxisLayer
-    open let xAxis: ChartAxisLayer
-    open let chartInnerFrame: CGRect
+    public let yAxis: ChartAxisLayer
+    public let xAxis: ChartAxisLayer
+    public let chartInnerFrame: CGRect
     
     public init(chartSettings: ChartSettings, chartFrame: CGRect, xModel: ChartAxisModel, yModel: ChartAxisModel) {
         let coordsSpaceInitializer = ChartCoordsSpace(chartSettings: chartSettings, chartSize: chartFrame.size, yHighModels: [yModel], xHighModels: [xModel])

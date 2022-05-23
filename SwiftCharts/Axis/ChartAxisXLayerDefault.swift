@@ -123,7 +123,7 @@ class ChartAxisXLayerDefault: ChartAxisLayerDefault {
     // Get max text height for each row of axis values
     fileprivate func rowHeightsForRows(_ rows: [[ChartAxisLabel?]]) -> [CGFloat] {
         return rows.map { row in
-            row.flatMap { $0 }.reduce(-1) { maxHeight, label in
+            row.compactMap { $0 }.reduce(-1) { maxHeight, label in
                 return max(maxHeight, label.textSize.height)
             }
         }

@@ -163,7 +163,7 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
 
             // Select point with smallest distance to touch point.
             // If there's only one intersection, returns intersection. If there's no intersection returns nil.
-            var intersectionMaybe: CGPoint? = {
+            let intersectionMaybe: CGPoint? = {
                 var minDistancePoint: (distance: Float, point: CGPoint?) = (MAXFLOAT, nil)
                 for intersection in intersections {
                     let distance = hypotf(Float(intersection.x - touchPoint.x), Float(intersection.y - touchPoint.y))
@@ -189,8 +189,8 @@ open class ChartPointsLineTrackerLayer<T: ChartPoint>: ChartPointsLayer<T> {
                     }, completion: { (Bool) -> Void in
                 })
                 
-                var w: CGFloat = self.settings.thumbSize
-                var h: CGFloat = self.settings.thumbSize
+                let w: CGFloat = self.settings.thumbSize
+                let h: CGFloat = self.settings.thumbSize
                 self.currentPositionLineOverlay.frame = CGRect(x: intersection.x, y: 0, width: 1, height: view.frame.size.height)
                 self.thumb.frame = CGRect(x: intersection.x - w/2, y: intersection.y - h/2, width: w, height: h)
                 

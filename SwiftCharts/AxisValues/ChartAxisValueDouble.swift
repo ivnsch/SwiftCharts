@@ -10,7 +10,7 @@ import UIKit
 
 open class ChartAxisValueDouble: ChartAxisValue {
     
-    open let formatter: NumberFormatter
+    public let formatter: NumberFormatter
 
     public convenience init(_ int: Int, formatter: NumberFormatter = ChartAxisValueDouble.defaultFormatter, labelSettings: ChartLabelSettings = ChartLabelSettings()) {
         self.init(Double(int), formatter: formatter, labelSettings: labelSettings)

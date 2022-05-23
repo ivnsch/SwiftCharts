@@ -9,10 +9,10 @@
 import UIKit
 
 open class ChartBarModel {
-    open let constant: ChartAxisValue
-    open let axisValue1: ChartAxisValue
-    open let axisValue2: ChartAxisValue
-    open let bgColor: UIColor?
+    public let constant: ChartAxisValue
+    public let axisValue1: ChartAxisValue
+    public let axisValue2: ChartAxisValue
+    public let bgColor: UIColor?
 
     /**
     - parameter constant:Value of coordinate which doesn't change between start and end of the bar - if the bar is horizontal, this is y, if it's vertical it's x.

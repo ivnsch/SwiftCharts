@@ -12,8 +12,8 @@
 import UIKit
 
 open class ChartConfig {
-    open let chartSettings: ChartSettings
-    open let guidelinesConfig: GuidelinesConfig? // nil means no guidelines
+    public let chartSettings: ChartSettings
+    public let guidelinesConfig: GuidelinesConfig? // nil means no guidelines
     
     public init(chartSettings: ChartSettings, guidelinesConfig: GuidelinesConfig?) {
         self.chartSettings = chartSettings
@@ -23,10 +23,10 @@ open class ChartConfig {
 
 
 open class ChartConfigXY: ChartConfig {
-    open let xAxisConfig: ChartAxisConfig
-    open let yAxisConfig: ChartAxisConfig
-    open let xAxisLabelSettings: ChartLabelSettings
-    open let yAxisLabelSettings: ChartLabelSettings
+    public let xAxisConfig: ChartAxisConfig
+    public let yAxisConfig: ChartAxisConfig
+    public let xAxisLabelSettings: ChartLabelSettings
+    public let yAxisLabelSettings: ChartLabelSettings
 
     public init(chartSettings: ChartSettings = ChartSettings(), xAxisConfig: ChartAxisConfig, yAxisConfig: ChartAxisConfig, xAxisLabelSettings: ChartLabelSettings = ChartLabelSettings(), yAxisLabelSettings: ChartLabelSettings = ChartLabelSettings(), guidelinesConfig: GuidelinesConfig? = GuidelinesConfig()) {
         self.xAxisConfig = xAxisConfig

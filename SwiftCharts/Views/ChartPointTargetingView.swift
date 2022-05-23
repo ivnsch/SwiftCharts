@@ -57,7 +57,7 @@ open class ChartPointTargetingView: UIView {
         addSubview(self.lineHorizontal)
         addSubview(self.lineVertical)
         
-        UIView.animate(withDuration: TimeInterval(self.animDuration), delay: TimeInterval(self.animDelay), options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: TimeInterval(self.animDuration), delay: TimeInterval(self.animDelay), options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in
             
             self.lineHorizontal.frame = self.lineHorizontalTargetFrame
             self.lineVertical.frame = self.lineVerticalTargetFrame

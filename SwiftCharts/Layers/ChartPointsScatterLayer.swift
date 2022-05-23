@@ -10,8 +10,8 @@ import UIKit
 
 open class ChartPointsScatterLayer<T: ChartPoint>: ChartPointsLayer<T> {
 
-    open let itemSize: CGSize
-    open let itemFillColor: UIColor
+    public let itemSize: CGSize
+    public let itemFillColor: UIColor
     
     required public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor) {
         self.itemSize = itemSize
@@ -84,7 +84,7 @@ open class ChartPointsScatterCirclesLayer<T: ChartPoint>: ChartPointsScatterLaye
 
 open class ChartPointsScatterCrossesLayer<T: ChartPoint>: ChartPointsScatterLayer<T> {
     
-    open let strokeWidth: CGFloat
+    public let strokeWidth: CGFloat
     
     required public init(xAxis: ChartAxisLayer, yAxis: ChartAxisLayer, innerFrame: CGRect, chartPoints: [T], displayDelay: Float = 0, itemSize: CGSize, itemFillColor: UIColor, strokeWidth: CGFloat = 2) {
         self.strokeWidth = strokeWidth

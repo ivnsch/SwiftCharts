@@ -34,7 +34,7 @@ open class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 view.addSubview(lineView)
             }
             
-            UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in
                 hLine.frame = CGRect(x: self.innerFrame.origin.x, y: screenLoc.y, width: screenLoc.x - self.innerFrame.origin.x, height: 1)
                 vLine.frame = CGRect(x: screenLoc.x, y: screenLoc.y, width: 1, height: self.innerFrame.origin.y + self.innerFrame.height - screenLoc.y)
             }, completion: nil)

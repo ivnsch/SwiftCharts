@@ -52,7 +52,7 @@ open class ChartPointTextCircleView: UILabel {
         
         super.didMoveToSuperview()
         
-        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIView.AnimationOptions(), animations: {
             let w: CGFloat = self.frame.size.width
             let h: CGFloat = self.frame.size.height
             let frame = CGRect(x: self.targetCenter.x - (w/2), y: self.targetCenter.y - (h/2), width: w, height: h)

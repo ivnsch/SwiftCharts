@@ -40,7 +40,7 @@ open class ChartLabelSettings {
 }
 
 public extension ChartLabelSettings {
-    public func defaultVertical() -> ChartLabelSettings {
+    func defaultVertical() -> ChartLabelSettings {
         return self.copy(rotation: -90)
     }
 }
@@ -74,7 +74,7 @@ open class ChartLabelDrawer: ChartContextDrawer {
     }
 
     override func draw(context: CGContext, chart: Chart) {
-        let labelSize = self.size
+        _ = self.size
         
         let labelX = self.screenLoc.x
         let labelY = self.screenLoc.y
@@ -109,7 +109,7 @@ open class ChartLabelDrawer: ChartContextDrawer {
             let centerX = labelX + labelHalfWidth
             let centerY = labelY + labelHalfHeight
             
-            let rotation = settings.rotation * CGFloat(M_PI) / CGFloat(180)
+            let rotation = settings.rotation * .pi / CGFloat(180)
 
             
             var transform = CGAffineTransform.identity
@@ -156,7 +156,7 @@ open class ChartLabelDrawer: ChartContextDrawer {
 
     
     fileprivate func drawLabel(x: CGFloat, y: CGFloat, text: String) {
-        let attributes = [NSAttributedStringKey.font: self.settings.font, NSAttributedStringKey.foregroundColor: self.settings.fontColor]
+        let attributes = [NSAttributedString.Key.font: self.settings.font, NSAttributedString.Key.foregroundColor: self.settings.fontColor]
         let attrStr = NSAttributedString(string: text, attributes: attributes)
         attrStr.draw(at: CGPoint(x: x, y: y))
     }

@@ -28,7 +28,7 @@ open class ChartPointsSingleViewLayer<T: ChartPoint, U: UIView>: ChartPointsView
         }
         
         let screenLoc = self.chartPointScreenLoc(chartPoint)
-        let index = self.chartPointsModels.map{$0.chartPoint}.index(of: chartPoint)!
+        let index = self.chartPointsModels.map{$0.chartPoint}.firstIndex(of: chartPoint)!
         let model: ChartPointLayerModel = ChartPointLayerModel(chartPoint: chartPoint, index: index, screenLoc: screenLoc)
         if let view = self.viewGenerator(model, self, chart) {
             self.addedViews.append(view)

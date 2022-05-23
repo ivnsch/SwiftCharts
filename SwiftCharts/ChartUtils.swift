@@ -20,7 +20,7 @@ open class ChartUtils {
      - returns: The size of the string if it were drawn with a given font
      */
     open class func textSize(_ text: String, font: UIFont) -> CGSize {
-        return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font]).size()
+        return NSAttributedString(string: text, attributes: [NSAttributedString.Key.font: font]).size()
     }
 
     /**
@@ -34,7 +34,7 @@ open class ChartUtils {
      */
     open class func rotatedTextBounds(_ text: String, font: UIFont, angle: CGFloat) -> CGRect {
         let labelSize = ChartUtils.textSize(text, font: font)
-        let radians = angle * CGFloat(M_PI) / CGFloat(180)
+        let radians = angle * .pi / CGFloat(180)
         return boundingRectAfterRotatingRect(CGRect(x: 0, y: 0, width: labelSize.width, height: labelSize.height), radians: radians)
     }
     

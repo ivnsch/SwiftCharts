@@ -52,7 +52,7 @@ open class ChartAreasView: UIView {
     
     fileprivate func show(path: UIBezierPath) {
         let areaLayer = CAShapeLayer()
-        areaLayer.lineJoin = kCALineJoinBevel
+        areaLayer.lineJoin = CAShapeLayerLineJoin.bevel
         areaLayer.fillColor   = self.color.cgColor
         areaLayer.lineWidth   = 2.0
         areaLayer.strokeEnd   = 0.0
@@ -83,7 +83,7 @@ open class ChartAreasView: UIView {
             revealAnimation.duration = CFTimeInterval(self.animDuration)
             
             revealAnimation.isRemovedOnCompletion = false
-            revealAnimation.fillMode = kCAFillModeForwards
+            revealAnimation.fillMode = CAMediaTimingFillMode.forwards
             
             revealAnimation.beginTime = CACurrentMediaTime() + CFTimeInterval(self.animDelay)
             self.layer.mask?.add(revealAnimation, forKey: "revealAnimation")

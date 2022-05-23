@@ -9,9 +9,9 @@
 import UIKit
 
 open class BarsChartConfig: ChartConfig {
-    open let valsAxisConfig: ChartAxisConfig
-    open let xAxisLabelSettings: ChartLabelSettings
-    open let yAxisLabelSettings: ChartLabelSettings
+    public let valsAxisConfig: ChartAxisConfig
+    public let xAxisLabelSettings: ChartLabelSettings
+    public let yAxisLabelSettings: ChartLabelSettings
     
     public init(chartSettings: ChartSettings = ChartSettings(), valsAxisConfig: ChartAxisConfig, xAxisLabelSettings: ChartLabelSettings = ChartLabelSettings(), yAxisLabelSettings: ChartLabelSettings = ChartLabelSettings(), guidelinesConfig: GuidelinesConfig = GuidelinesConfig()) {
         self.valsAxisConfig = valsAxisConfig

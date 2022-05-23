@@ -17,7 +17,7 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
 
     fileprivate let chartPointLayerModelForScreenLocFilter: ChartPointLayerModelForScreenLocFilter
 
-    open let panGestureRecognizer: UIPanGestureRecognizer
+    public let panGestureRecognizer: UIPanGestureRecognizer
 
     /// The delay after touches end before the highlighted point fades out. Set to `nil` to keep the highlight until the next touch.
     open var hideDelay: TimeInterval? = 1.0
@@ -50,7 +50,7 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
             return highlightedModel?.chartPoint
         }
         set {
-            if let index = chartPointsModels.index(where: { $0.chartPoint == newValue }) {
+            if let index = chartPointsModels.firstIndex(where: { $0.chartPoint == newValue }) {
                 highlightedModel = chartPointsModels[index]
             } else {
                 highlightedModel = nil
@@ -99,6 +99,8 @@ open class ChartPointsTouchHighlightLayer<T: ChartPoint, U: UIView>: ChartPoints
                     }
                 )
             }
+        @unknown default:
+            fatalError("Unhandled")
         }
     }
 }
