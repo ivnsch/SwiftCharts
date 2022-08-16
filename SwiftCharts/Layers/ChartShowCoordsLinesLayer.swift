@@ -44,7 +44,7 @@ open class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 let axisOriginY = modelLocToScreenLoc(y: yAxis.first)
                 let axisLengthY = axisOriginY - modelLocToScreenLoc(y: yAxis.last)
                 
-                hLine.frame = CGRect(x: axisOriginX, y: screenLoc.y, width: screenLoc.x - axisOriginX, height: 1 / / chart.scaleY)
+                hLine.frame = CGRect(x: axisOriginX, y: screenLoc.y, width: screenLoc.x - axisOriginX, height: 1 / chart.scaleY)
                 vLine.frame = CGRect(x: screenLoc.x, y: screenLoc.y, width: 1 / chart.scaleX, height: axisLengthY - screenLoc.y)
             }
 
