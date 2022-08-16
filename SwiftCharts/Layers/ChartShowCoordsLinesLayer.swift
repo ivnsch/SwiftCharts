@@ -45,8 +45,7 @@ open class ChartShowCoordsLinesLayer<T: ChartPoint>: ChartPointsLayer<T> {
                 let axisLengthY = axisOriginY - modelLocToScreenLoc(y: yAxis.last)
                 
                 hLine.frame = CGRect(x: axisOriginX, y: screenLoc.y, width: screenLoc.x - axisOriginX, height: 1)
-                vLine.frame = CGRect(x: screenLoc.x, y: screenLoc.y, width: 1, height: axisLengthY - screenLoc.y)
-            }
+                vLine.frame = CGRect(x: screenLoc.x, y: screenLoc.y, width: 1 / chart.scaleX, height: axisLengthY - screenLoc.y)            }
 
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
                 animations()
