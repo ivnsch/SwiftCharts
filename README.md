@@ -1,4 +1,4 @@
-⚠️ Not maintained! 
+⚠️ Not maintained anymore! If you want to become a maintainer, [let me know](ivanhp978@gmail.com).
 
 # SwiftCharts
 
