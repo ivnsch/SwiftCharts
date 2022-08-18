@@ -1,3 +1,5 @@
+⚠️ Not maintained! 
+
 # SwiftCharts
 
 [![Version](https://img.shields.io/cocoapods/v/SwiftCharts.svg?style=flat)](http://cocoadocs.org/docsets/SwiftCharts)
