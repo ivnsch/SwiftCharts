@@ -949,9 +949,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 06405DBC1B8AA74700A689FF /* Build configuration list for PBXNativeTarget "SwiftCharts" */;
 			buildPhases = (
+				06405DA31B8AA74700A689FF /* Headers */,
 				06405DA11B8AA74700A689FF /* Sources */,
 				06405DA21B8AA74700A689FF /* Frameworks */,
-				06405DA31B8AA74700A689FF /* Headers */,
 				06405DA41B8AA74700A689FF /* Resources */,
 			);
 			buildRules = (
