@@ -12,8 +12,15 @@ let package = Package(
      targets: [
         .target(
                name: "SwiftCharts",
-               path: "SwiftCharts"
+               path: "SwiftCharts",
+               swiftSettings: [
+                               .unsafeFlags(["-Xfrontend", "-application-extension"])
+                           ],
+               linkerSettings: [
+                               .unsafeFlags(["-Xlinker", "-application_extension"])
+                           ]
         )
+
      ],
      swiftLanguageVersions: [.v5]
- )
+)
