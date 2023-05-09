@@ -41,14 +41,14 @@ public extension ChartLabelSettings {
 
 extension ChartLabelSettings: CustomDebugStringConvertible {
     public var debugDescription: String {
-        return [
+        return ([
             "font": font,
             "fontColor": fontColor,
             "rotation": rotation,
             "rotationKeep": rotationKeep,
             "shiftXOnRotation": shiftXOnRotation,
             "textAlignment": textAlignment
-            ]
+        ] as [String : Any])
                 .debugDescription
     }
 }
