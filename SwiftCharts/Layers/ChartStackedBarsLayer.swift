@@ -33,13 +33,13 @@ open class ChartStackedBarModel: ChartBarModel {
 }
 
 extension ChartStackedBarModel: CustomDebugStringConvertible {
-    open var debugDescription: String {
-        return [
+    public var debugDescription: String {
+        return ([
             "items": items,
             "constant": constant,
             "axisValue1": axisValue1,
             "axisValue2": axisValue2
-            ]
+        ] as [String : Any])
             .debugDescription
     }
 }

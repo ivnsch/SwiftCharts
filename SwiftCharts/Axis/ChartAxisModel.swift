@@ -94,12 +94,12 @@ open class ChartAxisModel {
 
 extension ChartAxisModel: CustomDebugStringConvertible {
     public var debugDescription: String {
-        return [
+        return ([
             "firstModelValue": firstModelValue,
             "lastModelValue": lastModelValue,
             "axisTitleLabels": axisTitleLabels,
             
-        ]
+        ] as [String : Any])
             .debugDescription
     }
 }

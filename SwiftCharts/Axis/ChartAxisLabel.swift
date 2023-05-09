@@ -53,10 +53,10 @@ open class ChartAxisLabel {
 
 extension ChartAxisLabel: CustomDebugStringConvertible {
     public var debugDescription: String {
-        return [
+        return ([
             "text": text,
             "settings": settings
-        ]
+        ] as [String : Any])
             .debugDescription
     }
 }
